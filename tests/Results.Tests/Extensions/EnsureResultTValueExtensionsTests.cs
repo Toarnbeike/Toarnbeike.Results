@@ -6,7 +6,7 @@ namespace Toarnbeike.Results.Tests.Extensions;
 /// <summary>
 /// Tests for the <see cref="EnsureResultTValueExtensions"/> class.
 /// </summary>
-public class EnsureResultOfTExtensionsTests
+public class EnsureResultTValueExtensionsTests
 {
     private readonly Result<double> _success = Result.Success(1.3);
     private readonly Result<double> _failure = Result<double>.Failure(new Failure("original", "Original failure"));
