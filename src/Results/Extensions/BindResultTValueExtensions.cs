@@ -1,7 +1,7 @@
 ﻿namespace Toarnbeike.Results.Extensions;
 
 /// <summary>
-/// Provides extension methods for binding a <see cref="Result{TIn}"/>
+/// Bind: Provides extension methods for binding a <see cref="Result{TIn}"/>
 /// to a new <see cref="Result{TOut}"/> using a function.
 /// </summary>
 public static class BindResultTValueExtensions
