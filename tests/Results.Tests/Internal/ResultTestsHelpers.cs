@@ -16,4 +16,13 @@ internal static class ResultTestsHelpers
         failure.Code.ShouldBe(expectedCode);
         failure.Message.ShouldBe(expectedMessage);
     }
+
+    public static TFailure ShouldBeFailureOfType<TFailure>(this IResult result)
+        where TFailure : Failure
+    {
+        result.TryGetFailure(out var failure).ShouldBeTrue();
+        var returnValue = failure as TFailure;
+        returnValue.ShouldNotBeNull();
+        return returnValue;
+    }
 }

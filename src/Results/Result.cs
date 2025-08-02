@@ -9,7 +9,7 @@ namespace Toarnbeike.Results;
 /// Use <see cref="Success"/> to create a successful result without a value,
 /// or <see cref="Failure(Failure)"/> to create a failed result.
 /// </remarks>
-public class Result : IResult
+public partial class Result : IResult
 {
     private readonly Failure? _failure;
 
