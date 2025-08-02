@@ -1,12 +1,12 @@
 ﻿namespace Toarnbeike.Results.Extensions;
 
 /// <summary>
-/// Ensure When: Performs a conditional check that only runs if a predicate evaluates to true.
+/// Verify When: Performs a conditional check that only runs if a predicate evaluates to true.
 /// </summary>
-public static class EnsureWhenResultTValueExtensions
+public static class VerifyWhenResultTValueExtensions
 {
     /// <summary>
-    /// Ensures that a successful <see cref="Result{TValue}"/> satisfies the provided check function,
+    /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided check function,
     /// but only when the <paramref name="predicate"/> evaluates to true.
     /// </summary>
     /// <remarks>
@@ -23,7 +23,7 @@ public static class EnsureWhenResultTValueExtensions
     /// The original result if the predicate is false, the result is a failure,
     /// or the check succeeds; otherwise, the failure from the check function.
     /// </returns>
-    public static Result<TValue> EnsureWhen<TValue>(
+    public static Result<TValue> VerifyWhen<TValue>(
         this Result<TValue> result,
         Func<TValue, bool> predicate, 
         Func<TValue, IResult> checkFunc) =>
@@ -32,7 +32,7 @@ public static class EnsureWhenResultTValueExtensions
             : result;
 
     /// <summary>
-    /// Ensures that a successful <see cref="Result{TValue}"/> satisfies the provided async check function,
+    /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided async check function,
     /// but only when the <paramref name="predicate"/> evaluates to true.
     /// </summary>
     /// <remarks>
@@ -49,7 +49,7 @@ public static class EnsureWhenResultTValueExtensions
     /// The original result if the predicate is false, the result is a failure,
     /// or the check succeeds; otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> EnsureWhenAsync<TValue>(
+    public static async Task<Result<TValue>> VerifyWhenAsync<TValue>(
         this Result<TValue> result, 
         Func<TValue, bool> predicate, 
         Func<TValue, Task<Result>> checkFunc) =>
@@ -58,7 +58,7 @@ public static class EnsureWhenResultTValueExtensions
             : result;
 
     /// <summary>
-    /// Ensures that a successful <see cref="Result{TValue}"/> satisfies the provided async check function,
+    /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided async check function,
     /// but only when the <paramref name="predicate"/> evaluates to true.
     /// </summary>
     /// <remarks>
@@ -76,7 +76,7 @@ public static class EnsureWhenResultTValueExtensions
     /// The original result if the predicate is false, the result is a failure,
     /// or the check succeeds; otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> EnsureWhenAsync<TValue, TCheck>(
+    public static async Task<Result<TValue>> VerifyWhenAsync<TValue, TCheck>(
         this Result<TValue> result, 
         Func<TValue, bool> predicate, 
         Func<TValue, Task<Result<TCheck>>> checkFunc) =>
@@ -85,7 +85,7 @@ public static class EnsureWhenResultTValueExtensions
             : result;
 
     /// <summary>
-    /// Ensures that a successful <see cref="Result{TValue}"/> satisfies the provided check function,
+    /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided check function,
     /// but only when the <paramref name="predicate"/> evaluates to true.
     /// </summary>
     /// <remarks>
@@ -102,17 +102,17 @@ public static class EnsureWhenResultTValueExtensions
     /// The original result if the predicate is false, the result is a failure,
     /// or the check succeeds; otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> EnsureWhen<TValue>(
+    public static async Task<Result<TValue>> VerifyWhen<TValue>(
         this Task<Result<TValue>> resultTask,
         Func<TValue, bool> predicate,
         Func<TValue, IResult> checkFunc)
     {
         var result = await resultTask;
-        return EnsureWhen(result, predicate, checkFunc);
+        return VerifyWhen(result, predicate, checkFunc);
     }
 
     /// <summary>
-    /// Ensures that a successful <see cref="Result{TValue}"/> satisfies the provided async check function,
+    /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided async check function,
     /// but only when the <paramref name="predicate"/> evaluates to true.
     /// </summary>
     /// <remarks>
@@ -129,17 +129,17 @@ public static class EnsureWhenResultTValueExtensions
     /// The original result if the predicate is false, the result is a failure,
     /// or the check succeeds; otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> EnsureWhenAsync<TValue>(
+    public static async Task<Result<TValue>> VerifyWhenAsync<TValue>(
         this Task<Result<TValue>> resultTask,
         Func<TValue, bool> predicate,
         Func<TValue, Task<Result>> checkFunc)
     {
         var result = await resultTask;
-        return await EnsureWhenAsync(result, predicate, checkFunc);
+        return await VerifyWhenAsync(result, predicate, checkFunc);
     }
 
     /// <summary>
-    /// Ensures that a successful <see cref="Result{TValue}"/> satisfies the provided async check function,
+    /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided async check function,
     /// but only when the <paramref name="predicate"/> evaluates to true.
     /// </summary>
     /// <remarks>
@@ -157,12 +157,12 @@ public static class EnsureWhenResultTValueExtensions
     /// The original result if the predicate is false, the result is a failure,
     /// or the check succeeds; otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> EnsureWhenAsync<TValue, TCheck>(
+    public static async Task<Result<TValue>> VerifyWhenAsync<TValue, TCheck>(
         this Task<Result<TValue>> resultTask,
         Func<TValue, bool> predicate,
         Func<TValue, Task<Result<TCheck>>> checkFunc)
     {
         var result = await resultTask;
-        return await EnsureWhenAsync(result, predicate, checkFunc);
+        return await VerifyWhenAsync(result, predicate, checkFunc);
     }
 }

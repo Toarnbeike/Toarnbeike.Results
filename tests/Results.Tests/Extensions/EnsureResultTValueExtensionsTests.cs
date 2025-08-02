@@ -14,187 +14,97 @@ public class EnsureResultTValueExtensionsTests
     private readonly Task<Result<double>> _successTask = Task.FromResult(Result.Success(1.3));
     private readonly Task<Result<double>> _failureTask = Task.FromResult(Result<double>.Failure(new Failure("original", "Original failure")));
 
-    private readonly Func<double, Result> _successFunc = value => Result.Success((int)value);
-    private readonly Func<double, Result> _failureFunc = _ => Result.Failure(new Failure("ensure", "Ensure failure"));
-    private readonly Func<double, Result> _forbiddenFunc = _ => throw new InvalidOperationException("This function should not be called");
+    private readonly Func<double, bool> _truePredicate = value => value > 1;
+    private readonly Func<double, bool> _falsePredicate = value => value < 1;
+    private readonly Func<double, bool> _forbiddenPredicate = _ => throw new InvalidOperationException("This function should not be called");
 
-    private readonly Func<double, Result<int>> _successOfTFunc = value => Result.Success((int)value);
-    private readonly Func<double, Result<int>> _failureOfTFunc = _ => Result<int>.Failure(new Failure("ensure", "Ensure failure"));
-    private readonly Func<double, Result<int>> _forbiddenOfTFunc = _ => throw new InvalidOperationException("This function should not be called");
+    private readonly Func<double, Task<bool>> _trueAsyncPredicate = value => Task.FromResult(value > 1);
+    private readonly Func<double, Task<bool>> _falseAsyncPredicate = value => Task.FromResult(value < 1);
+    private readonly Func<double, Task<bool>> _forbiddenAsyncPredicate = _ => throw new InvalidOperationException("This function should not be called");
 
-    private readonly Func<double, Task<Result>> _successTaskFunc = value => Task.FromResult((Result)Result.Success((int)value));
-    private readonly Func<double, Task<Result>> _failureTaskFunc = _ => Task.FromResult(Result.Failure(new Failure("ensure", "Ensure failure")));
-    private readonly Func<double, Task<Result>> _forbiddenTaskFunc = _ => throw new InvalidOperationException("This function should not be called");
-
-    private readonly Func<double, Task<Result<int>>> _successOfTTaskFunc = _ => Task.FromResult(Result<int>.Success(42));
-    private readonly Func<double, Task<Result<int>>> _failureOfTTaskFunc = _ => Task.FromResult(Result<int>.Failure(new Failure("ensure", "Ensure failure")));
-    private readonly Func<double, Task<Result<int>>> _forbiddenOfTTaskFunc = _ => throw new InvalidOperationException("This function should not be called");
+    private readonly Func<Failure> _failureFactory = () => new Failure("Ensure", "Ensure failure");
 
     [Fact]
-    public void Ensure_Should_ReturnSuccess_WhenResultIsSuccess_AndFunctionSucceeds()
+    public void Ensure_Should_ReturnSuccess_WhenResultIsSuccess_AndPredicateIsTrue()
     {
-        var result = _success.Ensure(_successFunc);
-        result.IsSuccess.ShouldBeTrue();
+        var result = _success.Ensure(_truePredicate, _failureFactory);
+        result.ShouldBeSuccessWithValue(1.3);
     }
 
     [Fact]
-    public void Ensure_Should_ReturnFailure_WhenResultIsSuccess_AndFunctionFails()
+    public void Ensure_Should_ReturnFailure_WhenResultIsSuccess_AndPredicateIsFalse()
     {
-        var result = _success.Ensure(_failureFunc);
-        result.ShouldBeFailureWithCodeAndMessage("ensure", "Ensure failure");
+        var result = _success.Ensure(_falsePredicate, _failureFactory);
+        result.ShouldBeFailureWithCodeAndMessage("Ensure", "Ensure failure");
     }
 
     [Fact]
     public void Ensure_Should_ReturnFailure_WhenResultIsFailure()
     {
-        var result = _failure.Ensure(_forbiddenFunc);
+        var result = _failure.Ensure(_forbiddenPredicate, _failureFactory);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
     [Fact]
-    public void Ensure_Should_ReturnSuccess_WhenResultIsSuccess_AndFunctionOfTSucceeds()
+    public async Task EnsureAsync_Should_ReturnSuccess_WhenResultIsSuccess_AndPredicateIsTrue()
     {
-        var result = _success.Ensure(_successOfTFunc);
-        result.IsSuccess.ShouldBeTrue();
+        var result = await _success.EnsureAsync(_trueAsyncPredicate, _failureFactory);
+        result.ShouldBeSuccessWithValue(1.3);
     }
 
     [Fact]
-    public void Ensure_Should_ReturnFailure_WhenResultIsSuccess_AndFunctionOfTFails()
+    public async Task EnsureAsync_Should_ReturnFailure_WhenResultIsSuccess_AndPredicateIsFalse()
     {
-        var result = _success.Ensure(_failureOfTFunc);
-        result.ShouldBeFailureWithCodeAndMessage("ensure", "Ensure failure");
-    }
-
-    [Fact]
-    public void Ensure_Should_ReturnFailure_WhenResultIsFailure_AndCheckIsOfT()
-    {
-        var result = _failure.Ensure(_forbiddenOfTFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
-    }
-
-    [Fact]
-    public async Task EnsureAsync_Should_ReturnValue_WhenResultIsSuccess_AndFunctionSucceeds()
-    {
-        var result = await _success.EnsureAsync(_successTaskFunc);
-        result.IsSuccess.ShouldBeTrue();
-    }
-
-    [Fact]
-    public async Task EnsureAsync_Should_ReturnFailure_WhenResultIsSuccess_AndFunctionFails()
-    {
-        var result = await _success.EnsureAsync(_failureTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("ensure", "Ensure failure");
+        var result = await _success.EnsureAsync(_falseAsyncPredicate, _failureFactory);
+        result.ShouldBeFailureWithCodeAndMessage("Ensure", "Ensure failure");
     }
 
     [Fact]
     public async Task EnsureAsync_Should_ReturnFailure_WhenResultIsFailure()
     {
-        var result = await _failure.EnsureAsync(_forbiddenTaskFunc);
+        var result = await _failure.EnsureAsync(_forbiddenAsyncPredicate, _failureFactory);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
     [Fact]
-    public async Task EnsureAsync_Should_ReturnValue_WhenResultIsSuccess_AndFunctionOfTSucceeds()
+    public async Task Ensure_Should_ReturnSuccess_WhenResultTaskIsSuccess_AndPredicateIsTrue()
     {
-        var result = await _success.EnsureAsync(_successOfTTaskFunc);
-        result.IsSuccess.ShouldBeTrue();
+        var result = await _successTask.Ensure(_truePredicate, _failureFactory);
+        result.ShouldBeSuccessWithValue(1.3);
     }
 
     [Fact]
-    public async Task EnsureAsync_Should_ReturnFailure_WhenResultIsSuccess_AndFunctionOfTFails()
+    public async Task Ensure_Should_ReturnFailure_WhenResultTaskIsSuccess_AndPredicateIsFalse()
     {
-        var result = await _success.EnsureAsync(_failureOfTTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("ensure", "Ensure failure");
-    }
-
-    [Fact]
-    public async Task EnsureAsync_Should_ReturnFailure_WhenResultIsFailure_AndCheckIsOfT()
-    {
-        var result = await _failure.EnsureAsync(_forbiddenOfTTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
-    }
-
-    [Fact]
-    public async Task Ensure_Should_ReturnValue_WhenResultTaskIsSuccess_AndFunctionSucceeds()
-    {
-        var result = await _successTask.Ensure(_successFunc);
-        result.IsSuccess.ShouldBeTrue();
-    }
-
-    [Fact]
-    public async Task Ensure_Should_ReturnFailure_WhenResultTaskIsSuccess_AndFunctionFails()
-    {
-        var result = await _successTask.Ensure(_failureFunc);
-        result.ShouldBeFailureWithCodeAndMessage("ensure", "Ensure failure");
+        var result = await _successTask.Ensure(_falsePredicate, _failureFactory);
+        result.ShouldBeFailureWithCodeAndMessage("Ensure", "Ensure failure");
     }
 
     [Fact]
     public async Task Ensure_Should_ReturnFailure_WhenResultTaskIsFailure()
     {
-        var result = await _failureTask.Ensure(_forbiddenFunc);
+        var result = await _failureTask.Ensure(_forbiddenPredicate, _failureFactory);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
     [Fact]
-    public async Task Ensure_Should_ReturnValue_WhenResultTaskIsSuccess_AndFunctionOfTSucceeds()
+    public async Task EnsureAsync_Should_ReturnSuccess_WhenResultTaskIsSuccess_AndPredicateIsTrue()
     {
-        var result = await _successTask.Ensure(_successOfTFunc);
-        result.IsSuccess.ShouldBeTrue();
+        var result = await _successTask.EnsureAsync(_trueAsyncPredicate, _failureFactory);
+        result.ShouldBeSuccessWithValue(1.3);
     }
 
     [Fact]
-    public async Task Ensure_Should_ReturnFailure_WhenResultTaskIsSuccess_AndFunctionOfTFails()
+    public async Task EnsureAsync_Should_ReturnFailure_WhenResultTaskIsSuccess_AndPredicateIsFalse()
     {
-        var result = await _successTask.Ensure(_failureOfTFunc);
-        result.ShouldBeFailureWithCodeAndMessage("ensure", "Ensure failure");
-    }
-
-    [Fact]
-    public async Task Ensure_Should_ReturnFailure_WhenResultTaskIsFailure_AndCheckIsOfT()
-    {
-        var result = await _failureTask.Ensure(_forbiddenOfTFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
-    }
-
-    [Fact]
-    public async Task EnsureAsync_Should_ReturnValue_WhenResultTaskIsSuccess_AndFunctionSucceeds()
-    {
-        var result = await _successTask.EnsureAsync(_successTaskFunc);
-        result.IsSuccess.ShouldBeTrue();
-    }
-
-    [Fact]
-    public async Task EnsureAsync_Should_ReturnFailure_WhenResultTaskIsSuccess_AndFunctionFails()
-    {
-        var result = await _successTask.EnsureAsync(_failureTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("ensure", "Ensure failure");
+        var result = await _successTask.EnsureAsync(_falseAsyncPredicate, _failureFactory);
+        result.ShouldBeFailureWithCodeAndMessage("Ensure", "Ensure failure");
     }
 
     [Fact]
     public async Task EnsureAsync_Should_ReturnFailure_WhenResultTaskIsFailure()
     {
-        var result = await _failureTask.EnsureAsync(_forbiddenTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
-    }
-
-    [Fact]
-    public async Task EnsureAsync_Should_ReturnValue_WhenResultTaskIsSuccess_AndFunctionOfTSucceeds()
-    {
-        var result = await _successTask.EnsureAsync(_successOfTTaskFunc);
-        result.IsSuccess.ShouldBeTrue();
-    }
-
-    [Fact]
-    public async Task EnsureAsync_Should_ReturnFailure_WhenResultTaskIsSuccess_AndFunctionOfTFails()
-    {
-        var result = await _successTask.EnsureAsync(_failureOfTTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("ensure", "Ensure failure");
-    }
-
-    [Fact]
-    public async Task EnsureAsync_Should_ReturnFailure_WhenResultTaskIsFailure_AndCheckIsOfT()
-    {
-        var result = await _failureTask.EnsureAsync(_forbiddenOfTTaskFunc);
+        var result = await _failureTask.EnsureAsync(_forbiddenAsyncPredicate, _failureFactory);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 }

@@ -1,103 +1,120 @@
 ﻿namespace Toarnbeike.Results.Extensions;
 
 /// <summary>
-/// Validate: Quick check on an existing <see cref="Result{TValue}"/> and create a failure if the check fails.
+/// Verify: Performs a conditional check on the value of a successful <see cref="Result{T}"/>.
+/// If the check fails, the result becomes a failure; otherwise, the original result is returned unchanged.
 /// </summary>
 public static class VerifyResultTValueExtensions
 {
     /// <summary>
-    /// Verifies that the value contained in a successful result satisfies the given <paramref name="predicate"/>.
-    /// </summary>    
-    /// <remarks>
-    /// This method allows enforcing additional invariants on the value inside a successful result.
-    /// If the predicate fails, the result is transformed into a failure using the provided failure factory.
-    /// </remarks>
+    /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided check function.
+    /// If the original result is a failure, it is returned unchanged.
+    /// If the check function returns a failure, that failure is returned.
+    /// If the check function returns a success, the original result is returned.
+    /// </summary>
     /// <typeparam name="TValue">The type of the value in the result.</typeparam>
-    /// <param name="result">The result to verify.</param>
-    /// <param name="predicate">A predicate that must return <c>true</c> for the value to be considered valid.</param>
-    /// <param name="onFailure">A function that returns a <see cref="Failure"/> if the predicate is <c>false</c>.</param>
+    /// <param name="result">The original result to validate.</param>
+    /// <param name="checkFunc">A function that performs a check and returns a <see cref="IResult"/>.</param>
     /// <returns>
-    /// The original result if it was already a failure or the predicate evaluates to <c>true</c>.<br/>
-    /// A new failed result with the provided failure if the predicate evaluates to <c>false</c>>.
+    /// The original result if it was a failure, or if the check succeeded;
+    /// otherwise, the failure from the check function.
     /// </returns>
-    public static Result<TValue> Verify<TValue>(this Result<TValue> result, Func<TValue, bool> predicate, Func<Failure> onFailure)
-    {
-        if (!result.TryGetValue(out var value))
-        {
-            return result;
-        }
-
-        return predicate(value)
-            ? result
-            : onFailure();
-    }
+    public static Result<TValue> Verify<TValue>(this Result<TValue> result, Func<TValue, IResult> checkFunc) =>
+        result.TryGetValue(out var value) && checkFunc(value).TryGetFailure(out var checkFailure) 
+            ? checkFailure 
+            : result;
 
     /// <summary>
-    /// Verifies that the value contained in a successful result satisfies the given <paramref name="predicate"/>.
-    /// </summary>    
-    /// <remarks>
-    /// This method allows enforcing additional invariants on the value inside a successful result.
-    /// If the predicate fails, the result is transformed into a failure using the provided failure factory.
-    /// </remarks>
+    /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided asynchronous check function.
+    /// If the original result is a failure, it is returned unchanged.
+    /// If the check function returns a failure, that failure is returned.
+    /// If the check function returns a success, the original result is returned.
+    /// </summary>
     /// <typeparam name="TValue">The type of the value in the result.</typeparam>
-    /// <param name="result">The result to verify.</param>
-    /// <param name="predicate">A async predicate that must return <c>true</c> for the value to be considered valid.</param>
-    /// <param name="onFailure">A function that returns a <see cref="Failure"/> if the predicate is <c>false</c>.</param>
+    /// <param name="result">The original result to validate.</param>
+    /// <param name="checkFunc">An async function that performs a check and returns a <see cref="Result"/>.</param>
     /// <returns>
-    /// The original result if it was already a failure or the predicate evaluates to <c>true</c>.<br/>
-    /// A new failed result with the provided failure if the predicate evaluates to <c>false</c>>.
+    /// The original result if it was a failure, or if the check succeeded;
+    /// otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> VerifyAsync<TValue>(this Result<TValue> result, Func<TValue, Task<bool>> predicate, Func<Failure> onFailure)
-    {
-        if (!result.TryGetValue(out var value))
-        {
-            return result;
-        }
-
-        return await predicate(value)
-            ? result
-            : onFailure();
-    }
+    public static async Task<Result<TValue>> VerifyAsync<TValue>(this Result<TValue> result, Func<TValue, Task<Result>> checkFunc) =>
+        result.TryGetValue(out var value) && (await checkFunc(value)).TryGetFailure(out var checkFailure)
+            ? checkFailure
+            : result;
 
     /// <summary>
-    /// Verifies that the value contained in a successful result satisfies the given <paramref name="predicate"/>.
-    /// </summary>    
-    /// <remarks>
-    /// This method allows enforcing additional invariants on the value inside a successful result.
-    /// If the predicate fails, the result is transformed into a failure using the provided failure factory.
-    /// </remarks>
+    /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided asynchronous check function.
+    /// If the original result is a failure, it is returned unchanged.
+    /// If the check function returns a failure, that failure is returned.
+    /// If the check function returns a success, the original result is returned.
+    /// </summary>
     /// <typeparam name="TValue">The type of the value in the result.</typeparam>
-    /// <param name="resultTask">The async result to verify.</param>
-    /// <param name="predicate">A predicate that must return <c>true</c> for the value to be considered valid.</param>
-    /// <param name="onFailure">A function that returns a <see cref="Failure"/> if the predicate is <c>false</c>.</param>
+    /// <typeparam name="TCheck">The type used internally by the check function (not returned).</typeparam>
+    /// <param name="result">The original result to validate.</param>
+    /// <param name="checkFunc">An async function that performs a check and returns a <see cref="Result{TCheck}"/>.</param>
     /// <returns>
-    /// The original result if it was already a failure or the predicate evaluates to <c>true</c>.<br/>
-    /// A new failed result with the provided failure if the predicate evaluates to <c>false</c>>.
+    /// The original result if it was a failure, or if the check succeeded;
+    /// otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> Verify<TValue>(this Task<Result<TValue>> resultTask, Func<TValue, bool> predicate, Func<Failure> onFailure)
+    public static async Task<Result<TValue>> VerifyAsync<TValue, TCheck>(this Result<TValue> result, Func<TValue, Task<Result<TCheck>>> checkFunc) =>
+        result.TryGetValue(out var value) && (await checkFunc(value)).TryGetFailure(out var checkFailure)
+            ? checkFailure
+            : result;
+
+    /// <summary>
+    /// Verify that a successful <see cref="Task{Result{TValue}}"/> satisfies the provided check function.
+    /// If the original result is a failure, it is returned unchanged.
+    /// If the check function returns a failure, that failure is returned.
+    /// If the check function returns a success, the original result is returned.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the value in the result.</typeparam>
+    /// <param name="resultTask">The task that resolves to the result to validate.</param>
+    /// <param name="checkFunc">A function that performs a check and returns a <see cref="IResult"/>.</param>
+    /// <returns>
+    /// The original result if it was a failure, or if the check succeeded;
+    /// otherwise, the failure from the check function.
+    /// </returns>
+    public static async Task<Result<TValue>> Verify<TValue>(this Task<Result<TValue>> resultTask, Func<TValue, IResult> checkFunc)
     {
         var result = await resultTask;
-        return Verify(result, predicate, onFailure);
+        return Verify(result, checkFunc);
     }
 
     /// <summary>
-    /// Verifies that the value contained in a successful result satisfies the given <paramref name="predicate"/>.
-    /// </summary>    
-    /// <remarks>
-    /// This method allows enforcing additional invariants on the value inside a successful result.
-    /// If the predicate fails, the result is transformed into a failure using the provided failure factory.
-    /// </remarks>
+    /// Verify that a successful <see cref="Task{Result{TValue}}"/> satisfies the provided asynchronous check function.
+    /// If the original result is a failure, it is returned unchanged.
+    /// If the check function returns a failure, that failure is returned.
+    /// If the check function returns a success, the original result is returned.
+    /// </summary>
     /// <typeparam name="TValue">The type of the value in the result.</typeparam>
-    /// <param name="resultTask">The async result to verify.</param>
-    /// <param name="predicate">A async predicate that must return <c>true</c> for the value to be considered valid.</param>
-    /// <param name="onFailure">A function that returns a <see cref="Failure"/> if the predicate is <c>false</c>.</param>
+    /// <param name="resultTask">The task that resolves to the result to validate.</param>
+    /// <param name="checkFunc">An async function that performs a check and returns a <see cref="Result"/>.</param>
     /// <returns>
-    /// The original result if it was already a failure or the predicate evaluates to <c>true</c>.<br/>
-    /// A new failed result with the provided failure if the predicate evaluates to <c>false</c>>.
+    /// The original result if it was a failure, or if the check succeeded;
+    /// otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> VerifyAsync<TValue>(this Task<Result<TValue>> resultTask, Func<TValue, Task<bool>> predicate, Func<Failure> onFailure)
+    public static async Task<Result<TValue>> VerifyAsync<TValue>(this Task<Result<TValue>> resultTask, Func<TValue, Task<Result>> checkFunc)
     {
         var result = await resultTask;
-        return await VerifyAsync(result, predicate, onFailure);
+        return await VerifyAsync(result, checkFunc);
+    }
+
+    /// <summary>
+    /// Verify that a successful <see cref="Task{Result{TValue}}"/> satisfies the provided asynchronous check function.
+    /// If the original result is a failure, it is returned unchanged.
+    /// If the check function returns a failure, that failure is returned.
+    /// If the check function returns a success, the original result is returned.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the value in the result.</typeparam>
+    /// <param name="resultTask">The task that resolves to the result to validate.</param>
+    /// <param name="checkFunc">An async function that performs a check and returns a <see cref="Result{TCheck}"/>.</param>
+    /// <returns>
+    /// The original result if it was a failure, or if the check succeeded;
+    /// otherwise, the failure from the check function.
+    /// </returns>
+    public static async Task<Result<TValue>> VerifyAsync<TValue, TCheck>(this Task<Result<TValue>> resultTask, Func<TValue, Task<Result<TCheck>>> checkFunc)
+    {
+        var result = await resultTask;
+        return await VerifyAsync(result, checkFunc);
     }
 }
