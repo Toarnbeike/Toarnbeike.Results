@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify When: Performs a conditional check that only runs if a predicate evaluates to true.
 /// </summary>
-public static class VerifyWhenResultTValueExtensions
+public static class VerifyWhenExtensions
 {
     /// <summary>
     /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided check function,

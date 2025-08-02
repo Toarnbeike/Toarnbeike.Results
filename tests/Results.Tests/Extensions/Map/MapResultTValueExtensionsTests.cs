@@ -1,10 +1,10 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.Tests.Internal;
 
-namespace Toarnbeike.Results.Tests.Extensions;
+namespace Toarnbeike.Results.Tests.Extensions.Map;
 
 /// <summary>
-/// Tests for the <see cref="MapResultTValueExtensions"/> class.
+/// Tests for the <see cref="MapExtensions"/> on a <see cref="Result{TValue}"/>.
 /// </summary>
 public class MapResultTValueExtensionsTests
 {

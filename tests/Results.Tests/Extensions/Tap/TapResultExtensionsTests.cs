@@ -1,9 +1,9 @@
 ﻿using Toarnbeike.Results.Extensions;
 
-namespace Toarnbeike.Results.Tests.Extensions;
+namespace Toarnbeike.Results.Tests.Extensions.Tap;
 
 /// <summary>
-/// Tests for the <see cref="TapResultExtensions"/> class.
+/// Tests for the <see cref="TapExtensions"/> on a <see cref="Result"/>.
 /// </summary>
 public class TapResultExtensionsTests
 {

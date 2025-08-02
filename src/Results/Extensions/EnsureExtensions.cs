@@ -3,7 +3,7 @@
 /// <summary>
 /// Ensure: Quick check on an existing <see cref="Result{TValue}"/> and create a failure if the check fails.
 /// </summary>
-public static class EnsureResultTValueExtensions
+public static class EnsureExtensions
 {
     /// <summary>
     /// Ensures that the value contained in a successful result satisfies the given <paramref name="predicate"/>.

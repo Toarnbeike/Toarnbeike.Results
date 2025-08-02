@@ -1,9 +1,9 @@
 ﻿using Toarnbeike.Results.Extensions;
 
-namespace Toarnbeike.Results.Tests.Extensions;
+namespace Toarnbeike.Results.Tests.Extensions.Match;
 
 /// <summary>
-/// Tests for the <see cref="MatchResultExtensions"/> class.
+/// Tests for the <see cref="MatchExtensions"/> on a <see cref="Result"/>.
 /// </summary>
 public class MatchResultExtensionsTests
 {

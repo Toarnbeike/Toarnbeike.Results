@@ -1,10 +1,10 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.Tests.Internal;
 
-namespace Toarnbeike.Results.Tests.Extensions;
+namespace Toarnbeike.Results.Tests.Extensions.WithValue;
 
 /// <summary>
-/// Tests for the <see cref="WithValueResultTValueExtensions"/> class.
+/// Tests for the <see cref="WithValueExtensions"/> on a <see cref="Result"/>.
 /// </summary>
 public class WithValueExtensionsTests
 {

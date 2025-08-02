@@ -1,12 +1,12 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.Tests.Internal;
 
-namespace Toarnbeike.Results.Tests.Extensions;
+namespace Toarnbeike.Results.Tests.Extensions.Verify;
 
 /// <summary>
-/// Tests for the <see cref="VerifyWhenResultTValueExtensions"/> class.
+/// Tests for the <see cref="VerifyWhenExtensions"/> on a <see cref="Result{TValue}"/>.
 /// </summary>
-public class VerifyWhenResultTValueExtensionsTests
+public class VerifyWhenExtensionsTests
 {
     private readonly Result<double> _success = Result.Success(1.3);
     private readonly Result<double> _failure = Result<double>.Failure(new Failure("original", "Original failure"));

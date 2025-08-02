@@ -1,17 +1,17 @@
 ﻿using Toarnbeike.Results.Extensions;
 
-namespace Toarnbeike.Results.Tests.Extensions;
+namespace Toarnbeike.Results.Tests.Extensions.Tap;
 
 /// <summary>
-/// Tests for the <see cref="TapFailureResultExtensions"/> class.
+/// Tests for the <see cref="TapFailureExtensions"/> on a <see cref="Result{TValue}"/>.
 /// </summary>
-public class TapFailureResultExtensionsTests
+public class TapFailureResultTValueExtensionsTests
 {
-    private readonly Result _success = Result.Success();
-    private readonly Result _failure = Result.Failure(new Failure("original", "Original failure"));
+    private readonly Result<int> _success = Result.Success(42);
+    private readonly Result<int> _failure = Result<int>.Failure(new Failure("original", "Original failure"));
 
-    private readonly Task<Result> _successTask = Task.FromResult(Result.Success());
-    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result<int>> _successTask = Task.FromResult(Result.Success(42));
+    private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new Failure("original", "Original failure")));
 
     [Fact]
     public void TapFailure_ShouldNotExecute_WhenResultIsSuccess()
@@ -33,7 +33,7 @@ public class TapFailureResultExtensionsTests
     public async Task TapFailureAsync_ShouldNotExecute_WhenResultIsSuccess()
     {
         var failureMessage = string.Empty;
-        await _success.TapFailureAsync (async failure => await Task.Run(() => failureMessage = failure.Message));
+        await _success.TapFailureAsync(async failure => await Task.Run(() => failureMessage = failure.Message));
         failureMessage.ShouldBeEmpty();
     }
 

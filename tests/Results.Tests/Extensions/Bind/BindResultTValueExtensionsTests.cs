@@ -1,10 +1,10 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.Tests.Internal;
 
-namespace Toarnbeike.Results.Tests.Extensions;
+namespace Toarnbeike.Results.Tests.Extensions.Bind;
 
 /// <summary>
-/// Tests for the <see cref="BindResultExtensions"/> class.
+/// Tests for the <see cref="BindExtensions"/> on a <see cref="Result{TIn}"/>.
 /// </summary>
 public class BindResultTValueExtensionsTests
 {

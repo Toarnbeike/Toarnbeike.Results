@@ -4,7 +4,7 @@
 /// Map: Map the successful value of a <see cref="Result{TIn}"/> to a <see cref="Result{TOut}"/> by 
 /// providing a mapping function: <see cref="Func{TIn, TOut}"/>.
 /// </summary>
-public static class MapResultTValueExtensions
+public static class MapExtensions
 {
     /// <summary>
     /// Maps the value of a successful <see cref="Result{TIn}"/> to a new <see cref="Result{TOut}"/> 

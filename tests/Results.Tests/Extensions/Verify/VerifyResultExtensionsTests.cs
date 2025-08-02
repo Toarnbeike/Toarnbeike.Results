@@ -1,34 +1,34 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.Tests.Internal;
 
-namespace Toarnbeike.Results.Tests.Extensions;
+namespace Toarnbeike.Results.Tests.Extensions.Verify;
 
 /// <summary>
-/// Tests for the <see cref="VerifyResultTValueExtensions"/> class.
+/// Tests for the <see cref="VerifyExtensions"/> on a <see cref="Result"/>.
 /// </summary>
-public class VerifyResultTValueExtensionsTests
+public class VerifyResultExtensionsTests
 {
-    private readonly Result<double> _success = Result.Success(1.3);
-    private readonly Result<double> _failure = Result<double>.Failure(new Failure("original", "Original failure"));
+    private readonly Result _success = Result.Success();
+    private readonly Result _failure = Result.Failure(new Failure("original", "Original failure"));
 
-    private readonly Task<Result<double>> _successTask = Task.FromResult(Result.Success(1.3));
-    private readonly Task<Result<double>> _failureTask = Task.FromResult(Result<double>.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result> _successTask = Task.FromResult(Result.Success());
+    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new Failure("original", "Original failure")));
 
-    private readonly Func<double, Result> _successFunc = value => Result.Success((int)value);
-    private readonly Func<double, Result> _failureFunc = _ => Result.Failure(new Failure("Verify", "Verify failure"));
-    private readonly Func<double, Result> _forbiddenFunc = _ => throw new InvalidOperationException("This function should not be called");
+    private readonly Func<Result> _successFunc = Result.Success;
+    private readonly Func<Result> _failureFunc = () => Result.Failure(new Failure("Verify", "Verify failure"));
+    private readonly Func<Result> _forbiddenFunc = () => throw new InvalidOperationException("This function should not be called");
 
-    private readonly Func<double, Result<int>> _successOfTFunc = value => Result.Success((int)value);
-    private readonly Func<double, Result<int>> _failureOfTFunc = _ => Result<int>.Failure(new Failure("Verify", "Verify failure"));
-    private readonly Func<double, Result<int>> _forbiddenOfTFunc = _ => throw new InvalidOperationException("This function should not be called");
+    private readonly Func<Result<int>> _successOfTFunc = () => Result.Success(42);
+    private readonly Func<Result<int>> _failureOfTFunc = () => Result<int>.Failure(new Failure("Verify", "Verify failure"));
+    private readonly Func<Result<int>> _forbiddenOfTFunc = () => throw new InvalidOperationException("This function should not be called");
 
-    private readonly Func<double, Task<Result>> _successTaskFunc = value => Task.FromResult((Result)Result.Success((int)value));
-    private readonly Func<double, Task<Result>> _failureTaskFunc = _ => Task.FromResult(Result.Failure(new Failure("Verify", "Verify failure")));
-    private readonly Func<double, Task<Result>> _forbiddenTaskFunc = _ => throw new InvalidOperationException("This function should not be called");
+    private readonly Func<Task<Result>> _successTaskFunc = () => Task.FromResult(Result.Success());
+    private readonly Func<Task<Result>> _failureTaskFunc = () => Task.FromResult(Result.Failure(new Failure("Verify", "Verify failure")));
+    private readonly Func<Task<Result>> _forbiddenTaskFunc = () => throw new InvalidOperationException("This function should not be called");
 
-    private readonly Func<double, Task<Result<int>>> _successOfTTaskFunc = _ => Task.FromResult(Result<int>.Success(42));
-    private readonly Func<double, Task<Result<int>>> _failureOfTTaskFunc = _ => Task.FromResult(Result<int>.Failure(new Failure("Verify", "Verify failure")));
-    private readonly Func<double, Task<Result<int>>> _forbiddenOfTTaskFunc = _ => throw new InvalidOperationException("This function should not be called");
+    private readonly Func<Task<Result<int>>> _successOfTTaskFunc = () => Task.FromResult(Result<int>.Success(42));
+    private readonly Func<Task<Result<int>>> _failureOfTTaskFunc = () => Task.FromResult(Result<int>.Failure(new Failure("Verify", "Verify failure")));
+    private readonly Func<Task<Result<int>>> _forbiddenOfTTaskFunc = () => throw new InvalidOperationException("This function should not be called");
 
     [Fact]
     public void Verify_Should_ReturnSuccess_WhenResultIsSuccess_AndFunctionSucceeds()

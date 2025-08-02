@@ -1,9 +1,9 @@
 ﻿namespace Toarnbeike.Results.Extensions;
 
 /// <summary>
-/// WithValue: convert a non-generic result into a typed result by providing a value.
+/// WithValue: convert a non-generic <see cref="Result"> into a typed <see cref="Result{TValue}"> by providing a value.
 /// </summary>
-public static class WithValueResultTValueExtensions
+public static class WithValueExtensions
 {
     /// <summary>
     /// Converts a successful <see cref="Result"/> into a <see cref="Result{T}"/> with the provided <paramref name="value"/>.
