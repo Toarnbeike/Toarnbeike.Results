@@ -1,0 +1,181 @@
+﻿using Toarnbeike.Results.Failures;
+
+namespace Toarnbeike.Results.Tests.Failures;
+
+/// <summary>
+/// Tests for the <see cref="ValidationFailure"/> record.
+/// </summary>
+public class ValidationFailureTests
+{
+    [Fact]
+    public void ValidationFailure_Should_BeCreatedFromAPropertyAndAMessage()
+    {
+        var failure = new ValidationFailure("Property", "Something is wrong with this property");
+        failure.Property.ShouldBe("Property");
+        failure.ValidationMessage.ShouldBe("Something is wrong with this property");
+    }
+
+    [Fact]
+    public void ValidationFailure_Should_PopulateCode_WithValidationProperty()
+    {
+        var failure = new ValidationFailure("Property", "Something is wrong with this property");
+        failure.Code.ShouldBe("validation_Property");
+    }
+
+    [Fact]
+    public void ValidationFailure_Should_PopulateBaseMessage_WithPropertyAndMessage()
+    {
+        var failure = new ValidationFailure("Property", "Something is wrong with this property");
+        var baseFailure = failure as Failure;
+        baseFailure.Message.ShouldBe($"Property: Something is wrong with this property");
+    }
+}
+
+/// <summary>
+/// Tests for the <see cref="ValidationFailures"/> record.
+/// </summary>
+public class ValidationFailuresTests
+{
+    private readonly ValidationFailure _validationFailure = new ValidationFailure("Property", "Something is wrong");
+    private readonly ValidationFailures _existingFailures;
+
+    public ValidationFailuresTests()
+    {
+        _existingFailures = new ValidationFailures(_validationFailure);
+    }
+
+    [Fact]
+    public void ValidationFailures_Should_BeCreatableFromASingleValidationFailure()
+    {
+        var result = new ValidationFailures(_validationFailure);
+        result.Code.ShouldBe("validation_failures");
+        result.Message.ShouldBe("One or more validations failed:");
+        result.Failures.Count.ShouldBe(1);
+        result.Failures["Property"].Count.ShouldBe(1);
+        result.Failures["Property"].Single().ShouldBe("Something is wrong");
+    }
+
+    [Fact]
+    public void ValidationFailures_Should_BeCreatableFromMultipleValidationFailures()
+    {
+        var additionalValidationFailure = new ValidationFailure("Property", "Another failure");
+        var result = new ValidationFailures(_validationFailure, additionalValidationFailure);
+        result.Code.ShouldBe("validation_failures");
+        result.Message.ShouldBe("One or more validations failed:");
+        result.Failures.Count.ShouldBe(1);
+        result.Failures["Property"].Count.ShouldBe(2);
+        result.Failures["Property"].Last().ShouldBe("Another failure");
+    }
+
+    [Fact]
+    public void Add_Should_IncludeFailure_WithPropertyAndMessage()
+    {
+        _existingFailures.Add("newProperty", "Other failure");
+        
+        _existingFailures.Failures.Count.ShouldBe(2);
+        _existingFailures.Failures["Property"].Count.ShouldBe(1);
+        _existingFailures.Failures["newProperty"].Count.ShouldBe(1);
+    }
+
+    [Fact]
+    public void Add_Should_IncludeFailure_FromValidationFailure()
+    {
+        var additionalValidationFailure = new ValidationFailure("Property", "Another failure");
+        _existingFailures.Add(additionalValidationFailure);
+        
+        _existingFailures.Failures.Count.ShouldBe(1);
+        _existingFailures.Failures["Property"].Count.ShouldBe(2);
+        _existingFailures.Failures["Property"].Last().ShouldBe("Another failure");
+    }
+
+    [Fact]
+    public void AddRange_Should_AddMultipleFailures_ForOneProperty()
+    {
+        List<string> additionalFailures = ["first", "second", "trird"];
+        _existingFailures.AddRange("newProperty", additionalFailures);
+
+        _existingFailures.Failures.Count.ShouldBe(2);
+        _existingFailures.Failures["Property"].Count.ShouldBe(1);
+        _existingFailures.Failures["newProperty"].Count.ShouldBe(3);
+    }
+
+    [Fact]
+    public void Merge_Should_CombineFailures()
+    {
+        IEnumerable<ValidationFailure> failures =
+        [
+            new("Property", "First"),
+            new("Property2", "Second"),
+            new("Property3", "Third"),
+            new("Property3", "Fourth"),
+        ];
+
+        var newFailures = new ValidationFailures(failures);
+
+        _existingFailures.Merge(newFailures);
+
+        _existingFailures.Failures.Count.ShouldBe(3);
+        _existingFailures.Failures["Property"].Count.ShouldBe(2);
+        _existingFailures.Failures["Property2"].Single().ShouldBe("Second");
+        _existingFailures.Failures["Property3"].Count.ShouldBe(2);
+    }
+
+    [Fact]
+    public void ToValidationFailureCollection_Should_CombineAllFailures()
+    {
+        IEnumerable<ValidationFailure> failures =
+        [
+            new("Property", "First"),
+            new("Property2", "Second"),
+            new("Property3", "Third"),
+            new("Property3", "Fourth"),
+        ];
+
+        var validationFailures = new ValidationFailures(failures);
+        var collection = validationFailures.ToValidationFailureCollection().ToList();
+        collection.ShouldBeOfType<List<ValidationFailure>>();
+        collection.Count.ShouldBe(4);
+        collection.Last().ValidationMessage.ShouldBe("Fourth");
+    }
+
+    [Fact]
+    public void GetfailuresFor_Should_ReturnFailuresIfFound()
+    {
+        IEnumerable<ValidationFailure> failures =
+        [
+            new("Property", "First"),
+            new("Property2", "Second"),
+            new("Property3", "Third"),
+            new("Property3", "Fourth"),
+        ];
+
+        var validationFailures = new ValidationFailures(failures);
+        var property3Failures = validationFailures.GetFailuresFor("Property3");
+        property3Failures.Count().ShouldBe(2);
+    }
+
+    [Fact]
+    public void GetfailuresFor_Should_ReturnEmptyCollectionIfNotFound()
+    {
+        IEnumerable<ValidationFailure> failures =
+        [
+            new("Property", "First"),
+            new("Property2", "Second"),
+            new("Property3", "Third"),
+            new("Property3", "Fourth"),
+        ];
+
+        var validationFailures = new ValidationFailures(failures);
+        var property4Failures = validationFailures.GetFailuresFor("Property4");
+        property4Failures.ShouldNotBeNull();
+        property4Failures.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public void ValidationFailures_Should_BeAbleToChangeBaseProperties_UsingWithExpression()
+    {
+        var newValidationFailures = _existingFailures with { Code = "something else"};
+        newValidationFailures.ShouldNotBeNull();
+        newValidationFailures.Code.ShouldBe("something else");
+    }
+}
