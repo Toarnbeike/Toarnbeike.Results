@@ -69,7 +69,7 @@ public static class BindExtensions
     /// </returns>
     public static async Task<Result<TOut>> Bind<TOut>(this Task<Result> resultTask, Func<Result<TOut>> bindFunc)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Bind(result, bindFunc);
     }
 
@@ -90,8 +90,8 @@ public static class BindExtensions
     /// </returns>
     public static async Task<Result<TOut>> BindAsync<TOut>(this Task<Result> resultTask, Func<Task<Result<TOut>>> bindTaskFunc)
     {
-        var result = await resultTask;
-        return await BindAsync(result, bindTaskFunc);
+        var result = await resultTask.ConfigureAwait(false);
+        return await BindAsync(result, bindTaskFunc).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -140,7 +140,7 @@ public static class BindExtensions
             return Result<TOut>.Failure(failure);
         }
 
-        return await bindTaskFunc(value);
+        return await bindTaskFunc(value).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -159,7 +159,7 @@ public static class BindExtensions
     /// </returns>
     public static async Task<Result<TOut>> Bind<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, Result<TOut>> bindFunc)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Bind(result, bindFunc);
     }
 
@@ -180,7 +180,7 @@ public static class BindExtensions
     /// </returns>
     public static async Task<Result<TOut>> BindAsync<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, Task<Result<TOut>>> bindTaskFunc)
     {
-        var result = await resultTask;
-        return await BindAsync(result, bindTaskFunc);
+        var result = await resultTask.ConfigureAwait(false);
+        return await BindAsync(result, bindTaskFunc).ConfigureAwait(false);
     }
 }

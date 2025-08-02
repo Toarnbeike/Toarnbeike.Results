@@ -40,7 +40,7 @@ public static class TapExtensions
     {
         if (result.IsSuccess)
         {
-            await onSuccess();
+            await onSuccess().ConfigureAwait(false);
         }
 
         return result;
@@ -58,7 +58,7 @@ public static class TapExtensions
     /// </remarks>
     public static async Task<Result> Tap(this Task<Result> resultTask, Action onSuccess)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Tap(result, onSuccess);
     }
 
@@ -74,7 +74,7 @@ public static class TapExtensions
     /// </remarks>
     public static async Task<Result> TapAsync(this Task<Result> resultTask, Func<Task> onSuccess)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return await TapAsync(result, onSuccess);
     }
 
@@ -114,7 +114,7 @@ public static class TapExtensions
     {
         if (result.TryGetValue(out var value))
         {
-            await onSuccess(value);
+            await onSuccess(value).ConfigureAwait(false);
         }
 
         return result;
@@ -133,7 +133,7 @@ public static class TapExtensions
     /// </remarks>
     public static async Task<Result<TValue>> Tap<TValue>(this Task<Result<TValue>> resultTask, Action<TValue> onSuccess)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Tap(result, onSuccess);
     }
 
@@ -150,7 +150,7 @@ public static class TapExtensions
     /// </remarks>
     public static async Task<Result<TValue>> TapAsync<TValue>(this Task<Result<TValue>> resultTask, Func<TValue, Task> onSuccess)
     {
-        var result = await resultTask;
-        return await TapAsync(result, onSuccess);
+        var result = await resultTask.ConfigureAwait(false);
+        return await TapAsync(result, onSuccess).ConfigureAwait(false);
     }
 }

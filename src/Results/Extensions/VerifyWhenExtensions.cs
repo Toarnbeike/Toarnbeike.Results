@@ -53,7 +53,7 @@ public static class VerifyWhenExtensions
         this Result<TValue> result, 
         Func<TValue, bool> predicate, 
         Func<TValue, Task<Result>> checkFunc) =>
-        result.TryGetValue(out var value) && predicate(value) && (await checkFunc(value)).TryGetFailure(out var checkFailure)
+        result.TryGetValue(out var value) && predicate(value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
 
@@ -80,7 +80,7 @@ public static class VerifyWhenExtensions
         this Result<TValue> result, 
         Func<TValue, bool> predicate, 
         Func<TValue, Task<Result<TCheck>>> checkFunc) =>
-        result.TryGetValue(out var value) && predicate(value) && (await checkFunc(value)).TryGetFailure(out var checkFailure)
+        result.TryGetValue(out var value) && predicate(value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
 
@@ -107,7 +107,7 @@ public static class VerifyWhenExtensions
         Func<TValue, bool> predicate,
         Func<TValue, IResult> checkFunc)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return VerifyWhen(result, predicate, checkFunc);
     }
 
@@ -134,8 +134,8 @@ public static class VerifyWhenExtensions
         Func<TValue, bool> predicate,
         Func<TValue, Task<Result>> checkFunc)
     {
-        var result = await resultTask;
-        return await VerifyWhenAsync(result, predicate, checkFunc);
+        var result = await resultTask.ConfigureAwait(false);
+        return await VerifyWhenAsync(result, predicate, checkFunc).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ public static class VerifyWhenExtensions
         Func<TValue, bool> predicate,
         Func<TValue, Task<Result<TCheck>>> checkFunc)
     {
-        var result = await resultTask;
-        return await VerifyWhenAsync(result, predicate, checkFunc);
+        var result = await resultTask.ConfigureAwait(false);
+        return await VerifyWhenAsync(result, predicate, checkFunc).ConfigureAwait(false);
     }
 }

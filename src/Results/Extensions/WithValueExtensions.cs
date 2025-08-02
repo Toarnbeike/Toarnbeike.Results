@@ -62,7 +62,7 @@ public static class WithValueExtensions
     {
         return result.TryGetFailure(out var failure)
             ? Result<TValue>.Failure(failure)
-            : Result.Success(await valueFunc());
+            : Result.Success(await valueFunc().ConfigureAwait(false));
     }
 
     /// <summary>
@@ -119,6 +119,6 @@ public static class WithValueExtensions
     public static async Task<Result<TValue>> WithValueAsync<TValue>(this Task<Result> resultTask, Func<Task<TValue>> valueFunc)
     {
         var result = await resultTask.ConfigureAwait(false);
-        return await WithValueAsync(result, valueFunc);
+        return await WithValueAsync(result, valueFunc).ConfigureAwait(false);
     }
 }

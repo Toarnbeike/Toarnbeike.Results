@@ -46,7 +46,7 @@ public static class MapExtensions
     public static async Task<Result<TOut>> MapAsync<TIn, TOut>(this Result<TIn> result, Func<TIn, Task<TOut>> map)
     {
         return result.TryGetValue(out var value, out var failure)
-            ? Result.Success(await map(value))
+            ? Result.Success(await map(value).ConfigureAwait(false))
             : Result<TOut>.Failure(failure);
     }
 
@@ -67,7 +67,7 @@ public static class MapExtensions
     /// </returns>
     public static async Task<Result<TOut>> Map<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, TOut> map)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Map(result, map);
     }
 
@@ -88,7 +88,7 @@ public static class MapExtensions
     /// </returns>
     public static async Task<Result<TOut>> MapAsync<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, Task<TOut>> map)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return await MapAsync(result, map);
     }
 }

@@ -54,7 +54,7 @@ public static class EnsureExtensions
             return result;
         }
 
-        return await predicate(value)
+        return await predicate(value).ConfigureAwait(false)
             ? result
             : onFailure();
     }
@@ -76,7 +76,7 @@ public static class EnsureExtensions
     /// </returns>
     public static async Task<Result<TValue>> Ensure<TValue>(this Task<Result<TValue>> resultTask, Func<TValue, bool> predicate, Func<Failure> onFailure)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Ensure(result, predicate, onFailure);
     }
 
@@ -97,7 +97,7 @@ public static class EnsureExtensions
     /// </returns>
     public static async Task<Result<TValue>> EnsureAsync<TValue>(this Task<Result<TValue>> resultTask, Func<TValue, Task<bool>> predicate, Func<Failure> onFailure)
     {
-        var result = await resultTask;
-        return await EnsureAsync(result, predicate, onFailure);
+        var result = await resultTask.ConfigureAwait(false);
+        return await EnsureAsync(result, predicate, onFailure).ConfigureAwait(false);
     }
 }

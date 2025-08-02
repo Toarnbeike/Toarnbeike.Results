@@ -39,8 +39,8 @@ public static class MatchExtensions
     /// </remarks>
     public static async Task<TOut> MatchAsync<TOut>(this Result result, Func<Task<TOut>> onSuccess, Func<Failure, Task<TOut>> onFailure) =>
         result.TryGetFailure(out var failure)
-            ? await onFailure(failure)
-            : await onSuccess();
+            ? await onFailure(failure).ConfigureAwait(false)
+            : await onSuccess().ConfigureAwait(false);
 
     /// <summary>
     /// Projects the result into a value of type <typeparamref name="TOut"/> by applying one of the two provided functions,
@@ -57,7 +57,7 @@ public static class MatchExtensions
     /// </remarks>
     public static async Task<TOut> Match<TOut>(this Task<Result> resultTask, Func<TOut> onSuccess, Func<Failure, TOut> onFailure)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Match(result, onSuccess, onFailure);
     }
 
@@ -76,8 +76,8 @@ public static class MatchExtensions
     /// </remarks>
     public static async Task<TOut> MatchAsync<TOut>(this Task<Result> resultTask, Func<Task<TOut>> onSuccess, Func<Failure, Task<TOut>> onFailure)
     {
-        var result = await resultTask;
-        return await MatchAsync(result, onSuccess, onFailure);
+        var result = await resultTask.ConfigureAwait(false);
+        return await MatchAsync(result, onSuccess, onFailure).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -115,8 +115,8 @@ public static class MatchExtensions
     /// </remarks>
     public static async Task<TOut> MatchAsync<TValue, TOut>(this Result<TValue> result, Func<TValue, Task<TOut>> onSuccess, Func<Failure, Task<TOut>> onFailure) =>
         result.TryGetValue(out var value, out var failure)
-            ? await onSuccess(value)
-            : await onFailure(failure);
+            ? await onSuccess(value).ConfigureAwait(false)
+            : await onFailure(failure).ConfigureAwait(false);
 
     /// <summary>
     /// Projects the result into a value of type <typeparamref name="TOut"/> by applying one of the two provided functions,
@@ -134,7 +134,7 @@ public static class MatchExtensions
     /// </remarks>
     public static async Task<TOut> Match<TValue, TOut>(this Task<Result<TValue>> resultTask, Func<TValue, TOut> onSuccess, Func<Failure, TOut> onFailure)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Match(result, onSuccess, onFailure);
     }
 
@@ -154,7 +154,7 @@ public static class MatchExtensions
     /// </remarks>
     public static async Task<TOut> MatchAsync<TValue, TOut>(this Task<Result<TValue>> resultTask, Func<TValue, Task<TOut>> onSuccess, Func<Failure, Task<TOut>> onFailure)
     {
-        var result = await resultTask;
-        return await MatchAsync(result, onSuccess, onFailure);
+        var result = await resultTask.ConfigureAwait(false);
+        return await MatchAsync(result, onSuccess, onFailure).ConfigureAwait(false);
     }
 }

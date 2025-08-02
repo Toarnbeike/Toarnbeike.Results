@@ -40,7 +40,7 @@ public static class TapFailureExtensions
     {
         if (result.IsFailure && result.TryGetFailure(out var failure))
         {
-            await onFailure(failure);
+            await onFailure(failure).ConfigureAwait(false);
         }
 
         return result;
@@ -58,7 +58,7 @@ public static class TapFailureExtensions
     /// </remarks>
     public static async Task<Result> TapFailure(this Task<Result> resultTask, Action<Failure> onFailure)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return TapFailure(result, onFailure);
     }
 
@@ -74,8 +74,8 @@ public static class TapFailureExtensions
     /// </remarks>
     public static async Task<Result> TapFailureAsync(this Task<Result> resultTask, Func<Failure, Task> onFailure)
     {
-        var result = await resultTask;
-        return await TapFailureAsync(result, onFailure);
+        var result = await resultTask.ConfigureAwait(false);
+        return await TapFailureAsync(result, onFailure).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -114,7 +114,7 @@ public static class TapFailureExtensions
     {
         if (result.IsFailure && result.TryGetFailure(out var failure))
         {
-            await onFailure(failure);
+            await onFailure(failure).ConfigureAwait(false);
         }
 
         return result;
@@ -133,7 +133,7 @@ public static class TapFailureExtensions
     /// </remarks>
     public static async Task<Result<TValue>> TapFailure<TValue>(this Task<Result<TValue>> resultTask, Action<Failure> onFailure)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return TapFailure(result, onFailure);
     }
 
@@ -150,7 +150,7 @@ public static class TapFailureExtensions
     /// </remarks>
     public static async Task<Result<TValue>> TapFailureAsync<TValue>(this Task<Result<TValue>> resultTask, Func<Failure, Task> onFailure)
     {
-        var result = await resultTask;
-        return await TapFailureAsync(result, onFailure);
+        var result = await resultTask.ConfigureAwait(false);
+        return await TapFailureAsync(result, onFailure).ConfigureAwait(false);
     }
 }

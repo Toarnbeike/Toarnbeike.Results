@@ -36,7 +36,7 @@ public static class VerifyExtensions
     /// otherwise, the failure from the check function.
     /// </returns>
     public static async Task<Result> VerifyAsync(this Result result, Func<Task<Result>> checkFunc) =>
-        result.IsSuccess && (await checkFunc()).TryGetFailure(out var checkFailure)
+        result.IsSuccess && (await checkFunc().ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
 
@@ -54,7 +54,7 @@ public static class VerifyExtensions
     /// otherwise, the failure from the check function.
     /// </returns>
     public static async Task<Result> VerifyAsync<TCheck>(this Result result, Func<Task<Result<TCheck>>> checkFunc) =>
-        result.IsSuccess && (await checkFunc()).TryGetFailure(out var checkFailure)
+        result.IsSuccess && (await checkFunc().ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
 
@@ -72,7 +72,7 @@ public static class VerifyExtensions
     /// </returns>
     public static async Task<Result> Verify(this Task<Result> resultTask, Func<IResult> checkFunc)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Verify(result, checkFunc);
     }
 
@@ -90,8 +90,8 @@ public static class VerifyExtensions
     /// </returns>
     public static async Task<Result> VerifyAsync(this Task<Result> resultTask, Func<Task<Result>> checkFunc)
     {
-        var result = await resultTask;
-        return await VerifyAsync(result, checkFunc);
+        var result = await resultTask.ConfigureAwait(false);
+        return await VerifyAsync(result, checkFunc).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -108,8 +108,8 @@ public static class VerifyExtensions
     /// </returns>
     public static async Task<Result> VerifyAsync<TCheck>(this Task<Result> resultTask, Func<Task<Result<TCheck>>> checkFunc)
     {
-        var result = await resultTask;
-        return await VerifyAsync(result, checkFunc);
+        var result = await resultTask.ConfigureAwait(false);
+        return await VerifyAsync(result, checkFunc).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -144,7 +144,7 @@ public static class VerifyExtensions
     /// otherwise, the failure from the check function.
     /// </returns>
     public static async Task<Result<TValue>> VerifyAsync<TValue>(this Result<TValue> result, Func<TValue, Task<Result>> checkFunc) =>
-        result.TryGetValue(out var value) && (await checkFunc(value)).TryGetFailure(out var checkFailure)
+        result.TryGetValue(out var value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
 
@@ -163,7 +163,7 @@ public static class VerifyExtensions
     /// otherwise, the failure from the check function.
     /// </returns>
     public static async Task<Result<TValue>> VerifyAsync<TValue, TCheck>(this Result<TValue> result, Func<TValue, Task<Result<TCheck>>> checkFunc) =>
-        result.TryGetValue(out var value) && (await checkFunc(value)).TryGetFailure(out var checkFailure)
+        result.TryGetValue(out var value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
 
@@ -182,7 +182,7 @@ public static class VerifyExtensions
     /// </returns>
     public static async Task<Result<TValue>> Verify<TValue>(this Task<Result<TValue>> resultTask, Func<TValue, IResult> checkFunc)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Verify(result, checkFunc);
     }
 
@@ -201,8 +201,8 @@ public static class VerifyExtensions
     /// </returns>
     public static async Task<Result<TValue>> VerifyAsync<TValue>(this Task<Result<TValue>> resultTask, Func<TValue, Task<Result>> checkFunc)
     {
-        var result = await resultTask;
-        return await VerifyAsync(result, checkFunc);
+        var result = await resultTask.ConfigureAwait(false);
+        return await VerifyAsync(result, checkFunc).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -220,7 +220,7 @@ public static class VerifyExtensions
     /// </returns>
     public static async Task<Result<TValue>> VerifyAsync<TValue, TCheck>(this Task<Result<TValue>> resultTask, Func<TValue, Task<Result<TCheck>>> checkFunc)
     {
-        var result = await resultTask;
-        return await VerifyAsync(result, checkFunc);
+        var result = await resultTask.ConfigureAwait(false);
+        return await VerifyAsync(result, checkFunc).ConfigureAwait(false);
     }
 }
