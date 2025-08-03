@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+<PropertyGroup>
+	<PackageId>Toarnbeike.Results.FluentValidation</PackageId>
+	<!-- Version is managed centrally in Directory.build.props to keep versions in sync.-->
+	<Description>Integrating FluentValidation with Toarnbeike.Results</Description>
+	<PackageTags>result validation fluentValidation pipeline fuctional async</PackageTags>
+</PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Results\Results.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>
