@@ -1,5 +1,5 @@
 ﻿using Toarnbeike.Results.Failures;
-using Toarnbeike.Results.Tests.Internal;
+using Toarnbeike.Results.TestHelpers;
 
 namespace Toarnbeike.Results.Tests;
 

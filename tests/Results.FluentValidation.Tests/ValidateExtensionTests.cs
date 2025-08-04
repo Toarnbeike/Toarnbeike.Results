@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Toarnbeike.Results.Failures;
-using Toarnbeike.Results.FluentValidation.Tests.Internal;
+using Toarnbeike.Results.TestHelpers;
 
 namespace Toarnbeike.Results.FluentValidation.Tests;
 
