@@ -15,6 +15,7 @@ These extensions are inspired by functional programming concepts like monads and
 | [`Map(...)`](#map)		        | :x:				 | :white_check_mark: | Maps the success value to another type							|
 | [`Match(...)`](#match)		    | :white_check_mark: | :white_check_mark: | Converts to another type using success/failure lambdas			|
 | [`Tap(...)`](#tap)		        | :white_check_mark: | :white_check_mark: | Executes side-effects on success								|
+| [`TapAlways(...)`](#tap)	        | :white_check_mark: | :white_check_mark: | Executes side-effects on any result                             |
 | [`TapFailure(...)`](#tap)	        | :white_check_mark: | :white_check_mark: | Executes side-effects on failure								|
 | [`Verify(...)`](#verify)		    | :white_check_mark: | :white_check_mark: | Verifies another result; propagates failure if needed			|
 | [`VerifyWhen(...)`](#verify)      | :white_check_mark: | :white_check_mark: | Conditionally verifies another result							|
@@ -74,7 +75,8 @@ Applies side effects without modifying the result.
 ``` csharp
 result
     .Tap(user => _logger.Log($"User found: {user.Name}"))
-    .TapFailure(error => _logger.LogError(error.Message));
+    .TapFailure(error => _logger.LogError(error.Message))
+    .TapAlways(() => _logger.Log("Pipeline finished"));
 ```
 
 ---

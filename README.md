@@ -100,6 +100,7 @@ The `Toarnbeike.Results.Extensions` namespace includes rich extensions for `Resu
 | `Map(...)`		| :x:				 | :white_check_mark: | Maps the success value to another type							|
 | `Match(...)`		| :white_check_mark: | :white_check_mark: | Converts to another type using success/failure lambdas			|
 | `Tap(...)`		| :white_check_mark: | :white_check_mark: | Executes side-effects on success								|
+| `TapAlways(...)`	| :white_check_mark: | :white_check_mark: | Executes side-effects on any result                             |
 | `TapFailure(...)`	| :white_check_mark: | :white_check_mark: | Executes side-effects on failure								|
 | `Verify(...)`		| :white_check_mark: | :white_check_mark: | Verifies another result; propagates failure if needed			|
 | `VerifyWhen(...)`	| :white_check_mark: | :white_check_mark: | Conditionally verifies another result							|
