@@ -108,7 +108,7 @@ The `Toarnbeike.Results.Extensions` namespace includes rich extensions for `Resu
 
 All methods support `async` variants and operate seamlessly with `Task<Result<T>>`.
 
-For detailed information see the Extensions Readme page [Work in progress].
+For information per method see the [Extensions README](src/Results/Extensions/README.md).
 
 ---
 
