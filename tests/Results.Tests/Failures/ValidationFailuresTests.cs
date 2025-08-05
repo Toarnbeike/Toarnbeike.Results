@@ -83,7 +83,7 @@ public class ValidationFailuresTests
 
         var newFailures = new ValidationFailures(failures);
 
-        var updatedFailures = _existingFailures.Merge(newFailures);
+        var updatedFailures = _existingFailures.Combine(newFailures);
 
         updatedFailures.Failures.Count.ShouldBe(3);
         updatedFailures.Failures["Property"].Count.ShouldBe(2);

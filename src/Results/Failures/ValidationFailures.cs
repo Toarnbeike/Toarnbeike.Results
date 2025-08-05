@@ -126,9 +126,9 @@ public sealed record ValidationFailures : Failure
     }
 
     /// <summary>
-    /// Returns a new <see cref="ValidationFailures"/> that merges this instance with another.
+    /// Returns a new <see cref="ValidationFailures"/> that combines this instance with another.
     /// </summary>
-    public ValidationFailures Merge(ValidationFailures other)
+    public ValidationFailures Combine(ValidationFailures other)
     {
         ArgumentNullException.ThrowIfNull(other);
 
