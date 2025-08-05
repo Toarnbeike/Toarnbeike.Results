@@ -12,13 +12,13 @@ public class ValidationFailuresTests
 
     public ValidationFailuresTests()
     {
-        _existingFailures = new ValidationFailures(_validationFailure);
+        _existingFailures = new ValidationFailures([_validationFailure]);
     }
 
     [Fact]
     public void ValidationFailures_Should_BeCreatableFromASingleValidationFailure()
     {
-        var result = new ValidationFailures(_validationFailure);
+        var result = new ValidationFailures([_validationFailure]);
         result.Code.ShouldBe("validation_failures");
         result.Message.ShouldBe("One or more validations failed:");
         result.Failures.Count.ShouldBe(1);
@@ -27,47 +27,47 @@ public class ValidationFailuresTests
     }
 
     [Fact]
-    public void ValidationFailures_Should_BeCreatableFromMultipleValidationFailures()
+    public void ValidationFailures_ShouldThrow_WhenCreatedFromAnEmptyCollection()
     {
-        var additionalValidationFailure = new ValidationFailure("Property", "Another failure");
-        var result = new ValidationFailures(_validationFailure, additionalValidationFailure);
-        result.Code.ShouldBe("validation_failures");
-        result.Message.ShouldBe("One or more validations failed:");
-        result.Failures.Count.ShouldBe(1);
-        result.Failures["Property"].Count.ShouldBe(2);
-        result.Failures["Property"].Last().ShouldBe("Another failure");
+        Should.Throw<ArgumentException>(() => new ValidationFailures([]));
+    }
+
+    [Fact]
+    public void ValidationFailures_ShouldThrow_WhenCreatedUsingNullFailure()
+    {
+        Should.Throw<ArgumentException>(() => new ValidationFailures([_validationFailure, null!]));
     }
 
     [Fact]
     public void Add_Should_IncludeFailure_WithPropertyAndMessage()
     {
-        _existingFailures.Add("newProperty", "Other failure");
-        
-        _existingFailures.Failures.Count.ShouldBe(2);
-        _existingFailures.Failures["Property"].Count.ShouldBe(1);
-        _existingFailures.Failures["newProperty"].Count.ShouldBe(1);
+        var updatedFailures = _existingFailures.Add("newProperty", "Other failure");
+
+        updatedFailures.Failures.Count.ShouldBe(2);
+        updatedFailures.Failures["Property"].Count.ShouldBe(1);
+        updatedFailures.Failures["newProperty"].Count.ShouldBe(1);
     }
 
     [Fact]
     public void Add_Should_IncludeFailure_FromValidationFailure()
     {
         var additionalValidationFailure = new ValidationFailure("Property", "Another failure");
-        _existingFailures.Add(additionalValidationFailure);
-        
-        _existingFailures.Failures.Count.ShouldBe(1);
-        _existingFailures.Failures["Property"].Count.ShouldBe(2);
-        _existingFailures.Failures["Property"].Last().ShouldBe("Another failure");
+        var updatedFailures = _existingFailures.Add(additionalValidationFailure);
+
+        updatedFailures.Failures.Count.ShouldBe(1);
+        updatedFailures.Failures["Property"].Count.ShouldBe(2);
+        updatedFailures.Failures["Property"].Last().ShouldBe("Another failure");
     }
 
     [Fact]
     public void AddRange_Should_AddMultipleFailures_ForOneProperty()
     {
         List<string> additionalFailures = ["first", "second", "trird"];
-        _existingFailures.AddRange("newProperty", additionalFailures);
+        var updatedFailures = _existingFailures.AddRange("newProperty", additionalFailures);
 
-        _existingFailures.Failures.Count.ShouldBe(2);
-        _existingFailures.Failures["Property"].Count.ShouldBe(1);
-        _existingFailures.Failures["newProperty"].Count.ShouldBe(3);
+        updatedFailures.Failures.Count.ShouldBe(2);
+        updatedFailures.Failures["Property"].Count.ShouldBe(1);
+        updatedFailures.Failures["newProperty"].Count.ShouldBe(3);
     }
 
     [Fact]
@@ -83,12 +83,12 @@ public class ValidationFailuresTests
 
         var newFailures = new ValidationFailures(failures);
 
-        _existingFailures.Merge(newFailures);
+        var updatedFailures = _existingFailures.Merge(newFailures);
 
-        _existingFailures.Failures.Count.ShouldBe(3);
-        _existingFailures.Failures["Property"].Count.ShouldBe(2);
-        _existingFailures.Failures["Property2"].Single().ShouldBe("Second");
-        _existingFailures.Failures["Property3"].Count.ShouldBe(2);
+        updatedFailures.Failures.Count.ShouldBe(3);
+        updatedFailures.Failures["Property"].Count.ShouldBe(2);
+        updatedFailures.Failures["Property2"].Single().ShouldBe("Second");
+        updatedFailures.Failures["Property3"].Count.ShouldBe(2);
     }
 
     [Fact]
