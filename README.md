@@ -55,11 +55,13 @@ This project draws inspiration from:
 ```bash
 dotnet add package Toarnbeike.Results
 ```
-Then import the required namespaces:
+Then import on or more of the following namespaces:
 ```csharp
 using Toarnbeike.Results;			// Base namespace for Result, Result<TValue> and Failure
+using Toarnbeike.Results.Collections;		// For extensions on IEnumerable<Result<T>>
 using Toarnbeike.Results.Extensions;		// For functional extensions on Result and Result<TValue>
 using Toarnbeike.Results.Failure;		// For additional failure types
+using Toarnbeike.Results.Linq;		        // For LINQ query syntax support
 using Toarnbeike.Results.TestHelpers;           // For fluent assertions on results. 
 ```
 
@@ -114,9 +116,40 @@ For information per method see the [Extensions README](src/Results/Extensions/RE
 
 ---
 
+## Collections
+
+The `Toarnbeike.Results.Collections` namespace provides extension methods for working with collections of results:
+
+| Method			| ReturnType                                | Description														            |
+|-------------------|-------------------------------------------|-------------------------------------------------------------------------------|
+| `AllSuccess()`	| `bool`                                    | Returns `true` if all results in the collection are successful			    |
+| `Sequence()`      | `Result<IEnumerable<T>>`                  | Returns all success values or the first encountered failure                   |
+| `Aggregate()`     | `Result<IEnumerable<T>>`                  | Returns all success values or an `AggregateFailure` containing all failures   |
+| `SuccessValues()` | `IEnumerable<T>`                          | Extracts all success values from a collection of results			            |
+| `Failures()`      | `IEnumerable<Failure>`                    | Extracts all failures from a collection of results			                |
+| `Split()`         | `(IEnumerable<T>, IEnumerable<Failure>)`  | Splits the collection into success values and failures			            |
+
+---
+
 ## Failures
 
 The `Toarnbeike.Results.Failures` namespace include a couple of default failures:
+
+### `AggregateFailure`
+
+Represents a collection of multiple failures, typically used when working with collections of `Result<T>`:
+```csharp
+var results = new List<Result<int>>
+{
+    Result<int>.Success(1),
+    Result<int>.Failure(new Failure("Code1", "Message1")),
+    Result<int>.Failure(new Failure("Code2", "Message2"))
+};
+
+var aggregateResult = results.Aggregate();      // Result<IEnumerable<int>>
+var ggregateFailure = aggregateResult
+                        .ShouldBeFailureOfType<AggregateFailure>();
+```
 
 ### `ExceptionFailure`
 

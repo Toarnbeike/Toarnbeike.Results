@@ -1,4 +1,6 @@
-﻿namespace Toarnbeike.Results.TestHelpers;
+﻿using System.Collections;
+
+namespace Toarnbeike.Results.TestHelpers;
 
 /// <summary>
 /// Provides assertion methods to verify that a <see cref="Result"/> or <see cref="Result{TValue}"/> represents a successful outcome.
@@ -59,6 +61,21 @@ public static class ResultSuccessAssertions
     public static TValue ShouldBeSuccessWithValue<TValue>(this Result<TValue> result, TValue expected, string? customMessage = null)
     {
         var actual = result.ShouldBeSuccess();
+
+        // Special case: compare element-wise for IEnumerable (but not string)
+        if (actual is IEnumerable actualEnum && expected is IEnumerable expectedEnum
+            && actual is not string && expected is not string)
+        {
+            if (!actualEnum.Cast<object>().SequenceEqual(expectedEnum.Cast<object>()))
+            {
+                var actualStr = string.Join(", ", actualEnum.Cast<object>());
+                var expectedStr = string.Join(", ", expectedEnum.Cast<object>());
+                throw new ResultAssertionException(customMessage
+                    ?? $"Expected success result with value '[{expectedStr}]', but got '[{actualStr}]'.");
+            }
+
+            return actual;
+        }
 
         if (!Equals(actual, expected))
         {

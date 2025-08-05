@@ -91,6 +91,42 @@ public class ResultSuccessAssertionsTests
     }
 
     [Fact]
+    public void ShouldBeSuccessWithValue_Passes_ForEqualArrays()
+    {
+        var result = Result.Success(new[] { 1, 2, 3 });
+
+        Should.NotThrow(() => result.ShouldBeSuccessWithValue([1, 2, 3]));
+    }
+
+    [Fact]
+    public void ShouldBeSuccessWithValue_Passes_ForEqualLists()
+    {
+        var result = Result.Success(new List<string> { "a", "b" });
+
+        Should.NotThrow(() => result.ShouldBeSuccessWithValue(["a", "b"]));
+    }
+
+    [Fact]
+    public void ShouldBeSuccessWithValue_Passes_ForEqualEnumerables()
+    {
+        IEnumerable<int> expected = [1,2,3];
+        var result = Result.Success(expected);
+
+        Should.NotThrow(() => result.ShouldBeSuccessWithValue([1,2,3]));
+    }
+
+    [Fact]
+    public void ShouldBeSuccessWithValue_Throws_WhenCollectionsDiffer()
+    {
+        var result = Result.Success(new[] { 1, 2, 3 });
+
+        var ex = Should.Throw<ResultAssertionException>(() =>
+            result.ShouldBeSuccessWithValue([1, 2]));
+
+        ex.Message.ShouldBe("Expected success result with value '[1, 2]', but got '[1, 2, 3]'.");
+    }
+
+    [Fact]
     public void ShouldBeSuccessWithValue_Throws_WhenResultIsFailure()
     {
         Result<int> result = new Failure("fail", "Failed");
