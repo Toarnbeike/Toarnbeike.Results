@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using Toarnbeike.Results.Extensions.Unsafe;
 using Toarnbeike.Results.Failures;
 
 namespace Toarnbeike.Results.Collections;
@@ -96,7 +96,7 @@ public static class CollectionExtensions
 
         return results
             .Where(result => result.IsSuccess)
-            .Select(result => result.TryGetValue(out var value) ? value : throw new UnreachableException("unreachable"));
+            .Select(result => result.GetValueOrThrow());
     }
 
     /// <summary>
@@ -110,7 +110,7 @@ public static class CollectionExtensions
         ArgumentNullException.ThrowIfNull(results);
         return results
             .Where(result => result.IsFailure)
-            .Select(result => result.TryGetFailure(out var failure) ? failure : throw new UnreachableException("unreachable"));
+            .Select(result => result.GetFailureOrThrow());
     }
 
     /// <summary>
