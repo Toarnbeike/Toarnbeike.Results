@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Toarnbeike.Results.MinimalApi.Mapping;
 using Toarnbeike.Results.Failures;
+using Toarnbeike.Results.Collections;
 
 namespace Toarnbeike.Results.MinimalApi.Tests.Endpoints;
 
@@ -25,6 +26,28 @@ public static class FailureEndpoints
             var failure2 = new ValidationFailure("Email", "Invalid email format");
 
             return Result.Failure(new ValidationFailures([failure1, failure2]));
+        }).AddEndpointFilter<ResultMappingEndpointFilter>();
+
+        app.MapGet("/aggregateFailures", () =>
+        {
+            IEnumerable<Result> results =
+            [
+                Result.Try(() => throw new Exception("This is a test exception")),
+                Result.Failure(new ValidationFailure("Name", "Value should not exceed 10 characters"))
+            ];
+            return results.Aggregate();
+
+        }).AddEndpointFilter<ResultMappingEndpointFilter>();
+
+        app.MapGet("/aggregateFailuresUnmapped", () =>
+        {
+            IEnumerable<Result> results =
+            [
+                Result.Failure(new Failure("Test failure", "This is a test failure")),
+                Result.Failure(new ValidationFailure("Name", "Value should not exceed 10 characters"))
+            ];
+            return results.Aggregate();
+
         }).AddEndpointFilter<ResultMappingEndpointFilter>();
 
         return app;

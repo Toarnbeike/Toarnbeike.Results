@@ -4,7 +4,9 @@ using Toarnbeike.Results.MinimalApi.Mapping.Failures;
 namespace Toarnbeike.Results.MinimalApi.Mapping;
 
 /// <inheritdoc />
-public class ResultMapper(IEnumerable<IFailureResultMapper> failureResultMappers) : IResultMapper
+public class ResultMapper(
+    IEnumerable<IFailureResultMapper> failureResultMappers,
+    IFallbackFailureResultMapper fallbackFailureResultMapper) : IResultMapper
 {
     /// <summary>
     /// Collection of failure mappers, grouped by the type of <see cref="Failure"/> they can handle.
@@ -32,7 +34,7 @@ public class ResultMapper(IEnumerable<IFailureResultMapper> failureResultMappers
             }
 
             // Fallback if no mapper for this Failure type is registered.
-            return AspNetResults.Problem(failure.Message, statusCode: 400);
+            return AspNetResults.Problem(fallbackFailureResultMapper.Map(failure));
         }
 
         // If the result is a generic Result<TValue>, we return the value as an 200 Ok with the value.

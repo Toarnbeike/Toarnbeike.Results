@@ -9,11 +9,54 @@ public class FailureResultFilterTests(MinimalApiTestApp app) : IClassFixture<Min
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        IncludeFields = true
     };
 
     [Fact]
-    public async Task Failure_Should_Return_400()
+    public async Task AggregateFailure_Should_ReturnAggregateProblemDetails()
+    {
+        var response = await _client.GetAsync("/aggregateFailures");
+        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.InternalServerError);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var problemDetails = JsonSerializer.Deserialize<AggregateProblemDetails>(content, _jsonOptions);
+
+        problemDetails.ShouldNotBeNull();
+        problemDetails.Title.ShouldBe("Multiple failures occurred.");
+        problemDetails.Detail.ShouldBe("See problems for details.");
+        problemDetails.Status.ShouldBe(500);
+        problemDetails.Type.ShouldBe("https://tools.ietf.org/html/rfc7231#section-6.5.1");
+        problemDetails.Extensions.ShouldContainKey("code");
+        problemDetails.Extensions["code"]!.ToString().ShouldBe("aggregate");
+        problemDetails.Extensions.ShouldContainKey("problems");
+        problemDetails.Problems.ShouldNotBeEmpty();
+        problemDetails.Problems.ShouldContain(p => p.Title == "Validation Error" && p.Detail == "Name: Value should not exceed 10 characters");
+    }
+
+    [Fact]
+    public async Task AggregateFailure_Should_ReturnAggregateProblemDetails_EvenWhenFailuresDontHaveMappers()
+    {
+        var response = await _client.GetAsync("/aggregateFailuresUnmapped");
+        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.BadRequest);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var problemDetails = JsonSerializer.Deserialize<AggregateProblemDetails>(content, _jsonOptions);
+
+        problemDetails.ShouldNotBeNull();
+        problemDetails.Title.ShouldBe("Multiple failures occurred.");
+        problemDetails.Detail.ShouldBe("See problems for details.");
+        problemDetails.Status.ShouldBe(400);
+        problemDetails.Type.ShouldBe("https://tools.ietf.org/html/rfc7231#section-6.5.1");
+        problemDetails.Extensions.ShouldContainKey("code");
+        problemDetails.Extensions["code"]!.ToString().ShouldBe("aggregate");
+        problemDetails.Extensions.ShouldContainKey("problems");
+        problemDetails.Problems.ShouldNotBeEmpty();
+        problemDetails.Problems.ShouldContain(p => p.Title == "Unmapped Failure occured" && p.Detail == "This is a test failure");
+    }
+
+    [Fact]
+    public async Task FallBackFailure_Should_Return_400()
     {
         var response = await _client.GetAsync("/failure");
         response.StatusCode.ShouldBe(System.Net.HttpStatusCode.BadRequest);
