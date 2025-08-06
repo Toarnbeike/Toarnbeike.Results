@@ -5,10 +5,20 @@ public class ResultFilterTests(MinimalApiTestApp app) : IClassFixture<MinimalApi
     private readonly HttpClient _client = app.Client;
 
     [Fact]
-    public async Task Success_Should_Return_200()
+    public async Task Success_Should_Return_204()
     {
         var response = await _client.GetAsync("/success");
+        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.NoContent);
+    }
+
+    [Fact]
+    public async Task SuccessWithValue_Should_Return_200()
+    {
+        var response = await _client.GetAsync("/successWithValue");
         response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
+        
+        var content = await response.Content.ReadAsStringAsync();
+        content.ShouldContain("This is a test success with value");
     }
 
     [Fact]

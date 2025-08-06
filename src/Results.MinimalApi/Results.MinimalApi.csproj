@@ -13,5 +13,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Results\Results.csproj" />
   </ItemGroup>
-	
+
+  <ItemGroup>
+	<Using Include ="Microsoft.AspNetCore.Http.IResult" Alias ="IAspNetResult" />
+	<Using Include ="Microsoft.AspNetCore.Http.Results" Alias ="AspNetResults" />
+	<Using Include ="Toarnbeike.Results.IResult" Alias ="IToarnbeikeResult" />
+  </ItemGroup>
 </Project>

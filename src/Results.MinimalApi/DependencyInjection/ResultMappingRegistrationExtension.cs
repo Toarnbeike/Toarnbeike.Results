@@ -8,6 +8,8 @@ public static class ResultMappingRegistrationExtension
     public static IServiceCollection AddResultMapping(this IServiceCollection services)
     {
         services.AddSingleton<IResultMapper, ResultMapper>();
+
+
         return services;
     }
 }

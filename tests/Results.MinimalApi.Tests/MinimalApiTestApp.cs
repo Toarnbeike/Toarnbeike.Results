@@ -19,6 +19,7 @@ public class MinimalApiTestApp : IAsyncLifetime
         App = builder.Build();
 
         App.MapMinimalApiTestEndpoints();
+        App.MapEndpointsWithCustomIResult();
 
         await App.StartAsync();
 

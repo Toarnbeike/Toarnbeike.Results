@@ -12,6 +12,9 @@ public static class Endpoints
         app.MapGet("/success", () => Result.Success())
            .AddEndpointFilter<ResultMappingEndpointFilter>();
 
+        app.MapGet("/successWithValue", () => Result.Success("This is a test success with value"))
+            .AddEndpointFilter<ResultMappingEndpointFilter>();
+
         app.MapGet("/failure", () => Result.Failure(new Failure("Test failure", "This is a test failure")))
            .AddEndpointFilter<ResultMappingEndpointFilter>();
 
