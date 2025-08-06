@@ -6,16 +6,20 @@ namespace Toarnbeike.Results.MinimalApi.DependencyInjection;
 
 public static class ResultMappingRegistrationExtension
 {
-    public static IServiceCollection AddResultMapping(this IServiceCollection services)
+    public static IServiceCollection AddResultMapping(this IServiceCollection services,
+        Action<ResultMappingBuilder>? configure = null)
     {
         services.AddSingleton<IResultMapper, ResultMapper>();
 
-        // add the default failure mappers:
+        // add the default failure mappers. These will be used if no custom mappers are registered.
         services.AddSingleton<IFailureResultMapper, AggregateFailureResultMapper>();
         services.AddSingleton<IFailureResultMapper, ExceptionFailureResultMapper>();
         services.AddSingleton<IFailureResultMapper, ValidationFailureResultMapper>();
         services.AddSingleton<IFailureResultMapper, ValidationFailuresResultMapper>();
         services.AddSingleton<IFallbackFailureResultMapper, FallbackFailureResultMapper>();
+
+        // add the custom mappers if any are configured
+        configure?.Invoke(new ResultMappingBuilder(services));
 
         return services;
     }

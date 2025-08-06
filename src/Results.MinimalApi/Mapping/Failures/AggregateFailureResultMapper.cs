@@ -12,7 +12,7 @@ namespace Toarnbeike.Results.MinimalApi.Mapping.Failures;
 /// early resolving would result in an circular reference.</param>
 /// <param name="fallbackFailureResultMapper">The fallback failure result mapper for when no innerMapper is available.</param>
 internal sealed class AggregateFailureResultMapper(IServiceProvider serviceProvider,
-IFallbackFailureResultMapper fallbackFailureResultMapper) : FailureResultMapper<AggregateFailure>
+    IFallbackFailureResultMapper fallbackFailureResultMapper) : FailureResultMapper<AggregateFailure>
 {
     /// <summary>
     /// Collection of failure mappers, grouped by the type of <see cref="Failure"/> they can handle.
