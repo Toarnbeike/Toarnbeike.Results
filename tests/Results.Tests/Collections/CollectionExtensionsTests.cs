@@ -9,6 +9,9 @@ namespace Toarnbeike.Results.Tests.Collections;
 /// </summary>
 public class CollectionExtensionsTests
 {
+    private readonly List<Result> _allSuccessResults = [Result.Success(), Result.Success()];
+    private readonly List<Result> _failingResults = [Result.Failure(new Failure("code1", "message1")), Result.Success(), Result.Failure(new Failure("code2", "message2"))];
+
     private readonly List<Result<int>> _allSuccessCollection = [1, 2, 3];
     private readonly List<Result<int>> _mixedCollection = [1, new Failure("collection", "value is missing"), 3, new Failure("second", "The second failure")];
     private readonly List<Result<int>> _emptyCollection = [];
@@ -72,6 +75,21 @@ public class CollectionExtensionsTests
     {
         var result = _emptyCollection.Aggregate();
         result.ShouldBeSuccessWithValue([]);
+    }
+
+    [Fact]
+    public void Aggregate_ShouldReturnSuccess_WhenAllNonGenericResultsAreSuccessful()
+    {
+        var result = _allSuccessResults.Aggregate();
+        result.ShouldBeSuccess();
+    }
+
+    [Fact]
+    public void Aggregate_ShouldReturnAggregateFailure_WhenNonGenericResultCollectionContainsFailures()
+    {
+        var result = _failingResults.Aggregate();
+        var aggregateFailure = result.ShouldBeFailureOfType<AggregateFailure>();
+        aggregateFailure.Failures.Count().ShouldBe(2);
     }
 
     [Fact]

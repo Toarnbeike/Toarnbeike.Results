@@ -82,6 +82,28 @@ public static class CollectionExtensions
     }
 
     /// <summary>
+    /// Converts a sequence of <see cref="Result"/> into a single <see cref="Result"/> using an aggregate strategy.
+    /// </summary>
+    /// <remarks>
+    /// All failures in <paramref name="results"/> are collected into an <see cref="AggregateFailure"/>.
+    /// If all results are successful, a single successful result is returned.
+    /// </remarks>
+    /// <param name="results">The collection to convert. Cannot be <c>null</c>.</param>
+    /// <returns>
+    /// A successful <see cref="Result"/> if all results succeeded;
+    /// otherwise, a failure result with an <see cref="AggregateFailure"/>.
+    /// </returns>
+    public static Result Aggregate(this IEnumerable<Result> results)
+    {
+        ArgumentNullException.ThrowIfNull(results);
+        var failures = results.Where(r => r.IsFailure).Select(r => r.GetFailureOrThrow());
+
+        return failures.Any()
+            ? new AggregateFailure(failures)
+            : Result.Success();
+    }
+
+    /// <summary>
     /// Extracts the values from all successful <see cref="Result{T}"/> instances in the collection.
     /// </summary>
     /// <remarks>
