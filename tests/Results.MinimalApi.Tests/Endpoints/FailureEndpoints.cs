@@ -13,6 +13,9 @@ public static class FailureEndpoints
         app.MapGet("/failure", () => Result.Failure(new Failure("Test failure", "This is a test failure")))
            .AddEndpointFilter<ResultMappingEndpointFilter>();
 
+        app.MapGet("/exceptionFailure", () => Result.Try(() => throw new Exception("This is a test exception failure")))
+            .AddEndpointFilter<ResultMappingEndpointFilter>();
+
         app.MapGet("/validationFailure", () => Result.Failure(new ValidationFailure("Name", "Value should not exceed 10 characters")))
             .AddEndpointFilter<ResultMappingEndpointFilter>();
 

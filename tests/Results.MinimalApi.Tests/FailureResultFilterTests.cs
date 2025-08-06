@@ -23,6 +23,24 @@ public class FailureResultFilterTests(MinimalApiTestApp app) : IClassFixture<Min
     }
 
     [Fact]
+    public async Task ExceptionFailure_Should_ReturnProblemDetails()
+    {
+        var response = await _client.GetAsync("/exceptionFailure");
+        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.InternalServerError);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(content, _jsonOptions);
+
+        problemDetails.ShouldNotBeNull();
+        problemDetails.Title.ShouldBe("Internal Server Error");
+        problemDetails.Detail.ShouldBe("An unexpected error occurred.");
+        problemDetails.Status.ShouldBe(500);
+        problemDetails.Type.ShouldBe("https://tools.ietf.org/html/rfc7231#section-6.6.1");
+        problemDetails.Extensions.ShouldContainKey("code");
+        problemDetails.Extensions["code"]!.ToString().ShouldBe("exception");
+    }
+
+    [Fact]
     public async Task ValidationFailure_Should_ReturnProblemDetails()
     {
         var response = await _client.GetAsync("/validationFailure");
