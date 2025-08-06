@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Toarnbeike.Results.MinimalApi.Mapping;
+using Toarnbeike.Results.MinimalApi.Mapping.Failures;
 
 namespace Toarnbeike.Results.MinimalApi.DependencyInjection;
 
@@ -9,6 +10,8 @@ public static class ResultMappingRegistrationExtension
     {
         services.AddSingleton<IResultMapper, ResultMapper>();
 
+        // add the default failure mappers:
+        services.AddSingleton<IFailureResultMapper, ValidationFailureResultMapper>();
 
         return services;
     }

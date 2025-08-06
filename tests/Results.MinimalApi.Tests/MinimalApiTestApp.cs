@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
 using Toarnbeike.Results.MinimalApi.DependencyInjection;
+using Toarnbeike.Results.MinimalApi.Tests.Endpoints;
 
 namespace Toarnbeike.Results.MinimalApi.Tests;
 
@@ -18,8 +19,9 @@ public class MinimalApiTestApp : IAsyncLifetime
 
         App = builder.Build();
 
-        App.MapMinimalApiTestEndpoints();
-        App.MapEndpointsWithCustomIResult();
+        App.MapFailureEndpoints()
+            .MapSuccessEndpoints()
+            .MapEndpointsWithCustomIResult();
 
         await App.StartAsync();
 

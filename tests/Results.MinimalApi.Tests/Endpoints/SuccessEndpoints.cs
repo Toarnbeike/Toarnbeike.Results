@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Toarnbeike.Results.MinimalApi.Mapping;
 using AspNetResults = Microsoft.AspNetCore.Http.Results;
 
-namespace Toarnbeike.Results.MinimalApi.Tests;
+namespace Toarnbeike.Results.MinimalApi.Tests.Endpoints;
 
-public static class Endpoints
+public static class SuccessEndpoints
 {
-    public static void MapMinimalApiTestEndpoints(this WebApplication app)
+    public static IEndpointRouteBuilder MapSuccessEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapGet("/success", () => Result.Success())
            .AddEndpointFilter<ResultMappingEndpointFilter>();
@@ -15,10 +16,9 @@ public static class Endpoints
         app.MapGet("/successWithValue", () => Result.Success("This is a test success with value"))
             .AddEndpointFilter<ResultMappingEndpointFilter>();
 
-        app.MapGet("/failure", () => Result.Failure(new Failure("Test failure", "This is a test failure")))
-           .AddEndpointFilter<ResultMappingEndpointFilter>();
-
         app.MapGet("/noResult", () => AspNetResults.Ok("This endpoint does not use a Toarnbeike.Result"))
-           .AddEndpointFilter<ResultMappingEndpointFilter>();
+            .AddEndpointFilter<ResultMappingEndpointFilter>();
+
+        return app;
     }
 }

@@ -1,16 +1,37 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Toarnbeike.Results.MinimalApi.Mapping.Failures;
 
 namespace Toarnbeike.Results.MinimalApi.Mapping;
 
 /// <inheritdoc />
-public class ResultMapper : IResultMapper
+public class ResultMapper(IEnumerable<IFailureResultMapper> failureResultMappers) : IResultMapper
 {
+    /// <summary>
+    /// Collection of failure mappers, grouped by the type of <see cref="Failure"/> they can handle.
+    /// </summary>
+    /// <remarks>
+    /// For the mapping, we only keep the last mapper for each type, since we 
+    /// - first register the default mappers for a failure type,
+    /// - the user can register custom mappers for the same failure type.
+    /// In which case, the custom mapper should override the default one.
+    /// </remarks>
+    private readonly Dictionary<Type, IFailureResultMapper> _failureMappers = 
+        failureResultMappers
+            .GroupBy(mapper => mapper.FailureType)
+            .ToDictionary(group => group.Key, group => group.Last());
+
     /// <inheritdoc />
     public IAspNetResult Map(IResult result)
     {
         if (result.TryGetFailure(out var failure))
         {
-            // This is going to be improved with discriminations based on the Failure type in the future.
+            // Try to map the failure using the registered failure mappers.
+            if (_failureMappers.TryGetValue(failure.GetType(), out var mapper))
+            {
+                return AspNetResults.Problem(mapper.Map(failure));
+            }
+
+            // Fallback if no mapper for this Failure type is registered.
             return AspNetResults.Problem(failure.Message, statusCode: 400);
         }
 
