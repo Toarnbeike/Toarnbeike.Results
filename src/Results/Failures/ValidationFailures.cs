@@ -13,7 +13,7 @@ public sealed record ValidationFailures : Failure
     /// <summary>
     /// Gets all validation failures grouped by property name.
     /// </summary>
-    public IReadOnlyDictionary<string, IReadOnlyList<string>> Failures { get; }
+    public IDictionary<string, string[]> Failures { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ValidationFailures"/> class with a collection of failures.
@@ -41,11 +41,11 @@ public sealed record ValidationFailures : Failure
             .GroupBy(f => f.Property)
             .ToDictionary(
                 g => g.Key,
-                g => (IReadOnlyList<string>)g.Select(f => f.ValidationMessage).ToList()
+                g => g.Select(f => f.ValidationMessage).ToArray()
             );
     }
 
-    private ValidationFailures(IReadOnlyDictionary<string, IReadOnlyList<string>> failures)
+    private ValidationFailures(IDictionary<string, string[]> failures)
         : base("validation_failures", "One or more validations failed:")
     {
         Failures = failures;
@@ -98,7 +98,7 @@ public sealed record ValidationFailures : Failure
 
         list.Add(message);
 
-        return new ValidationFailures(ToReadOnly(newDict));
+        return new ValidationFailures(ToDictionary(newDict));
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public sealed record ValidationFailures : Failure
 
         list.AddRange(messages);
 
-        return new ValidationFailures(ToReadOnly(newDict));
+        return new ValidationFailures(ToDictionary(newDict));
     }
 
     /// <summary>
@@ -141,9 +141,9 @@ public sealed record ValidationFailures : Failure
         return result;
     }
 
-    private static Dictionary<string, IReadOnlyList<string>> ToReadOnly(Dictionary<string, List<string>> source) =>
+    private static Dictionary<string, string[]> ToDictionary(Dictionary<string, List<string>> source) =>
         source.ToDictionary(
             kvp => kvp.Key,
-            kvp => (IReadOnlyList<string>)kvp.Value.AsReadOnly()
+            kvp => kvp.Value.ToArray()
         );
 }

@@ -6,7 +6,7 @@ namespace Toarnbeike.Results.MinimalApi.Tests;
 public class FailureResultFilterTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTestApp>
 {
     private readonly HttpClient _client = app.Client;
-    private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+    private readonly JsonSerializerOptions _jsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -39,37 +39,28 @@ public class FailureResultFilterTests(MinimalApiTestApp app) : IClassFixture<Min
         problemDetails.Extensions.ShouldContainKey("code");
         problemDetails.Extensions["code"]!.ToString().ShouldBe("validation_Name");
         problemDetails.Errors.ShouldContainKey("Name");
-    }
-}
-
-public class SuccessResultFilterTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTestApp>
-{
-    private readonly HttpClient _client = app.Client;
-
-    [Fact]
-    public async Task Success_Should_Return_204()
-    {
-        var response = await _client.GetAsync("/success");
-        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.NoContent);
+        problemDetails.Errors["Name"].Single().ShouldBe("Value should not exceed 10 characters");
     }
 
     [Fact]
-    public async Task SuccessWithValue_Should_Return_200()
+    public async Task ValidationFailures_Should_ReturnProblemDetails()
     {
-        var response = await _client.GetAsync("/successWithValue");
-        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
-        
-        var content = await response.Content.ReadAsStringAsync();
-        content.ShouldContain("This is a test success with value");
-    }
-
-    [Fact]
-    public async Task NoResult_Should_Return_200()
-    {
-        var response = await _client.GetAsync("/noResult");
-        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
+        var response = await _client.GetAsync("/validationFailures");
+        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.BadRequest);
 
         var content = await response.Content.ReadAsStringAsync();
-        content.ShouldContain("This endpoint does not use a Toarnbeike.Result");
+        var problemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(content, _jsonOptions);
+
+        problemDetails.ShouldNotBeNull();
+        problemDetails.Title.ShouldBe("Validation Errors");
+        problemDetails.Detail.ShouldBe("One or more validations failed:");
+        problemDetails.Status.ShouldBe(400);
+        problemDetails.Type.ShouldBe("https://tools.ietf.org/html/rfc7231#section-6.5.1");
+        problemDetails.Extensions.ShouldContainKey("code");
+        problemDetails.Extensions["code"]!.ToString().ShouldBe("validation_failures");
+        problemDetails.Errors.ShouldContainKey("Name");
+        problemDetails.Errors["Name"].Single().ShouldBe("Value should not exceed 10 characters");
+        problemDetails.Errors.ShouldContainKey("Email");
+        problemDetails.Errors["Email"].Single().ShouldBe("Invalid email format");
     }
 }

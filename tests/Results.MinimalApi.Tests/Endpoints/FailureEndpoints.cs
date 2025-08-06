@@ -16,6 +16,14 @@ public static class FailureEndpoints
         app.MapGet("/validationFailure", () => Result.Failure(new ValidationFailure("Name", "Value should not exceed 10 characters")))
             .AddEndpointFilter<ResultMappingEndpointFilter>();
 
+        app.MapGet("/validationFailures", () => 
+        {
+            var failure1 = new ValidationFailure("Name", "Value should not exceed 10 characters");
+            var failure2 = new ValidationFailure("Email", "Invalid email format");
+
+            return Result.Failure(new ValidationFailures([failure1, failure2]));
+        }).AddEndpointFilter<ResultMappingEndpointFilter>();
+
         return app;
     }
 }

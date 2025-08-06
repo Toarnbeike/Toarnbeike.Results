@@ -22,7 +22,7 @@ public class ValidationFailuresTests
         result.Code.ShouldBe("validation_failures");
         result.Message.ShouldBe("One or more validations failed:");
         result.Failures.Count.ShouldBe(1);
-        result.Failures["Property"].Count.ShouldBe(1);
+        result.Failures["Property"].Length.ShouldBe(1);
         result.Failures["Property"].Single().ShouldBe("Something is wrong");
     }
 
@@ -44,8 +44,8 @@ public class ValidationFailuresTests
         var updatedFailures = _existingFailures.Add("newProperty", "Other failure");
 
         updatedFailures.Failures.Count.ShouldBe(2);
-        updatedFailures.Failures["Property"].Count.ShouldBe(1);
-        updatedFailures.Failures["newProperty"].Count.ShouldBe(1);
+        updatedFailures.Failures["Property"].Length.ShouldBe(1);
+        updatedFailures.Failures["newProperty"].Length.ShouldBe(1);
     }
 
     [Fact]
@@ -55,7 +55,7 @@ public class ValidationFailuresTests
         var updatedFailures = _existingFailures.Add(additionalValidationFailure);
 
         updatedFailures.Failures.Count.ShouldBe(1);
-        updatedFailures.Failures["Property"].Count.ShouldBe(2);
+        updatedFailures.Failures["Property"].Length.ShouldBe(2);
         updatedFailures.Failures["Property"].Last().ShouldBe("Another failure");
     }
 
@@ -66,8 +66,8 @@ public class ValidationFailuresTests
         var updatedFailures = _existingFailures.AddRange("newProperty", additionalFailures);
 
         updatedFailures.Failures.Count.ShouldBe(2);
-        updatedFailures.Failures["Property"].Count.ShouldBe(1);
-        updatedFailures.Failures["newProperty"].Count.ShouldBe(3);
+        updatedFailures.Failures["Property"].Length.ShouldBe(1);
+        updatedFailures.Failures["newProperty"].Length.ShouldBe(3);
     }
 
     [Fact]
@@ -86,9 +86,9 @@ public class ValidationFailuresTests
         var updatedFailures = _existingFailures.Combine(newFailures);
 
         updatedFailures.Failures.Count.ShouldBe(3);
-        updatedFailures.Failures["Property"].Count.ShouldBe(2);
+        updatedFailures.Failures["Property"].Length.ShouldBe(2);
         updatedFailures.Failures["Property2"].Single().ShouldBe("Second");
-        updatedFailures.Failures["Property3"].Count.ShouldBe(2);
+        updatedFailures.Failures["Property3"].Length.ShouldBe(2);
     }
 
     [Fact]

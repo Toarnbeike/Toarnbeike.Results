@@ -12,6 +12,7 @@ public static class ResultMappingRegistrationExtension
 
         // add the default failure mappers:
         services.AddSingleton<IFailureResultMapper, ValidationFailureResultMapper>();
+        services.AddSingleton<IFailureResultMapper, ValidationFailuresResultMapper>();
 
         return services;
     }
