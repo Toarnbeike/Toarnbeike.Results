@@ -37,6 +37,7 @@ It enhances code clarity and reliability by enabling clear, exception-free handl
 |---------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
 |`Toarnbeike.Results`                   | Core option type, extension methods and collections   | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.svg)](https://www.nuget.org/packages/Toarnbeike.Results)                                    |
 |`Toarnbeike.Results.FluentValidation`  | Validation integration using `FluentValidation`       | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.FluentValidation.svg)](https://www.nuget.org/packages/Toarnbeike.Results.FluentValidation)  |
+|`Toarnbeike.Results.MinimalApi`        | Integration with `Microsoft.AspNetCore` minimal API's | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.MinimalApi.svg)](https://www.nuget.org/packages/Toarnbeike.Results.MinimalApi)              |
 |`Toarnbeike.Results.Optional`          | Integration with `Toarnbeike.Optional`                | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.Optional.svg)](https://www.nuget.org/packages/Toarnbeike.Results.Optional)                  |
 
 ---
