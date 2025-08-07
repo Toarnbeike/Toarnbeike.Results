@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Toarnbeike.Results.MinimalApi;
 
-namespace Toarnbeike.Results.MinimalApi.Tests;
+namespace Toarnbeike.Results.Integration.Tests;
 
 public class FailureResultFilterTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTestApp>
 {

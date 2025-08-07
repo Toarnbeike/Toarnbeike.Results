@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Toarnbeike.Results.MinimalApi.Mapping;
 using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.Collections;
+using Toarnbeike.Results.MinimalApi;
 
-namespace Toarnbeike.Results.MinimalApi.Tests.Endpoints;
+namespace Toarnbeike.Results.Integration.Tests.Endpoints;
 
 public static class FailureEndpoints
 {

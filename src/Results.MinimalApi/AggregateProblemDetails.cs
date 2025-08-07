@@ -38,9 +38,5 @@ public sealed class AggregateProblemDetails : ProblemDetails
     public List<ProblemDetails> Problems { get; init; }
 
     [JsonConstructor]
-    public AggregateProblemDetails() : this([])
-    {
-        // This constructor is for JSON deserialization only.
-        // It initializes an empty collection of problems.
-    }
+    public AggregateProblemDetails() : this([]) {/* This constructor is for JSON deserialization only. */ }
 }

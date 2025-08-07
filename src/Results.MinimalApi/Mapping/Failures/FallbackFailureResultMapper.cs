@@ -19,6 +19,7 @@ internal class FallbackFailureResultMapper : FailureResultMapper<Failure>, IFall
             Title = "Unmapped Failure occured",
             Detail = failure.Message,
             Status = 400,
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Extensions = { ["code"] = failure.Code }
         };
     }

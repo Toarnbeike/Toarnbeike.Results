@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Results.MinimalApi", "src\R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Results.MinimalApi.Tests", "tests\Results.MinimalApi.Tests\Results.MinimalApi.Tests.csproj", "{45010702-3292-4059-B3C9-5DD08BB089A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Results.Integration.Tests", "tests\Results.Integration.Tests\Results.Integration.Tests.csproj", "{58D1F6E2-1C76-48AA-96EC-7BFEA29B273A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{45010702-3292-4059-B3C9-5DD08BB089A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45010702-3292-4059-B3C9-5DD08BB089A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45010702-3292-4059-B3C9-5DD08BB089A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58D1F6E2-1C76-48AA-96EC-7BFEA29B273A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58D1F6E2-1C76-48AA-96EC-7BFEA29B273A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58D1F6E2-1C76-48AA-96EC-7BFEA29B273A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58D1F6E2-1C76-48AA-96EC-7BFEA29B273A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{5462D65F-9CCD-440B-B2C3-8DE77F443FDD} = {9F9E877C-F104-4162-98E4-D7B341516A11}
 		{5A2A4F36-6CE8-4D86-8476-57FF19377870} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{45010702-3292-4059-B3C9-5DD08BB089A4} = {9F9E877C-F104-4162-98E4-D7B341516A11}
+		{58D1F6E2-1C76-48AA-96EC-7BFEA29B273A} = {9F9E877C-F104-4162-98E4-D7B341516A11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8F93744-8E4D-4C81-A498-51BA87030D0D}

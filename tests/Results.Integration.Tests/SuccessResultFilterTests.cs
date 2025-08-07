@@ -1,4 +1,4 @@
-﻿namespace Toarnbeike.Results.MinimalApi.Tests;
+﻿namespace Toarnbeike.Results.Integration.Tests;
 
 public class SuccessResultFilterTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTestApp>
 {

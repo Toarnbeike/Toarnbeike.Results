@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Toarnbeike.Results.MinimalApi.Mapping;
+using Toarnbeike.Results.MinimalApi;
 using AspNetResults = Microsoft.AspNetCore.Http.Results;
 
-namespace Toarnbeike.Results.MinimalApi.Tests.Endpoints;
+namespace Toarnbeike.Results.Integration.Tests.Endpoints;
 
 public static class SuccessEndpoints
 {
