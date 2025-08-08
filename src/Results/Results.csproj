@@ -1,9 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<PackageId>Toarnbeike.Results</PackageId>
+	<!-- Version is managed centrally in Directory.build.props to keep versions in sync.-->
+	<Description>Functional-style Result implementation for .NET</Description>
+	<PackageTags>result monad functional success failure railroad rop async</PackageTags>
   </PropertyGroup>
+  
+  <ItemGroup>
+	<None Include="../../README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
 
 </Project>

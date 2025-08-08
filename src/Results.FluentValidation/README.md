@@ -21,7 +21,7 @@ providing seamless validation support for `Result<T>` using one or more `IValida
 
 ---
 
-## Gettings started
+## Getting started
 
 ``` bash
 dotnet add package Toarnbeike.Results.FluentValidation

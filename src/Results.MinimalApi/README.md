@@ -7,7 +7,7 @@
 
 # Toarnbeike.Results.MinimalApi
 
-Seamlessly resutn [Toarnbeike.Results](https://www.nuget.org/packages/Toarnbeike.Results) from your Minimal API endpoints with automatic HTTP response mapping.
+Seamlessly return [Toarnbeike.Results](https://www.nuget.org/packages/Toarnbeike.Results) from your Minimal API endpoints with automatic HTTP response mapping.
 
 ---
 
@@ -61,7 +61,9 @@ Custom failures can be mapped by registing your own mappers:
 ``` csharp
   builder.Services.AddResultMapping(options =>
   {
-      options.AddMapper<ConflictFailureMapper>();
+      options.AddMapper<ConflictFailureMapper>();                           // add single mapper
+      options.AddMappersFromAssemblyContaining<ConflictFailureMapper>();    // add all mappers from an assembly
+      options.UseFallback<CustomFallbackMapper>();                          // override the default fallback mapper for unmapped failures
   });
 
   public class ConflictFailureMapper : FailureResultMapper<ConflictFailure>
@@ -91,4 +93,8 @@ you can use the `MapResultGroup()` extension method to apply the filter to a gro
 
 Every endpoint in the group will automatically map `Result` and `Result<TValue>` types to appropriate HTTP responses.
 
+If you rely on Result mapping for all endpoints in your application, you can create a /api group for all endpoints:
+```csharp
+  var endpoints = app.MapResultGroup("/api");
+```
 ---

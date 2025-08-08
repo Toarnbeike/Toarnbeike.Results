@@ -1,4 +1,5 @@
 [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.Optional.svg)](https://www.nuget.org/packages/Toarnbeike.Toarnbeike.Results.Optional)
+
 ![CI](https://github.com/Toarnbeike/Toarnbeike.Results/actions/workflows/build.yaml/badge.svg)
 [![Code Coverage](https://toarnbeike.github.io/Toarnbeike.Results/badge_shieldsio_linecoverage_brightgreen.svg)](https://github.com/Toarnbeike/Toarnbeike.Results/blob/gh-pages/SummaryGithub.md)
 [![.NET 9](https://img.shields.io/badge/.NET-9.0-blueviolet.svg)](https://dotnet.microsoft.com/)
