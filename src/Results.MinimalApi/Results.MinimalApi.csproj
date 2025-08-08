@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<PackageId>Toarnbeike.Results.MinimalApi</PackageId>
+	<!-- Version is managed centrally in Directory.build.props to keep versions in sync.-->
+	<Description>Return Toarnbeike.Results from your AspNetCore Minimal Api Endpoints</Description>
+	<PackageTags>Result minimal minimalApi AspNetCore EndpointFilter ProblemDetails</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,5 +19,9 @@
 	<Using Include="Microsoft.AspNetCore.Http.IResult" Alias="IAspNetResult" />
 	<Using Include="Microsoft.AspNetCore.Http.Results" Alias="AspNetResults" />
 	<Using Include="Toarnbeike.Results.IResult" Alias="IToarnbeikeResult" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Include="README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>

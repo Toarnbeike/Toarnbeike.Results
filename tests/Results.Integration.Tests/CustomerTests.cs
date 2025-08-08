@@ -26,7 +26,7 @@ public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTest
 
         var customer = JsonSerializer.Deserialize<Customer>(content, _jsonOptions);
         customer.ShouldNotBeNull();
-        customer.Id.ShouldBe("1");
+        customer.Id.ShouldBe(1);
         customer.Name.ShouldBe("Alice");
         customer.Email.ShouldBe("alice@test.com");
     }
@@ -50,7 +50,7 @@ public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTest
     [Fact]
     public async Task Post_ShouldReturn204NoContent_WhenCustomerIsInserted()
     {
-        var newCustomer = new Customer("2", "Bob", "bob@test.com");
+        var newCustomer = new Customer(2, "Bob", "bob@test.com");
 
         var response = await _client.PostAsJsonAsync("/customers", newCustomer, _jsonOptions);
 
@@ -60,7 +60,7 @@ public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTest
     [Fact]
     public async Task Post_ShouldReturn400BadRequest_WhenValidatorFails()
     {
-        var invalidCustomer = new Customer("", "VeryLongName", "invalid-email");
+        var invalidCustomer = new Customer(0, "VeryLongName", "invalid-email");
 
         var response = await _client.PostAsJsonAsync("/customers", invalidCustomer, _jsonOptions);
 
@@ -78,7 +78,7 @@ public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTest
     [Fact]
     public async Task Post_ShouldReturn400BadRequest_WhenCustomEnsureFails()
     {
-        var invalidCustomer = new Customer("2", "Alice", "alice2@test.com");
+        var invalidCustomer = new Customer(2, "Alice", "alice2@test.com");
 
         var response = await _client.PostAsJsonAsync("/customers", invalidCustomer, _jsonOptions);
 
@@ -94,7 +94,7 @@ public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTest
     [Fact]
     public async Task Post_ShouldReturn500InternalServerError_WhenUnsafeSaveThrows()
     {
-        var duplicateCustomer = new Customer("1", "Bob", "bob@test.com");
+        var duplicateCustomer = new Customer(1, "Bob", "bob@test.com");
 
         var response = await _client.PostAsJsonAsync("/customers", duplicateCustomer, _jsonOptions);
 

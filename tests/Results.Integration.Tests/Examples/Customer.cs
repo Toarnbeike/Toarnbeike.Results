@@ -75,7 +75,7 @@ public class CustomerValidator : AbstractValidator<Customer>
 {
     public CustomerValidator()
     {
-        RuleFor(c => c.Id).NotEmpty().WithMessage("Id is required");
+        RuleFor(c => c.Id).GreaterThan(0).WithMessage("Id is required");
         RuleFor(c => c.Name)
             .NotEmpty().WithMessage("Name is required")
             .MaximumLength(10).WithMessage("Maximum length: 10");
