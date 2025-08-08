@@ -18,7 +18,7 @@ public class ZipIntegrationTests
         result.Tap(((int @base, decimal multiplier) tuple) => value = tuple.@base * tuple.multiplier);
         value.ShouldBe(106m);
 
-        result.Ensure(((int @base, decimal multiplier) tuple) => tuple.multiplier > 5, () => new Failure("out of bound", "multiplier should exceed 20"));
+        result.Check(((int @base, decimal multiplier) tuple) => tuple.multiplier > 5, () => new Failure("out of bound", "multiplier should exceed 20"));
 
         var actual = result
             .Map(((int @base, decimal multiplier) tuple) => tuple.@base * tuple.multiplier)

@@ -100,7 +100,7 @@ The `Toarnbeike.Results.Extensions` namespace includes rich extensions for `Resu
 | Method			| `Result`			 | `Result<T>`		  | Description														|
 |-------------------|--------------------|--------------------|-----------------------------------------------------------------|
 | `Bind(...)`		| :white_check_mark: | :white_check_mark: | Chains operations returning `Result<TOut>`						|
-| `Ensure(...)`		| :x:				 | :white_check_mark: | Ensures a condition on the success value, or returns a failure	|
+| `Check(...)`		| :x:				 | :white_check_mark: | Check a condition on the success value, or returns a failure	|
 | `Map(...)`		| :x:				 | :white_check_mark: | Maps the success value to another type							|
 | `Match(...)`		| :white_check_mark: | :white_check_mark: | Converts to another type using success/failure lambdas			|
 | `Tap(...)`		| :white_check_mark: | :white_check_mark: | Executes side-effects on success								|

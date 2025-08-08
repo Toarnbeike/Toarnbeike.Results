@@ -121,7 +121,7 @@ public static class CustomerEndpoints
         {
             Result result = await Result.Success(customer)
                 .Validate(validator)
-                .Ensure(c => c.Name != "Alice", () => new ValidationFailure("Name", "Cannot create customer with name 'Alice'"))
+                .Check(c => c.Name != "Alice", () => new ValidationFailure("Name", "Cannot create customer with name 'Alice'"))
                 .VerifyAsync(async c => await Result.TryAsync(async () => await service.UnsafeSaveAsync(c)));
             return result;
         });

@@ -71,6 +71,6 @@ public static class LinqExtensions
         ArgumentNullException.ThrowIfNull(result);
         ArgumentNullException.ThrowIfNull(predicate);
 
-        return result.Ensure(predicate, () => new Failure("whereLinq", "LINQ predicate was not satisfied."));
+        return result.Check(predicate, () => new Failure("whereLinq", "LINQ predicate was not satisfied."));
     }
 }

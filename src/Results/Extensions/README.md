@@ -11,7 +11,7 @@ These extensions are inspired by functional programming concepts like monads and
 | Method			                | `Result`			 | `Result<T>`		  | Description														|
 |-----------------------------------|--------------------|--------------------|-----------------------------------------------------------------|
 | [`Bind(...)`](#bind)	            | :white_check_mark: | :white_check_mark: | Chains operations returning `Result<TOut>`						|
-| [`Ensure(...)`](#ensure)		    | :x:				 | :white_check_mark: | Ensures a condition on the success value, or returns a failure	|
+| [`Check(...)`](#check)		    | :x:				 | :white_check_mark: | Check a condition on the success value, or returns a failure	|
 | [`Map(...)`](#map)		        | :x:				 | :white_check_mark: | Maps the success value to another type							|
 | [`Match(...)`](#match)		    | :white_check_mark: | :white_check_mark: | Converts to another type using success/failure lambdas			|
 | [`Tap(...)`](#tap)		        | :white_check_mark: | :white_check_mark: | Executes side-effects on success								|
@@ -37,12 +37,12 @@ Otherwise, the second result is returned.
 
 ---
 
-## Ensure
+## Check
 
-Ensures that a condition on the initial result value is met, otherwise returns a failure.
+Check that a condition on the initial result value is met, otherwise returns a failure.
 ``` csharp
 var result = Result.Success(42)
-    .Ensure(x => x > 0, () => new Failure("Negative", "Value must be positive"));
+    .Check(x => x > 0, () => new Failure("Negative", "Value must be positive"));
 ```
 
 ---
