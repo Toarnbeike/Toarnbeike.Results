@@ -130,6 +130,8 @@ The `Toarnbeike.Results.Collections` namespace provides extension methods for wo
 | `Failures()`      | `IEnumerable<Failure>`                    | Extracts all failures from a collection of results			                |
 | `Split()`         | `(IEnumerable<T>, IEnumerable<Failure>)`  | Splits the collection into success values and failures			            |
 
+All methods support `async` variants and operate seamlessly with `IEnumerable<Task<Result<T>>>`.
+
 ---
 
 ## Failures
