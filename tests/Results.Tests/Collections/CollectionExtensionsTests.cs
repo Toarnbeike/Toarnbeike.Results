@@ -5,7 +5,7 @@ using Toarnbeike.Results.TestHelpers;
 namespace Toarnbeike.Results.Tests.Collections;
 
 /// <summary>
-/// Tests for the <see cref="CollectionExtensions"/> class.
+/// Tests for the <see cref="Results.Collections.CollectionExtensions"/> class.
 /// </summary>
 public class CollectionExtensionsTests
 {

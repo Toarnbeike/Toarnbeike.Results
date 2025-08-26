@@ -17,7 +17,33 @@ public static class CollectionExtensions
     }
 
     /// <summary>
-    /// Converts a sequence of <see cref="Result{T}"/> into a single <see cref="Result{IEnumerable{T}}"/> using a fail-fast strategy.
+    /// Determines whether all results in the collection indicate success.
+    /// </summary>
+    /// <param name="resultTasks">The collection of asynchronous <see cref="IResult"/> instances to evaluate. Cannot be <c>null</c>.</param>
+    /// <returns><c>true</c> if all <paramref name="resultTasks"/> are successful; otherwise, <c>false</c>.</returns>
+    public static async Task<bool> AllSuccessAsync(this IEnumerable<Task<Result>> resultTasks)
+    {
+        ArgumentNullException.ThrowIfNull(resultTasks);
+        
+        var results = await Task.WhenAll(resultTasks);
+        return AllSuccess(results);
+    }
+
+    /// <summary>
+    /// Determines whether all results in the collection indicate success.
+    /// </summary>
+    /// <param name="resultTasks">The collection of asynchronous <see cref="IResult"/> instances to evaluate. Cannot be <c>null</c>.</param>
+    /// <returns><c>true</c> if all <paramref name="resultTasks"/> are successful; otherwise, <c>false</c>.</returns>
+    public static async Task<bool> AllSuccessAsync<TValue>(this IEnumerable<Task<Result<TValue>>> resultTasks)
+    {
+        ArgumentNullException.ThrowIfNull(resultTasks);
+
+        var results = await Task.WhenAll(resultTasks);
+        return AllSuccess(results);
+    }
+    
+    /// <summary>
+    /// Converts a sequence of <see cref="Result{T}"/> into a single <see cref="Result{IEnumerable}"/> using a fail-fast strategy.
     /// </summary>
     /// <remarks>
     /// If any result in <paramref name="results"/> is a failure, the first failure is returned.
@@ -26,7 +52,7 @@ public static class CollectionExtensions
     /// <typeparam name="T">The type of the success values.</typeparam>
     /// <param name="results">The collection to convert. Cannot be <c>null</c>.</param>
     /// <returns>
-    /// A <see cref="Result{IEnumerable{T}}"/> containing all successful values or the first failure encountered.
+    /// A <see cref="Result{IEnumerable}"/> containing all successful values or the first failure encountered.
     /// </returns>
     public static Result<IEnumerable<T>> Sequence<T>(this IEnumerable<Result<T>> results)
     {
@@ -46,7 +72,27 @@ public static class CollectionExtensions
     }
 
     /// <summary>
-    /// Converts a sequence of <see cref="Result{T}"/> into a single <see cref="Result{IEnumerable{T}}"/> using an aggregate strategy.
+    /// Converts a sequence of <see cref="Result{T}"/> into a single <see cref="Result{IEnumerable}"/> using a fail-fast strategy.
+    /// </summary>
+    /// <remarks>
+    /// If any result in <paramref name="resultTasks"/> is a failure, the first failure is returned.
+    /// If all results are successful, a single successful result containing all values is returned.
+    /// </remarks>
+    /// <typeparam name="T">The type of the success values.</typeparam>
+    /// <param name="resultTasks">The collection of result tasks to convert. Cannot be <c>null</c>.</param>
+    /// <returns>
+    /// A <see cref="Result{IEnumerable}"/> containing all successful values or the first failure encountered.
+    /// </returns>
+    public static async Task<Result<IEnumerable<T>>> SequenceAsync<T>(this IEnumerable<Task<Result<T>>> resultTasks)
+    {
+        ArgumentNullException.ThrowIfNull(resultTasks);
+        
+        var results = await Task.WhenAll(resultTasks);
+        return Sequence(results);
+    }
+
+    /// <summary>
+    /// Converts a sequence of <see cref="Result{T}"/> into a single <see cref="Result{IEnumerable}"/> using an aggregate strategy.
     /// </summary>
     /// <remarks>
     /// All failures in <paramref name="results"/> are collected into an <see cref="AggregateFailure"/>.
@@ -55,7 +101,7 @@ public static class CollectionExtensions
     /// <typeparam name="T">The type of the success values.</typeparam>
     /// <param name="results">The collection to convert. Cannot be <c>null</c>.</param>
     /// <returns>
-    /// A successful <see cref="Result{IEnumerable{T}}"/> if all results succeeded;
+    /// A successful <see cref="Result{IEnumerable}"/> if all results succeeded;
     /// otherwise, a failure with <see cref="AggregateFailure"/>.
     /// </returns>
     public static Result<IEnumerable<T>> Aggregate<T>(this IEnumerable<Result<T>> results)
@@ -82,6 +128,26 @@ public static class CollectionExtensions
     }
 
     /// <summary>
+    /// Converts a sequence of <see cref="Result{T}"/> into a single <see cref="Result{IEnumerable}"/> using an aggregate strategy.
+    /// </summary>
+    /// <remarks>
+    /// All failures in <paramref name="resultTasks"/> are collected into an <see cref="AggregateFailure"/>.
+    /// If all results are successful, a single successful result is returned.
+    /// </remarks>
+    /// <param name="resultTasks">The collection of result tasks to convert. Cannot be <c>null</c>.</param>
+    /// <returns>
+    /// A successful <see cref="Result{IEnumerable}"/> if all results succeeded;
+    /// otherwise, a failure result with an <see cref="AggregateFailure"/>.
+    /// </returns>
+    public static async Task<Result<IEnumerable<TValue>>> AggregateAsync<TValue>(this IEnumerable<Task<Result<TValue>>> resultTasks)
+    {
+        ArgumentNullException.ThrowIfNull(resultTasks);
+        
+        var results = await Task.WhenAll(resultTasks);
+        return Aggregate(results);
+    }
+    
+    /// <summary>
     /// Converts a sequence of <see cref="Result"/> into a single <see cref="Result"/> using an aggregate strategy.
     /// </summary>
     /// <remarks>
@@ -96,13 +162,33 @@ public static class CollectionExtensions
     public static Result Aggregate(this IEnumerable<Result> results)
     {
         ArgumentNullException.ThrowIfNull(results);
-        var failures = results.Where(r => r.IsFailure).Select(r => r.GetFailureOrThrow());
+        var failures = results.Where(r => r.IsFailure).Select(r => r.GetFailureOrThrow()).ToList();
 
-        return failures.Any()
+        return failures.Count == 0
             ? new AggregateFailure(failures)
             : Result.Success();
     }
 
+    /// <summary>
+    /// Converts a sequence of async <see cref="Result"/> into a single <see cref="Result"/> using an aggregate strategy.
+    /// </summary>
+    /// <remarks>
+    /// All failures in <paramref name="resultTasks"/> are collected into an <see cref="AggregateFailure"/>.
+    /// If all results are successful, a single successful result is returned.
+    /// </remarks>
+    /// <param name="resultTasks">The collection of asynchronous result tasks to convert. Cannot be <c>null</c>.</param>
+    /// <returns>
+    /// A successful <see cref="Result"/> if all results succeeded;
+    /// otherwise, a failure result with an <see cref="AggregateFailure"/>.
+    /// </returns>
+    public static async Task<Result> AggregateAsync(this IEnumerable<Task<Result>> resultTasks)
+    {
+        ArgumentNullException.ThrowIfNull(resultTasks);
+        
+        var results = await Task.WhenAll(resultTasks);
+        return results.Aggregate();
+    }
+    
     /// <summary>
     /// Extracts the values from all successful <see cref="Result{T}"/> instances in the collection.
     /// </summary>
@@ -122,6 +208,23 @@ public static class CollectionExtensions
     }
 
     /// <summary>
+    /// Extracts the values from all successful <see cref="Result{T}"/> instances in the collection.
+    /// </summary>
+    /// <remarks>
+    /// If a result is marked successful but contains no value, an exception is thrown.
+    /// </remarks>
+    /// <typeparam name="T">The type of the value contained in each result.</typeparam>
+    /// <param name="resultTasks">The collection of asynchronous result tasks to filter. Cannot be <c>null</c>.</param>
+    /// <returns>An <see cref="IEnumerable{T}"/> of values from successful results.</returns>
+    public static async Task<IEnumerable<T>> SuccessValuesAsync<T>(this IEnumerable<Task<Result<T>>> resultTasks)
+    {
+        ArgumentNullException.ThrowIfNull(resultTasks);
+
+        var results = await Task.WhenAll(resultTasks);
+        return SuccessValues(results);
+    }
+
+    /// <summary>
     /// Extracts the failure objects from all failed <see cref="Result{T}"/> instances in the collection.
     /// </summary>
     /// <typeparam name="T">The type of the value contained in each result.</typeparam>
@@ -136,6 +239,23 @@ public static class CollectionExtensions
     }
 
     /// <summary>
+    /// Extracts the failure objects from all failed <see cref="Result{T}"/> instances in the collection.
+    /// </summary>
+    /// <remarks>
+    /// If a result is marked successful but contains no value, an exception is thrown.
+    /// </remarks>
+    /// <typeparam name="T">The type of the value contained in each result.</typeparam>
+    /// <param name="resultTasks">The collection of asynchronous result tasks to filter. Cannot be <c>null</c>.</param>
+    /// <returns>An <see cref="IEnumerable{Failure}"/> of values from successful results.</returns>
+    public static async Task<IEnumerable<Failure>> FailuresAsync<T>(this IEnumerable<Task<Result<T>>> resultTasks)
+    {
+        ArgumentNullException.ThrowIfNull(resultTasks);
+
+        var results = await Task.WhenAll(resultTasks);
+        return Failures(results);
+    }
+    
+    /// <summary>
     /// Splits a collection of <see cref="Result{T}"/> into successful values and failures.
     /// </summary>
     /// <typeparam name="T">The type of the value contained in successful results.</typeparam>
@@ -143,8 +263,8 @@ public static class CollectionExtensions
     /// <returns>
     /// A tuple containing:
     /// <list type="bullet">
-    ///   <item><term><c>successes</c></term>: The values from all successful results.</item>
-    ///   <item><term><c>failures</c></term>: The failure objects from all failed results.</item>
+    ///   <item><c>successes</c>: The values from all successful results.</item>
+    ///   <item><c>failures</c>: The failure objects from all failed results.</item>
     /// </list>
     /// </returns>
     public static (IEnumerable<T> successes, IEnumerable<Failure> failures) Split<T>(this IEnumerable<Result<T>> results)
@@ -166,5 +286,25 @@ public static class CollectionExtensions
         }
 
         return (successfulResults.AsEnumerable(), failures.AsEnumerable());
+    }
+
+    /// <summary>
+    /// Splits a collection of <see cref="Result{T}"/> into successful values and failures.
+    /// </summary>
+    /// <typeparam name="T">The type of the value contained in successful results.</typeparam>
+    /// <param name="resultTasks">The collection of asynchronous result tasks to filter. Cannot be <c>null</c>.</param>
+    /// <returns>
+    /// A tuple containing:
+    /// <list type="bullet">
+    ///   <item><c>successes</c>: The values from all successful results.</item>
+    ///   <item><c>failures</c>: The failure objects from all failed results.</item>
+    /// </list>
+    /// </returns>
+    public static async Task<(IEnumerable<T> successes, IEnumerable<Failure> failures)> SplitAsync<T>(this IEnumerable<Task<Result<T>>> resultTasks)
+    {
+        ArgumentNullException.ThrowIfNull(resultTasks);
+
+        var results = await Task.WhenAll(resultTasks);
+        return Split(results);
     }
 }
