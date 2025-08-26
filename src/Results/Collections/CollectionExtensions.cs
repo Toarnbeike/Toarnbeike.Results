@@ -164,7 +164,7 @@ public static class CollectionExtensions
         ArgumentNullException.ThrowIfNull(results);
         var failures = results.Where(r => r.IsFailure).Select(r => r.GetFailureOrThrow()).ToList();
 
-        return failures.Count == 0
+        return failures.Count > 0
             ? new AggregateFailure(failures)
             : Result.Success();
     }
