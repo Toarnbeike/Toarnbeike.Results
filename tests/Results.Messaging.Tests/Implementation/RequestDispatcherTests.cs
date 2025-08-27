@@ -2,6 +2,9 @@
 using Toarnbeike.Results.Messaging.Implementation;
 using Toarnbeike.Results.Messaging.Pipeline;
 using Toarnbeike.Results.Messaging.Requests;
+using Toarnbeike.Results.Messaging.Tests.TestData;
+using Toarnbeike.Results.Messaging.Tests.TestData.Behaviours;
+using Toarnbeike.Results.Messaging.Tests.TestData.Requests;
 using Toarnbeike.Results.TestHelpers;
 
 namespace Toarnbeike.Results.Messaging.Tests.Implementation;
@@ -13,7 +16,7 @@ public class RequestDispatcherTests
     {
         var services = new ServiceCollection();
 
-        services.AddTransient<IRequestHandler<TestRequest, Result<string>>, TestRequestHandler>();
+        services.AddTransient<IRequestHandler<TestQuery, Result<string>>, TestQueryHandler>();
 
         _provider = services.BuildServiceProvider();
     }
@@ -31,11 +34,11 @@ public class RequestDispatcherTests
     {
         // Arrange
         var dispatcher = new RequestDispatcher(_provider);
-        var request = new TestRequest("ping");
+        var request = new TestQuery();
 
         var result = await dispatcher.DispatchAsync(request);
 
-        result.ShouldBeSuccessWithValue("pong");
+        result.ShouldBeSuccessWithValue("Success");
     }
 
     [Fact]
@@ -45,16 +48,16 @@ public class RequestDispatcherTests
         var services = new ServiceCollection();
         var log = new List<string>();
         services.AddSingleton(log);
-        services.AddTransient<IRequestHandler<TestRequest, Result<string>>, TestRequestHandler>();
-        services.AddTransient<IPipelineBehaviour<TestRequest, Result<string>>, LoggingBehaviour>();
+        services.AddTransient<IRequestHandler<TestQuery, Result<string>>, TestQueryHandler>();
+        services.AddTransient(typeof(IPipelineBehaviour<TestQuery, Result<string>>), sp => new LoggingBehaviour<TestQuery, Result<string>>(sp.GetRequiredService<List<string>>()));
 
         var provider = services.BuildServiceProvider();
         var dispatcher = new RequestDispatcher(provider);
-        var request = new TestRequest("ping");
+        var request = new TestQuery();
 
         var result = await dispatcher.DispatchAsync(request);
 
-        result.ShouldBeSuccessWithValue("pong");
+        result.ShouldBeSuccessWithValue("Success");
         log.Count.ShouldBe(1);
         log.ShouldContain("LoggingBehaviour");
     }
@@ -63,32 +66,12 @@ public class RequestDispatcherTests
     public async Task DispatchAsync_ShouldCacheDelegatePerRequestType()
     {
         var dispatcher = new RequestDispatcher(_provider);
-        var request = new TestRequest("ping");
+        var request = new TestQuery();
 
         var result1 = await dispatcher.DispatchAsync(request);
         var result2 = await dispatcher.DispatchAsync(request);
 
-        result1.ShouldBeSuccessWithValue("pong");
-        result2.ShouldBeSuccessWithValue("pong");
-    }
-
-    private sealed record TestRequest(string Input) : IRequest<Result<string>>;
-
-    private sealed class TestRequestHandler : IRequestHandler<TestRequest, Result<string>>
-    {
-        public Task<Result<string>> HandleAsync(TestRequest request, CancellationToken cancellationToken)
-            => Task.FromResult<Result<string>>("pong");
-    }
-
-    private sealed class LoggingBehaviour(List<string> log) : IPipelineBehaviour<TestRequest, Result<string>>
-    {
-        public Task<Result> PreHandleAsync(TestRequest request, CancellationToken cancellationToken = default) =>
-            Result.SuccessTask();
-
-        public Task<Result> PostHandleAsync(TestRequest request, Result<string> response, CancellationToken cancellationToken = default)
-        {
-            log.Add(nameof(LoggingBehaviour));
-            return Result.SuccessTask();
-        }
+        result1.ShouldBeSuccessWithValue("Success");
+        result2.ShouldBeSuccessWithValue("Success");
     }
 }

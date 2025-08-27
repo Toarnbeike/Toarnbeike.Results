@@ -1,31 +1,19 @@
 ﻿using Toarnbeike.Results.Messaging.Implementation;
 using Toarnbeike.Results.Messaging.Pipeline;
 using Toarnbeike.Results.Messaging.Requests;
+using Toarnbeike.Results.Messaging.Tests.TestData;
+using Toarnbeike.Results.Messaging.Tests.TestData.Requests;
 using Toarnbeike.Results.TestHelpers;
 
 namespace Toarnbeike.Results.Messaging.Tests.Implementation;
 
 public class RequestPipelineExecutorCommandTests
 {
-    public record TestCommand : ICommand;
-
-    public class TestCommandHandler : ICommandHandler<TestCommand>
-    {
-        public Task<Result> HandleAsync(TestCommand command, CancellationToken ct) => Result.SuccessTask();
-    }
-
-    public record TestQuery : IQuery<string>;
-
-    public class TestQueryHandler : IQueryHandler<TestQuery, string>
-    {
-        public Task<Result<string>> HandleAsync(TestQuery query, CancellationToken ct) => Result.SuccessTask("Success");
-    }
-
-    public class FailingQueryHandler : IQueryHandler<TestQuery, string>
+    private sealed class FailingQueryHandler : IQueryHandler<TestQuery, string>
     {
         public Task<Result<string>> HandleAsync(TestQuery query, CancellationToken ct) => Task.FromResult(Result<string>.Failure(new Failure("X", "handler fail")));
     }
-
+    
     [Fact]
     public async Task ExecuteAsync_Command_NoBehaviours_ShouldInvokeHandler()
     {
