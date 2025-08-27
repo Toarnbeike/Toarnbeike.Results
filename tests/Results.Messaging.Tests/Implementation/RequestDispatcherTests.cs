@@ -2,7 +2,6 @@
 using Toarnbeike.Results.Messaging.Implementation;
 using Toarnbeike.Results.Messaging.Pipeline;
 using Toarnbeike.Results.Messaging.Requests;
-using Toarnbeike.Results.Messaging.Tests.TestData;
 using Toarnbeike.Results.Messaging.Tests.TestData.Behaviours;
 using Toarnbeike.Results.Messaging.Tests.TestData.Requests;
 using Toarnbeike.Results.TestHelpers;
@@ -32,7 +31,6 @@ public class RequestDispatcherTests
     [Fact]
     public async Task DispatchAsync_ShouldReturnResultFromHandler()
     {
-        // Arrange
         var dispatcher = new RequestDispatcher(_provider);
         var request = new TestQuery();
 
@@ -44,7 +42,6 @@ public class RequestDispatcherTests
     [Fact]
     public async Task DispatchAsync_ShouldExecutePipelineBehaviour()
     {
-        // Arrange
         var services = new ServiceCollection();
         var log = new List<string>();
         services.AddSingleton(log);
