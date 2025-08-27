@@ -17,6 +17,7 @@
 	
   <ItemGroup>
 	<ProjectReference Include="..\..\src\Results.FluentValidation\Results.FluentValidation.csproj" />
+	<ProjectReference Include="..\..\src\Results.Messaging\Results.Messaging.csproj" />
 	<ProjectReference Include="..\..\src\Results.MinimalApi\Results.MinimalApi.csproj" />
   </ItemGroup>
 

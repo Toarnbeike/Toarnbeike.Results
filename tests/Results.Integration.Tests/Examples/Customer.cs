@@ -15,18 +15,20 @@ namespace Toarnbeike.Results.Integration.Tests.Examples;
 public record Customer(int Id, string Name, string Email);
 
 /// <summary>
-/// Repository service
+/// Customer repository
 /// </summary>
-public interface ICustomerService
+public interface ICustomerRepository
 {
     Result<Customer> GetById(int id);
+    Task<Result<List<Customer>>> GetAll();
     Task UnsafeSaveAsync(Customer customer);
+    Task UpdateAsync(Customer customer, string newName);
 }
 
 /// <summary>
-/// Implementation of the repository service.
+/// Implementation of the customer repository.
 /// </summary>
-public class CustomerService : ICustomerService
+public class CustomerRepository : ICustomerRepository
 {
     /// <summary>
     /// 1 customer that is always present.
@@ -49,6 +51,8 @@ public class CustomerService : ICustomerService
         return customer;
     }
 
+    public Task<Result<List<Customer>>> GetAll() => Result.SuccessTask(_customers);
+
     /// <summary>
     /// Method to save a new customer.
     /// This method can throw, and is therefore unsafe.
@@ -65,6 +69,14 @@ public class CustomerService : ICustomerService
             throw new InvalidOperationException("Customer already exists");
         }
         _customers.Add(customer);
+    }
+
+    public Task UpdateAsync(Customer customer, string newName)
+    {
+        var newCustomer = customer with { Name = newName };
+        _customers.Remove(customer);
+        _customers.Add(newCustomer);
+        return Task.CompletedTask;
     }
 }
 
@@ -86,14 +98,14 @@ public class CustomerValidator : AbstractValidator<Customer>
 }
 
 /// <summary>
-/// Extension to add the <see cref="CustomerService"/> and the <see cref="CustomerValidator"/> to 
-/// the service collection by their interfaces, for use in the minimal apis.
+/// Extension to add the <see cref="CustomerRepository"/> and the <see cref="CustomerValidator"/> to 
+/// the repository collection by their interfaces, for use in the minimal apis.
 /// </summary>
 public static class CustomerServiceExtensions
 {
     public static IServiceCollection AddCustomerServices(this IServiceCollection services)
     {
-        services.AddTransient<ICustomerService, CustomerService>(); // always a fresh instance
+        services.AddTransient<ICustomerRepository, CustomerRepository>(); // always a fresh instance
         services.AddSingleton<IValidator<Customer>, CustomerValidator>();
         return services;
     }
@@ -109,20 +121,20 @@ public static class CustomerEndpoints
         // MapResultGroup registers the endpoints in this group as accepting a Result as return value.
         var customers = app.MapResultGroup("/customers");
 
-        // Get the customer by their Id using the repository service.
-        customers.MapGet("/{id}", (int id, ICustomerService service) =>
+        // Get the customer by their Id using the customer repository.
+        customers.MapGet("/{id}", (int id, ICustomerRepository repository) =>
         {
-            var result = service.GetById(id);
+            var result = repository.GetById(id);
             return result;
         });
 
         // Add a new customer
-        customers.MapPost("", async (Customer customer, ICustomerService service, IValidator<Customer> validator) =>
+        customers.MapPost("", async (Customer customer, ICustomerRepository repository, IValidator<Customer> validator) =>
         {
             Result result = await Result.Success(customer)
                 .Validate(validator)
                 .Check(c => c.Name != "Alice", () => new ValidationFailure("Name", "Cannot create customer with name 'Alice'"))
-                .VerifyAsync(async c => await Result.TryAsync(async () => await service.UnsafeSaveAsync(c)));
+                .VerifyAsync(async c => await Result.TryAsync(async () => await repository.UnsafeSaveAsync(c)));
             return result;
         });
     }
