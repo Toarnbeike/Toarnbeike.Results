@@ -3,9 +3,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Toarnbeike.Results.Messaging.DependencyInjection;
 using Toarnbeike.Results.Messaging.Implementation;
+using Toarnbeike.Results.Messaging.Notifications;
+using Toarnbeike.Results.Messaging.Notifications.Publisher;
+using Toarnbeike.Results.Messaging.Notifications.Store;
 using Toarnbeike.Results.Messaging.Pipeline;
 using Toarnbeike.Results.Messaging.Requests;
 using Toarnbeike.Results.Messaging.Tests.TestData.Behaviours;
+using Toarnbeike.Results.Messaging.Tests.TestData.Notifications;
 using Toarnbeike.Results.Messaging.Tests.TestData.Requests;
 using Toarnbeike.Results.TestHelpers;
 
@@ -13,6 +17,93 @@ namespace Toarnbeike.Results.Messaging.Tests.DependencyInjection;
 
 public class DependencyInjectionExtensionsTests
 {
+    [Fact]
+    public void AddNotificationMessaging_Default_ShouldRegisterPublisherAndStore()
+    {
+        var services = new ServiceCollection();
+
+        services.AddNotificationMessaging();
+
+        var serviceProvider = services.BuildServiceProvider();
+
+        var publisher = serviceProvider.GetRequiredService<INotificationPublisher>();
+        publisher.ShouldNotBeNull();
+
+        var store = serviceProvider.GetRequiredService<INotificationStore>();
+        store.ShouldBeOfType<InMemoryNotificationStore>();
+
+        var logger = serviceProvider.GetRequiredService<ILogger<NotificationPublisher>>();
+        logger.ShouldNotBeNull();
+        logger.ShouldBeOfType<NullLogger<NotificationPublisher>>();
+    }
+
+    [Fact]
+    public void AddNotificationMessaging_CustomStore_ShouldRegisterCustomStore()
+    {
+        var services = new ServiceCollection();
+
+        services.AddNotificationMessaging(options =>
+        {
+            options.UseCustomNotificationStore<FakeNotificationStore>();
+        });
+
+        var serviceProvider = services.BuildServiceProvider();
+
+        var store = serviceProvider.GetRequiredService<INotificationStore>();
+        store.ShouldBeOfType<FakeNotificationStore>();
+    }
+
+    [Fact]
+    public void AddNotificationMessaging_HandlerAssembly_ShouldRegisterHandlers_FromAssembly()
+    {
+        var services = new ServiceCollection();
+        services.AddSingleton(new List<string>()); // log for the SampleNotificationHandler
+        services.AddNotificationMessaging(options =>
+        {
+            options.FromAssembly(typeof(SampleNotificationHandler).Assembly);
+        });
+
+        var sp = services.BuildServiceProvider();
+
+        var handlers = sp.GetServices<INotificationHandler<SampleNotification>>().ToList();
+        handlers.ShouldNotBeEmpty();
+        handlers.First().ShouldBeOfType<SampleNotificationHandler>();
+    }
+
+    [Fact]
+    public void AddNotificationMessaging_HandlerAssembly_ShouldRegisterHandlers_FromAssemblies()
+    {
+        var services = new ServiceCollection();
+        services.AddSingleton(new List<string>()); // log for the SampleNotificationHandler
+        services.AddNotificationMessaging(options =>
+        {
+            options.FromAssemblies(typeof(SampleNotificationHandler).Assembly);
+        });
+
+        var sp = services.BuildServiceProvider();
+
+        var handlers = sp.GetServices<INotificationHandler<SampleNotification>>().ToList();
+        handlers.ShouldNotBeEmpty();
+        handlers.First().ShouldBeOfType<SampleNotificationHandler>();
+    }
+    
+    [Fact]
+    public void AddNotificationMessaging_HandlerAssembly_ShouldRegisterHandlers_FromAssemblyContaining()
+    {
+        var services = new ServiceCollection();
+        services.AddSingleton(new List<string>()); // log for the SampleNotificationHandler
+        services.AddNotificationMessaging(options =>
+        {
+            options.FromAssemblyContaining<SampleNotificationHandler>();
+        });
+
+        var sp = services.BuildServiceProvider();
+
+        var handlers = sp.GetServices<INotificationHandler<SampleNotification>>().ToList();
+        handlers.ShouldNotBeEmpty();
+        handlers.First().ShouldBeOfType<SampleNotificationHandler>();
+    }
+
     [Fact]
     public void AddRequestMessaging_ShouldRegisterDispatcher()
     {
@@ -111,5 +202,15 @@ public class DependencyInjectionExtensionsTests
         result.ShouldBeSuccessWithValue("Success");
         log.Count.ShouldBe(1);
         log.ShouldContain("LoggingBehaviour");
+    }
+
+    // Dummy implementations for testing
+    private sealed class FakeNotificationStore : INotificationStore
+    {
+        public Task AddAsync(INotification notification, CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task UpdateAsync(INotification notification, CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task<INotification> GetAsync(NotificationId notificationId, CancellationToken cancellationToken = default) => Task.FromResult<INotification>(new SampleNotification("Payload"));
+        public Task<IReadOnlyList<INotification>> GetUnprocessedAsync(CancellationToken cancellationToken = default) => Task.FromResult<IReadOnlyList<INotification>>(new List<INotification>());
+        public Task MarkAsHandledAsync(NotificationId notificationId, string processor, Result processingResult, CancellationToken cancellationToken = default) => Task.CompletedTask;
     }
 }

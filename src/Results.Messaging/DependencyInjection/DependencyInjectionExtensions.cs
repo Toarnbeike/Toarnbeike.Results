@@ -4,6 +4,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Reflection;
 using Toarnbeike.Results.Messaging.Implementation;
+using Toarnbeike.Results.Messaging.Notifications;
+using Toarnbeike.Results.Messaging.Notifications.Publisher;
+using Toarnbeike.Results.Messaging.Notifications.Store;
 using Toarnbeike.Results.Messaging.Pipeline;
 using Toarnbeike.Results.Messaging.Requests;
 
@@ -14,6 +17,46 @@ namespace Toarnbeike.Results.Messaging.DependencyInjection;
 /// </summary>
 public static class DependencyInjectionExtensions
 {
+    /// <summary>
+    /// Add notification messaging services to the service collection with 
+    /// the default configuration and without assemblies to scan.
+    /// </summary>
+    public static IServiceCollection AddNotificationMessaging(this IServiceCollection services) => services.AddNotificationMessaging(_ => { /* use defaults */ });
+
+    /// <summary>
+    /// Add notification messaging services to the service collection with custom configuration.
+    /// </summary>
+    /// <param name="services">The service collection to register to.</param>
+    /// <param name="configure">Delegate to configure the options for the notification messaging.</param>
+    public static IServiceCollection AddNotificationMessaging(this IServiceCollection services, Action<NotificationMessagingOptions> configure)
+    {
+        var options = new NotificationMessagingOptions();
+        configure(options);
+
+        services.TryAddSingleton<INotificationPublisher, NotificationPublisher>();
+        services.TryAddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
+
+        // Register all handlers from the specified assemblies
+        foreach (var assembly in options.HandlerAssemblies)
+        {
+            services.AddNotificationHandlersFromAssembly(assembly);
+        }
+
+        if (options.CustomNotificationStoreType is not null)
+        {
+            // Register the custom notification store type if provided. This is registered as scoped to ensure compatibility with e.g. EF Core.
+            services.TryAddScoped(typeof(INotificationStore), options.CustomNotificationStoreType);
+        }
+        else
+        {
+            // Register the in-memory notification store as the default implementation.
+            // This is registered as singleton because the in memory collection contains state that is stored over the lifetime of requests.
+            services.TryAddSingleton<INotificationStore, InMemoryNotificationStore>();
+        }
+
+        return services;
+    }
+    
     /// <summary>
     /// Add request messaging services to the service collection with 
     /// the default configuration and without assemblies to scan.
@@ -50,6 +93,21 @@ public static class DependencyInjectionExtensions
         return services;
     }
 
+    private static void AddNotificationHandlersFromAssembly(this IServiceCollection services, Assembly handlerAssembly)
+    {
+        var handlerTypes = handlerAssembly
+            .GetTypes()
+            .Where(t => !t.IsAbstract && !t.IsInterface)
+            .SelectMany(t => t.GetInterfaces(), (t, i) => new { Interface = i, Implementation = t })
+            .Where(x => x.Interface.IsGenericType && x.Interface.GetGenericTypeDefinition() == typeof(INotificationHandler<>))
+            .ToList();
+
+        foreach (var registration in handlerTypes)
+        {
+            services.TryAddScoped(registration.Interface, registration.Implementation);
+        }
+    }
+    
     private static void AddRequestHandlersFromAssembly(this IServiceCollection services, Assembly handlerAssembly)
     {
         var handlerTypes = handlerAssembly.GetTypes()
