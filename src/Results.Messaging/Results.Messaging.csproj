@@ -1,5 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+	<PackageId>Toarnbeike.Results.Messaging</PackageId>
+	<!-- Version is managed centrally in Directory.build.props to keep versions in sync.-->
+	<Description>Lightweight CQRS request/response messaging built on top of Toarnbeike.Results</Description>
+	<PackageTags>result messaging cqrs request handler query command pipeline</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
 	<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
   </ItemGroup>
@@ -8,4 +15,7 @@
     <ProjectReference Include="..\Results\Results.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+	<None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
 </Project>
