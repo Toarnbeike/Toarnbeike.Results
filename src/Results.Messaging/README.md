@@ -21,6 +21,7 @@ Define **commands** and **queries**, dispatch them dynamically, and process resu
 - Built-in pagination support via `IPaginatedQuery`.  
 - Automatic discovery and registration of handlers and pipelines in DI.  
 - **Result-first design**: rich error handling without exceptions.
+- Fire-and-forget **notifications** with support for multiple handlers and outbox-style persistence.
 
 ---
 
@@ -80,8 +81,13 @@ public class FrontEndUserService(IRequestDispatcher dispatch)
 ## Pipeline behaviour
 
 Pipeline behaviours wrap request handling with **cross-cutting logic**.
-Examples include validation, logging, or caching.
+Typical examples include validation, logging, or caching.
 
+### Build in pipelines:
+- `PerformanceLoggingPipelineBehaviour`: Logs incoming requests, measures execution time, and sends a `RequestExceedsExpectedDurationNotification` if the configured threshold (default 5 seconds) is exceeded.
+- `FluentValidationPipelineBehaviour`: Validates incoming requests using registered `IValidator<TRequest>` instances. Short-circuits execution if the request is invalid.
+
+### Custom pipeline example:
 ``` csharp
 public sealed class LoggingBehaviour<TRequest, TResponse>(
     ILogger<LoggingBehaviour<TRequest, TResponse>> logger) : IPipelineBehaviour<TRequest, TResponse>
@@ -113,12 +119,81 @@ public sealed class LoggingBehaviour<TRequest, TResponse>(
 }
 ```
 
-Register your pipeline:
+### Registering behaviours:
 ``` csharp
 builder.Services.AddRequestMessaging(o =>
+    o.AddValidationBehaviour();
+    o.AddPerformanceLoggingBehavior(configure => configure.MaxExpectedDuration = Timespan.FromSeconds(1));
     o.AddPipelineBehaviour(typeof(LoggingBehaviour<,>)));
 ```
 
-The order in which the pipelines are registered is the order in which they are executed.
+> The order in which the pipelines are registered is the order in which they are executed.
+
+---
+
+## Notifications 
+
+In addition to commands and queries, this package supports **notifications**.
+Notifications are **fire-and-forget** messages that can be processed by **multiple handlers** at once.
+
+They follow an outbox-style flow:
+1. Notificaitons are fist stored in an `INotificationStore`.
+1. The `INotificationPublisher` retrieves and dispatches them.
+1. Each notificiaotn is delivered to all matching handlers.
+
+### Flow:
+
+1. Register notification messaging in your DI setup:
+    ``` csharp
+    services.AddNotificationMessaging(options =>
+    {
+        // Assemblies containing notification handlers
+        options.FromAssemblyContaining<MyNotificationHandler>();
+
+        // Optionally: register a custom notification store (e.g. EF Core)
+        options.UseCustomNotificationStore<MyEfCoreNotificationStore>();
+    });
+    ```
+    >If no custom store is provided, an in-memory store is used by default.
+
+1. Define a notification by inheriting NotificationBase
+    ``` csharp
+    public record CustomerCreatedNotification(int CustomerId) : NotificationBase("Sender");
+    ```
+
+1. Write a handler for the notification
+    ``` csharp
+    public sealed class SendWelcomeEmailHandler 
+    : INotificationHandler<CustomerCreatedNotification>
+    {
+        public Task HandleAsync(CustomerCreatedNotification notification, CancellationToken cancellationToken)
+        {
+            // Send welcome email
+            return Task.CompletedTask;
+        }
+    }
+    ```
+
+1. Publish the notification
+    ``` csharp
+    public sealed class CustomerService(INotificationStore notificationStore)
+    {
+        public async Task AddCustomerAsync()
+        {
+            // ... register user ...
+            var customerId = GetNewId();
+            await _store.AddAsync(new UserRegisteredNotification(customerId));
+        }
+    }
+    ```
+   Notifications are **persisted first** and later **dispatched asynchronously** by the publisher.
+
+---
+
+## Summary
+
+- **Commands/Queries** -> request/response with rich result handling.
+- **Pipelines** -> plug in cross-cutting behaviours (validation, logging, caching).
+- **Notifications** -> fire-and-forget messages; processed reliably by multiple handlers.
 
 ---
