@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.Integration.Tests.Examples;
 using Toarnbeike.Results.Messaging;
 using Toarnbeike.Results.Messaging.DependencyInjection;
@@ -7,14 +8,17 @@ using Toarnbeike.Results.TestHelpers;
 
 namespace Toarnbeike.Results.Integration.Tests.Messaging;
 
-public class QueryHandlingTest
+public class RequestHandlingTests
 {
     private static ServiceProvider BuildServiceCollectionWithDispatcher()
     {
         var services = new ServiceCollection();
 
         services.AddRequestMessaging(options =>
-            options.FromAssemblyContaining<AddCustomerCommandHandler>());
+        {
+            options.FromAssemblyContaining<AddCustomerCommandHandler>();
+            options.AddValidationBehaviour();
+        });
         services.AddCustomerServices();
         return services.BuildServiceProvider();
     }
@@ -32,6 +36,22 @@ public class QueryHandlingTest
         actual.Email.ShouldBe("bob@test.com");
     }
 
+    [Fact]
+    public async Task AddCustomerCommandHandler_Should_ReturnValidationFailure_IfInvalid()
+    {
+        var serviceProvider = BuildServiceCollectionWithDispatcher();
+        var dispatcher = serviceProvider.GetRequiredService<IRequestDispatcher>();
+
+        var command = new AddCustomerCommand("Name that is obviously to long.", "bob@test.com");
+        var result = await dispatcher.DispatchAsync(command);
+
+        var validationFailures = result.ShouldBeFailureOfType<ValidationFailures>();
+        var failureCollection = validationFailures.Failures;
+        failureCollection.Count.ShouldBe(1);
+        failureCollection.ShouldContainKey("Name");
+        failureCollection["Name"].ShouldContain("Maximum length: 10");
+    }
+    
     [Fact]
     public async Task UpdateCustomerCommandHandler_Should_BeHandled()
     {

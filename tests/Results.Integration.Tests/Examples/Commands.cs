@@ -1,4 +1,5 @@
-﻿using Toarnbeike.Results.Messaging.Requests;
+﻿using FluentValidation;
+using Toarnbeike.Results.Messaging.Requests;
 using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.Messaging.Pagination;
 
@@ -14,6 +15,22 @@ internal sealed class AddCustomerCommandHandler(ICustomerRepository customerRepo
         var customer = new Customer(12, request.Name, request.Email);
         return await Result.TryAsync(() => customerRepository.UnsafeSaveAsync(customer))
             .WithValue(customer);
+    }
+}
+
+/// <summary>
+/// Validator to check the incoming customer before saving.
+/// </summary>
+public sealed class AddCustomerCommandValidator : AbstractValidator<AddCustomerCommand>
+{
+    public AddCustomerCommandValidator()
+    {
+        RuleFor(c => c.Name)
+            .NotEmpty().WithMessage("Name is required")
+            .MaximumLength(10).WithMessage("Maximum length: 10");
+        RuleFor(c => c.Email)
+            .NotEmpty().WithMessage("Email is required")
+            .EmailAddress().WithMessage("Invalid email format");
     }
 }
 
