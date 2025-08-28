@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Toarnbeike.Results.Messaging.Pipeline.PerformanceLogging;
 
 namespace Toarnbeike.Results.Messaging.DependencyInjection;
 
@@ -56,6 +57,28 @@ public sealed class RequestMessagingOptions
     {
         ArgumentNullException.ThrowIfNull(behaviorType);
         PipelineBehaviours.Add(behaviorType);
+        return this;
+    }
+
+    /// <summary>
+    /// Add <see cref="PerformanceLoggingBehaviour{TRequest, TResponse}" /> as pipeline behaviour.
+    /// The config can be manipulated via the action delegate, but it can also be read from config.
+    /// </summary>
+    public RequestMessagingOptions AddPerformanceLoggingBehavior(Action<PerformanceLoggingOptions>? configure = null)
+    {
+        PipelineBehaviours.Add(typeof(PerformanceLoggingBehaviour<,>));
+
+        ConfigureAdditionalServices += services =>
+        {
+            services.AddOptions<PerformanceLoggingOptions>()
+                .BindConfiguration(PerformanceLoggingOptions.ConfigSectionName);
+
+            if (configure is not null)
+            {
+                services.Configure(configure);
+            }
+        };
+
         return this;
     }
 }

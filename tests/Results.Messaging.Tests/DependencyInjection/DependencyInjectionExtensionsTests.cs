@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Configuration;
 using Toarnbeike.Results.Messaging.DependencyInjection;
 using Toarnbeike.Results.Messaging.Implementation;
 using Toarnbeike.Results.Messaging.Notifications;
@@ -42,10 +43,7 @@ public class DependencyInjectionExtensionsTests
     {
         var services = new ServiceCollection();
 
-        services.AddNotificationMessaging(options =>
-        {
-            options.UseCustomNotificationStore<FakeNotificationStore>();
-        });
+        services.AddNotificationMessaging(options => { options.UseCustomNotificationStore<FakeNotificationStore>(); });
 
         var serviceProvider = services.BuildServiceProvider();
 
@@ -86,16 +84,13 @@ public class DependencyInjectionExtensionsTests
         handlers.ShouldNotBeEmpty();
         handlers.First().ShouldBeOfType<SampleNotificationHandler>();
     }
-    
+
     [Fact]
     public void AddNotificationMessaging_HandlerAssembly_ShouldRegisterHandlers_FromAssemblyContaining()
     {
         var services = new ServiceCollection();
         services.AddSingleton(new List<string>()); // log for the SampleNotificationHandler
-        services.AddNotificationMessaging(options =>
-        {
-            options.FromAssemblyContaining<SampleNotificationHandler>();
-        });
+        services.AddNotificationMessaging(options => { options.FromAssemblyContaining<SampleNotificationHandler>(); });
 
         var sp = services.BuildServiceProvider();
 
@@ -154,7 +149,7 @@ public class DependencyInjectionExtensionsTests
         handler.ShouldNotBeNull();
         handler.ShouldBeOfType<TestQueryHandler>();
     }
-    
+
     [Fact]
     public void AddRequestMessaging_ShouldRegisterHandler_FromAssemblyContaining()
     {
@@ -204,13 +199,84 @@ public class DependencyInjectionExtensionsTests
         log.ShouldContain("LoggingBehaviour");
     }
 
+    [Fact]
+    public async Task AddRequestMessaging_ShouldIncludePerformanceLogging_WhenConfigured()
+    {
+        var services = new ServiceCollection();
+        var log = new List<string>();
+        services.AddSingleton(log);
+        var configuration = new ConfigurationBuilder().Build();
+        services.AddSingleton<IConfiguration>(configuration);
+        services.AddRequestMessaging(o =>
+        {
+            o.FromAssemblyContaining<TestQueryHandler>();
+            o.AddPerformanceLoggingBehavior();
+        });
+
+        services.AddNotificationMessaging(options => options.FromAssemblyContaining<LongRequestLoggingHandler>());
+        var provider = services.BuildServiceProvider();
+        
+        var dispatcher = provider.GetRequiredService<IRequestDispatcher>();
+
+        var result = await dispatcher.DispatchAsync(new TestQuery());
+
+        var notificationPublisher = provider.GetRequiredService<INotificationPublisher>();
+        await notificationPublisher.PublishAsync();
+        
+        result.ShouldBeSuccessWithValue("Success");
+        log.Count.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task AddRequestMessaging_ShouldIncludePerformanceLoggingMessage_WhenConfiguredToAlwaysRun()
+    {
+        var services = new ServiceCollection();
+        var log = new List<string>();
+        services.AddSingleton(log);
+        var configuration = new ConfigurationBuilder().Build();
+        services.AddSingleton<IConfiguration>(configuration);
+        services.AddRequestMessaging(o =>
+        {
+            o.FromAssemblyContaining<TestQueryHandler>();
+            o.AddPerformanceLoggingBehavior(configure =>
+            {
+                configure.MaxExpectedDuration = TimeSpan.FromMicroseconds(1);
+            });
+        });
+
+        services.AddNotificationMessaging(options => options.FromAssemblyContaining<LongRequestLoggingHandler>());
+        var provider = services.BuildServiceProvider();
+
+        var dispatcher = provider.GetRequiredService<IRequestDispatcher>();
+
+        var result = await dispatcher.DispatchAsync(new TestQuery());
+
+        result.ShouldBeSuccessWithValue("Success");
+
+        var notificationPublisher = provider.GetRequiredService<INotificationPublisher>();
+        await notificationPublisher.PublishAsync();
+        
+        log.Count.ShouldBe(1);
+        log.ShouldContain(message => message.Contains("TestQuery => Result<String> took"));
+    }
+
     // Dummy implementations for testing
     private sealed class FakeNotificationStore : INotificationStore
     {
-        public Task AddAsync(INotification notification, CancellationToken cancellationToken = default) => Task.CompletedTask;
-        public Task UpdateAsync(INotification notification, CancellationToken cancellationToken = default) => Task.CompletedTask;
-        public Task<INotification> GetAsync(NotificationId notificationId, CancellationToken cancellationToken = default) => Task.FromResult<INotification>(new SampleNotification("Payload"));
-        public Task<IReadOnlyList<INotification>> GetUnprocessedAsync(CancellationToken cancellationToken = default) => Task.FromResult<IReadOnlyList<INotification>>(new List<INotification>());
-        public Task MarkAsHandledAsync(NotificationId notificationId, string processor, Result processingResult, CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task AddAsync(INotification notification, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+
+        public Task UpdateAsync(INotification notification, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+
+        public Task<INotification> GetAsync(NotificationId notificationId,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<INotification>(new SampleNotification("Payload"));
+
+        public Task<IReadOnlyList<INotification>> GetUnprocessedAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<INotification>>(new List<INotification>());
+
+        public Task MarkAsHandledAsync(NotificationId notificationId, string processor, Result processingResult,
+            CancellationToken cancellationToken = default) => Task.CompletedTask;
     }
 }
