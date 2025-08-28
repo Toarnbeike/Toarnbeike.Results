@@ -39,5 +39,6 @@ jobs:
       - name: Pack Results.Optional
         run: dotnet pack src/Results.Optional/Results.Optional.csproj --configuration Release --no-build --output ./nupkgs
 
+
       - name: Push to NuGet
         run: dotnet nuget push ./nupkgs/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
