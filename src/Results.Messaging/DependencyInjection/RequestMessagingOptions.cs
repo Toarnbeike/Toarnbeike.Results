@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Toarnbeike.Results.Messaging.Pipeline;
 using Toarnbeike.Results.Messaging.Pipeline.PerformanceLogging;
+using Toarnbeike.Results.Messaging.Pipeline.Validation;
 
 namespace Toarnbeike.Results.Messaging.DependencyInjection;
 
@@ -77,6 +80,22 @@ public sealed class RequestMessagingOptions
             {
                 services.Configure(configure);
             }
+        };
+
+        return this;
+    }
+
+    /// <summary>
+    /// Add a pipeline behaviour that validates requests using FluentValidation.
+    /// This will register all validators found in the specified handler assemblies.
+    /// </summary>
+    /// <returns>The RequestMessagingOptions for fluent configuration.</returns>
+    public RequestMessagingOptions AddValidationBehaviour()
+    {
+        ConfigureAdditionalServices += services =>
+        {
+            services.AddValidatorsFromAssemblies(HandlerAssemblies, includeInternalTypes: true); // registreert IValidator<T>
+            services.AddScoped(typeof(IPipelineBehaviour<,>), typeof(FluentValidationPipelineBehaviour<,>));
         };
 
         return this;

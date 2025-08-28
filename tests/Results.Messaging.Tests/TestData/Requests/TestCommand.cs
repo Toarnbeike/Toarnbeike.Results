@@ -2,4 +2,4 @@
 
 namespace Toarnbeike.Results.Messaging.Tests.TestData.Requests;
 
-public record TestCommand : ICommand;
+public record TestCommand(string Payload = "") : ICommand;

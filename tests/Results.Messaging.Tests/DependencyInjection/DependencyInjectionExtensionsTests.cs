@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +9,7 @@ using Toarnbeike.Results.Messaging.Notifications;
 using Toarnbeike.Results.Messaging.Notifications.Publisher;
 using Toarnbeike.Results.Messaging.Notifications.Store;
 using Toarnbeike.Results.Messaging.Pipeline;
+using Toarnbeike.Results.Messaging.Pipeline.Validation;
 using Toarnbeike.Results.Messaging.Requests;
 using Toarnbeike.Results.Messaging.Tests.TestData.Behaviours;
 using Toarnbeike.Results.Messaging.Tests.TestData.Notifications;
@@ -227,6 +229,7 @@ public class DependencyInjectionExtensionsTests
         log.Count.ShouldBe(0);
     }
 
+    
     [Fact]
     public async Task AddRequestMessaging_ShouldIncludePerformanceLoggingMessage_WhenConfiguredToAlwaysRun()
     {
@@ -260,6 +263,25 @@ public class DependencyInjectionExtensionsTests
         log.ShouldContain(message => message.Contains("TestQuery => Result<String> took"));
     }
 
+    [Fact]
+    public void AddRequestMessaging_ShouldIncludeFluentValidationPipelineBehaviour_WhenConfigured()
+    {
+        var services = new ServiceCollection();
+        services.AddRequestMessaging(o =>
+        {
+            o.FromAssemblyContaining<TestCommandHandler>();
+            o.AddValidationBehaviour();
+        });
+        var provider = services.BuildServiceProvider();
+
+        var behaviour = provider.GetService<IPipelineBehaviour<TestQuery, Result<string>>>();
+        behaviour.ShouldNotBeNull();
+        behaviour.ShouldBeOfType<FluentValidationPipelineBehaviour<TestQuery, Result<string>>>();
+
+        var validators = provider.GetServices<IValidator<TestCommand>>();
+        validators.Count().ShouldBe(1);
+    }
+    
     // Dummy implementations for testing
     private sealed class FakeNotificationStore : INotificationStore
     {

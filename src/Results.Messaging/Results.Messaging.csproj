@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Results\Results.csproj" />
+    <ProjectReference Include="..\Results.FluentValidation\Results.FluentValidation.csproj" />
   </ItemGroup>
 
   <ItemGroup>
