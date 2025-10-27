@@ -73,6 +73,32 @@ public class ResultTryTests
     }
 
     [Fact]
+    public async Task TryValueTaskAsync_Task_Success()
+    {
+        var result = await Result.TryValueAsync(async () => await ValueTask.CompletedTask);
+
+        result.IsSuccess.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task TryValueTaskAsync_Task_Exception_ReturnsFailure()
+    {
+        var result = await Result.TryAsync(async () =>
+        {
+            await ValueTask.CompletedTask;
+            throw new NotSupportedException("Not supported!");
+        });
+
+        var failure = result.ShouldBeFailureOfType<ExceptionFailure>();
+
+        failure.Exception.ShouldBeOfType<NotSupportedException>();
+        failure.Code.ShouldBe("exception:NotSupportedException");
+        failure.Message.ShouldBe("Not supported!");
+        failure.ExceptionType.ShouldBe("NotSupportedException");
+    }
+
+
+    [Fact]
     public async Task TryAsync_Function_Success()
     {
         var result = await Result.TryAsync(async () =>
@@ -90,6 +116,35 @@ public class ResultTryTests
         var result = await Result.TryAsync<string>(async () =>
         {
             await Task.Yield();
+            throw new NullReferenceException("Something is null");
+        });
+
+        var failure = result.ShouldBeFailureOfType<ExceptionFailure>();
+
+        failure.Exception.ShouldBeOfType<NullReferenceException>();
+        failure.Code.ShouldBe("exception:NullReferenceException");
+        failure.Message.ShouldBe("Something is null");
+        failure.ExceptionType.ShouldBe("NullReferenceException");
+    }
+
+    [Fact]
+    public async Task TryValueAsync_Function_Success()
+    {
+        var result = await Result.TryValueAsync(async () =>
+        {
+            await ValueTask.CompletedTask;
+            return "async value";
+        });
+
+        result.ShouldBeSuccessWithValue("async value");
+    }
+
+    [Fact]
+    public async Task TryValueAsync_Function_Exception_ReturnsFailure()
+    {
+        var result = await Result.TryAsync<string>(async () =>
+        {
+            await ValueTask.CompletedTask;
             throw new NullReferenceException("Something is null");
         });
 

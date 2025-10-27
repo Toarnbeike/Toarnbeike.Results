@@ -45,6 +45,14 @@ public partial class Result
     }
 
     /// <summary>
+    /// Executes the specified asynchronous <paramref name="valueTask"/>, returning a successful result if no exception is thrown.
+    /// If an exception occurs, it is captured as a <see cref="ExceptionFailure"/>.
+    /// </summary>
+    /// <param name="valueTask">The asynchronous operation to execute.</param>
+    public static async Task<Result> TryValueAsync(Func<ValueTask> valueTask) => 
+        await TryAsync(() => valueTask().AsTask());
+
+    /// <summary>
     /// Executes the specified <paramref name="func"/>, returning a successful result with its value if no exception is thrown.
     /// If an exception occurs, it is captured as a <see cref="ExceptionFailure"/>.
     /// </summary>
@@ -80,4 +88,13 @@ public partial class Result
             return new ExceptionFailure(ex);
         }
     }
+
+    /// <summary>
+    /// Executes the specified asynchronous <paramref name="func"/>, returning a successful result with its value if no exception is thrown.
+    /// If an exception occurs, it is captured as a <see cref="ExceptionFailure"/>.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the value returned by the asynchronous function.</typeparam>
+    /// <param name="func">The asynchronous function to execute.</param>
+    public static async Task<Result<TValue>> TryValueAsync<TValue>(Func<ValueTask<TValue>> func) =>
+        await TryAsync(() => func().AsTask());
 }

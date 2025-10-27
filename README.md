@@ -164,6 +164,8 @@ var result1 = Result.Try(() => int.Parse("123"));	// Success(123);
 var result2 = Result.Try(() => int.Parse("abc"))	// Failure(ExceptionFailure);
 ```
 
+Result.Try() also has async variants for `Func<Task>`, `Func<Task<T>>`, `Func<ValueTask>` and `Func<ValueTask<T>>`.
+
 ### `ValidationFailure`
 
 Represents a property-level validation issue:
