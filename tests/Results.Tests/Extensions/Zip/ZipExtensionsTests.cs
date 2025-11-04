@@ -43,6 +43,15 @@ public class ZipExtensionsTests
     }
 
     [Fact]
+    public void Zip_Should_ReturnCustomResult_ToWorkEasierWithTupleResults()
+    {
+        var result = _success
+            .Zip(_secondSuccessFunc, (left, right) => (Left: left, Right: right))
+            .Map(zip => zip.Left * zip.Right);
+        result.ShouldBeSuccessWithValue(1.3);
+    }
+
+    [Fact]
     public async Task ZipAsync_Should_ReturnTupleResult_WhenFirstResultIsSuccess_AndSecondResultTaskIsSuccess()
     {
         var result = await _success.ZipAsync(_secondSuccessAsyncFunc);
@@ -61,6 +70,15 @@ public class ZipExtensionsTests
     {
         var result = await _failure.ZipAsync(_secondForbiddenAsyncFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+    }
+
+    [Fact]
+    public async Task ZipAsync_Should_ReturnCustomResult_WhenFirstResultIsSuccess_ToWorkEasierWithTupleResults()
+    {
+        var result = await _success
+            .ZipAsync(_secondSuccessAsyncFunc, (left, right) => (Left: left, Right: right))
+            .Map(zip => zip.Left * zip.Right);
+        result.ShouldBeSuccessWithValue(1.3);
     }
 
     [Fact]
@@ -85,6 +103,15 @@ public class ZipExtensionsTests
     }
 
     [Fact]
+    public async Task Zip_Should_ReturnCustomResult_WhenFirstResultTaskIsSuccess_AndSecondResultIsSuccess()
+    {
+        var result = await _successTask
+            .Zip(_secondSuccessFunc, (left, right) => (Left: left, Right: right))
+            .Map(zip => zip.Left * zip.Right);
+        result.ShouldBeSuccessWithValue(1.3);
+    }
+
+    [Fact]
     public async Task ZipAsync_Should_ReturnTupleResult_WhenFirstResultTaskIsSuccess_AndSecondResultTaskIsSuccess()
     {
         var result = await _successTask.ZipAsync(_secondSuccessAsyncFunc);
@@ -103,5 +130,14 @@ public class ZipExtensionsTests
     {
         var result = await _failureTask.ZipAsync(_secondForbiddenAsyncFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+    }
+
+    [Fact]
+    public async Task ZipAsync_Should_ReturnCustomResult_WhenFirstResultTaskIsSuccess_AndSecondResultTaskIsSuccess()
+    {
+        var result = await _successTask
+            .ZipAsync(_secondSuccessAsyncFunc, (left, right) => (Left: left, Right: right))
+            .Map(zip => zip.Left * zip.Right);
+        result.ShouldBeSuccessWithValue(1.3);
     }
 }
