@@ -3,31 +3,31 @@
 
 |||
 |:---|:---|
-| Generated on: | 10/27/2025 - 12:05:12 |
-| Coverage date: | 10/27/2025 - 12:04:56 - 10/27/2025 - 12:05:10 |
+| Generated on: | 11/04/2025 - 16:38:13 |
+| Coverage date: | 11/04/2025 - 16:37:55 - 11/04/2025 - 16:38:10 |
 | Parser: | MultiReport (6x Cobertura) |
 | Assemblies: | 5 |
 | Classes: | 62 |
 | Files: | 63 |
-| **Line coverage:** | 99.5% (1465 of 1472) |
-| Covered lines: | 1465 |
-| Uncovered lines: | 7 |
-| Coverable lines: | 1472 |
-| Total lines: | 4863 |
-| **Branch coverage:** | 97.3% (333 of 342) |
-| Covered branches: | 333 |
-| Total branches: | 342 |
+| **Line coverage:** | 99% (1485 of 1500) |
+| Covered lines: | 1485 |
+| Uncovered lines: | 15 |
+| Coverable lines: | 1500 |
+| Total lines: | 4959 |
+| **Branch coverage:** | 96.2% (337 of 350) |
+| Covered branches: | 337 |
+| Total branches: | 350 |
 | **Method coverage:** | [Feature is only available for sponsors](https://reportgenerator.io/pro) |
-| Tag: | 53_18840286009 |
+| Tag: | 54_19075914872 |
 
 </details>
 
 ## Coverage
-<details><summary>Results - 99.3%</summary>
+<details><summary>Results - 98.3%</summary>
 
 |**Name**|**Line**|**Branch**|
 |:---|---:|---:|
-|**Results**|**99.3%**|**100%**|
+|**Results**|**98.3%**|**98.2%**|
 |Toarnbeike.Results.Collections.CollectionExtensions|95.4%|100%|
 |Toarnbeike.Results.Extensions.BindExtensions|100%|100%|
 |Toarnbeike.Results.Extensions.CheckExtensions|100%|100%|
@@ -41,7 +41,7 @@
 |Toarnbeike.Results.Extensions.VerifyExtensions|100%|100%|
 |Toarnbeike.Results.Extensions.VerifyWhenExtensions|100%|100%|
 |Toarnbeike.Results.Extensions.WithValueExtensions|100%|100%|
-|Toarnbeike.Results.Extensions.ZipExtensions|100%|100%|
+|Toarnbeike.Results.Extensions.ZipExtensions|85.7%|75%|
 |Toarnbeike.Results.Failure|100%||
 |Toarnbeike.Results.Failures.AggregateFailure|100%|100%|
 |Toarnbeike.Results.Failures.ExceptionFailure|100%||
