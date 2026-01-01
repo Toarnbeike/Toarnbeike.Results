@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Toarnbeike.Optional" Version="1.0.1" />
+	  <PackageReference Include="Toarnbeike.Optional" />
   </ItemGroup>
 
   <ItemGroup>
