@@ -6,7 +6,7 @@ namespace Toarnbeike.Results;
 /// Provides factory methods for safely executing actions and functions that might throw,
 /// wrapping the outcome in a <see cref="Result"/> or <see cref="Result{TValue}"/>.
 /// </summary>
-public partial class Result
+public partial record struct Result
 {
     /// <summary>
     /// Executes the specified <paramref name="action"/>, returning a successful result if no exception is thrown.

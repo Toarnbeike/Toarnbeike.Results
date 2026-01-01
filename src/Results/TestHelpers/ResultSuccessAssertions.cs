@@ -15,11 +15,6 @@ public static class ResultSuccessAssertions
     /// <exception cref="ResultAssertionException">Thrown when the result is a failure.</exception>
     public static void ShouldBeSuccess(this Result result)
     {
-        if (result is null)
-        {
-            throw new ResultAssertionException("Expected result to be non-null.");
-        }
-
         if (result.TryGetFailure(out var failure))
         {
 
@@ -36,11 +31,6 @@ public static class ResultSuccessAssertions
     /// <exception cref="ResultAssertionException">Thrown when the result is a failure.</exception>
     public static TValue ShouldBeSuccess<TValue>(this Result<TValue> result)
     {
-        if (result is null)
-        {
-            throw new ResultAssertionException("Expected result to be non-null.");
-        }
-
         if (!result.TryGetValue(out var actual, out var failure))
         {
             throw new ResultAssertionException($"Expected success result, but got failure: '{failure.Message}'.");

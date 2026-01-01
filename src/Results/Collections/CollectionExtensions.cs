@@ -26,7 +26,7 @@ public static class CollectionExtensions
         ArgumentNullException.ThrowIfNull(resultTasks);
         
         var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
-        return AllSuccess(results);
+        return results.All(result => result.IsSuccess);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public static class CollectionExtensions
         ArgumentNullException.ThrowIfNull(resultTasks);
 
         var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
-        return AllSuccess(results);
+        return results.All(result => result.IsSuccess);
     }
     
     /// <summary>
