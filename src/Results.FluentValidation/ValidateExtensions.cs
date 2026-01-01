@@ -22,6 +22,8 @@ public static class ValidateExtensions
     /// </returns>
     public static Result<TValue> Validate<TValue>(this Result<TValue> result, params IEnumerable<IValidator<TValue>> validators)
     {
+        ArgumentNullException.ThrowIfNull(validators);
+
         if (!result.TryGetValue(out var value))
         {
             return result;
@@ -51,6 +53,8 @@ public static class ValidateExtensions
     /// </returns>
     public static async Task<Result<TValue>> ValidateAsync<TValue>(this Result<TValue> result, params IEnumerable<IValidator<TValue>> validators)
     {
+        ArgumentNullException.ThrowIfNull(validators);
+
         if (!result.TryGetValue(out var value))
         {
             return result;

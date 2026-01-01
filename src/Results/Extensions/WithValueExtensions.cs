@@ -40,6 +40,8 @@ public static class WithValueExtensions
     /// </remarks>
     public static Result<TValue> WithValue<TValue>(this Result result, Func<TValue> valueFunc)
     {
+        ArgumentNullException.ThrowIfNull(valueFunc);
+
         return result.TryGetFailure(out var failure)
             ? Result<TValue>.Failure(failure)
             : Result.Success(valueFunc());
@@ -60,6 +62,8 @@ public static class WithValueExtensions
     /// </remarks>
     public static async Task<Result<TValue>> WithValueAsync<TValue>(this Result result, Func<Task<TValue>> valueFunc)
     {
+        ArgumentNullException.ThrowIfNull(valueFunc);
+
         return result.TryGetFailure(out var failure)
             ? Result<TValue>.Failure(failure)
             : Result.Success(await valueFunc().ConfigureAwait(false));

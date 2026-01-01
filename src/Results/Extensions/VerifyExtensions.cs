@@ -18,10 +18,14 @@ public static class VerifyExtensions
     /// The original result if it was a failure, or if the check succeeded;
     /// otherwise, the failure from the check function.
     /// </returns>
-    public static Result Verify(this Result result, Func<IResult> checkFunc) =>
-        result.IsSuccess && checkFunc().TryGetFailure(out var checkFailure)
+    public static Result Verify(this Result result, Func<IResult> checkFunc)
+    {
+        ArgumentNullException.ThrowIfNull(checkFunc);
+
+        return result.IsSuccess && checkFunc().TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
+    }
 
     /// <summary>
     /// Verifys that a successful <see cref="Result"/> satisfies the provided asynchronous check function.
@@ -35,10 +39,14 @@ public static class VerifyExtensions
     /// The original result if it was a failure, or if the check succeeded;
     /// otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result> VerifyAsync(this Result result, Func<Task<Result>> checkFunc) =>
-        result.IsSuccess && (await checkFunc().ConfigureAwait(false)).TryGetFailure(out var checkFailure)
+    public static async Task<Result> VerifyAsync(this Result result, Func<Task<Result>> checkFunc)
+    {
+        ArgumentNullException.ThrowIfNull(checkFunc);
+
+        return result.IsSuccess && (await checkFunc().ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
+    }
 
     /// <summary>
     /// Verifys that a successful <see cref="Result"/> satisfies the provided asynchronous check function.
@@ -53,10 +61,14 @@ public static class VerifyExtensions
     /// The original result if it was a failure, or if the check succeeded;
     /// otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result> VerifyAsync<TCheck>(this Result result, Func<Task<Result<TCheck>>> checkFunc) =>
-        result.IsSuccess && (await checkFunc().ConfigureAwait(false)).TryGetFailure(out var checkFailure)
+    public static async Task<Result> VerifyAsync<TCheck>(this Result result, Func<Task<Result<TCheck>>> checkFunc)
+    {
+        ArgumentNullException.ThrowIfNull(checkFunc);
+
+        return result.IsSuccess && (await checkFunc().ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
+    }
 
     /// <summary>
     /// Verifys that a successful <see cref="Task{Result}"/> satisfies the provided check function.
@@ -125,10 +137,14 @@ public static class VerifyExtensions
     /// The original result if it was a failure, or if the check succeeded;
     /// otherwise, the failure from the check function.
     /// </returns>
-    public static Result<TValue> Verify<TValue>(this Result<TValue> result, Func<TValue, IResult> checkFunc) =>
-        result.TryGetValue(out var value) && checkFunc(value).TryGetFailure(out var checkFailure)
+    public static Result<TValue> Verify<TValue>(this Result<TValue> result, Func<TValue, IResult> checkFunc)
+    {
+        ArgumentNullException.ThrowIfNull(checkFunc);
+
+        return result.TryGetValue(out var value) && checkFunc(value).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
+    }
 
     /// <summary>
     /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided asynchronous check function.
@@ -143,10 +159,14 @@ public static class VerifyExtensions
     /// The original result if it was a failure, or if the check succeeded;
     /// otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> VerifyAsync<TValue>(this Result<TValue> result, Func<TValue, Task<Result>> checkFunc) =>
-        result.TryGetValue(out var value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
+    public static async Task<Result<TValue>> VerifyAsync<TValue>(this Result<TValue> result, Func<TValue, Task<Result>> checkFunc)
+    {
+        ArgumentNullException.ThrowIfNull(checkFunc);
+
+        return result.TryGetValue(out var value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
+    }
 
     /// <summary>
     /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided asynchronous check function.
@@ -162,10 +182,14 @@ public static class VerifyExtensions
     /// The original result if it was a failure, or if the check succeeded;
     /// otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> VerifyAsync<TValue, TCheck>(this Result<TValue> result, Func<TValue, Task<Result<TCheck>>> checkFunc) =>
-        result.TryGetValue(out var value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
+    public static async Task<Result<TValue>> VerifyAsync<TValue, TCheck>(this Result<TValue> result, Func<TValue, Task<Result<TCheck>>> checkFunc)
+    {
+        ArgumentNullException.ThrowIfNull(checkFunc);
+
+        return result.TryGetValue(out var value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
+    }
 
     /// <summary>
     /// Verify that a successful <see cref="Task{Result{TValue}}"/> satisfies the provided check function.

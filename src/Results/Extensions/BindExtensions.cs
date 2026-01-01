@@ -21,6 +21,8 @@ public static class BindExtensions
     /// </returns>
     public static Result<TOut> Bind<TOut>(this Result result, Func<Result<TOut>> bindFunc)
     {
+        ArgumentNullException.ThrowIfNull(bindFunc);
+
         if (result.TryGetFailure(out var failure))
         {
             return Result<TOut>.Failure(failure);
@@ -46,6 +48,8 @@ public static class BindExtensions
     /// </returns>
     public static async Task<Result<TOut>> BindAsync<TOut>(this Result result, Func<Task<Result<TOut>>> bindTaskFunc)
     {
+        ArgumentNullException.ThrowIfNull(bindTaskFunc);
+
         if (result.TryGetFailure(out var failure))
         {
             return Result<TOut>.Failure(failure);
@@ -69,6 +73,8 @@ public static class BindExtensions
     /// </returns>
     public static async Task<Result<TOut>> Bind<TOut>(this Task<Result> resultTask, Func<Result<TOut>> bindFunc)
     {
+        ArgumentNullException.ThrowIfNull(bindFunc);
+
         var result = await resultTask.ConfigureAwait(false);
         return Bind(result, bindFunc);
     }
@@ -90,6 +96,8 @@ public static class BindExtensions
     /// </returns>
     public static async Task<Result<TOut>> BindAsync<TOut>(this Task<Result> resultTask, Func<Task<Result<TOut>>> bindTaskFunc)
     {
+        ArgumentNullException.ThrowIfNull(bindTaskFunc);
+
         var result = await resultTask.ConfigureAwait(false);
         return await BindAsync(result, bindTaskFunc).ConfigureAwait(false);
     }
@@ -110,6 +118,8 @@ public static class BindExtensions
     /// </returns>
     public static Result<TOut> Bind<TIn, TOut>(this Result<TIn> result, Func<TIn, Result<TOut>> bindFunc)
     {
+        ArgumentNullException.ThrowIfNull(bindFunc);
+
         if (!result.TryGetValue(out var value, out var failure))
         {
             return Result<TOut>.Failure(failure);
@@ -135,6 +145,8 @@ public static class BindExtensions
     /// </returns>
     public static async Task<Result<TOut>> BindAsync<TIn, TOut>(this Result<TIn> result, Func<TIn, Task<Result<TOut>>> bindTaskFunc)
     {
+        ArgumentNullException.ThrowIfNull(bindTaskFunc);
+
         if (!result.TryGetValue(out var value, out var failure))
         {
             return Result<TOut>.Failure(failure);

@@ -18,6 +18,8 @@ public static class TapExtensions
     /// </remarks>
     public static Result Tap(this Result result, Action onSuccess)
     {
+        ArgumentNullException.ThrowIfNull(onSuccess);
+
         if (result.IsSuccess)
         {
             onSuccess();
@@ -38,6 +40,8 @@ public static class TapExtensions
     /// </remarks>
     public static async Task<Result> TapAsync(this Result result, Func<Task> onSuccess)
     {
+        ArgumentNullException.ThrowIfNull(onSuccess);
+
         if (result.IsSuccess)
         {
             await onSuccess().ConfigureAwait(false);
@@ -91,6 +95,8 @@ public static class TapExtensions
     /// </remarks>
     public static Result<TValue> Tap<TValue>(this Result<TValue> result, Action<TValue> onSuccess)
     {
+        ArgumentNullException.ThrowIfNull(onSuccess);
+
         if (result.TryGetValue(out var value))
         {
             onSuccess(value);
@@ -112,6 +118,8 @@ public static class TapExtensions
     /// </remarks>
     public static async Task<Result<TValue>> TapAsync<TValue>(this Result<TValue> result, Func<TValue, Task> onSuccess)
     {
+        ArgumentNullException.ThrowIfNull(onSuccess);
+
         if (result.TryGetValue(out var value))
         {
             await onSuccess(value).ConfigureAwait(false);

@@ -19,10 +19,15 @@ public static class MatchExtensions
     /// This method is useful when you want to transform a result into another value based on whether it succeeded or failed.
     /// Both match functions are required and must be non-null.
     /// </remarks>
-    public static TOut Match<TOut>(this Result result, Func<TOut> onSuccess, Func<Failure, TOut> onFailure) =>
-        result.TryGetFailure(out var failure)
+    public static TOut Match<TOut>(this Result result, Func<TOut> onSuccess, Func<Failure, TOut> onFailure)
+    {
+        ArgumentNullException.ThrowIfNull(onSuccess);
+        ArgumentNullException.ThrowIfNull(onFailure);
+
+        return result.TryGetFailure(out var failure)
             ? onFailure(failure)
             : onSuccess();
+    }
 
     /// <summary>
     /// Projects the result into a value of type <typeparamref name="TOut"/> by applying one of the two provided async functions,
@@ -37,10 +42,15 @@ public static class MatchExtensions
     /// This method is useful when you want to transform a result into another value based on whether it succeeded or failed.
     /// Both match functions are required and must be non-null.
     /// </remarks>
-    public static async Task<TOut> MatchAsync<TOut>(this Result result, Func<Task<TOut>> onSuccess, Func<Failure, Task<TOut>> onFailure) =>
-        result.TryGetFailure(out var failure)
+    public static async Task<TOut> MatchAsync<TOut>(this Result result, Func<Task<TOut>> onSuccess, Func<Failure, Task<TOut>> onFailure)
+    {
+        ArgumentNullException.ThrowIfNull(onSuccess);
+        ArgumentNullException.ThrowIfNull(onFailure);
+
+        return result.TryGetFailure(out var failure)
             ? await onFailure(failure).ConfigureAwait(false)
             : await onSuccess().ConfigureAwait(false);
+    }
 
     /// <summary>
     /// Projects the result into a value of type <typeparamref name="TOut"/> by applying one of the two provided functions,
@@ -94,10 +104,15 @@ public static class MatchExtensions
     /// This method is useful when you want to transform a result into another value based on whether it succeeded or failed.
     /// Both match functions are required and must be non-null.
     /// </remarks>
-    public static TOut Match<TValue, TOut>(this Result<TValue> result, Func<TValue, TOut> onSuccess, Func<Failure, TOut> onFailure) =>
-        result.TryGetValue(out var value, out var failure)
+    public static TOut Match<TValue, TOut>(this Result<TValue> result, Func<TValue, TOut> onSuccess, Func<Failure, TOut> onFailure)
+    {
+        ArgumentNullException.ThrowIfNull(onSuccess);
+        ArgumentNullException.ThrowIfNull(onFailure);
+
+        return result.TryGetValue(out var value, out var failure)
             ? onSuccess(value)
             : onFailure(failure);
+    }
 
     /// <summary>
     /// Projects the result into a value of type <typeparamref name="TOut"/> by applying one of the two provided async functions,
@@ -113,10 +128,15 @@ public static class MatchExtensions
     /// This method is useful when you want to transform a result into another value based on whether it succeeded or failed.
     /// Both match functions are required and must be non-null.
     /// </remarks>
-    public static async Task<TOut> MatchAsync<TValue, TOut>(this Result<TValue> result, Func<TValue, Task<TOut>> onSuccess, Func<Failure, Task<TOut>> onFailure) =>
-        result.TryGetValue(out var value, out var failure)
+    public static async Task<TOut> MatchAsync<TValue, TOut>(this Result<TValue> result, Func<TValue, Task<TOut>> onSuccess, Func<Failure, Task<TOut>> onFailure)
+    {
+        ArgumentNullException.ThrowIfNull(onSuccess);
+        ArgumentNullException.ThrowIfNull(onFailure);
+
+        return result.TryGetValue(out var value, out var failure)
             ? await onSuccess(value).ConfigureAwait(false)
             : await onFailure(failure).ConfigureAwait(false);
+    }
 
     /// <summary>
     /// Projects the result into a value of type <typeparamref name="TOut"/> by applying one of the two provided functions,

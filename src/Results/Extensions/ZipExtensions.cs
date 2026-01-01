@@ -18,6 +18,8 @@ public static class ZipExtensions
     /// </returns>
     public static Result<(T1, T2)> Zip<T1, T2>(this Result<T1> first, Func<T1, Result<T2>> second)
     {
+        ArgumentNullException.ThrowIfNull(second);
+
         if (!first.TryGetValue(out var firstValue, out var firstFailure))
         {
             return Result<(T1, T2)>.Failure(firstFailure);
@@ -47,6 +49,9 @@ public static class ZipExtensions
     /// </returns>
     public static Result<TResult> Zip<T1, T2, TResult>(this Result<T1> first, Func<T1, Result<T2>> second, Func<T1, T2, TResult> projector)
     {
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(projector);
+
         if (!first.TryGetValue(out var firstValue, out var firstFailure))
         {
             return Result<TResult>.Failure(firstFailure);
@@ -74,6 +79,8 @@ public static class ZipExtensions
     /// </returns>
     public static async Task<Result<(T1, T2)>> ZipAsync<T1, T2>(this Result<T1> first, Func<T1, Task<Result<T2>>> secondTask)
     {
+        ArgumentNullException.ThrowIfNull(secondTask);
+
         if (!first.TryGetValue(out var firstValue, out var firstFailure))
         {
             return Result<(T1, T2)>.Failure(firstFailure);
@@ -103,6 +110,9 @@ public static class ZipExtensions
     /// </returns>
     public static async Task<Result<TResult>> ZipAsync<T1, T2, TResult>(this Result<T1> first, Func<T1, Task<Result<T2>>> secondTask, Func<T1, T2, TResult> projector)
     {
+        ArgumentNullException.ThrowIfNull(secondTask);
+        ArgumentNullException.ThrowIfNull(projector);
+
         if (!first.TryGetValue(out var firstValue, out var firstFailure))
         {
             return Result<TResult>.Failure(firstFailure);
@@ -130,6 +140,8 @@ public static class ZipExtensions
     /// </returns>
     public static async Task<Result<(T1, T2)>> Zip<T1, T2>(this Task<Result<T1>> firstTask, Func<T1, Result<T2>> second)
     {
+        ArgumentNullException.ThrowIfNull(second);
+
         var first = await firstTask.ConfigureAwait(false);
         return Zip(first, second);
     }
@@ -149,6 +161,9 @@ public static class ZipExtensions
     /// </returns>
     public static async Task<Result<TResult>> Zip<T1, T2, TResult>(this Task<Result<T1>> firstTask, Func<T1, Result<T2>> second, Func<T1, T2, TResult> projector)
     {
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(projector);
+
         var first = await firstTask.ConfigureAwait(false);
         return Zip(first, second, projector);
     }
