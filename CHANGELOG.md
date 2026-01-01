@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Updated to net10
 
 ### Deprecated
+- Results.Optional - will be moved to Toarnbeike.Functional integration package.
+- Results.Messaging - will be moved to Toarnbeike.AppFramework.Dispatch or Toarnbeike.Dispatch
 
 ### Tooling
 - Added changelog
