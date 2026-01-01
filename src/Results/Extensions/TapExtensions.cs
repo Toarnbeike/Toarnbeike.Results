@@ -79,7 +79,7 @@ public static class TapExtensions
     public static async Task<Result> TapAsync(this Task<Result> resultTask, Func<Task> onSuccess)
     {
         var result = await resultTask.ConfigureAwait(false);
-        return await TapAsync(result, onSuccess);
+        return await TapAsync(result, onSuccess).ConfigureAwait(false);
     }
 
     /// <summary>

@@ -25,7 +25,7 @@ public static class CollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(resultTasks);
         
-        var results = await Task.WhenAll(resultTasks);
+        var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
         return AllSuccess(results);
     }
 
@@ -38,7 +38,7 @@ public static class CollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(resultTasks);
 
-        var results = await Task.WhenAll(resultTasks);
+        var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
         return AllSuccess(results);
     }
     
@@ -87,7 +87,7 @@ public static class CollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(resultTasks);
         
-        var results = await Task.WhenAll(resultTasks);
+        var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
         return Sequence(results);
     }
 
@@ -143,7 +143,7 @@ public static class CollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(resultTasks);
         
-        var results = await Task.WhenAll(resultTasks);
+        var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
         return Aggregate(results);
     }
     
@@ -185,7 +185,7 @@ public static class CollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(resultTasks);
         
-        var results = await Task.WhenAll(resultTasks);
+        var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
         return results.Aggregate();
     }
     
@@ -220,7 +220,7 @@ public static class CollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(resultTasks);
 
-        var results = await Task.WhenAll(resultTasks);
+        var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
         return SuccessValues(results);
     }
 
@@ -251,7 +251,7 @@ public static class CollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(resultTasks);
 
-        var results = await Task.WhenAll(resultTasks);
+        var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
         return Failures(results);
     }
     
@@ -304,7 +304,7 @@ public static class CollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(resultTasks);
 
-        var results = await Task.WhenAll(resultTasks);
+        var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
         return Split(results);
     }
 }

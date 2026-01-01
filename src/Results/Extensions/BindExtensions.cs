@@ -55,7 +55,7 @@ public static class BindExtensions
             return Result<TOut>.Failure(failure);
         }
 
-        return await bindTaskFunc();
+        return await bindTaskFunc().ConfigureAwait(false);
     }
 
     /// <summary>

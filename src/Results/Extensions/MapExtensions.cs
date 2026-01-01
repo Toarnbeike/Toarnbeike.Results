@@ -93,6 +93,6 @@ public static class MapExtensions
     public static async Task<Result<TOut>> MapAsync<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, Task<TOut>> map)
     {
         var result = await resultTask.ConfigureAwait(false);
-        return await MapAsync(result, map);
+        return await MapAsync(result, map).ConfigureAwait(false);
     }
 }

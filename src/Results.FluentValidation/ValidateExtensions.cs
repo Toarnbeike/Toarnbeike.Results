@@ -65,7 +65,7 @@ public static class ValidateExtensions
 
         foreach (var validator in validators)
         {
-            var validationResult = await validator.ValidateAsync(context);
+            var validationResult = await validator.ValidateAsync(context).ConfigureAwait(false);
             failures.AddRange(validationResult.Errors.Where(f => f is not null));
         }
 
@@ -91,7 +91,7 @@ public static class ValidateExtensions
     /// </returns>
     public static async Task<Result<TValue>> Validate<TValue>(this Task<Result<TValue>> resultTask, params IEnumerable<IValidator<TValue>> validators)
     {
-        var result = await resultTask;
+        var result = await resultTask.ConfigureAwait(false);
         return Validate(result, validators);
     }
 
@@ -107,7 +107,7 @@ public static class ValidateExtensions
     /// </returns>
     public static async Task<Result<TValue>> ValidateAsync<TValue>(this Task<Result<TValue>> resultTask, params IEnumerable<IValidator<TValue>> validators)
     {
-        var result = await resultTask;
-        return await ValidateAsync(result, validators);
+        var result = await resultTask.ConfigureAwait(false);
+        return await ValidateAsync(result, validators).ConfigureAwait(false);
     }
 }

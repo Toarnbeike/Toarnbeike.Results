@@ -12,7 +12,7 @@ public sealed class ResultMappingEndpointFilter(IResultMapper resultMapper) : IE
     /// <inheritdoc />
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
-        var result = await next(context);
+        var result = await next(context).ConfigureAwait(false);
 
         return result switch
         {
