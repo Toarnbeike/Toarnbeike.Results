@@ -7,7 +7,7 @@ namespace Toarnbeike.Results.Tests.Failures;
 /// </summary>
 public class ValidationFailureTests
 {
-    [Fact]
+    [Test]
     public void ValidationFailure_Should_BeCreatedFromAPropertyAndAMessage()
     {
         var failure = new ValidationFailure("Property", "Something is wrong with this property");
@@ -15,14 +15,14 @@ public class ValidationFailureTests
         failure.ValidationMessage.ShouldBe("Something is wrong with this property");
     }
 
-    [Fact]
+    [Test]
     public void ValidationFailure_Should_PopulateCode_WithValidationProperty()
     {
         var failure = new ValidationFailure("Property", "Something is wrong with this property");
         failure.Code.ShouldBe("validation_Property");
     }
 
-    [Fact]
+    [Test]
     public void ValidationFailure_Should_PopulateBaseMessage_WithPropertyAndMessage()
     {
         var failure = new ValidationFailure("Property", "Something is wrong with this property");

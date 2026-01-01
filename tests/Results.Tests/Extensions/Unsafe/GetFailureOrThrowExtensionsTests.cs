@@ -17,42 +17,42 @@ public class GetFailureOrThrowExtensionsTests
     private readonly Task<Result<int>> _successTaskOfT = Task.FromResult(Result.Success(42));
     private readonly Task<Result<int>> _failureTaskOfT = Task.FromResult(Result<int>.Failure(new Failure("original", "Original failure")));
 
-    [Fact]
+    [Test]
     public void GetFailureOrThrow_ShouldThrow_WhenResultIsSuccess()
     {
         var ex = Should.Throw<InvalidOperationException>(() => _success.GetFailureOrThrow());
         ex.Message.ShouldBe("Trying to get the failure of a success result. No failure available.");
     }
 
-    [Fact]
+    [Test]
     public void GetFailureOrThrow_ShouldReturnFailure_WhenResultIsFailure()
     {
         var failure = _failure.GetFailureOrThrow();
         failure.Code.ShouldBe("original");
     }
 
-    [Fact]
+    [Test]
     public async Task GetFailureOrThrow_ShouldThrow_WhenResultTaskIsSuccess()
     {
         var ex = await Should.ThrowAsync<InvalidOperationException>(_successTask.GetFailureOrThrow);
         ex.Message.ShouldBe("Trying to get the failure of a success result. No failure available.");
     }
 
-    [Fact]
+    [Test]
     public async Task GetFailureOrThrow_ShouldReturnFailure_WhenResultTaskIsFailure()
     {
         var failure = await _failureTask.GetFailureOrThrow();
         failure.Code.ShouldBe("original");
     }
 
-    [Fact]
+    [Test]
     public async Task GetFailureOrThrow_ShouldThrow_WhenResultTaskOfTIsSuccess()
     {
         var ex = await Should.ThrowAsync<InvalidOperationException>(_successTaskOfT.GetFailureOrThrow);
         ex.Message.ShouldBe("Trying to get the failure of a success result. No failure available.");
     }
 
-    [Fact]
+    [Test]
     public async Task GetFailureOrThrow_ShouldReturnFailure_WhenResultTaskOfTIsFailure()
     {
         var failure = await _failureTaskOfT.GetFailureOrThrow();

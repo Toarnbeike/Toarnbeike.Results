@@ -21,28 +21,28 @@ public class ZipExtensionsTests
     private readonly Func<double, Task<Result<int>>> _secondFailureAsyncFunc = _ => Task.FromResult(Result<int>.Failure(new Failure("zip", "Zip failure")));
     private readonly Func<double, Task<Result<int>>> _secondForbiddenAsyncFunc = _ => throw new InvalidOperationException("This function should not be called");
 
-    [Fact]
+    [Test]
     public void Zip_Should_ReturnTupleResult_WhenFirstResultIsSuccess_AndSecondResultIsSuccess()
     {
         var result = _success.Zip(_secondSuccessFunc);
         result.ShouldBeSuccessWithValue((1.3, 1));
     }
 
-    [Fact]
+    [Test]
     public void Zip_Should_ReturnSecondFailure_WhenFirstResultIsSuccess_AndSecondResultIsFailure()
     {
         var result = _success.Zip(_secondFailureFunc);
         result.ShouldBeFailureWithCodeAndMessage("zip", "Zip failure");
     }
 
-    [Fact]
+    [Test]
     public void Zip_Should_ReturnFirstFailure_WhenFirstResultIsFailure()
     {
         var result = _failure.Zip(_secondForbiddenFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public void Zip_Should_ReturnCustomResult_ToWorkEasierWithTupleResults()
     {
         var result = _success
@@ -51,28 +51,28 @@ public class ZipExtensionsTests
         result.ShouldBeSuccessWithValue(1.3);
     }
 
-    [Fact]
+    [Test]
     public async Task ZipAsync_Should_ReturnTupleResult_WhenFirstResultIsSuccess_AndSecondResultTaskIsSuccess()
     {
         var result = await _success.ZipAsync(_secondSuccessAsyncFunc);
         result.ShouldBeSuccessWithValue((1.3, 1));
     }
 
-    [Fact]
+    [Test]
     public async Task ZipAsync_Should_ReturnSecondFailure_WhenFirstResultIsSuccess_AndSecondResultTaskIsFailure()
     {
         var result = await _success.ZipAsync(_secondFailureAsyncFunc);
         result.ShouldBeFailureWithCodeAndMessage("zip", "Zip failure");
     }
 
-    [Fact]
+    [Test]
     public async Task ZipAsync_Should_ReturnFirstFailure_WhenFirstResultIsFailure()
     {
         var result = await _failure.ZipAsync(_secondForbiddenAsyncFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task ZipAsync_Should_ReturnCustomResult_WhenFirstResultIsSuccess_ToWorkEasierWithTupleResults()
     {
         var result = await _success
@@ -81,28 +81,28 @@ public class ZipExtensionsTests
         result.ShouldBeSuccessWithValue(1.3);
     }
 
-    [Fact]
+    [Test]
     public async Task Zip_Should_ReturnTupleResult_WhenFirstResultTaskIsSuccess_AndSecondResultIsSuccess()
     {
         var result = await _successTask.Zip(_secondSuccessFunc);
         result.ShouldBeSuccessWithValue((1.3, 1));
     }
 
-    [Fact]
+    [Test]
     public async Task Zip_Should_ReturnSecondFailure_WhenFirstResultTaskIsSuccess_AndSecondResultIsFailure()
     {
         var result = await _successTask.Zip(_secondFailureFunc);
         result.ShouldBeFailureWithCodeAndMessage("zip", "Zip failure");
     }
 
-    [Fact]
+    [Test]
     public async Task Zip_Should_ReturnFirstFailure_WhenFirstResultTaskIsFailure()
     {
         var result = await _failureTask.Zip(_secondForbiddenFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task Zip_Should_ReturnCustomResult_WhenFirstResultTaskIsSuccess_AndSecondResultIsSuccess()
     {
         var result = await _successTask
@@ -111,28 +111,28 @@ public class ZipExtensionsTests
         result.ShouldBeSuccessWithValue(1.3);
     }
 
-    [Fact]
+    [Test]
     public async Task ZipAsync_Should_ReturnTupleResult_WhenFirstResultTaskIsSuccess_AndSecondResultTaskIsSuccess()
     {
         var result = await _successTask.ZipAsync(_secondSuccessAsyncFunc);
         result.ShouldBeSuccessWithValue((1.3, 1));
     }
 
-    [Fact]
+    [Test]
     public async Task ZipAsync_Should_ReturnSecondFailure_WhenFirstResultTaskIsSuccess_AndSecondResultTaskIsFailure()
     {
         var result = await _successTask.ZipAsync(_secondFailureAsyncFunc);
         result.ShouldBeFailureWithCodeAndMessage("zip", "Zip failure");
     }
 
-    [Fact]
+    [Test]
     public async Task ZipAsync_Should_ReturnFirstFailure_WhenFirstResultTaskIsFailure()
     {
         var result = await _failureTask.ZipAsync(_secondForbiddenAsyncFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task ZipAsync_Should_ReturnCustomResult_WhenFirstResultTaskIsSuccess_AndSecondResultTaskIsSuccess()
     {
         var result = await _successTask

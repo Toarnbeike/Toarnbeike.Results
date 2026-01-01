@@ -6,7 +6,7 @@ namespace Toarnbeike.Results.MinimalApi.Tests.Mapping.Failures;
 
 public class ValidationFailureResultMapperTests
 {
-    [Fact]
+    [Test]
     public void Map_ShouldReturnProblemDetails_WhenValidationFailureIsMapped()
     {
         var validationFailure = new ValidationFailure("Name", "Invalid input");

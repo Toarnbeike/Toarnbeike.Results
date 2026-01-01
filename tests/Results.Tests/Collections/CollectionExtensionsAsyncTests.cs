@@ -17,53 +17,53 @@ public class CollectionExtensionsAsyncTests
         Result.SuccessTask(3), Task.FromResult(Result<int>.Failure(new Failure("second", "The second failure")))];
     private readonly List<Task<Result<int>>> _emptyCollection = [];
 
-    [Fact]
+    [Test]
     public async Task AllSuccessAsync_ShouldReturnTrue_WhenAllResultsAreSuccessful()
     {
         (await _allSuccessCollection.AllSuccessAsync()).ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task AllSuccessAsync_ShouldReturnFalse_WhenCollectionContainsFailures()
     {
         (await _mixedCollection.AllSuccessAsync()).ShouldBeFalse();
     }
 
-    [Fact]
+    [Test]
     public async Task AllSuccessAsync_ShouldReturnTrue_WhenCollectionIsEmpty()
     {
         (await _emptyCollection.AllSuccessAsync()).ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task SequenceAsync_ShouldReturnSuccess_WhenAllResultsAreSuccessful()
     {
         var result = await _allSuccessCollection.SequenceAsync();
         result.ShouldBeSuccessWithValue([1, 2, 3]);
     }
 
-    [Fact]
+    [Test]
     public async Task SequenceAsync_ShouldReturnFailure_WhenCollectionContainsFailures()
     {
         var result = await _mixedCollection.SequenceAsync();
         result.ShouldBeFailureWithCode("collection"); // first failure in the collection
     }
 
-    [Fact]
+    [Test]
     public async Task SequenceAsync_ShouldReturnSuccess_WhenCollectionIsEmpty()
     {
         var result = await _emptyCollection.SequenceAsync();
         result.ShouldBeSuccessWithValue([]);
     }
 
-    [Fact]
+    [Test]
     public async Task AggregateAsync_ShouldReturnSuccess_WhenAllResultsAreSuccessful()
     {
         var result = await _allSuccessCollection.AggregateAsync();
         result.ShouldBeSuccessWithValue([1, 2, 3]);
     }
 
-    [Fact]
+    [Test]
     public async Task AggregateAsync_ShouldReturnAggregateFailure_WhenCollectionContainsFailures()
     {
         var result = await _mixedCollection.AggregateAsync();
@@ -71,21 +71,21 @@ public class CollectionExtensionsAsyncTests
         aggregateFailure.Failures.Count().ShouldBe(2);
     }
 
-    [Fact]
+    [Test]
     public async Task AggregateAsync_ShouldReturnSuccess_WhenCollectionIsEmpty()
     {
         var result = await _emptyCollection.AggregateAsync();
         result.ShouldBeSuccessWithValue([]);
     }
 
-    [Fact]
+    [Test]
     public async Task AggregateAsync_ShouldReturnSuccess_WhenAllNonGenericResultsAreSuccessful()
     {
         var result = await _allSuccessResults.AggregateAsync();
         result.ShouldBeSuccess();
     }
 
-    [Fact]
+    [Test]
     public async Task AggregateAsync_ShouldReturnAggregateFailure_WhenNonGenericResultCollectionContainsFailures()
     {
         var result = await _failingResults.AggregateAsync();
@@ -93,35 +93,35 @@ public class CollectionExtensionsAsyncTests
         aggregateFailure.Failures.Count().ShouldBe(2);
     }
 
-    [Fact]
+    [Test]
     public async Task SuccessValuesAsync_ShouldReturnValues_WhenAllResultsAreSuccessful()
     {
         var result = await _allSuccessCollection.SuccessValuesAsync();
         result.ShouldBe([1, 2, 3]);
     }
 
-    [Fact]
+    [Test]
     public async Task SuccessValuesAsync_ShouldReturnValues_WhenSomeResultsAreSuccessful()
     {
         var result = await _mixedCollection.SuccessValuesAsync();
         result.ShouldBe([1, 3]);
     }
 
-    [Fact]
+    [Test]
     public async Task SuccessValuesAsync_ShouldReturnEmpty_WhenCollectionIsEmpty()
     {
         var result = await _emptyCollection.SuccessValuesAsync();
         result.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task FailuresAsync_ShouldReturnEmpty_WhenAllResultsAreSuccessful()
     {
         var result = await _allSuccessCollection.FailuresAsync();
         result.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task FailuresAsync_ShouldReturnFailures_WhenSomeResultsAreFailures()
     {
         var result = await _mixedCollection.FailuresAsync();
@@ -129,14 +129,14 @@ public class CollectionExtensionsAsyncTests
         result.Select(f => f.Code).ShouldBe(["collection", "second"]);
     }
 
-    [Fact]
+    [Test]
     public async Task FailuresAsync_ShouldReturnEmpty_WhenCollectionIsEmpty()
     {
         var result = await _emptyCollection.FailuresAsync();
         result.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task SplitAsync_ShouldReturnSuccessAndEmptyCollections_WhenCollectionIsAllSuccesses()
     {
         var (successes, failures) = await _allSuccessCollection.SplitAsync();
@@ -145,7 +145,7 @@ public class CollectionExtensionsAsyncTests
         failures.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task SplitAsync_ShouldReturnSuccessAndFailureCollections_WhenCollectionContainsBoth()
     {
         var (successes, failures) = await _mixedCollection.SplitAsync();
@@ -156,7 +156,7 @@ public class CollectionExtensionsAsyncTests
         actualFailures.Select(f => f.Code).ShouldBe(["collection", "second"]);
     }
 
-    [Fact]
+    [Test]
     public async Task SplitAsync_ShouldReturnTwoEmptyCollections_WhenCollectionIsEmpty()
     {
         var (successes, failures) = await _emptyCollection.SplitAsync();

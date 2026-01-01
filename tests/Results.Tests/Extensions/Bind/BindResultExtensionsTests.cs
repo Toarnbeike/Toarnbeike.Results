@@ -22,84 +22,84 @@ public class BindResultExtensionsTests
     private readonly Func<Task<Result<int>>> _failureTaskFunc = () => Task.FromResult(Result<int>.Failure(new Failure("bind", "Bind failure")));
     private readonly Func<Task<Result<int>>> _forbiddenTaskFunc = () => throw new InvalidOperationException("This function should not be called");
 
-    [Fact]
+    [Test]
     public void Bind_Should_ReturnValue_WhenResultIsSuccess_AndFunctionSucceeds()
     {
         var result = _success.Bind(_successFunc);
         result.ShouldBeSuccessWithValue(42);
     }
 
-    [Fact]
+    [Test]
     public void Bind_Should_ReturnFailure_WhenResultIsSuccess_AndFunctionFails()
     {
         var result = _success.Bind(_failureFunc);
         result.ShouldBeFailureWithCodeAndMessage("bind", "Bind failure");
     }
 
-    [Fact]
+    [Test]
     public void Bind_Should_ReturnFailure_WhenResultIsFailure()
     {
         var result = _failure.Bind(_forbiddenFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task BindAsync_Should_ReturnValue_WhenResultIsSuccess_AndFunctionSucceeds()
     {
         var result = await _success.BindAsync(_successTaskFunc);
         result.ShouldBeSuccessWithValue(42);
     }
 
-    [Fact]
+    [Test]
     public async Task BindAsync_Should_ReturnFailure_WhenResultIsSuccess_AndFunctionFails()
     {
         var result = await _success.BindAsync(_failureTaskFunc);
         result.ShouldBeFailureWithCodeAndMessage("bind", "Bind failure");
     }
 
-    [Fact]
+    [Test]
     public async Task BindAsync_Should_ReturnFailure_WhenResultIsFailure()
     {
         var result = await _failure.BindAsync(_forbiddenTaskFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task Bind_Should_ReturnValue_WhenResultTaskIsSuccess_AndFunctionSucceeds()
     {
         var result = await _successTask.Bind(_successFunc);
         result.ShouldBeSuccessWithValue(42);
     }
 
-    [Fact]
+    [Test]
     public async Task Bind_Should_ReturnFailure_WhenResultTaskIsSuccess_AndFunctionFails()
     {
         var result = await _successTask.Bind(_failureFunc);
         result.ShouldBeFailureWithCodeAndMessage("bind", "Bind failure");
     }
 
-    [Fact]
+    [Test]
     public async Task Bind_Should_ReturnFailure_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.Bind(_forbiddenFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task BindAsync_Should_ReturnValue_WhenResultTaskIsSuccess_AndFunctionSucceeds()
     {
         var result = await _successTask.BindAsync(_successTaskFunc);
         result.ShouldBeSuccessWithValue(42);
     }
 
-    [Fact]
+    [Test]
     public async Task BindAsync_Should_ReturnFailure_WhenResultTaskIsSuccess_AndFunctionFails()
     {
         var result = await _successTask.BindAsync(_failureTaskFunc);
         result.ShouldBeFailureWithCodeAndMessage("bind", "Bind failure");
     }
 
-    [Fact]
+    [Test]
     public async Task BindAsync_Should_ReturnFailure_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.BindAsync(_forbiddenTaskFunc);

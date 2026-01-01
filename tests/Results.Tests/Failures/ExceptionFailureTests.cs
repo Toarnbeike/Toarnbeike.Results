@@ -7,7 +7,7 @@ namespace Toarnbeike.Results.Tests.Failures;
 /// </summary>
 public class ExceptionFailureTests
 {
-    [Fact]
+    [Test]
     public void ExceptionFailure_Should_BeCreatedFromAnException()
     {
         var exception = new ArgumentOutOfRangeException("argument");
@@ -19,7 +19,7 @@ public class ExceptionFailureTests
         failure.ExceptionType.ShouldBe("ArgumentOutOfRangeException");
     }
 
-    [Fact]
+    [Test]
     public void ExceptionFailure_Should_BeAbleToChangeBaseProperties_UsingWithSyntax()
     {
         var exception = new ArgumentOutOfRangeException("Argument bad");

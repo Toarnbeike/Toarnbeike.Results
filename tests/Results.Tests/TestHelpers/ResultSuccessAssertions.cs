@@ -7,7 +7,7 @@ namespace Toarnbeike.Results.Tests.TestHelpers;
 /// </summary>
 public class ResultSuccessAssertionsTests
 {
-    [Fact]
+    [Test]
     public void ShouldBeSuccess_Passes_WhenResultIsSuccess()
     {
         var result = Result.Success();
@@ -15,7 +15,7 @@ public class ResultSuccessAssertionsTests
         act.ShouldNotThrow();
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccess_Throws_WhenResultIsNull()
     {
         Result result = null!;
@@ -24,7 +24,7 @@ public class ResultSuccessAssertionsTests
         ex.Message.ShouldBe("Expected result to be non-null.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccess_Throws_WhenResultIsFailure()
     {
         Result result = new Failure("fail", "Failed");
@@ -33,7 +33,7 @@ public class ResultSuccessAssertionsTests
         ex.Message.ShouldBe("Expected success result, but got failure: 'Failed'.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccess_Passes_WhenResultIsSuccessOfTValue()
     {
         var result = Result.Success(42);
@@ -42,7 +42,7 @@ public class ResultSuccessAssertionsTests
         actual.ShouldBe(42);
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccess_Throws_WhenResultOfTValueIsNull()
     {
         Result<int> result = null!;
@@ -51,7 +51,7 @@ public class ResultSuccessAssertionsTests
         ex.Message.ShouldBe("Expected result to be non-null.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccess_Throws_WhenResultIsFailureOfT()
     {
         Result<int> result = new Failure("fail", "Failed");
@@ -60,7 +60,7 @@ public class ResultSuccessAssertionsTests
         ex.Message.ShouldBe("Expected success result, but got failure: 'Failed'.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessWithValue_Passes_WhenValueMatches()
     {
         var result = Result.Success(42);
@@ -68,7 +68,7 @@ public class ResultSuccessAssertionsTests
         value.ShouldBe(42);
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessWithValue_Throws_WhenValueDiffers()
     {
         var result = Result.Success(99);
@@ -79,7 +79,7 @@ public class ResultSuccessAssertionsTests
         ex.Message.ShouldBe("Expected success result with value '42', but got '99'.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessWithValue_ThrowsWithCustomMessage_WhenValueDiffers()
     {
         var result = Result.Success(99);
@@ -90,7 +90,7 @@ public class ResultSuccessAssertionsTests
         ex.Message.ShouldBe("custom message");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessWithValue_Passes_ForEqualArrays()
     {
         var result = Result.Success(new[] { 1, 2, 3 });
@@ -98,7 +98,7 @@ public class ResultSuccessAssertionsTests
         Should.NotThrow(() => result.ShouldBeSuccessWithValue([1, 2, 3]));
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessWithValue_Passes_ForEqualLists()
     {
         var result = Result.Success(new List<string> { "a", "b" });
@@ -106,7 +106,7 @@ public class ResultSuccessAssertionsTests
         Should.NotThrow(() => result.ShouldBeSuccessWithValue(["a", "b"]));
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessWithValue_Passes_ForEqualEnumerables()
     {
         IEnumerable<int> expected = [1,2,3];
@@ -115,7 +115,7 @@ public class ResultSuccessAssertionsTests
         Should.NotThrow(() => result.ShouldBeSuccessWithValue([1,2,3]));
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessWithValue_Throws_WhenCollectionsDiffer()
     {
         var result = Result.Success(new[] { 1, 2, 3 });
@@ -126,7 +126,7 @@ public class ResultSuccessAssertionsTests
         ex.Message.ShouldBe("Expected success result with value '[1, 2]', but got '[1, 2, 3]'.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessWithValue_Throws_WhenResultIsFailure()
     {
         Result<int> result = new Failure("fail", "Failed");
@@ -135,7 +135,7 @@ public class ResultSuccessAssertionsTests
         ex.Message.ShouldBe("Expected success result, but got failure: 'Failed'.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessThatSatisfiesPredicate_Passes_WhenPredicateMatches()
     {
         var result = Result.Success("hello");
@@ -143,7 +143,7 @@ public class ResultSuccessAssertionsTests
         value.ShouldBe("hello");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessThatSatisfiesPredicate_Throws_WhenPredicateFails()
     {
         var result = Result.Success("hello");
@@ -154,7 +154,7 @@ public class ResultSuccessAssertionsTests
         ex.Message.ShouldBe("Expected success result with value that satisfies the predicate, but it did not.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessThatSatisfiesPredicate_ThrowsWithCustomMessage_WhenPredicateFails()
     {
         var result = Result.Success("hello");
@@ -165,7 +165,7 @@ public class ResultSuccessAssertionsTests
         ex.Message.ShouldBe("custom message");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeSuccessThatSatisfiesPredicate_Throws_WhenResultIsFailure()
     {
         Result<string> result = new Failure("fail", "Failed");

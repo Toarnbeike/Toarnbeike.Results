@@ -5,7 +5,7 @@ namespace Toarnbeike.Results.Tests;
 
 public class ResultTryTests
 {
-    [Fact]
+    [Test]
     public void Try_Action_Success()
     {
         var result = Result.Try(() => { /* no-op */ });
@@ -13,7 +13,7 @@ public class ResultTryTests
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void Try_Action_Exception_ReturnsFailure()
     {
         var result = Result.Try(() => throw new InvalidOperationException("Something went wrong"));
@@ -26,7 +26,7 @@ public class ResultTryTests
         failure.ExceptionType.ShouldBe("InvalidOperationException");
     }
 
-    [Fact]
+    [Test]
     public void Try_Function_Success()
     {
         var result = Result.Try(() => 42);
@@ -34,7 +34,7 @@ public class ResultTryTests
         result.ShouldBeSuccessWithValue(42);
     }
 
-    [Fact]
+    [Test]
     public void Try_Function_Exception_ReturnsFailure()
     {
         var result = Result.Try<int>(() => throw new ArgumentException("Invalid input"));
@@ -47,7 +47,7 @@ public class ResultTryTests
         failure.ExceptionType.ShouldBe("ArgumentException");
     }
 
-    [Fact]
+    [Test]
     public async Task TryAsync_Task_Success()
     {
         var result = await Result.TryAsync(async () => await Task.Yield());
@@ -55,7 +55,7 @@ public class ResultTryTests
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task TryAsync_Task_Exception_ReturnsFailure()
     {
         var result = await Result.TryAsync(async () =>
@@ -72,7 +72,7 @@ public class ResultTryTests
         failure.ExceptionType.ShouldBe("NotSupportedException");
     }
 
-    [Fact]
+    [Test]
     public async Task TryValueTaskAsync_Task_Success()
     {
         var result = await Result.TryValueAsync(async () => await ValueTask.CompletedTask);
@@ -80,7 +80,7 @@ public class ResultTryTests
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task TryValueTaskAsync_Task_Exception_ReturnsFailure()
     {
         var result = await Result.TryAsync(async () =>
@@ -98,7 +98,7 @@ public class ResultTryTests
     }
 
 
-    [Fact]
+    [Test]
     public async Task TryAsync_Function_Success()
     {
         var result = await Result.TryAsync(async () =>
@@ -110,7 +110,7 @@ public class ResultTryTests
         result.ShouldBeSuccessWithValue("async value");
     }
 
-    [Fact]
+    [Test]
     public async Task TryAsync_Function_Exception_ReturnsFailure()
     {
         var result = await Result.TryAsync<string>(async () =>
@@ -127,7 +127,7 @@ public class ResultTryTests
         failure.ExceptionType.ShouldBe("NullReferenceException");
     }
 
-    [Fact]
+    [Test]
     public async Task TryValueAsync_Function_Success()
     {
         var result = await Result.TryValueAsync(async () =>
@@ -139,7 +139,7 @@ public class ResultTryTests
         result.ShouldBeSuccessWithValue("async value");
     }
 
-    [Fact]
+    [Test]
     public async Task TryValueAsync_Function_Exception_ReturnsFailure()
     {
         var result = await Result.TryAsync<string>(async () =>

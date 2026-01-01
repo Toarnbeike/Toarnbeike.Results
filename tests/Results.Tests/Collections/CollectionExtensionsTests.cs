@@ -16,53 +16,53 @@ public class CollectionExtensionsTests
     private readonly List<Result<int>> _mixedCollection = [1, new Failure("collection", "value is missing"), 3, new Failure("second", "The second failure")];
     private readonly List<Result<int>> _emptyCollection = [];
 
-    [Fact]
+    [Test]
     public void AllSuccess_ShouldReturnTrue_WhenAllResultsAreSuccessful()
     {
         _allSuccessCollection.AllSuccess().ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void AllSuccess_ShouldReturnFalse_WhenCollectionContainsFailures()
     {
         _mixedCollection.AllSuccess().ShouldBeFalse();
     }
 
-    [Fact]
+    [Test]
     public void AllSuccess_ShouldReturnTrue_WhenCollectionIsEmpty()
     {
         _emptyCollection.AllSuccess().ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void Sequence_ShouldReturnSuccess_WhenAllResultsAreSuccessful()
     {
         var result = _allSuccessCollection.Sequence();
         result.ShouldBeSuccessWithValue([1, 2, 3]);
     }
 
-    [Fact]
+    [Test]
     public void Sequence_ShouldReturnFailure_WhenCollectionContainsFailures()
     {
         var result = _mixedCollection.Sequence();
         result.ShouldBeFailureWithCode("collection"); // first failure in the collection
     }
 
-    [Fact]
+    [Test]
     public void Sequence_ShouldReturnSuccess_WhenCollectionIsEmpty()
     {
         var result = _emptyCollection.Sequence();
         result.ShouldBeSuccessWithValue([]);
     }
 
-    [Fact]
+    [Test]
     public void Aggregate_ShouldReturnSuccess_WhenAllResultsAreSuccessful()
     {
         var result = _allSuccessCollection.Aggregate();
         result.ShouldBeSuccessWithValue([1, 2, 3]);
     }
 
-    [Fact]
+    [Test]
     public void Aggregate_ShouldReturnAggregateFailure_WhenCollectionContainsFailures()
     {
         var result = _mixedCollection.Aggregate();
@@ -70,21 +70,21 @@ public class CollectionExtensionsTests
         aggregateFailure.Failures.Count().ShouldBe(2);
     }
 
-    [Fact]
+    [Test]
     public void Aggregate_ShouldReturnSuccess_WhenCollectionIsEmpty()
     {
         var result = _emptyCollection.Aggregate();
         result.ShouldBeSuccessWithValue([]);
     }
 
-    [Fact]
+    [Test]
     public void Aggregate_ShouldReturnSuccess_WhenAllNonGenericResultsAreSuccessful()
     {
         var result = _allSuccessResults.Aggregate();
         result.ShouldBeSuccess();
     }
 
-    [Fact]
+    [Test]
     public void Aggregate_ShouldReturnAggregateFailure_WhenNonGenericResultCollectionContainsFailures()
     {
         var result = _failingResults.Aggregate();
@@ -92,35 +92,35 @@ public class CollectionExtensionsTests
         aggregateFailure.Failures.Count().ShouldBe(2);
     }
 
-    [Fact]
+    [Test]
     public void SuccessValues_ShouldReturnValues_WhenAllResultsAreSuccessful()
     {
         var result = _allSuccessCollection.SuccessValues();
         result.ShouldBe([1,2,3]);
     }
 
-    [Fact]
+    [Test]
     public void SuccessValues_ShouldReturnValues_WhenSomeResultsAreSuccessful()
     {
         var result = _mixedCollection.SuccessValues();
         result.ShouldBe([1,3]);
     }
 
-    [Fact]
+    [Test]
     public void SuccessValues_ShouldReturnEmpty_WhenCollectionIsEmpty()
     {
         var result = _emptyCollection.SuccessValues();
         result.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public void Failures_ShouldReturnEmpty_WhenAllResultsAreSuccessful()
     {
         var result = _allSuccessCollection.Failures();
         result.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public void Failures_ShouldReturnFailures_WhenSomeResultsAreFailures()
     {
         var result = _mixedCollection.Failures();
@@ -128,14 +128,14 @@ public class CollectionExtensionsTests
         result.Select(f => f.Code).ShouldBe(["collection", "second"]);
     }
 
-    [Fact]
+    [Test]
     public void Failures_ShouldReturnEmpty_WhenCollectionIsEmpty()
     {
         var result = _emptyCollection.Failures();
         result.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public void Split_ShouldReturnSuccessAndEmptyCollections_WhenCollectionIsAllSuccesses()
     {
         var (successes, failures) = _allSuccessCollection.Split();
@@ -144,7 +144,7 @@ public class CollectionExtensionsTests
         failures.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public void Split_ShouldReturnSuccessAndFailureCollections_WhenCollectionContainsBoth()
     {
         var (successes, failures) = _mixedCollection.Split();
@@ -154,7 +154,7 @@ public class CollectionExtensionsTests
         failures.Select(f => f.Code).ShouldBe(["collection", "second"]);
     }
 
-    [Fact]
+    [Test]
     public void Split_ShouldReturnTwoEmptyCollections_WhenCollectionIsEmpty()
     {
         var (successes, failures) = _emptyCollection.Split();

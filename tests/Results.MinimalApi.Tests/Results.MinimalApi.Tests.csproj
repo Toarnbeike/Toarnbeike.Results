@@ -1,36 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="coverlet.collector">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="NSubstitute" />
-    <PackageReference Include="Shouldly" />
-    <PackageReference Include="xunit" />
-    <PackageReference Include="xunit.runner.visualstudio">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+		<PackageReference Include="Microsoft.AspNetCore.TestHost" />
+		<PackageReference Include="NSubstitute" />
+		<PackageReference Include="Shouldly" />
+		<PackageReference Include="TUnit" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Results.MinimalApi\Results.MinimalApi.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Results.MinimalApi\Results.MinimalApi.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-	<Using Include="NSubstitute" />
-    <Using Include="Shouldly" />
-    <Using Include="Xunit" />
-	<Using Include="Microsoft.AspNetCore.Http.Results" Alias="AspNetResults" />
-	<Using Include="Microsoft.AspNetCore.Http.IResult" Alias="IAspNetResult" />
-  </ItemGroup>
+	<ItemGroup>
+		<Using Include="NSubstitute" />
+		<Using Include="Shouldly" />
+		<Using Include="Microsoft.AspNetCore.Http.Results" Alias="AspNetResults" />
+		<Using Include="Microsoft.AspNetCore.Http.IResult" Alias="IAspNetResult" />
+	</ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using Toarnbeike.Results.MinimalApi.Mapping;
 namespace Toarnbeike.Results.MinimalApi.Tests;
 public class ResultMappingEndpointFilterTests
 {
-    [Fact]
+    [Test]
     public async Task Invoke_Should_InvokeMapper_WhenResultIsIResult()
     {
         var toarnbeikeResult = Substitute.For<IResult>();
@@ -23,7 +23,7 @@ public class ResultMappingEndpointFilterTests
         result.ShouldBe(mappedResult);
     }
 
-    [Fact]
+    [Test]
     public async Task Invoke_Should_NotInvokeMapper_WhenResultIsAspNetResult()
     {
         var originalResult = AspNetResults.Ok("Original");

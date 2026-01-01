@@ -13,7 +13,7 @@ public class TapAlwaysResultTValueExtensionsTests
     private readonly Task<Result<int>> _successTask = Task.FromResult(Result.Success(42));
     private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new Failure("original", "Original failure")));
 
-    [Fact]
+    [Test]
     public void TapAlways_ShouldExecute_WhenResultIsSuccess()
     {
         var message = string.Empty;
@@ -21,7 +21,7 @@ public class TapAlwaysResultTValueExtensionsTests
         message.ShouldBe("tap always will always execute");
     }
 
-    [Fact]
+    [Test]
     public void TapAlways_ShouldExecute_WhenResultIsFailure()
     {
         var message = string.Empty;
@@ -29,7 +29,7 @@ public class TapAlwaysResultTValueExtensionsTests
         message.ShouldBe("tap always will always execute");
     }
 
-    [Fact]
+    [Test]
     public async Task TapAlwaysAsync_ShouldExecute_WhenResultIsSuccess()
     {
         var message = string.Empty;
@@ -37,7 +37,7 @@ public class TapAlwaysResultTValueExtensionsTests
         message.ShouldBe("tap always will always execute");
     }
 
-    [Fact]
+    [Test]
     public async Task TapAlwaysAsync_ShouldExecute_WhenResultIsFailure()
     {
         var message = string.Empty;
@@ -45,7 +45,7 @@ public class TapAlwaysResultTValueExtensionsTests
         message.ShouldBe("tap always will always execute");
     }
 
-    [Fact]
+    [Test]
     public async Task TapAlways_ShouldExecute_WhenResultTaskIsSuccess()
     {
         var message = string.Empty;
@@ -53,7 +53,7 @@ public class TapAlwaysResultTValueExtensionsTests
         message.ShouldBe("tap always will always execute");
     }
 
-    [Fact]
+    [Test]
     public async Task TapAlways_ShouldExecute_WhenResultTaskIsFailure()
     {
         var message = string.Empty;
@@ -61,7 +61,7 @@ public class TapAlwaysResultTValueExtensionsTests
         message.ShouldBe("tap always will always execute");
     }
 
-    [Fact]
+    [Test]
     public async Task TapAlwaysAsync_ShouldExecute_WhenResultTaskIsSuccess()
     {
         var message = string.Empty;
@@ -69,7 +69,7 @@ public class TapAlwaysResultTValueExtensionsTests
         message.ShouldBe("tap always will always execute");
     }
 
-    [Fact]
+    [Test]
     public async Task TapAlwaysAsync_ShouldExecute_WhenResultTaskIsFailure()
     {
         var message = string.Empty;

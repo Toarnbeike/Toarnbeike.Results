@@ -13,7 +13,7 @@ public class TapResultTValueExtensionsTests
     private readonly Task<Result<int>> _successTask = Task.FromResult(Result.Success(3));
     private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new Failure("original", "Original failure")));
 
-    [Fact]
+    [Test]
     public void Tap_ShouldExecute_WhenResultIsSuccess()
     {
         var actual = 0;
@@ -21,7 +21,7 @@ public class TapResultTValueExtensionsTests
         actual.ShouldBe(3);
     }
 
-    [Fact]
+    [Test]
     public void Tap_ShouldNotExecute_WhenResultIsFailure()
     {
         var actual = 0;
@@ -29,7 +29,7 @@ public class TapResultTValueExtensionsTests
         actual.ShouldBe(0);
     }
 
-    [Fact]
+    [Test]
     public async Task TapAsync_ShouldExecute_WhenResultIsSuccess()
     {
         var actual = 0;
@@ -37,7 +37,7 @@ public class TapResultTValueExtensionsTests
         actual.ShouldBe(3);
     }
 
-    [Fact]
+    [Test]
     public async Task TapAsync_ShouldNotExecute_WhenResultIsFailure()
     {
         var actual = 0;
@@ -45,7 +45,7 @@ public class TapResultTValueExtensionsTests
         actual.ShouldBe(0);
     }
 
-    [Fact]
+    [Test]
     public async Task Tap_ShouldExecute_WhenResultTaskIsSuccess()
     {
         var actual = 0;
@@ -53,7 +53,7 @@ public class TapResultTValueExtensionsTests
         actual.ShouldBe(3);
     }
 
-    [Fact]
+    [Test]
     public async Task Tap_ShouldNotExecute_WhenResultTaskIsFailure()
     {
         var actual = 0;
@@ -61,7 +61,7 @@ public class TapResultTValueExtensionsTests
         actual.ShouldBe(0);
     }
 
-    [Fact]
+    [Test]
     public async Task TapAsync_ShouldExecute_WhenResultTaskIsSuccess()
     {
         var actual = 0;
@@ -69,7 +69,7 @@ public class TapResultTValueExtensionsTests
         actual.ShouldBe(3);
     }
 
-    [Fact]
+    [Test]
     public async Task TapAsync_ShouldNotExecute_WhenResultTaskIsFailure()
     {
         var actual = 0;

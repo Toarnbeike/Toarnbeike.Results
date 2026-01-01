@@ -7,7 +7,7 @@ namespace Toarnbeike.Results.Tests.Failures;
 /// </summary>
 public class AggregateFailureTests
 {
-    [Fact]
+    [Test]
     public void AggregateFailure_Should_BeCreatedFromFailureIEnumerable()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
@@ -20,19 +20,19 @@ public class AggregateFailureTests
         failure.Failures.Count.ShouldBe(2);
     }
 
-    [Fact]
+    [Test]
     public void AggregateFailure_ShouldThrow_WhenCreatedWithNullFailures()
     {
         Should.Throw<ArgumentNullException>(() => new AggregateFailure(null!));
     }
 
-    [Fact]
+    [Test]
     public void AggregateFailure_ShouldThrow_WhenCreatedWithEmptyFailures()
     {
         Should.Throw<ArgumentException>(() => new AggregateFailure([]));
     }
 
-    [Fact]
+    [Test]
     public void AggregateFailure_ShouldThrow_WhenCreatedWithAnyNullElementInFailures()
     {
         IEnumerable<Failure> failures = [null!, new ExceptionFailure(new ArgumentOutOfRangeException("arg1"))];
@@ -40,7 +40,7 @@ public class AggregateFailureTests
         Should.Throw<ArgumentException>(() => new AggregateFailure(failures));
     }
 
-    [Fact]
+    [Test]
     public void AggregateFailure_Should_FlattenInnerAggregateFailures()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
@@ -53,7 +53,7 @@ public class AggregateFailureTests
         failure.Failures.ShouldContain(innerFailure2.Failures.Last());
     }
 
-    [Fact]
+    [Test]
     public void Add_Should_AddNewFailureToAggregate()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
@@ -69,7 +69,7 @@ public class AggregateFailureTests
         updatedFailure.Failures.ShouldContain(newFailure);
     }
 
-    [Fact]
+    [Test]
     public void Combine_Should_CombineTwoAggregateFailures()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
@@ -85,7 +85,7 @@ public class AggregateFailureTests
         mergedFailure.Failures.ShouldContain(additionalFailure.Failures.Single());
     }
 
-    [Fact]
+    [Test]
     public void AggregateFailure_Should_BeAbleToChangeBaseProperties_UsingWithSyntax()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));

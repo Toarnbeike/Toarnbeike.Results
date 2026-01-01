@@ -14,7 +14,7 @@ public class ResultMapperTests
         _mapper = new ResultMapper([new DummyResultMapper()], new DummyFallbackMapper());
     }
 
-    [Fact]
+    [Test]
     public void Map_ShouldReturnMappedProblemDetails_WhenFailureIsMapped()
     {
         Result failure = new DummyFailure();
@@ -28,7 +28,7 @@ public class ResultMapperTests
         problemDetails.ProblemDetails.Detail.ShouldBe("dummy message");
     }
 
-    [Fact]
+    [Test]
     public void Map_ShouldReturnFallbackProblemDetails_WhenFailureIsNotMapped()
     {
         Result failure = new Failure("test", "test message");
@@ -42,7 +42,7 @@ public class ResultMapperTests
         problemDetails.ProblemDetails.Detail.ShouldBe("test message");
     }
 
-    [Fact]
+    [Test]
     public void Map_ShouldReturn204NoContent_WhenResultIsSuccessWithoutValue()
     {
         Result success = Result.Success();
@@ -52,7 +52,7 @@ public class ResultMapperTests
         response.ShouldBeOfType<NoContent>();
     }
 
-    [Fact]
+    [Test]
     public void Map_ShouldReturn200Ok_WhenResultIsSuccessWithValue()
     {
         Result<int> success = Result.Success(42);
@@ -62,7 +62,7 @@ public class ResultMapperTests
         response.ShouldBeOfType<Ok<object>>().Value.ShouldBe(42);
     }
 
-    [Fact]
+    [Test]
     public void Map_ShouldReturn200Ok_WhenCustomResultImplementsStaticTryGetValue()
     {
         CustomResult<string> success = new();
@@ -72,7 +72,7 @@ public class ResultMapperTests
         response.ShouldBeOfType<Ok<object>>().Value.ShouldBe("Success from custom mapper");
     }
 
-    [Fact]
+    [Test]
     public void Map_ShouldReturn204NoContent_WhenResultIsSuccessWithValue_WithCustomMapperWithoutTryGetValueSuppport()
     {
         CustomResultWithoutTryGetValue<string> success = new();
@@ -82,7 +82,7 @@ public class ResultMapperTests
         response.ShouldBeOfType<NoContent>();
     }
 
-    [Fact]
+    [Test]
     public void Map_ShouldReturnMappedProblemDetails_WhenFailureIsMapped_ByLastRegisteredMapper()
     {
         var mapper = new ResultMapper([new DummyResultMapper(), new OverrideResultMapper()], new DummyFallbackMapper());

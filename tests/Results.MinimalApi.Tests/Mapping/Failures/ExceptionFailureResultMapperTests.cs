@@ -5,7 +5,7 @@ namespace Toarnbeike.Results.MinimalApi.Tests.Mapping.Failures;
 
 public class ExceptionFailureResultMapperTests
 {
-    [Fact]
+    [Test]
     public void Map_ShouldReturnProblemDetails_WhenExceptionFailureIsMapped()
     {
         var exception = new Exception("Test exception");

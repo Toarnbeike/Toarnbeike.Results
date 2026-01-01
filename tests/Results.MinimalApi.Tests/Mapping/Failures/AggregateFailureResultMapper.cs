@@ -6,7 +6,7 @@ namespace Toarnbeike.Results.MinimalApi.Tests.Mapping.Failures;
 
 public class AggregateFailureResultMapperTests
 {
-    [Fact]
+    [Test]
     public void Map_UsesRegisteredMappers_ForEachFailure()
     {
         // Arrange
@@ -42,7 +42,7 @@ public class AggregateFailureResultMapperTests
         agg.Status.ShouldBe(400);
     }
 
-    [Fact]
+    [Test]
     public void Map_UsesFallback_WhenNoMapperAvailable()
     {
         var unmappedFailure = new UnmappedFailure();

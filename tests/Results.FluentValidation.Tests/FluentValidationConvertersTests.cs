@@ -7,7 +7,7 @@ namespace Toarnbeike.Results.FluentValidation.Tests;
 /// </summary>
 public class FluentValidationConvertersTests
 {
-    [Fact]
+    [Test]
     public void ToValidationFailure_Should_Map_PropertyName_And_ErrorMessage()
     {
         var fluentFailure = new ValidationFailure("Username", "Username is required");
@@ -18,7 +18,7 @@ public class FluentValidationConvertersTests
         result.ValidationMessage.ShouldBe("Username is required");
     }
 
-    [Fact]
+    [Test]
     public void ToValidationFailures_FromValidationResult_Should_Map_AllErrors()
     {
         var fluentResult = new ValidationResult(new List<ValidationFailure>
@@ -36,7 +36,7 @@ public class FluentValidationConvertersTests
         result.Failures["Password"].ShouldContain("Too short");
     }
 
-    [Fact]
+    [Test]
     public void ToValidationFailures_FromEnumerable_Should_Map_AllFailures()
     {
         var fluentFailures = new List<ValidationFailure>

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Toarnbeike.Results.Extensions;
-using Toarnbeike.Results.FluentValidation;
 using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.MinimalApi.DependencyInjection;
 using Microsoft.AspNetCore.Routing;
@@ -132,7 +131,6 @@ public static class CustomerEndpoints
         customers.MapPost("", async (Customer customer, ICustomerRepository repository, IValidator<Customer> validator) =>
         {
             Result result = await Result.Success(customer)
-                .Validate(validator)
                 .Check(c => c.Name != "Alice", () => new ValidationFailure("Name", "Cannot create customer with name 'Alice'"))
                 .VerifyAsync(async c => await Result.TryAsync(async () => await repository.UnsafeSaveAsync(c)));
             return result;
