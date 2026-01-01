@@ -37,6 +37,6 @@ public class ResultMappingEndpointFilterTests
         var result = await filter.InvokeAsync(context, next);
 
         result.ShouldBe(originalResult);
-        mapper.DidNotReceiveWithAnyArgs().Map(default!);
+        mapper.DidNotReceiveWithAnyArgs().Map(new Result());
     }
 }

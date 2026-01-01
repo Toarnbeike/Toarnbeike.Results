@@ -23,16 +23,16 @@ public class ResultFailureAssertionsTests
     {
         var result = Result.Success();
 
-        var ex = Should.Throw<ResultAssertionException>(result.ShouldBeFailure);
+        var ex = Should.Throw<ResultAssertionException>(() => result.ShouldBeFailure());
         ex.Message.ShouldBe("Expected failure result, but got success.");
     }
 
     [Test]
     public void ShouldBeFailure_Throws_WhenResultIsNull()
     {
-        Result result = null!;
+        Result result = default!;
 
-        var ex = Should.Throw<ResultAssertionException>(result.ShouldBeFailure);
+        var ex = Should.Throw<ResultAssertionException>(() => result.ShouldBeFailure());
         ex.Message.ShouldBe("Expected result to be non-null.");
     }
 

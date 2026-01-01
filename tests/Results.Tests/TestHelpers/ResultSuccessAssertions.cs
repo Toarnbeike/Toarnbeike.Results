@@ -11,7 +11,7 @@ public class ResultSuccessAssertionsTests
     public void ShouldBeSuccess_Passes_WhenResultIsSuccess()
     {
         var result = Result.Success();
-        var act = result.ShouldBeSuccess;
+        var act = () => result.ShouldBeSuccess();
         act.ShouldNotThrow();
     }
 
@@ -20,7 +20,7 @@ public class ResultSuccessAssertionsTests
     {
         Result result = null!;
 
-        var ex = Should.Throw<ResultAssertionException>(result.ShouldBeSuccess);
+        var ex = Should.Throw<ResultAssertionException>(() => result.ShouldBeSuccess());
         ex.Message.ShouldBe("Expected result to be non-null.");
     }
 
@@ -29,7 +29,7 @@ public class ResultSuccessAssertionsTests
     {
         Result result = new Failure("fail", "Failed");
 
-        var ex = Should.Throw<ResultAssertionException>(result.ShouldBeSuccess);
+        var ex = Should.Throw<ResultAssertionException>(() => result.ShouldBeSuccess());
         ex.Message.ShouldBe("Expected success result, but got failure: 'Failed'.");
     }
 
@@ -45,7 +45,7 @@ public class ResultSuccessAssertionsTests
     [Test]
     public void ShouldBeSuccess_Throws_WhenResultOfTValueIsNull()
     {
-        Result<int> result = null!;
+        Result<int> result = default!;
 
         var ex = Should.Throw<ResultAssertionException>(() => result.ShouldBeSuccess());
         ex.Message.ShouldBe("Expected result to be non-null.");

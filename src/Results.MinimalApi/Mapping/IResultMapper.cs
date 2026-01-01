@@ -12,5 +12,5 @@ public interface IResultMapper
     /// A failing <see cref="IAspNetResult"/> if the result is a failure, of which the type is
     /// determined by the <see cref="Failure"/> type.
     /// </returns>
-    IAspNetResult Map(IToarnbeikeResult result);
+    IAspNetResult Map<TResult>(TResult result) where TResult : IToarnbeikeResult;
 }

@@ -12,9 +12,9 @@ public static class ResultFailureAssertions
     /// <param name="result">The result to verify.</param>
     /// <returns>The failure contained in the result.</returns>
     /// <exception cref="ResultAssertionException">Thrown when the result is null or not a failure.</exception>
-    public static Failure ShouldBeFailure(this IResult result)
+    public static Failure ShouldBeFailure<TResult>(this TResult result) where TResult : IResult
     {
-        if (result is null)
+        if (EqualityComparer<TResult>.Default.Equals(result, default))
         {
             throw new ResultAssertionException("Expected result to be non-null.");
         }
@@ -35,7 +35,7 @@ public static class ResultFailureAssertions
     /// <param name="customMessage">Optional custom message for assertion failure.</param>
     /// <returns>The failure contained in the result.</returns>
     /// <exception cref="ResultAssertionException">Thrown when the code does not match.</exception>
-    public static Failure ShouldBeFailureWithCode(this IResult result, string expectedCode, string? customMessage = null)
+    public static Failure ShouldBeFailureWithCode<TResult>(this TResult result, string expectedCode, string? customMessage = null) where TResult : IResult
     {
         var actual = result.ShouldBeFailure();
 
@@ -55,7 +55,7 @@ public static class ResultFailureAssertions
     /// <param name="customMessage">Optional custom message for assertion failure.</param>
     /// <returns>The failure contained in the result.</returns>
     /// <exception cref="ResultAssertionException">Thrown when the message does not match.</exception>
-    public static Failure ShouldBeFailureWithMessage(this IResult result, string expectedMessage, string? customMessage = null)
+    public static Failure ShouldBeFailureWithMessage<TResult>(this TResult result, string expectedMessage, string? customMessage = null) where TResult : IResult
     {
         var actual = result.ShouldBeFailure();
 
@@ -76,7 +76,7 @@ public static class ResultFailureAssertions
     /// <param name="customMessage">Optional custom message for assertion failure.</param>
     /// <returns>The failure contained in the result.</returns>
     /// <exception cref="ResultAssertionException">Thrown when the code or message does not match.</exception>
-    public static Failure ShouldBeFailureWithCodeAndMessage(this IResult result, string expectedCode, string expectedMessage, string? customMessage = null)
+    public static Failure ShouldBeFailureWithCodeAndMessage<TResult>(this TResult result, string expectedCode, string expectedMessage, string? customMessage = null) where TResult : IResult
     {
         var actual = result.ShouldBeFailure();
 
@@ -117,7 +117,7 @@ public static class ResultFailureAssertions
     /// <param name="customMessage">Optional custom message for assertion failure.</param>
     /// <returns>The failure contained in the result.</returns>
     /// <exception cref="ResultAssertionException">Thrown when the predicate is not satisfied.</exception>
-    public static Failure ShouldBeFailureThatSatisfiesPredicate(this IResult result, Func<Failure, bool> predicate, string? customMessage = null)
+    public static Failure ShouldBeFailureThatSatisfiesPredicate<TResult>(this TResult result, Func<Failure, bool> predicate, string? customMessage = null) where TResult : IResult
     {
         ArgumentNullException.ThrowIfNull(predicate);
 

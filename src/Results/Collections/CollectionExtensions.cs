@@ -10,7 +10,18 @@ public static class CollectionExtensions
     /// </summary>
     /// <param name="results">The collection of <see cref="IResult"/> instances to evaluate. Cannot be <c>null</c>.</param>
     /// <returns><c>true</c> if all <paramref name="results"/> are successful; otherwise, <c>false</c>.</returns>
-    public static bool AllSuccess(this IEnumerable<IResult> results)
+    public static bool AllSuccess<TResult>(this IEnumerable<TResult> results) where TResult : IResult
+    {
+        ArgumentNullException.ThrowIfNull(results);
+        return results.All(result => result.IsSuccess);
+    }
+
+    /// <summary>
+    /// Determines whether all results in the collection indicate success.
+    /// </summary>
+    /// <param name="results">The collection of <see cref="IResult"/> instances to evaluate. Cannot be <c>null</c>.</param>
+    /// <returns><c>true</c> if all <paramref name="results"/> are successful; otherwise, <c>false</c>.</returns>
+    public static bool AllSuccess<TValue>(this IEnumerable<Result<TValue>> results)
     {
         ArgumentNullException.ThrowIfNull(results);
         return results.All(result => result.IsSuccess);

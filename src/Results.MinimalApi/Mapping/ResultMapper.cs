@@ -23,7 +23,7 @@ public class ResultMapper(
             .ToDictionary(group => group.Key, group => group.Last());
 
     /// <inheritdoc />
-    public IAspNetResult Map(IResult result)
+    public IAspNetResult Map<TResult>(TResult result) where TResult : IToarnbeikeResult
     {
         if (result.TryGetFailure(out var failure))
         {
@@ -66,7 +66,7 @@ public class ResultMapper(
     /// <returns>
     /// <see langword="true"/> if the value was successfully retrieved from <paramref name="result"/>; otherwise, <see langword="false"/>.
     /// </returns>
-    private static bool TryGetValue(IResult result, [NotNullWhen(true)] out object? value)
+    private static bool TryGetValue<TResult>(TResult result, [NotNullWhen(true)] out object? value) where TResult : IToarnbeikeResult
     {
         value = null;
 
