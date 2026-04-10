@@ -31,7 +31,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Pack Results.Abstractions
-        run: dotnet pack src/Results.Abstractions/Results.Abstractions.csproj --configuration Release --no-build --output ./nupkgs
+        run: dotnet pack src/Results.Abstractions/Results.Abstractions.csproj --configuration Release --output ./nupkgs
 
       - name: Pack Results
         run: dotnet pack src/Results/Results.csproj --configuration Release --no-build --output ./nupkgs
