@@ -8,7 +8,7 @@ namespace Toarnbeike.Results;
 /// </summary>
 /// <remarks>
 /// If the operation is successful, the value can be retrieved using <see cref="TryGetValue(out TValue)"/>.
-/// If it failed, the failure can be inspected using <see cref="TryGetFailure(out Failure)"/>.
+/// If it failed, the failure can be inspected using <see cref="TryGetFailure(out Results.Failure)"/>.
 /// </remarks>
 /// <typeparam name="TValue">The type of the success value.</typeparam>
 public readonly record struct Result<TValue> : IResult
@@ -27,7 +27,11 @@ public readonly record struct Result<TValue> : IResult
     /// </summary>
     /// <param name="value">When this method returns, contains the value if the result is successful; otherwise, the default value.</param>
     /// <returns><c>true</c> if the result is successful; otherwise, <c>false</c>.</returns>
+#if NETSTANDARD2_0
+    public bool TryGetValue(out TValue? value)
+#else
     public bool TryGetValue([NotNullWhen(true)] out TValue? value)
+#endif
     {
         value = _value;
         return IsSuccess;
@@ -39,7 +43,12 @@ public readonly record struct Result<TValue> : IResult
     /// <param name="value">When this method returns <c>true</c>, contains the value of the result; otherwise, the default value.</param>
     /// <param name="failure">When this method returns <c>false</c>, contains the reason the result is a failure; otherwise, <c>null</c>.</param>
     /// <returns><c>true</c> if the result is successful; otherwise, <c>false</c>.</returns>
+#if NETSTANDARD2_0
+    public bool TryGetValue(out TValue? value, out Failure? failure)
+
+#else
     public bool TryGetValue([MaybeNullWhen(false)] out TValue value, [MaybeNullWhen(true)] out Failure failure)
+#endif
     {
         value = _value;
         failure = _failure;
@@ -47,7 +56,11 @@ public readonly record struct Result<TValue> : IResult
     }
 
     /// <inheritdoc />
+#if NETSTANDARD2_0
+    public bool TryGetFailure(out Failure? failure)
+#else
     public bool TryGetFailure([MaybeNullWhen(false)] out Failure failure)
+#endif
     {
         failure = _failure;
         return IsFailure;
@@ -85,7 +98,7 @@ public readonly record struct Result<TValue> : IResult
     /// <param name="result">The <see cref="Result{TValue}"/> to convert.</param>
     /// <returns>A <see cref="Result"/> representing success or failure without a value.</returns>
     public static implicit operator Result(Result<TValue> result) =>
-        result.TryGetFailure(out var failure) ? Result.Failure(failure) : Result.Success();
+        result.TryGetFailure(out var failure) ? Result.Failure(failure!) : Result.Success();
 
     private Result(bool isSuccess, TValue? value, Failure? failure) => (IsSuccess, _value, _failure) = (isSuccess, value, failure);
 }
