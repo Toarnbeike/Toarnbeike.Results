@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
+		<RootNamespace>Toarnbeike.Results</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>Toarnbeike.Results.Abstractions</PackageId>
+		<!-- Version is managed centrally in Directory.build.props to keep versions in sync.-->
+		<Description>Abstractions for Toarnbeike.Results; also available for netstandard2.0</Description>
+		<PackageTags>result monad abstractions sourcegeneration source generator sourcegen netstandard2.0</PackageTags>
+	</PropertyGroup>
+</Project>

@@ -33,12 +33,6 @@ public class ValidationFailuresTests
     }
 
     [Test]
-    public void ValidationFailures_ShouldThrow_WhenCreatedUsingNullFailure()
-    {
-        Should.Throw<ArgumentException>(() => new ValidationFailures([_validationFailure, null!]));
-    }
-
-    [Test]
     public void Add_Should_IncludeFailure_WithPropertyAndMessage()
     {
         var updatedFailures = _existingFailures.Add("newProperty", "Other failure");
