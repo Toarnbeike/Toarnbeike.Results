@@ -37,7 +37,7 @@ public class ValidateExtensionTests
         }
     }
 
-    [Fact]
+    [Test]
     public void Validate_Should_ReturnOriginalResult_IfAlreadyFailed()
     {
         var result = Result<Person>.Failure(new Failure("test", "already failed"));
@@ -47,7 +47,7 @@ public class ValidateExtensionTests
         validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
     }
 
-    [Fact]
+    [Test]
     public void Validate_Should_ReturnValidationFailures_WhenValidationFails()
     {
         var person = new Person { Name = "", Age = 15 };
@@ -61,7 +61,7 @@ public class ValidateExtensionTests
         failures.GetFailuresFor("Age").Count().ShouldBe(1);
     }
 
-    [Fact]
+    [Test]
     public void Validate_Should_ReturnOriginalResult_WhenValidationSucceeds()
     {
         var person = new Person { Name = "Alice", Age = 30 };
@@ -72,7 +72,7 @@ public class ValidateExtensionTests
         validated.ShouldBeSuccessWithValue(person);
     }
 
-    [Fact]
+    [Test]
     public async Task ValidateAsync_Should_ReturnOriginalResult_IfAlreadyFailed()
     {
         var result = Result<Person>.Failure(new Failure("test", "already failed"));
@@ -82,7 +82,7 @@ public class ValidateExtensionTests
         validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
     }
 
-    [Fact]
+    [Test]
     public async Task ValidateAsync_Should_ReturnValidationFailures_WhenValidationFails()
     {
         var person = new Person { Name = "", Age = 15 };
@@ -96,7 +96,7 @@ public class ValidateExtensionTests
         failures.GetFailuresFor("Age").Count().ShouldBe(1);
     }
 
-    [Fact]
+    [Test]
     public async Task ValidateAsync_Should_ReturnOriginalResult_WhenValidationSucceeds()
     {
         var person = new Person { Name = "Alice", Age = 30 };
@@ -107,7 +107,7 @@ public class ValidateExtensionTests
         validated.ShouldBeSuccessWithValue(person);
     }
 
-    [Fact]
+    [Test]
     public async Task Validate_Should_ReturnOriginalResultTask_IfAlreadyFailed()
     {
         var result = Task.FromResult(Result<Person>.Failure(new Failure("test", "already failed")));
@@ -117,7 +117,7 @@ public class ValidateExtensionTests
         validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
     }
 
-    [Fact]
+    [Test]
     public async Task Validate_Should_ReturnValidationFailures_WhenValidationOfTaskFails()
     {
         var person = new Person { Name = "", Age = 15 };
@@ -131,7 +131,7 @@ public class ValidateExtensionTests
         failures.GetFailuresFor("Age").Count().ShouldBe(1);
     }
 
-    [Fact]
+    [Test]
     public async Task Validate_Should_ReturnOriginalResult_WhenValidationOfTaskSucceeds()
     {
         var person = new Person { Name = "Alice", Age = 30 };
@@ -142,7 +142,7 @@ public class ValidateExtensionTests
         validated.ShouldBeSuccessWithValue(person);
     }
 
-    [Fact]
+    [Test]
     public async Task ValidateAsync_Should_ReturnOriginalResultTask_IfAlreadyFailed()
     {
         var result = Task.FromResult(Result<Person>.Failure(new Failure("test", "already failed")));
@@ -152,7 +152,7 @@ public class ValidateExtensionTests
         validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
     }
 
-    [Fact]
+    [Test]
     public async Task ValidateAsync_Should_ReturnValidationFailures_WhenValidationOfTaskFails()
     {
         var person = new Person { Name = "", Age = 15 };
@@ -166,7 +166,7 @@ public class ValidateExtensionTests
         failures.GetFailuresFor("Age").Count().ShouldBe(1);
     }
 
-    [Fact]
+    [Test]
     public async Task ValidateAsync_Should_ReturnOriginalResult_WhenValidationOfTaskSucceeds()
     {
         var person = new Person { Name = "Alice", Age = 30 };

@@ -5,7 +5,7 @@ namespace Toarnbeike.Results.Tests.Extensions.Zip;
 
 public class ZipIntegrationTests
 {
-    [Fact]
+    [Test]
     public void TupleResult_Should_HandleOtherExtensionMethod_Sync()
     {
 

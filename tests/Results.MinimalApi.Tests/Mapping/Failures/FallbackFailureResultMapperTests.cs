@@ -4,7 +4,7 @@ namespace Toarnbeike.Results.MinimalApi.Tests.Mapping.Failures;
 
 public class FallbackFailureResultMapperTests
 {
-    [Fact]
+    [Test]
     public void Map_ShouldReturnProblemDetails_WhenFallbackIsUsed()
     {
         var failure = new Failure("fallback", "Fallback error");

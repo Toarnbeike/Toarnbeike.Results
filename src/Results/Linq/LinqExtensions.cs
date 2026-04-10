@@ -21,7 +21,6 @@ public static class LinqExtensions
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="result"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
     public static Result<TResult> Select<T, TResult>(this Result<T> result, Func<T, TResult> selector)
     {
-        ArgumentNullException.ThrowIfNull(result);
         ArgumentNullException.ThrowIfNull(selector);
 
         return result.Map(selector);
@@ -47,7 +46,6 @@ public static class LinqExtensions
         Func<T, Result<TIntermediate>> binder,
         Func<T, TIntermediate, TResult> projector)
     {
-        ArgumentNullException.ThrowIfNull(result);
         ArgumentNullException.ThrowIfNull(binder);
         ArgumentNullException.ThrowIfNull(projector);
 
@@ -68,7 +66,6 @@ public static class LinqExtensions
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="result"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
     public static Result<T> Where<T>(this Result<T> result, Func<T, bool> predicate)
     {
-        ArgumentNullException.ThrowIfNull(result);
         ArgumentNullException.ThrowIfNull(predicate);
 
         return result.Check(predicate, () => new Failure("whereLinq", "LINQ predicate was not satisfied."));

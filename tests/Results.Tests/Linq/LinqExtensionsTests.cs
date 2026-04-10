@@ -8,7 +8,7 @@ namespace Toarnbeike.Results.Tests.Linq;
 /// </summary>
 public class LinqExtensionsTests
 {
-    [Fact]
+    [Test]
     public void Select_Should_ProjectSuccessfulResult()
     {
         var result = from x in Result.Success(5)
@@ -17,7 +17,7 @@ public class LinqExtensionsTests
         result.ShouldBeSuccessWithValue(10);
     }
 
-    [Fact]
+    [Test]
     public void Select_should_propagate_failure()
     {
         var failure = Result<int>.Failure(new Failure("code", "error"));
@@ -28,7 +28,7 @@ public class LinqExtensionsTests
         result.ShouldBeFailureWithCode("code");
     }
 
-    [Fact]
+    [Test]
     public void SelectMany_Should_ChainSuccessfulResults()
     {
         var result = from x in Result.Success(2)
@@ -38,7 +38,7 @@ public class LinqExtensionsTests
         result.ShouldBeSuccessWithValue(5);
     }
 
-    [Fact]
+    [Test]
     public void SelectMany_Should_PropagateFailure_FromFirstResult()
     {
         var result = from x in Result<int>.Failure(new Failure("first", "error"))
@@ -48,7 +48,7 @@ public class LinqExtensionsTests
         result.ShouldBeFailureWithCode("first");
     }
 
-    [Fact]
+    [Test]
     public void SelectMany_Should_PropagateFailure_FromSecondResult()
     {
         var result = from x in Result.Success(2)
@@ -58,7 +58,7 @@ public class LinqExtensionsTests
         result.ShouldBeFailureWithCode("second");
     }
 
-    [Fact]
+    [Test]
     public void Where_Should_FilterSuccess_WhenPredicateIsTrue()
     {
         var result = from x in Result.Success(10)
@@ -68,7 +68,7 @@ public class LinqExtensionsTests
         result.ShouldBeSuccessWithValue(10);
     }
 
-    [Fact]
+    [Test]
     public void Where_Should_CreateFailure_WhenPredicateIsFalse()
     {
         var result = from x in Result.Success(3)
@@ -78,7 +78,7 @@ public class LinqExtensionsTests
         result.ShouldBeFailureWithCodeAndMessage("whereLinq", "LINQ predicate was not satisfied.");
     }
 
-    [Fact]
+    [Test]
     public void Where_Should_PropagateOriginalFailure()
     {
         var failed = Result<int>.Failure(new Failure("code", "error"));
@@ -90,7 +90,7 @@ public class LinqExtensionsTests
         result.ShouldBeFailureWithCode("code");
     }
 
-    [Fact]
+    [Test]
     public void Let_keyword_should_preserve_value_across_bindings()
     {
         var result = from name in Result.Success("Alice")

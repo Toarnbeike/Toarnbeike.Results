@@ -15,7 +15,7 @@ public static class ResultSuccessAssertions
     /// <exception cref="ResultAssertionException">Thrown when the result is a failure.</exception>
     public static void ShouldBeSuccess(this Result result)
     {
-        if (result is null)
+        if (result.Equals(default))
         {
             throw new ResultAssertionException("Expected result to be non-null.");
         }
@@ -36,7 +36,7 @@ public static class ResultSuccessAssertions
     /// <exception cref="ResultAssertionException">Thrown when the result is a failure.</exception>
     public static TValue ShouldBeSuccess<TValue>(this Result<TValue> result)
     {
-        if (result is null)
+        if (result.Equals(default))
         {
             throw new ResultAssertionException("Expected result to be non-null.");
         }

@@ -13,28 +13,28 @@ public class GetValueOrThrowExtensionsTests
     private readonly Task<Result<int>> _successTask = Task.FromResult(Result.Success(42));
     private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new Failure("original", "Original failure")));
 
-    [Fact]
+    [Test]
     public void GetValueOrThrow_ShouldReturnValue_WhenResultIsSuccess()
     {
         var value = _success.GetValueOrThrow();
         value.ShouldBe(42);
     }
 
-    [Fact]
+    [Test]
     public void GetValueOrThrow_ShouldThrow_WhenResultIsFailure()
     {
         var ex = Should.Throw<InvalidOperationException>(() => _failure.GetValueOrThrow());
         ex.Message.ShouldBe("Trying to get the value of a failure result. Failure: 'Original failure'.");
     }
 
-    [Fact]
+    [Test]
     public async Task GetValueOrThrow_ShouldReturnValue_WhenResultTaskIsSuccess()
     {
         var value = await _successTask.GetValueOrThrow();
         value.ShouldBe(42);
     }
 
-    [Fact]
+    [Test]
     public async Task GetValueOrThrow_ShouldThrow_WhenResultTaskIsFailure()
     {
         var ex = await Should.ThrowAsync<InvalidOperationException>(

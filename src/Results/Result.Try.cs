@@ -6,7 +6,7 @@ namespace Toarnbeike.Results;
 /// Provides factory methods for safely executing actions and functions that might throw,
 /// wrapping the outcome in a <see cref="Result"/> or <see cref="Result{TValue}"/>.
 /// </summary>
-public partial class Result
+public partial record struct Result
 {
     /// <summary>
     /// Executes the specified <paramref name="action"/>, returning a successful result if no exception is thrown.
@@ -50,7 +50,7 @@ public partial class Result
     /// </summary>
     /// <param name="valueTask">The asynchronous operation to execute.</param>
     public static async Task<Result> TryValueAsync(Func<ValueTask> valueTask) => 
-        await TryAsync(() => valueTask().AsTask());
+        await TryAsync(() => valueTask().AsTask()).ConfigureAwait(false);
 
     /// <summary>
     /// Executes the specified <paramref name="func"/>, returning a successful result with its value if no exception is thrown.
@@ -96,5 +96,5 @@ public partial class Result
     /// <typeparam name="TValue">The type of the value returned by the asynchronous function.</typeparam>
     /// <param name="func">The asynchronous function to execute.</param>
     public static async Task<Result<TValue>> TryValueAsync<TValue>(Func<ValueTask<TValue>> func) =>
-        await TryAsync(() => func().AsTask());
+        await TryAsync(() => func().AsTask()).ConfigureAwait(false);
 }

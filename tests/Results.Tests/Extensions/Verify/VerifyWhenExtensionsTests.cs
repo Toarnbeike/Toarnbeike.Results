@@ -34,196 +34,196 @@ public class VerifyWhenExtensionsTests
     private readonly Func<double, Task<Result<int>>> _failureOfTTaskFunc = _ => Task.FromResult(Result<int>.Failure(new Failure("Verifywhen", "VerifyWhen failure")));
     private readonly Func<double, Task<Result<int>>> _forbiddenOfTTaskFunc = _ => throw new InvalidOperationException("This function should not be called");
 
-    [Fact]
+    [Test]
     public void VerifyWhen_Should_ReturnSuccess_WhenResultIsSuccess_AndPredicateIsFalse()
     {
         var result = _success.VerifyWhen(_falsePredicate, _forbiddenFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void VerifyWhen_Should_ReturnSuccess_WhenResultIsSuccess_PredicateIsTrue_AndFunctionSucceeds()
     {
         var result = _success.VerifyWhen(_truePredicate, _successFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void VerifyWhen_Should_ReturnFailure_WhenResultIsSuccess_PredicateIsTrue_AndFunctionFails()
     {
         var result = _success.VerifyWhen(_truePredicate, _failureFunc);
         result.ShouldBeFailureWithCodeAndMessage("Verifywhen", "VerifyWhen failure");
     }
 
-    [Fact]
+    [Test]
     public void VerifyWhen_Should_ReturnFailure_WhenResultIsFailure()
     {
         var result = _failure.VerifyWhen(_forbiddenPredicate, _forbiddenFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public void VerifyWhen_Should_ReturnSuccess_WhenResultIsSuccess_PredicateIsTrue_AndFunctionOfTSucceeds()
     {
         var result = _success.VerifyWhen(_truePredicate, _successOfTFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void VerifyWhen_Should_ReturnFailure_WhenResultIsSuccess_PredicateIsTrue_AndFunctionOfTFails()
     {
         var result = _success.VerifyWhen(_truePredicate, _failureOfTFunc);
         result.ShouldBeFailureWithCodeAndMessage("Verifywhen", "VerifyWhen failure");
     }
 
-    [Fact]
+    [Test]
     public void VerifyWhen_Should_ReturnFailure_WhenResultIsFailure_AndCheckIsOfT()
     {
         var result = _failure.VerifyWhen(_forbiddenPredicate, _forbiddenOfTFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnValue_WhenResultIsSuccess_AndPredicateIsFalse()
     {
         var result = await _success.VerifyWhenAsync(_falsePredicate, _forbiddenTaskFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnValue_WhenResultIsSuccess_PredicateIsTrue_AndFunctionSucceeds()
     {
         var result = await _success.VerifyWhenAsync(_truePredicate, _successTaskFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnFailure_WhenResultIsSuccess_PredicateIsTrue_AndFunctionFails()
     {
         var result = await _success.VerifyWhenAsync(_truePredicate, _failureTaskFunc);
         result.ShouldBeFailureWithCodeAndMessage("Verifywhen", "VerifyWhen failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnFailure_WhenResultIsFailure()
     {
         var result = await _failure.VerifyWhenAsync(_forbiddenPredicate, _forbiddenTaskFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnValue_WhenResultIsSuccess_PredicateIsTrue_AndFunctionOfTSucceeds()
     {
         var result = await _success.VerifyWhenAsync(_truePredicate, _successOfTTaskFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnFailure_WhenResultIsSuccess_PredicateIsTrue_AndFunctionOfTFails()
     {
         var result = await _success.VerifyWhenAsync(_truePredicate, _failureOfTTaskFunc);
         result.ShouldBeFailureWithCodeAndMessage("Verifywhen", "VerifyWhen failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnFailure_WhenResultIsFailure_AndCheckIsOfT()
     {
         var result = await _failure.VerifyWhenAsync(_forbiddenPredicate, _forbiddenOfTTaskFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhen_Should_ReturnValue_WhenResultTaskIsSuccess_AndPredicateIsFalse()
     {
         var result = await _successTask.VerifyWhen(_falsePredicate, _forbiddenFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhen_Should_ReturnValue_WhenResultTaskIsSuccess_PredicateIsTrue_AndFunctionSucceeds()
     {
         var result = await _successTask.VerifyWhen(_truePredicate, _successFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhen_Should_ReturnFailure_WhenResultTaskIsSuccess_PredicateIsTrue_AndFunctionFails()
     {
         var result = await _successTask.VerifyWhen(_truePredicate, _failureFunc);
         result.ShouldBeFailureWithCodeAndMessage("Verifywhen", "VerifyWhen failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhen_Should_ReturnFailure_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.VerifyWhen(_forbiddenPredicate, _forbiddenFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhen_Should_ReturnValue_WhenResultTaskIsSuccess_PredicateIsTrue_AndFunctionOfTSucceeds()
     {
         var result = await _successTask.VerifyWhen(_truePredicate, _successOfTFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhen_Should_ReturnFailure_WhenResultTaskIsSuccess_PredicateIsTrue_AndFunctionOfTFails()
     {
         var result = await _successTask.VerifyWhen(_truePredicate, _failureOfTFunc);
         result.ShouldBeFailureWithCodeAndMessage("Verifywhen", "VerifyWhen failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhen_Should_ReturnFailure_WhenResultTaskIsFailure_AndCheckIsOfT()
     {
         var result = await _failureTask.VerifyWhen(_forbiddenPredicate, _forbiddenOfTFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnValue_WhenResultTaskIsSuccess_PredicateIsFalse()
     {
         var result = await _successTask.VerifyWhenAsync(_falsePredicate, _forbiddenTaskFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnValue_WhenResultTaskIsSuccess_PredicateIsTrue_AndFunctionSucceeds()
     {
         var result = await _successTask.VerifyWhenAsync(_truePredicate, _successTaskFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnFailure_WhenResultTaskIsSuccess_PredicateIsTrue_AndFunctionFails()
     {
         var result = await _successTask.VerifyWhenAsync(_truePredicate, _failureTaskFunc);
         result.ShouldBeFailureWithCodeAndMessage("Verifywhen", "VerifyWhen failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnFailure_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.VerifyWhenAsync(_forbiddenPredicate, _forbiddenTaskFunc);
         result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnValue_WhenResultTaskIsSuccess_PredicateIsTrue_AndFunctionOfTSucceeds()
     {
         var result = await _successTask.VerifyWhenAsync(_truePredicate, _successOfTTaskFunc);
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnFailure_WhenResultTaskIsSuccess_PredicateIsTrue_AndFunctionOfTFails()
     {
         var result = await _successTask.VerifyWhenAsync(_truePredicate, _failureOfTTaskFunc);
         result.ShouldBeFailureWithCodeAndMessage("Verifywhen", "VerifyWhen failure");
     }
 
-    [Fact]
+    [Test]
     public async Task VerifyWhenAsync_Should_ReturnFailure_WhenResultTaskIsFailure_AndCheckIsOfT()
     {
         var result = await _failureTask.VerifyWhenAsync(_forbiddenPredicate, _forbiddenOfTTaskFunc);

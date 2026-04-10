@@ -6,7 +6,7 @@ namespace Toarnbeike.Results.MinimalApi.Tests.Mapping.Failures;
 
 public class ValidationFailuresResultMapperTests
 {
-    [Fact]
+    [Test]
     public void Map_MapsValidationFailureToProblemDetails()
     {
         // Arrange

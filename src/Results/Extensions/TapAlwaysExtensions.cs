@@ -1,4 +1,6 @@
-﻿namespace Toarnbeike.Results.Extensions;
+﻿using System;
+
+namespace Toarnbeike.Results.Extensions;
 
 /// <summary>
 /// TapAlways: Extension method for executing side-effects on any <see cref="Result"/> or <see cref="Result{TValue}"/>, 
@@ -17,6 +19,8 @@ public static class TapAlwaysExtensions
     /// </remarks>
     public static Result TapAlways(this Result result, Action action)
     {
+        ArgumentNullException.ThrowIfNull(action);
+
         action();
         return result;
     }
@@ -32,7 +36,9 @@ public static class TapAlwaysExtensions
     /// </remarks>
     public static async Task<Result> TapAlwaysAsync(this Result result, Func<Task> task)
     {
-         await task().ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(task);
+
+        await task().ConfigureAwait(false);
          return result;
     }
 
@@ -47,6 +53,8 @@ public static class TapAlwaysExtensions
     /// </remarks>
     public static async Task<Result> TapAlways(this Task<Result> resultTask, Action action)
     {
+        ArgumentNullException.ThrowIfNull(action);
+
         var result = await resultTask.ConfigureAwait(false);
         return TapAlways(result, action);
     }
@@ -62,6 +70,8 @@ public static class TapAlwaysExtensions
     /// </remarks>
     public static async Task<Result> TapAlwaysAsync(this Task<Result> resultTask, Func<Task> task)
     {
+        ArgumentNullException.ThrowIfNull(task);
+
         var result = await resultTask.ConfigureAwait(false);
         return await TapAlwaysAsync(result, task).ConfigureAwait(false);
     }
@@ -78,6 +88,8 @@ public static class TapAlwaysExtensions
     /// </remarks>
     public static Result<TValue> TapAlways<TValue>(this Result<TValue> result, Action action)
     {
+        ArgumentNullException.ThrowIfNull(action);
+
         action();
         return result;
     }
@@ -94,6 +106,8 @@ public static class TapAlwaysExtensions
     /// </remarks>
     public static async Task<Result<TValue>> TapAlwaysAsync<TValue>(this Result<TValue> result, Func<Task> task)
     {
+        ArgumentNullException.ThrowIfNull(task);
+
         await task().ConfigureAwait(false);
         return result;
     }

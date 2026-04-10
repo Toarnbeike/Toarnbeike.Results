@@ -11,7 +11,7 @@ namespace Toarnbeike.Results;
 /// If it failed, the failure can be inspected using <see cref="TryGetFailure(out Failure)"/>.
 /// </remarks>
 /// <typeparam name="TValue">The type of the success value.</typeparam>
-public class Result<TValue> : IResult
+public readonly record struct Result<TValue> : IResult
 {
     private readonly TValue? _value;
     private readonly Failure? _failure;

@@ -1,6 +1,6 @@
 ![CI](https://github.com/Toarnbeike/Toarnbeike.Results/actions/workflows/build.yaml/badge.svg)
 [![Code Coverage](https://toarnbeike.github.io/Toarnbeike.Results/badge_shieldsio_linecoverage_brightgreen.svg)](https://github.com/Toarnbeike/Toarnbeike.Results/blob/gh-pages/SummaryGithub.md)
-[![.NET 9](https://img.shields.io/badge/.NET-9.0-blueviolet.svg)](https://dotnet.microsoft.com/)
+[![.NET 10](https://img.shields.io/badge/.NET-10.0-blueviolet.svg)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 # Toarnbeike.Results
@@ -186,7 +186,7 @@ Toarnbeike.Results supports optional integration with [C# LINQ query syntax](htt
 making it easier to compose multiple `Result<T>` computations in a declarative style.
 
 ### Why use LINQ Query Syntax?
-While method chaining works well for most scenarios, C#’s LINQ query syntax can make some workflows more expressive and readable — especially when you want to:
+While method chaining works well for most scenarios, C#'s LINQ query syntax can make some workflows more expressive and readable; especially when you want to:
 
 - Name intermediate results using `let`
 - Compose complex Result pipelines in a declarative way
@@ -226,4 +226,4 @@ These are ideal for unit testing and compatible with any test framework. See the
 ## Why Results?
 
 > Exceptions should be exceptional.
-> Result<T> gives you clarity, safety, and composability — without relying on exceptions for control flow.
+> Result<T> gives you clarity, safety, and composability; without relying on exceptions for control flow.

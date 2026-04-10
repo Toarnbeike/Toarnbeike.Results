@@ -9,7 +9,7 @@ namespace Toarnbeike.Results;
 /// Use <see cref="Success"/> to create a successful result without a value,
 /// or <see cref="Failure(Failure)"/> to create a failed result.
 /// </remarks>
-public partial class Result : IResult
+public readonly partial record struct Result : IResult
 {
     private readonly Failure? _failure;
 
@@ -33,19 +33,6 @@ public partial class Result : IResult
     public static Result Success() => new(true, null);
 
     /// <summary>
-    /// Creates a new <see cref="Result"/> representing a successful operation.
-    /// </summary>
-    /// <returns>A success <see cref="Result"/> instance, wrapped in a task.</returns>
-    public static Task<Result> SuccessTask() => Task.FromResult(Success());
-
-    /// <summary>
-    /// Creates a new <see cref="Result"/> representing a failure with the specified <paramref name="failure"/>.
-    /// </summary>
-    /// <param name="failure">The reason why the operation failed.</param>
-    /// <returns>A failure <see cref="Result"/> instance containing the specified <paramref name="failure"/>.</returns>
-    public static Result Failure(Failure failure) => new(false, failure);
-
-    /// <summary>
     /// Creates a new successful <see cref="Result{TValue}"/> with the specified <paramref name="value"/>.
     /// </summary>
     /// <typeparam name="TValue">The type of the value.</typeparam>
@@ -54,13 +41,12 @@ public partial class Result : IResult
     public static Result<TValue> Success<TValue>(TValue value) => Result<TValue>.Success(value);
 
     /// <summary>
-    /// Creates a new successful <see cref="Result{TValue}"/> with the specified <paramref name="value"/>.
+    /// Creates a new <see cref="Result"/> representing a failure with the specified <paramref name="failure"/>.
     /// </summary>
-    /// <typeparam name="TValue">The type of the value.</typeparam>
-    /// <param name="value">The value to encapsulate.</param>
-    /// <returns>A success <see cref="Result{TValue}"/> instance containing the specified value.</returns>
-    public static Task<Result<TValue>> SuccessTask<TValue>(TValue value) => Task.FromResult(Success(value));
-    
+    /// <param name="failure">The reason why the operation failed.</param>
+    /// <returns>A failure <see cref="Result"/> instance containing the specified <paramref name="failure"/>.</returns>
+    public static Result Failure(Failure failure) => new(false, failure);
+
     /// <summary>
     /// Implicitly converts an <see cref="Results.Failure"/> to a failed <see cref="Result"/>.
     /// </summary>

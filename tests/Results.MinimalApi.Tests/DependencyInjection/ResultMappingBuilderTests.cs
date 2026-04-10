@@ -22,7 +22,7 @@ public class ResultMappingBuilderTests
         return _services.BuildServiceProvider();
     }
 
-    [Fact]
+    [Test]
     public void AddResultMapping_Should_RegisterDefaultMappers()
     {
         var provider = Build();
@@ -37,7 +37,7 @@ public class ResultMappingBuilderTests
         mappers.ShouldContain(x => x is ValidationFailuresResultMapper);
     }
 
-    [Fact]
+    [Test]
     public void AddResultMapping_Should_RegisterDefaultFallbackMapper()
     {
         var provider = Build();
@@ -45,7 +45,7 @@ public class ResultMappingBuilderTests
         provider.GetService<IFallbackFailureResultMapper>().ShouldBeOfType<FallbackFailureResultMapper>();
     }
 
-    [Fact]
+    [Test]
     public void AddMapper_Should_RegisterCustomMapper()
     {
         var provider = Build(cfg => cfg.AddMapper<CustomMapper>());
@@ -56,7 +56,7 @@ public class ResultMappingBuilderTests
     }
 
 
-    [Fact]
+    [Test]
     public void UseFallback_Should_ReplaceFallbackMapper()
     {
         var provider = Build(cfg => cfg.UseFallback<CustomFallbackMapper>());
@@ -66,7 +66,7 @@ public class ResultMappingBuilderTests
         fallback.ShouldBeOfType<CustomFallbackMapper>();
     }
 
-    [Fact]
+    [Test]
     public void AddMappersFromAssembly_Should_RegisterAllMappersFromAssembly()
     {
         var provider = Build(cfg =>
@@ -78,7 +78,7 @@ public class ResultMappingBuilderTests
         mappers.ShouldContain(x => x.GetType() == typeof(SecondCustomMapper));
     }
 
-    [Fact]
+    [Test]
     public void AddMappersFromAssemblyContaining_Should_RegisterAllMappersFromAssembly()
     {
         var provider = Build(cfg =>

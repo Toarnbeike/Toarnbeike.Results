@@ -10,8 +10,11 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+
+    env:
+      DOTNET_VERSION: '10.0.x'
 
     steps:
       - name: Checkout code
@@ -20,27 +23,55 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Restore dependencies
+      - name: Restore
         run: dotnet restore
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
-      - name: Run Tests
-        run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage"
+      - name: Run TUnit Tests
+        run: |
+          set +e
 
-      - name: Report Coverage
-        uses: danielpalme/ReportGenerator-GitHub-Action@5
-        with:
-          reports: '**/coverage.cobertura.xml'
-          targetdir: 'coveragereport'
-          reporttypes: 'MarkdownSummaryGithub;Badges'
+          mkdir -p artifacts/tunit
+          FAILED=0
 
-      - name: Deploy coverage report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+          projects=(
+            "tests/Results.Tests/Results.Tests.csproj"
+            "tests/Results.FluentValidation.Tests/Results.FluentValidation.Tests.csproj"
+            "tests/Results.MinimalApi.Tests/Results.MinimalApi.Tests.csproj"
+          )
+
+          for project in "${projects[@]}"; do
+            name=$(basename "$(dirname "$project")")
+            log="artifacts/tunit/$name.log"
+
+            echo "=============================="
+            echo "Running tests for $name"
+            echo "=============================="
+
+            dotnet run \
+              --project "$project" \
+              --configuration Release \
+              | tee "$log"
+
+            EXIT_CODE=${PIPESTATUS[0]}
+
+            if [ $EXIT_CODE -ne 0 ]; then
+              echo "Tests failed for $name"
+              FAILED=1
+            else
+              echo "Tests passed for $name"
+            fi
+          done
+
+          exit $FAILED
+
+      - name: Upload Test Output
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./coveragereport
-          publish_branch: gh-pages
+          name: tunit-output
+          path: artifacts/tunit/*.log

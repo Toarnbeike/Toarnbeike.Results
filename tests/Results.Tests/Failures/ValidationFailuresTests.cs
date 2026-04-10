@@ -15,7 +15,7 @@ public class ValidationFailuresTests
         _existingFailures = new ValidationFailures([_validationFailure]);
     }
 
-    [Fact]
+    [Test]
     public void ValidationFailures_Should_BeCreatableFromASingleValidationFailure()
     {
         var result = new ValidationFailures([_validationFailure]);
@@ -26,19 +26,19 @@ public class ValidationFailuresTests
         result.Failures["Property"].Single().ShouldBe("Something is wrong");
     }
 
-    [Fact]
+    [Test]
     public void ValidationFailures_ShouldThrow_WhenCreatedFromAnEmptyCollection()
     {
         Should.Throw<ArgumentException>(() => new ValidationFailures([]));
     }
 
-    [Fact]
+    [Test]
     public void ValidationFailures_ShouldThrow_WhenCreatedUsingNullFailure()
     {
         Should.Throw<ArgumentException>(() => new ValidationFailures([_validationFailure, null!]));
     }
 
-    [Fact]
+    [Test]
     public void Add_Should_IncludeFailure_WithPropertyAndMessage()
     {
         var updatedFailures = _existingFailures.Add("newProperty", "Other failure");
@@ -48,7 +48,7 @@ public class ValidationFailuresTests
         updatedFailures.Failures["newProperty"].Length.ShouldBe(1);
     }
 
-    [Fact]
+    [Test]
     public void Add_Should_IncludeFailure_FromValidationFailure()
     {
         var additionalValidationFailure = new ValidationFailure("Property", "Another failure");
@@ -59,7 +59,7 @@ public class ValidationFailuresTests
         updatedFailures.Failures["Property"].Last().ShouldBe("Another failure");
     }
 
-    [Fact]
+    [Test]
     public void AddRange_Should_AddMultipleFailures_ForOneProperty()
     {
         List<string> additionalFailures = ["first", "second", "trird"];
@@ -70,7 +70,7 @@ public class ValidationFailuresTests
         updatedFailures.Failures["newProperty"].Length.ShouldBe(3);
     }
 
-    [Fact]
+    [Test]
     public void Merge_Should_CombineFailures()
     {
         IEnumerable<ValidationFailure> failures =
@@ -91,7 +91,7 @@ public class ValidationFailuresTests
         updatedFailures.Failures["Property3"].Length.ShouldBe(2);
     }
 
-    [Fact]
+    [Test]
     public void ToValidationFailureCollection_Should_CombineAllFailures()
     {
         IEnumerable<ValidationFailure> failures =
@@ -109,7 +109,7 @@ public class ValidationFailuresTests
         collection.Last().ValidationMessage.ShouldBe("Fourth");
     }
 
-    [Fact]
+    [Test]
     public void GetfailuresFor_Should_ReturnFailuresIfFound()
     {
         IEnumerable<ValidationFailure> failures =
@@ -125,7 +125,7 @@ public class ValidationFailuresTests
         property3Failures.Count().ShouldBe(2);
     }
 
-    [Fact]
+    [Test]
     public void GetfailuresFor_Should_ReturnEmptyCollectionIfNotFound()
     {
         IEnumerable<ValidationFailure> failures =
@@ -142,7 +142,7 @@ public class ValidationFailuresTests
         property4Failures.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public void ValidationFailures_Should_BeAbleToChangeBaseProperties_UsingWithExpression()
     {
         var newValidationFailures = _existingFailures with { Code = "something else"};

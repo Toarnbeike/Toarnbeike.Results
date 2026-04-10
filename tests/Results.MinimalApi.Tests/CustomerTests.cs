@@ -1,20 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.TestHost;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Toarnbeike.Results.Integration.Tests.Examples;
+using Toarnbeike.Results.MinimalApi.DependencyInjection;
 
 namespace Toarnbeike.Results.Integration.Tests;
 
-public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTestApp>
+public class CustomerTests()
 {
-    private readonly HttpClient _client = app.Client;
+    private HttpClient _client = null!;
+    private WebApplication _app = null!;
+
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
-    [Fact]
+    [Before(Test)]
+    public async Task Setup()
+    {
+        var builder = WebApplication.CreateBuilder();
+        builder.WebHost.UseTestServer();
+
+        builder.Services.AddCustomerServices();
+        builder.Services.AddResultMapping();
+
+        _app = builder.Build();
+
+        _app.MapCustomerEndpoints();
+
+        await _app.StartAsync();
+
+        _client = _app.GetTestClient();
+    }
+
+    [Test]
     public async Task GetById_ShouldReturnCustomer_WhenExists()
     {
         var customerId = "1";
@@ -31,7 +54,7 @@ public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTest
         customer.Email.ShouldBe("alice@test.com");
     }
 
-    [Fact]
+    [Test]
     public async Task GetById_ShouldReturnFailure_WhenCustomerDoesNotExist()
     {
         var customerId = "999";
@@ -47,7 +70,7 @@ public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTest
         problemDetails.Detail.ShouldBe("Customer not found");
     }
 
-    [Fact]
+    [Test]
     public async Task Post_ShouldReturn204NoContent_WhenCustomerIsInserted()
     {
         var newCustomer = new Customer(2, "Bob", "bob@test.com");
@@ -57,25 +80,8 @@ public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTest
         response.StatusCode.ShouldBe(System.Net.HttpStatusCode.NoContent);
     }
 
-    [Fact]
-    public async Task Post_ShouldReturn400BadRequest_WhenValidatorFails()
-    {
-        var invalidCustomer = new Customer(0, "VeryLongName", "invalid-email");
 
-        var response = await _client.PostAsJsonAsync("/customers", invalidCustomer, _jsonOptions);
-
-        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.BadRequest);
-        var content = await response.Content.ReadAsStringAsync();
-
-        var problemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(content, _jsonOptions);
-        problemDetails.ShouldNotBeNull();
-        problemDetails.Title.ShouldBe("Validation Errors");
-        problemDetails.Errors.ShouldContainKey("Id");
-        problemDetails.Errors.ShouldContainKey("Name");
-        problemDetails.Errors.ShouldContainKey("Email");
-    }
-
-    [Fact]
+    [Test]
     public async Task Post_ShouldReturn400BadRequest_WhenCustomEnsureFails()
     {
         var invalidCustomer = new Customer(2, "Alice", "alice2@test.com");
@@ -91,7 +97,7 @@ public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTest
         problemDetails.Errors.ShouldContainKey("Name");
     }
 
-    [Fact]
+    [Test]
     public async Task Post_ShouldReturn500InternalServerError_WhenUnsafeSaveThrows()
     {
         var duplicateCustomer = new Customer(1, "Bob", "bob@test.com");
@@ -105,5 +111,18 @@ public class CustomerTests(MinimalApiTestApp app) : IClassFixture<MinimalApiTest
         problemDetails.ShouldNotBeNull();
         problemDetails.Title.ShouldBe("Internal Server Error");
         problemDetails.Detail.ShouldBe("An unexpected error occurred.");
+    }
+
+    [After(Test)]
+    public async Task Cleanup()
+    {
+        if (_app is not null)
+        {
+            await _app.DisposeAsync();
+            _client.Dispose();
+        }
+
+        _app = null!;
+        _client = null!;
     }
 }

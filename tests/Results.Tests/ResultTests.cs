@@ -4,7 +4,7 @@ public class ResultTests
 {
     private readonly Failure _testFailure = new("test", "Test failure");
 
-    [Fact]
+    [Test]
     public void Success_ShouldReturn_SuccessResult()
     {
         var result = Result.Success();
@@ -12,7 +12,7 @@ public class ResultTests
         result.IsFailure.ShouldBeFalse();
     }
 
-    [Fact]
+    [Test]
     public void Failure_ShouldReturn_FailureResult()
     {
         var result = Result.Failure(_testFailure);
@@ -21,14 +21,14 @@ public class ResultTests
         result.IsFailure.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void Failure_ShouldImplictlyCreate_FailureResult()
     {
         Result result = _testFailure;
         result.IsFailure.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void TryGetFailure_ShouldReturn_True_WhenResultIsFailure()
     {
         var result = Result.Failure(_testFailure);
@@ -39,7 +39,7 @@ public class ResultTests
         actualFailure.Message.ShouldBe(_testFailure.Message);
     }
 
-    [Fact]
+    [Test]
     public void TryGetFailure_ShouldReturn_False_WhenResultIsSuccess()
     {
         var result = Result.Success();

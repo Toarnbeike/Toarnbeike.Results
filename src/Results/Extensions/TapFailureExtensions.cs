@@ -18,6 +18,8 @@ public static class TapFailureExtensions
     /// </remarks>
     public static Result TapFailure(this Result result, Action<Failure> onFailure)
     {
+        ArgumentNullException.ThrowIfNull(onFailure);
+
         if (result.IsFailure && result.TryGetFailure(out var failure))
         {
             onFailure(failure);
@@ -38,6 +40,8 @@ public static class TapFailureExtensions
     /// </remarks>
     public static async Task<Result> TapFailureAsync(this Result result, Func<Failure, Task> onFailure)
     {
+        ArgumentNullException.ThrowIfNull(onFailure);
+
         if (result.IsFailure && result.TryGetFailure(out var failure))
         {
             await onFailure(failure).ConfigureAwait(false);
@@ -91,6 +95,8 @@ public static class TapFailureExtensions
     /// </remarks>
     public static Result<TValue> TapFailure<TValue>(this Result<TValue> result, Action<Failure> onFailure)
     {
+        ArgumentNullException.ThrowIfNull(onFailure);
+
         if (result.IsFailure && result.TryGetFailure(out var failure))
         {
             onFailure(failure);
@@ -112,6 +118,8 @@ public static class TapFailureExtensions
     /// </remarks>
     public static async Task<Result<TValue>> TapFailureAsync<TValue>(this Result<TValue> result, Func<Failure, Task> onFailure)
     {
+        ArgumentNullException.ThrowIfNull(onFailure);
+
         if (result.IsFailure && result.TryGetFailure(out var failure))
         {
             await onFailure(failure).ConfigureAwait(false);

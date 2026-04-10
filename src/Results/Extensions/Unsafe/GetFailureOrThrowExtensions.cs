@@ -14,7 +14,7 @@ public static class GetFailureOrThrowExtensions
     /// <param name="result">The result to get the failure from.</param>
     /// <returns>The failure contained in the failing result.</returns>
     /// <exception cref="InvalidOperationException">Thrown if the result is a success.</exception>
-    public static Failure GetFailureOrThrow(this IResult result)
+    public static Failure GetFailureOrThrow<TResult>(this TResult result) where TResult : IResult
     {
         if (result.TryGetFailure(out var failure))
         {

@@ -4,7 +4,7 @@ namespace Toarnbeike.Results.MinimalApi.Tests;
 
 public class AggregateProblemDetailsTests
 {
-    [Fact]
+    [Test]
     public void Constructor_ShouldInitializeProperties_WhenProblemsAreProvided()
     {
         var problems = new List<ProblemDetails>
@@ -19,7 +19,7 @@ public class AggregateProblemDetailsTests
         aggregateProblemDetails.Problems.ShouldContain(p => p.Title == "Problem 2" && p.Detail == "Detail 2");
     }
 
-    [Fact]
+    [Test]
     public void Constructor_ShouldInitializeExtensions_WhenProblemsAreProvided()
     {
         var problems = new List<ProblemDetails>
@@ -35,7 +35,7 @@ public class AggregateProblemDetailsTests
         aggregateProblemDetails.Extensions["code"].ShouldBe("aggregate");
     }
 
-    [Fact]
+    [Test]
     public void Constructor_ShouldThrow_WhenProblemsIsNull()
     {
         ICollection<ProblemDetails> problems = null!;
@@ -43,7 +43,7 @@ public class AggregateProblemDetailsTests
         Should.Throw<ArgumentNullException>(() => new AggregateProblemDetails(problems));
     }
 
-    [Fact]
+    [Test]
     public void JsonConstructor_ShouldInitializeEmptyProblems_WhenCalled()
     {
         var aggregateProblemDetails = new AggregateProblemDetails();

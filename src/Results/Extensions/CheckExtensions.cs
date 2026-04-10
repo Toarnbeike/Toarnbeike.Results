@@ -22,6 +22,9 @@ public static class CheckExtensions
     /// </returns>
     public static Result<TValue> Check<TValue>(this Result<TValue> result, Func<TValue, bool> predicate, Func<Failure> onFailure)
     {
+        ArgumentNullException.ThrowIfNull(predicate);
+        ArgumentNullException.ThrowIfNull(onFailure);
+
         if (!result.TryGetValue(out var value))
         {
             return result;
@@ -49,6 +52,9 @@ public static class CheckExtensions
     /// </returns>
     public static async Task<Result<TValue>> CheckAsync<TValue>(this Result<TValue> result, Func<TValue, Task<bool>> predicate, Func<Failure> onFailure)
     {
+        ArgumentNullException.ThrowIfNull(predicate);
+        ArgumentNullException.ThrowIfNull(onFailure);
+
         if (!result.TryGetValue(out var value))
         {
             return result;

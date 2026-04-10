@@ -8,7 +8,7 @@ namespace Toarnbeike.Results.Tests.TestHelpers;
 /// </summary>
 public class ResultFailureAssertionsTests
 {
-    [Fact]
+    [Test]
     public void ShouldBeFailure_ReturnsFailure_WhenResultIsFailure()
     {
         var failure = new Failure("X", "fail");
@@ -18,25 +18,25 @@ public class ResultFailureAssertionsTests
         actual.ShouldBe(failure);
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailure_Throws_WhenResultIsSuccess()
     {
         var result = Result.Success();
 
-        var ex = Should.Throw<ResultAssertionException>(result.ShouldBeFailure);
+        var ex = Should.Throw<ResultAssertionException>(() => result.ShouldBeFailure());
         ex.Message.ShouldBe("Expected failure result, but got success.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailure_Throws_WhenResultIsNull()
     {
-        Result result = null!;
+        Result result = default!;
 
-        var ex = Should.Throw<ResultAssertionException>(result.ShouldBeFailure);
+        var ex = Should.Throw<ResultAssertionException>(() => result.ShouldBeFailure());
         ex.Message.ShouldBe("Expected result to be non-null.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureWithCode_ReturnsFailure_WhenCodeMatches()
     {
         var failure = new Failure("X", "fail");
@@ -46,7 +46,7 @@ public class ResultFailureAssertionsTests
         actual.ShouldBe(failure);
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureWithCode_Throws_WhenCodeDoesNotMatches()
     {
         var failure = new Failure("X", "fail");
@@ -56,7 +56,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("Expected failure result with code 'Y', but got 'X'.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureWithCodeWithCustomMessage_Throws_WhenCodeDoesNotMatches()
     {
         var failure = new Failure("X", "fail");
@@ -66,7 +66,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("customMessage");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureWithMessage_ReturnsFailure_WhenMessageMatches()
     {
         var failure = new Failure("X", "fail");
@@ -76,7 +76,7 @@ public class ResultFailureAssertionsTests
         actual.ShouldBe(failure);
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureWithMessage_Throws_WhenMessageDoesNotMatches()
     {
         var failure = new Failure("X", "fail");
@@ -86,7 +86,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("Expected failure result with message 'failure', but got 'fail'.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureWithMessageWithCustomMessage_Throws_WhenMessageDoesNotMatches()
     {
         var failure = new Failure("X", "fail");
@@ -96,7 +96,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("customMessage");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureWithCodeAndMessage_ReturnsFailure_WhenCodeAndMessageMatches()
     {
         var failure = new Failure("X", "fail");
@@ -106,7 +106,7 @@ public class ResultFailureAssertionsTests
         actual.ShouldBe(failure);
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureWithCodeAndMessage_Throws_WhenCodeDoesNotMatches()
     {
         var failure = new Failure("X", "fail");
@@ -116,7 +116,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("Expected failure result with code 'Y' and message 'fail', but got code 'X' and message 'fail'.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureWithCodeAndMessage_Throws_WhenMessageDoesNotMatches()
     {
         var failure = new Failure("X", "fail");
@@ -126,7 +126,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("Expected failure result with code 'X' and message 'failure', but got code 'X' and message 'fail'.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureWithCodeAndMessageWithCustomMessage_Throws_WhenMessageDoesNotMatches()
     {
         var failure = new Failure("X", "fail");
@@ -136,7 +136,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("customMessage");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureOfType_Passes_WhenCorrectType()
     {
         var result = Result.Failure(new ValidationFailure("Field", "required"));
@@ -144,7 +144,7 @@ public class ResultFailureAssertionsTests
         typed.Property.ShouldBe("Field");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureOfType_Throws_WhenWrongType()
     {
         var result = Result.Failure(new Failure("X", "msg"));
@@ -155,7 +155,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("Expected failure of type 'ValidationFailure', but got 'Failure'.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureOfType_ThrowsWithCustomMessage_WhenWrongType()
     {
         var result = Result.Failure(new Failure("X", "msg"));
@@ -166,7 +166,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("custom message");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureThatSatisfiesPredicate_Passes_WhenMatch()
     {
         var failure = new Failure("X", "Something");
@@ -176,7 +176,7 @@ public class ResultFailureAssertionsTests
         actual.ShouldBe(failure);
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureThatSatisfiesPredicate_Throws_WhenNotMatch()
     {
         Result result = new Failure("X", "Something");
@@ -187,7 +187,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("Expected failure result with a failure that satisfies the predicate, but it did not.");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureThatSatisfiesPredicate_ThrowsWithCustomMessage_WhenNotMatch()
     {
         Result result = new Failure("X", "Something");
@@ -198,7 +198,7 @@ public class ResultFailureAssertionsTests
         ex.Message.ShouldBe("custom message");
     }
 
-    [Fact]
+    [Test]
     public void ShouldBeFailureThatSatisfiesPredicate_Throws_WhenPredicateIsNull()
     {
         Result result = new Failure("X", "Something");

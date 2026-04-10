@@ -5,7 +5,7 @@ public class ResultTValueTests
     private readonly Failure _testFailure = new("test", "Test failure");
     private readonly int _expectedValue = 42;
 
-    [Fact]
+    [Test]
     public void Success_ShouldReturn_SuccessResult_WithValue()
     {
         var result = Result<int>.Success(_expectedValue);
@@ -14,7 +14,7 @@ public class ResultTValueTests
         result.IsFailure.ShouldBeFalse();
     }
 
-    [Fact]
+    [Test]
     public void Failure_ShouldReturn_FailureResult()
     {
         var result = Result<int>.Failure(_testFailure);
@@ -23,7 +23,7 @@ public class ResultTValueTests
         result.IsFailure.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void TryGetValue_ShouldReturn_True_WhenResultIsSuccess()
     {
         var result = Result<int>.Success(_expectedValue);
@@ -33,7 +33,7 @@ public class ResultTValueTests
         actualValue.ShouldBe(_expectedValue);
     }
 
-    [Fact]
+    [Test]
     public void TryGetValue_ShouldReturn_False_WhenResultIsFailure()
     {
         var result = Result<int>.Failure(_testFailure);
@@ -41,7 +41,7 @@ public class ResultTValueTests
         result.TryGetValue(out _).ShouldBeFalse();
     }
 
-    [Fact]
+    [Test]
     public void TryGetValue_ShouldReturn_Value_WhenResultIsFailure()
     {
         var result = Result<int>.Success(_expectedValue);
@@ -51,7 +51,7 @@ public class ResultTValueTests
         actualValue.ShouldBe(_expectedValue);
     }
 
-    [Fact]
+    [Test]
     public void TryGetValue_ShouldReturn_Failure_WhenResultIsFailure()
     {
         var result = Result<int>.Failure(_testFailure);
@@ -63,7 +63,7 @@ public class ResultTValueTests
         failure.Message.ShouldBe(_testFailure.Message);
     }
 
-    [Fact]
+    [Test]
     public void TryGetFailure_ShouldReturn_True_WhenResultIsFailure()
     {
         var result = Result<int>.Failure(_testFailure);
@@ -74,14 +74,14 @@ public class ResultTValueTests
         actualFailure.Message.ShouldBe(_testFailure.Message);
     }
 
-    [Fact]
+    [Test]
     public void TryGetFailure_ShouldReturn_False_WhenResultIsSuccess()
     {
         var result = Result<int>.Success(_expectedValue);
         result.TryGetFailure(out _).ShouldBeFalse();
     }
 
-    [Fact]
+    [Test]
     public void Success_ShouldReturn_SuccessResult_WithValue_EvenWithoutTypeInfo()
     {
         var result = Result.Success(_expectedValue);
@@ -92,7 +92,7 @@ public class ResultTValueTests
         actualValue.ShouldBe(_expectedValue);
     }
 
-    [Fact]
+    [Test]
     public void ImplicitConversion_ShouldConvert_FailureToResult()
     {
         Result<int> result = _testFailure;
@@ -100,7 +100,7 @@ public class ResultTValueTests
         result.IsFailure.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void ImplicitConversion_ShouldConvert_TValueToResultTValue()
     {
         Result<int> result = _expectedValue;
@@ -108,7 +108,7 @@ public class ResultTValueTests
         result.IsFailure.ShouldBeFalse();
     }
 
-    [Fact]
+    [Test]
     public void ImplicitConversion_ShouldConvert_ResultTValueToResult_SuccessPath()
     {
         Result result = Result<int>.Success(_expectedValue);
@@ -116,7 +116,7 @@ public class ResultTValueTests
         result.IsSuccess.ShouldBeTrue();
     }
 
-    [Fact]
+    [Test]
     public void ImplicitConversion_ShouldConvert_ResultTValueToResult_FailurePath()
     {
         Result result = Result<int>.Failure(_testFailure);

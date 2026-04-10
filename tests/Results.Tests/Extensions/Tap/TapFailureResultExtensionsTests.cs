@@ -13,7 +13,7 @@ public class TapFailureResultExtensionsTests
     private readonly Task<Result> _successTask = Task.FromResult(Result.Success());
     private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new Failure("original", "Original failure")));
 
-    [Fact]
+    [Test]
     public void TapFailure_ShouldNotExecute_WhenResultIsSuccess()
     {
         var failureMessage = string.Empty;
@@ -21,7 +21,7 @@ public class TapFailureResultExtensionsTests
         failureMessage.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public void TapFailure_ShouldExecute_WhenResultIsFailure()
     {
         var failureMessage = string.Empty;
@@ -29,7 +29,7 @@ public class TapFailureResultExtensionsTests
         failureMessage.ShouldBe("Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task TapFailureAsync_ShouldNotExecute_WhenResultIsSuccess()
     {
         var failureMessage = string.Empty;
@@ -37,7 +37,7 @@ public class TapFailureResultExtensionsTests
         failureMessage.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task TapFailureAsync_ShouldExecute_WhenResultIsFailure()
     {
         var failureMessage = string.Empty;
@@ -45,7 +45,7 @@ public class TapFailureResultExtensionsTests
         failureMessage.ShouldBe("Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task TapFailure_ShouldNotExecute_WhenResultTaskIsSuccess()
     {
         var failureMessage = string.Empty;
@@ -53,7 +53,7 @@ public class TapFailureResultExtensionsTests
         failureMessage.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task TapFailure_ShouldExecute_WhenResultTaskIsFailure()
     {
         var failureMessage = string.Empty;
@@ -61,7 +61,7 @@ public class TapFailureResultExtensionsTests
         failureMessage.ShouldBe("Original failure");
     }
 
-    [Fact]
+    [Test]
     public async Task TapFailureAsync_ShouldNotExecute_WhenResultTaskIsSuccess()
     {
         var failureMessage = string.Empty;
@@ -69,7 +69,7 @@ public class TapFailureResultExtensionsTests
         failureMessage.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public async Task TapFailureAsync_ShouldExecute_WhenResultTaskIsFailure()
     {
         var failureMessage = string.Empty;

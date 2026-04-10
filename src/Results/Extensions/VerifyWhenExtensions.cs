@@ -23,13 +23,18 @@ public static class VerifyWhenExtensions
     /// The original result if the predicate is false, the result is a failure,
     /// or the check succeeds; otherwise, the failure from the check function.
     /// </returns>
-    public static Result<TValue> VerifyWhen<TValue>(
+    public static Result<TValue> VerifyWhen<TValue, TResult>(
         this Result<TValue> result,
-        Func<TValue, bool> predicate, 
-        Func<TValue, IResult> checkFunc) =>
-        result.TryGetValue(out var value) && predicate(value) && checkFunc(value).TryGetFailure(out var checkFailure)
+        Func<TValue, bool> predicate,
+        Func<TValue, TResult> checkFunc) where TResult : IResult
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        ArgumentNullException.ThrowIfNull(checkFunc);
+
+        return result.TryGetValue(out var value) && predicate(value) && checkFunc(value).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
+    }
 
     /// <summary>
     /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided async check function,
@@ -50,12 +55,17 @@ public static class VerifyWhenExtensions
     /// or the check succeeds; otherwise, the failure from the check function.
     /// </returns>
     public static async Task<Result<TValue>> VerifyWhenAsync<TValue>(
-        this Result<TValue> result, 
-        Func<TValue, bool> predicate, 
-        Func<TValue, Task<Result>> checkFunc) =>
-        result.TryGetValue(out var value) && predicate(value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
+        this Result<TValue> result,
+        Func<TValue, bool> predicate,
+        Func<TValue, Task<Result>> checkFunc)
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        ArgumentNullException.ThrowIfNull(checkFunc);
+
+        return result.TryGetValue(out var value) && predicate(value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
+    }
 
     /// <summary>
     /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided async check function,
@@ -77,12 +87,17 @@ public static class VerifyWhenExtensions
     /// or the check succeeds; otherwise, the failure from the check function.
     /// </returns>
     public static async Task<Result<TValue>> VerifyWhenAsync<TValue, TCheck>(
-        this Result<TValue> result, 
-        Func<TValue, bool> predicate, 
-        Func<TValue, Task<Result<TCheck>>> checkFunc) =>
-        result.TryGetValue(out var value) && predicate(value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
+        this Result<TValue> result,
+        Func<TValue, bool> predicate,
+        Func<TValue, Task<Result<TCheck>>> checkFunc)
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        ArgumentNullException.ThrowIfNull(checkFunc);
+
+        return result.TryGetValue(out var value) && predicate(value) && (await checkFunc(value).ConfigureAwait(false)).TryGetFailure(out var checkFailure)
             ? checkFailure
             : result;
+    }
 
     /// <summary>
     /// Verify that a successful <see cref="Result{TValue}"/> satisfies the provided check function,
@@ -102,10 +117,10 @@ public static class VerifyWhenExtensions
     /// The original result if the predicate is false, the result is a failure,
     /// or the check succeeds; otherwise, the failure from the check function.
     /// </returns>
-    public static async Task<Result<TValue>> VerifyWhen<TValue>(
+    public static async Task<Result<TValue>> VerifyWhen<TValue, TResult>(
         this Task<Result<TValue>> resultTask,
         Func<TValue, bool> predicate,
-        Func<TValue, IResult> checkFunc)
+        Func<TValue, TResult> checkFunc) where TResult : IResult
     {
         var result = await resultTask.ConfigureAwait(false);
         return VerifyWhen(result, predicate, checkFunc);
