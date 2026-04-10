@@ -11,4 +11,8 @@
 		<Description>Abstractions for Toarnbeike.Results; also available for netstandard2.0</Description>
 		<PackageTags>result monad abstractions sourcegeneration source generator sourcegen netstandard2.0</PackageTags>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
 </Project>
