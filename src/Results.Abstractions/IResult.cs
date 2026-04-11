@@ -25,9 +25,5 @@ public interface IResult
     /// </summary>
     /// <param name="failure">When this method returns, contains the reason if the result is a failure; otherwise, <c>null</c>.</param>
     /// <returns><c>true</c> if the result is a failure; otherwise, <c>false</c>.</returns>
-#if NETSTANDARD2_0
-    bool TryGetFailure(out Failure? failure);
-#else
-    bool TryGetFailure([MaybeNullWhen(false)] out Failure failure);
-#endif
+    bool TryGetFailure([NotNullWhen(true)] out Failure? failure);
 }

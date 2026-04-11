@@ -9,7 +9,7 @@ namespace Toarnbeike.Results;
 /// Use <see cref="Success"/> to create a successful result without a value,
 /// or <see cref="Failure(Results.Failure)"/> to create a failed result.
 /// </remarks>
-public readonly partial record struct Result : IResult
+public readonly record struct Result : IResult
 {
     private readonly Failure? _failure;
 
@@ -20,11 +20,7 @@ public readonly partial record struct Result : IResult
     public bool IsFailure => !IsSuccess;
 
     /// <inheritdoc />
-#if NETSTANDARD2_0
-    public bool TryGetFailure(out Failure? failure)
-#else
-    public bool TryGetFailure([MaybeNullWhen(false)] out Failure failure)
-#endif
+    public bool TryGetFailure([NotNullWhen(true)] out Failure? failure)
     {
         failure = _failure;
         return IsFailure;
