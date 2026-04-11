@@ -31,6 +31,9 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
+      - name: Run XUnit Tests (Results.Abstractions)
+        run: dotnet test tests/Results.Abstractions.Tests/Results.Abstractions.Tests.csproj --framework net10.0 --configuration Release --no-build --verbosity normal
+
       - name: Run TUnit Tests
         run: |
           set +e
@@ -68,6 +71,13 @@ jobs:
           done
 
           exit $FAILED
+
+      - name: Upload XUnit Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xunit-results
+          path: tests/Results.Abstractions.Tests/TestResults/*.trx
 
       - name: Upload Test Output
         if: always()
