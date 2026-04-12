@@ -31,7 +31,6 @@ Using results enhances code clarity and reliability by enabling clear, exception
 1. [Core concepts](#core-concepts)
 1. [Extensions](#extensions)
 1. [Collections](#collections)
-1. [Failures](#failures)
 1. [LINQ Query syntax support](#linq-query-syntax-support)
 1. [Test extensions](#test-extensions)
 1. [Packages](#packages)
@@ -87,7 +86,7 @@ This record has at least the `Code` and `Message` properties, for computer and h
 about what caused the failure. 
 It is encouraged to inherit the base `Failure` object and create specific failures for specific situations.
 These inherited objects can carry additional metadata specific for the failure that occurred.
-For the already provided failure overloads, see [Failures](#failures)
+For the already provided failure overloads, see [Failures](docs/failures.md)
 
 ### What is a `Result<TValue>`?
 
@@ -156,7 +155,7 @@ The `Toarnbeike.Results.Extensions` namespace includes rich extensions for `Resu
 
 All methods support `async` variants and operate seamlessly with `Task<Result<TValue>>`.
 
-For information per method see the [Extensions README](src/Results/Extensions/README.md).
+For information per method see the [Extensions docs](docs/Extensions.md).
 
 ---
 
@@ -177,85 +176,12 @@ All methods support `async` variants and operate seamlessly with `IEnumerable<Ta
 
 ---
 
-## Failures
-
-The `Toarnbeike.Results.Failures` namespace include a couple of default failures:
-
-### `AggregateFailure`
-
-Represents a collection of multiple failures, typically used when working with collections of `Result<TValue>`:
-```csharp
-var results = new List<Result<int>>
-{
-    Result<int>.Success(1),
-    Result<int>.Failure(new Failure("Code1", "Message1")),
-    Result<int>.Failure(new Failure("Code2", "Message2"))
-};
-
-var aggregateResult = results.Aggregate();      // Result<IEnumerable<int>>
-var agregateFailure = aggregateResult
-                        .ShouldBeFailureOfType<AggregateFailure>();
-```
-
-### `ExceptionFailure`
-
-Used when converting exceptions to failures via the `Try` factory:
-
-``` csharp
-var result1 = Result.Try(() => int.Parse("123"));	// Success(123);
-var result2 = Result.Try(() => int.Parse("abc"))	// Failure(ExceptionFailure);
-```
-
-Result.Try() also has async variants for `Func<Task>`, `Func<Task<T>>`, `Func<ValueTask>` and `Func<ValueTask<T>>`.
-
-### `ValidationFailure`
-
-Represents a property-level validation issue:
-
-```csharp
-new ValidationFailure("Email", "Email is required.");
-```
-
-### `ValidationFailures`
-
-Aggregates multiple `ValidationFailure` instances. Typically produced using the `FluentValidation` integration.
-
----
-
 ## LINQ Query syntax support
 
 Toarnbeike.Results supports optional integration with [C# LINQ query syntax](https://learn.microsoft.com/en-us/dotnet/csharp/linq/get-started/write-linq-queries),
 making it easier to compose multiple `Result<TValue>` computations in a declarative style.
 
-### Why use LINQ Query Syntax?
-While method chaining works well for most scenarios, C#'s LINQ query syntax can make some workflows more expressive and readable; especially when you want to:
-
-- Name intermediate results using `let`
-- Compose complex Result pipelines in a declarative way
-- Avoid deeply nested lambdas in `Bind` and `Map`
-
-### Example:
-```csharp
-using Toarnbeike.Results.Linq;
-
-var result =
-    from id in GetUserId()
-    from user in GetUserById(id)
-    let fullName = $"{user.FirstName} {user.LastName}"
-    select new UserDto(fullName, user.Email);
-```
-
-When comparing that with method chaining, the LINQ query syntax can be more readable, especially for complex workflows:
-```csharp
-var result = GetUserId()
-    .Bind(GetUserById)
-    .Map(user =>
-    {
-        var name = $"{user.FirstName} {user.LastName}";
-        return new UserDto(name, user.Email);
-    });
-```
-Which also works, but makes name only available inside the `Map` lambda.
+See the [LINQ extensions docs](docs/Linq.md) for details on how to use this feature.
 
 ---
 
