@@ -131,8 +131,8 @@ public static class CustomerEndpoints
         customers.MapPost("", async (Customer customer, ICustomerRepository repository, IValidator<Customer> validator) =>
         {
             Result result = await Result.Success(customer)
-                .Check(c => c.Name != "Alice", () => new ValidationFailure("Name", "Cannot create customer with name 'Alice'"))
-                .VerifyAsync(async c => await Result.TryAsync(async () => await repository.UnsafeSaveAsync(c)));
+                .Bind(c => c.Name != "Alice" ? Result.Success(customer) : new ValidationFailure("Name", "Cannot create customer with name 'Alice'"))
+                .BindTapAsync(async c => await Result.TryAsync(async () => await repository.UnsafeSaveAsync(c)));
             return result;
         });
     }

@@ -19,17 +19,6 @@ public static class CollectionExtensions
     /// <summary>
     /// Determines whether all results in the collection indicate success.
     /// </summary>
-    /// <param name="results">The collection of <see cref="IResult"/> instances to evaluate. Cannot be <c>null</c>.</param>
-    /// <returns><c>true</c> if all <paramref name="results"/> are successful; otherwise, <c>false</c>.</returns>
-    public static bool AllSuccess<TValue>(this IEnumerable<Result<TValue>> results)
-    {
-        ArgumentNullException.ThrowIfNull(results);
-        return results.All(result => result.IsSuccess);
-    }
-
-    /// <summary>
-    /// Determines whether all results in the collection indicate success.
-    /// </summary>
     /// <param name="resultTasks">The collection of asynchronous <see cref="IResult"/> instances to evaluate. Cannot be <c>null</c>.</param>
     /// <returns><c>true</c> if all <paramref name="resultTasks"/> are successful; otherwise, <c>false</c>.</returns>
     public static async Task<bool> AllSuccessAsync(this IEnumerable<Task<Result>> resultTasks)
@@ -72,7 +61,7 @@ public static class CollectionExtensions
         var successfulResults = new List<T>();
         foreach (var result in results)
         {
-            if (!result.TryGetValue(out var value, out var failure))
+            if (!result.Deconstruct(out var value, out var failure))
             {
                 return failure;
             }
@@ -99,7 +88,7 @@ public static class CollectionExtensions
         ArgumentNullException.ThrowIfNull(resultTasks);
         
         var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
-        return Sequence(results);
+        return results.Sequence();
     }
 
     /// <summary>
@@ -123,7 +112,7 @@ public static class CollectionExtensions
         var failures = new List<Failure>();
         foreach (var result in results)
         {
-            if (result.TryGetValue(out var value, out var failure))
+            if (result.Deconstruct(out var value, out var failure))
             {
                 successfulResults.Add(value);
             }
@@ -155,7 +144,7 @@ public static class CollectionExtensions
         ArgumentNullException.ThrowIfNull(resultTasks);
         
         var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
-        return Aggregate(results);
+        return results.Aggregate();
     }
     
     /// <summary>
@@ -173,7 +162,7 @@ public static class CollectionExtensions
     public static Result Aggregate(this IEnumerable<Result> results)
     {
         ArgumentNullException.ThrowIfNull(results);
-        var failures = results.Where(r => r.IsFailure).Select(r => r.GetFailureOrThrow()).ToList();
+        var failures = results.Failures().ToList();
 
         return failures.Count > 0
             ? new AggregateFailure(failures)
@@ -232,21 +221,25 @@ public static class CollectionExtensions
         ArgumentNullException.ThrowIfNull(resultTasks);
 
         var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
-        return SuccessValues(results);
+        return results.SuccessValues();
     }
 
     /// <summary>
-    /// Extracts the failure objects from all failed <see cref="Result{T}"/> instances in the collection.
+    /// Extracts the failure objects from all failed <see cref="Result"/> instances in the collection.
     /// </summary>
-    /// <typeparam name="T">The type of the value contained in each result.</typeparam>
+    /// <typeparam name="TResult">The type of the result.</typeparam>
     /// <param name="results">The collection to evaluate. Cannot be <c>null</c>.</param>
     /// <returns>An <see cref="IEnumerable{Failure}"/> of failure values from failed results.</returns>
-    public static IEnumerable<Failure> Failures<T>(this IEnumerable<Result<T>> results)
+    public static IEnumerable<Failure> Failures<TResult>(this IEnumerable<TResult> results) where TResult : IResult
     {
         ArgumentNullException.ThrowIfNull(results);
-        return results
-            .Where(result => result.IsFailure)
-            .Select(result => result.GetFailureOrThrow());
+        foreach (var result in results)
+        {
+            if (result.TryGetFailure(out var failure))
+            {
+                yield return failure!;
+            }
+        }
     }
 
     /// <summary>
@@ -263,7 +256,7 @@ public static class CollectionExtensions
         ArgumentNullException.ThrowIfNull(resultTasks);
 
         var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
-        return Failures(results);
+        return results.Failures();
     }
     
     /// <summary>
@@ -286,7 +279,7 @@ public static class CollectionExtensions
         var failures = new List<Failure>();
         foreach (var result in results)
         {
-            if (result.TryGetValue(out var value, out var failure))
+            if (result.Deconstruct(out var value, out var failure))
             {
                 successfulResults.Add(value);
             }
@@ -316,6 +309,6 @@ public static class CollectionExtensions
         ArgumentNullException.ThrowIfNull(resultTasks);
 
         var results = await Task.WhenAll(resultTasks).ConfigureAwait(false);
-        return Split(results);
+        return results.Split();
     }
 }

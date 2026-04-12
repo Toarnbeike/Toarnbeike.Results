@@ -1,17 +1,18 @@
 ﻿using Toarnbeike.Results.Extensions;
 
-namespace Toarnbeike.Results.Tests.Extensions.Tap;
+namespace Toarnbeike.Results.Tests.Extensions.Obsolete;
 
 /// <summary>
-/// Tests for the <see cref="TapAlwaysExtensions"/> on a <see cref="Result{TValue}"/>.
+/// Tests for the <see cref="TapAlwaysExtensions"/> on a <see cref="Result"/>.
 /// </summary>
-public class TapAlwaysResultTValueExtensionsTests
+[Obsolete("Use Tap and TapFailure sequentially instead.")]
+public class TapAlwaysResultExtensionsTests
 {
-    private readonly Result<int> _success = Result.Success(42);
-    private readonly Result<int> _failure = Result<int>.Failure(new Failure("original", "Original failure"));
+    private readonly Result _success = Result.Success();
+    private readonly Result _failure = Result.Failure(new Failure("original", "Original failure"));
 
-    private readonly Task<Result<int>> _successTask = Task.FromResult(Result.Success(42));
-    private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result> _successTask = Task.FromResult(Result.Success());
+    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new Failure("original", "Original failure")));
 
     [Test]
     public void TapAlways_ShouldExecute_WhenResultIsSuccess()

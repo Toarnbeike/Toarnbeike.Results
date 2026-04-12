@@ -1,8 +1,9 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.TestHelpers;
 
-namespace Toarnbeike.Results.Tests.Extensions.Zip;
+namespace Toarnbeike.Results.Tests.Extensions.Obsolete;
 
+[Obsolete("The zip extension method is obsolete")]
 public class ZipIntegrationTests
 {
     [Test]

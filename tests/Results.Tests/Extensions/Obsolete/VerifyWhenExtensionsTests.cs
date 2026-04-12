@@ -1,11 +1,12 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.TestHelpers;
 
-namespace Toarnbeike.Results.Tests.Extensions.Verify;
+namespace Toarnbeike.Results.Tests.Extensions.Obsolete;
 
 /// <summary>
 /// Tests for the <see cref="VerifyWhenExtensions"/> on a <see cref="Result{TValue}"/>.
 /// </summary>
+[Obsolete("Use BindTap() for binding results without taking their values instead.")]
 public class VerifyWhenExtensionsTests
 {
     private readonly Result<double> _success = Result.Success(1.3);

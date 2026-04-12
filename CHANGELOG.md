@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] - 2026-4-12
+Preparation for 2.0 release, with some breaking changes and refactoring to improve the API and code organization.
+
+### Obsolete
+- Result<TValue>.TryGetValue(out var value, out var failure) - made internal to force using the TryGetValue(out var value) or Match() methods instead, which are more explicit and less error-prone.
+
+#### Migrations
+- Use `TryGetValue(out var value)` instead of `TryGetValue(out var value, out var failure)`, and use `Match()` for more complex scenarios where you need access to the failure details.
+
+### Changed
+- Refactored code to use extension blocks for better organization and readability.
+
 ## [1.1.4] - 2026-4-12
 
 ### Added

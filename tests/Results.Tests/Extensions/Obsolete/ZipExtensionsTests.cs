@@ -1,10 +1,11 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.TestHelpers;
 
-namespace Toarnbeike.Results.Tests.Extensions.Zip;
+namespace Toarnbeike.Results.Tests.Extensions.Obsolete;
 /// <summary>
 /// Tests for the <see cref="ZipExtensions"/> on a <see cref="Result{T1}"/>.
 /// </summary>
+[Obsolete("The zip extension method is obsolete")]
 public class ZipExtensionsTests
 {
     private readonly Result<double> _success = Result<double>.Success(1.3);

@@ -6,6 +6,8 @@
 /// <remarks>
 /// Intended for use when you are certain that the result is a failure, e.g. after a where clause on a collection.
 /// </remarks>
+[Obsolete("This extension will be removed. For testing purposes, use ShouldBeFailure() from the Toarnbeike.Results.TestHelpers namespace. " +
+          "For production code, consider using TryGetFailure(out var failure) or Match() methods instead, which are more explicit and less error-prone.")]
 public static class GetFailureOrThrowExtensions
 {
     /// <summary>
@@ -14,13 +16,13 @@ public static class GetFailureOrThrowExtensions
     /// <param name="result">The result to get the failure from.</param>
     /// <returns>The failure contained in the failing result.</returns>
     /// <exception cref="InvalidOperationException">Thrown if the result is a success.</exception>
+    [Obsolete("This extension will be removed. For testing purposes, use ShouldBeFailure() from the Toarnbeike.Results.TestHelpers namespace. " +
+              "For production code, consider using TryGetFailure(out var failure) or Match() methods instead, which are more explicit and less error-prone.")]
     public static Failure GetFailureOrThrow<TResult>(this TResult result) where TResult : IResult
     {
-        if (result.TryGetFailure(out var failure))
-        {
-            return failure;
-        }
-        throw new InvalidOperationException("Trying to get the failure of a success result. No failure available.");
+        return result.TryGetFailure(out var failure) 
+            ? failure 
+            : throw new InvalidOperationException("Trying to get the failure of a success result. No failure available.");
     }
 
     /// <summary>
@@ -29,10 +31,12 @@ public static class GetFailureOrThrowExtensions
     /// <param name="resultTask">The async result to get the failure from.</param>
     /// <returns>The failure contained in the failing result.</returns>
     /// <exception cref="InvalidOperationException">Thrown if the result is a success.</exception>
+    [Obsolete("This extension will be removed. For testing purposes, use ShouldBeFailure() from the Toarnbeike.Results.TestHelpers namespace. " +
+              "For production code, consider using TryGetFailure(out var failure) or Match() methods instead, which are more explicit and less error-prone.")]
     public static async Task<Failure> GetFailureOrThrow(this Task<Result> resultTask)
     {
         var result = await resultTask.ConfigureAwait(false);
-        return GetFailureOrThrow(result);
+        return result.GetFailureOrThrow();
     }
 
     /// <summary>
@@ -41,9 +45,11 @@ public static class GetFailureOrThrowExtensions
     /// <param name="resultTask">The async result to get the failure from.</param>
     /// <returns>The failure contained in the failing result.</returns>
     /// <exception cref="InvalidOperationException">Thrown if the result is a success.</exception>
+    [Obsolete("This extension will be removed. For testing purposes, use ShouldBeFailure() from the Toarnbeike.Results.TestHelpers namespace. " +
+              "For production code, consider using TryGetFailure(out var failure) or Match() methods instead, which are more explicit and less error-prone.")]
     public static async Task<Failure> GetFailureOrThrow<TValue>(this Task<Result<TValue>> resultTask)
     {
         var result = await resultTask.ConfigureAwait(false);
-        return GetFailureOrThrow(result);
+        return result.GetFailureOrThrow();
     }
 }

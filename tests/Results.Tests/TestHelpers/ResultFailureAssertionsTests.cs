@@ -28,15 +28,6 @@ public class ResultFailureAssertionsTests
     }
 
     [Test]
-    public void ShouldBeFailure_Throws_WhenResultIsNull()
-    {
-        Result result = default!;
-
-        var ex = Should.Throw<ResultAssertionException>(() => result.ShouldBeFailure());
-        ex.Message.ShouldBe("Expected result to be non-null.");
-    }
-
-    [Test]
     public void ShouldBeFailureWithCode_ReturnsFailure_WhenCodeMatches()
     {
         var failure = new Failure("X", "fail");

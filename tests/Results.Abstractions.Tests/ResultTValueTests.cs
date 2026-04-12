@@ -46,7 +46,7 @@ public class ResultTValueTests
     {
         var result = Result<int>.Success(_expectedValue);
 
-        result.TryGetValue(out var actualValue, out _).ShouldBeTrue();
+        result.Deconstruct(out var actualValue, out _).ShouldBeTrue();
 
         actualValue.ShouldBe(_expectedValue);
     }
@@ -56,7 +56,7 @@ public class ResultTValueTests
     {
         var result = Result<int>.Failure(_testFailure);
 
-        result.TryGetValue(out _, out var failure).ShouldBeFalse();
+        result.Deconstruct(out _, out var failure).ShouldBeFalse();
 
         failure.ShouldNotBeNull();
         failure.Code.ShouldBe(_testFailure.Code);

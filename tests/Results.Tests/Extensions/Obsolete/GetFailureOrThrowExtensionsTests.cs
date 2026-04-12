@@ -1,10 +1,12 @@
 ﻿using Toarnbeike.Results.Extensions.Unsafe;
 
-namespace Toarnbeike.Results.Tests.Extensions.Unsafe;
+namespace Toarnbeike.Results.Tests.Extensions.Obsolete;
 
 /// <summary>
 /// Tests for the <see cref="GetFailureOrThrowExtensionsTests"/> class.
 /// </summary>
+[Obsolete("This extension will be removed. For testing purposes, use ShouldBeFailure() from the Toarnbeike.Results.TestHelpers namespace. " +
+          "For production code, consider using TryGetFailure(out var failure) or Match() methods instead, which are more explicit and less error-prone.")]
 public class GetFailureOrThrowExtensionsTests
 {
     private readonly Result _success = Result.Success();

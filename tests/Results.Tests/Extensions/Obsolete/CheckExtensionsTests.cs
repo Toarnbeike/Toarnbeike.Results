@@ -1,11 +1,12 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.TestHelpers;
 
-namespace Toarnbeike.Results.Tests.Extensions.Ensure;
+namespace Toarnbeike.Results.Tests.Extensions.Obsolete;
 
 /// <summary>
 /// Tests for the <see cref="CheckExtensions"/> on a <see cref="Result{TValue}"/>.
 /// </summary>
+[Obsolete("Check is syntactic sugar around Bind. Use Bind() from now on, and use private methods to improve readability.")]
 public class CheckExtensionsTests
 {
     private readonly Result<double> _success = Result.Success(1.3);

@@ -27,84 +27,83 @@ public static class ResultSuccessAssertions
         }
     }
 
-    /// <summary>
-    /// Asserts that the result is a success and returns the contained value.
-    /// </summary>
-    /// <typeparam name="TValue">The expected type of the result value.</typeparam>
     /// <param name="result">The result to verify.</param>
-    /// <returns>The value contained in the successful result.</returns>
-    /// <exception cref="ResultAssertionException">Thrown when the result is a failure.</exception>
-    public static TValue ShouldBeSuccess<TValue>(this Result<TValue> result)
-    {
-        if (result.Equals(default))
-        {
-            throw new ResultAssertionException("Expected result to be non-null.");
-        }
-
-        if (!result.TryGetValue(out var actual, out var failure))
-        {
-            throw new ResultAssertionException($"Expected success result, but got failure: '{failure.Message}'.");
-        }
-
-        return actual;
-    }
-
-    /// <summary>
-    /// Asserts that the result is a success and that the contained value equals the expected value.
-    /// </summary>
     /// <typeparam name="TValue">The expected type of the result value.</typeparam>
-    /// <param name="result">The result to verify.</param>
-    /// <param name="expected">The expected value to compare with the result's value.</param>
-    /// <param name="customMessage">Optional custom message for assertion failure.</param>
-    /// <returns>The value contained in the successful result.</returns>
-    /// <exception cref="ResultAssertionException">Thrown when the result is a failure or the value does not match.</exception>
-    public static TValue ShouldBeSuccessWithValue<TValue>(this Result<TValue> result, TValue expected, string? customMessage = null)
+    extension<TValue>(Result<TValue> result)
     {
-        var actual = result.ShouldBeSuccess();
-
-        // Special case: compare element-wise for IEnumerable (but not string)
-        if (actual is IEnumerable actualEnum && expected is IEnumerable expectedEnum
-            && actual is not string && expected is not string)
+        /// <summary>
+        /// Asserts that the result is a success and returns the contained value.
+        /// </summary>
+        /// <returns>The value contained in the successful result.</returns>
+        /// <exception cref="ResultAssertionException">Thrown when the result is a failure.</exception>
+        public TValue ShouldBeSuccess()
         {
-            if (!actualEnum.Cast<object>().SequenceEqual(expectedEnum.Cast<object>()))
+            if (result.Equals(default))
             {
-                var actualStr = string.Join(", ", actualEnum.Cast<object>());
-                var expectedStr = string.Join(", ", expectedEnum.Cast<object>());
-                throw new ResultAssertionException(customMessage
-                    ?? $"Expected success result with value '[{expectedStr}]', but got '[{actualStr}]'.");
+                throw new ResultAssertionException("Expected result to be non-null.");
+            }
+
+            if (!result.Deconstruct(out var actual, out var failure))
+            {
+                throw new ResultAssertionException($"Expected success result, but got failure: '{failure.Message}'.");
             }
 
             return actual;
         }
 
-        if (!Equals(actual, expected))
+        /// <summary>
+        /// Asserts that the result is a success and that the contained value equals the expected value.
+        /// </summary>
+        /// <param name="expected">The expected value to compare with the result's value.</param>
+        /// <param name="customMessage">Optional custom message for assertion failure.</param>
+        /// <returns>The value contained in the successful result.</returns>
+        /// <exception cref="ResultAssertionException">Thrown when the result is a failure or the value does not match.</exception>
+        public TValue ShouldBeSuccessWithValue(TValue expected, string? customMessage = null)
         {
-            throw new ResultAssertionException(customMessage ?? $"Expected success result with value '{expected}', but got '{actual}'.");
+            var actual = result.ShouldBeSuccess();
+
+            // Special case: compare element-wise for IEnumerable (but not string)
+            if (actual is IEnumerable actualEnum && expected is IEnumerable expectedEnum
+                                                 && actual is not string && expected is not string)
+            {
+                if (!actualEnum.Cast<object>().SequenceEqual(expectedEnum.Cast<object>()))
+                {
+                    var actualStr = string.Join(", ", actualEnum.Cast<object>());
+                    var expectedStr = string.Join(", ", expectedEnum.Cast<object>());
+                    throw new ResultAssertionException(customMessage
+                                                       ?? $"Expected success result with value '[{expectedStr}]', but got '[{actualStr}]'.");
+                }
+
+                return actual;
+            }
+
+            if (!Equals(actual, expected))
+            {
+                throw new ResultAssertionException(customMessage ?? $"Expected success result with value '{expected}', but got '{actual}'.");
+            }
+
+            return actual;
         }
 
-        return actual;
-    }
-
-    /// <summary>
-    /// Asserts that the result is a success and that the contained value satisfies the given predicate.
-    /// </summary>
-    /// <typeparam name="TValue">The expected type of the result value.</typeparam>
-    /// <param name="result">The result to verify.</param>
-    /// <param name="predicate">The predicate that the result's value should satisfy.</param>
-    /// <param name="customMessage">Optional custom message for assertion failure.</param>
-    /// <returns>The value contained in the successful result.</returns>
-    /// <exception cref="ResultAssertionException">Thrown when the result is a failure or the predicate is not satisfied.</exception>
-    public static TValue ShouldBeSuccessThatSatisfiesPredicate<TValue>(this Result<TValue> result, Func<TValue, bool> predicate, string? customMessage = null)
-    {
-        ArgumentNullException.ThrowIfNull(predicate);
-
-        var actual = result.ShouldBeSuccess();
-
-        if (!predicate(actual))
+        /// <summary>
+        /// Asserts that the result is a success and that the contained value satisfies the given predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate that the result's value should satisfy.</param>
+        /// <param name="customMessage">Optional custom message for assertion failure.</param>
+        /// <returns>The value contained in the successful result.</returns>
+        /// <exception cref="ResultAssertionException">Thrown when the result is a failure or the predicate is not satisfied.</exception>
+        public TValue ShouldBeSuccessThatSatisfiesPredicate(Func<TValue, bool> predicate, string? customMessage = null)
         {
-            throw new ResultAssertionException(customMessage ?? "Expected success result with value that satisfies the predicate, but it did not.");
-        }
+            ArgumentNullException.ThrowIfNull(predicate);
 
-        return actual;
+            var actual = result.ShouldBeSuccess();
+
+            if (!predicate(actual))
+            {
+                throw new ResultAssertionException(customMessage ?? "Expected success result with value that satisfies the predicate, but it did not.");
+            }
+
+            return actual;
+        }
     }
 }
