@@ -8,19 +8,19 @@ These extensions are inspired by functional programming concepts like monads and
 
 ## Overview
 
-| Method			                | `Result`			 | `Result<T>`		  | Description														|
-|-----------------------------------|--------------------|--------------------|-----------------------------------------------------------------|
-| [`Bind(...)`](#bind)	            | :white_check_mark: | :white_check_mark: | Chains operations returning `Result<TOut>`						|
-| [`Check(...)`](#check)		    | :x:				 | :white_check_mark: | Check a condition on the success value, or returns a failure	|
-| [`Map(...)`](#map)		        | :x:				 | :white_check_mark: | Maps the success value to another type							|
-| [`Match(...)`](#match)		    | :white_check_mark: | :white_check_mark: | Converts to another type using success/failure lambdas			|
-| [`Tap(...)`](#tap)		        | :white_check_mark: | :white_check_mark: | Executes side-effects on success								|
-| [`TapAlways(...)`](#tap)	        | :white_check_mark: | :white_check_mark: | Executes side-effects on any result                             |
-| [`TapFailure(...)`](#tap)	        | :white_check_mark: | :white_check_mark: | Executes side-effects on failure								|
-| [`Verify(...)`](#verify)		    | :white_check_mark: | :white_check_mark: | Verifies another result; propagates failure if needed			|
-| [`VerifyWhen(...)`](#verify)      | :white_check_mark: | :white_check_mark: | Conditionally verifies another result							|
-| [`WithValue(...)`](#withValue)	| :white_check_mark: | :x:				  | Adds a value to a non-generic result							|
-| [`Zip(...)`](#zip)       		    | :x:				 | :white_check_mark: | Combines two results into a `Result<(T1,T2)>`					|
+| Method			                | `Result`		| `Result<TValue>` | Description													|
+|-----------------------------------|---------------|------------------|----------------------------------------------------------------|
+| [`Bind(...)`](#bind)	            | ✔	            | ✔	               | Chains operations returning `Result<TOut>`						|
+| [`Check(...)`](#check)		    | ✖				| ✔	               | Check a condition on the success value, or returns a failure	|
+| [`Map(...)`](#map)		        | ✖				| ✔	               | Maps the success value to another type							|
+| [`Match(...)`](#match)		    | ✔	            | ✔	               | Converts to another type using success/failure lambdas			|
+| [`Tap(...)`](#tap)		        | ✔	            | ✔	               | Executes side-effects on success								|
+| [`TapAlways(...)`](#tap)	        | ✔	            | ✔	               | Executes side-effects on any result                            |
+| [`TapFailure(...)`](#tap)	        | ✔	            | ✔	               | Executes side-effects on failure								|
+| [`Verify(...)`](#verify)		    | ✔	            | ✔	               | Verifies another result; propagates failure if needed			|
+| [`VerifyWhen(...)`](#verify)      | ✔	            | ✔	               | Conditionally verifies another result							|
+| [`WithValue(...)`](#withValue)	| ✔	            | ✖	               | Adds a value to a non-generic result							|
+| [`Zip(...)`](#zip)       		    | ✖	            | ✔	               | Combines two results into a `Result<(T1,T2)>`					|
 
 ---
 
@@ -81,7 +81,7 @@ result
 
 ---
 
-## Verify
+## Verify - Obsolete, will be replaced by BindTap
 
 Verifies additional conditions or results without modifying the value.
 ``` csharp
@@ -91,7 +91,7 @@ result.VerifyWhen(condition, ValidateExtraStep());
 
 ---
 
-## WithValue
+## WithValue - Obsolete, will be replaced with Map
 
 Attaches a value to a non-generic `Result` to make a `Result<T>`.
 ``` csharp
@@ -101,7 +101,7 @@ var result = Result.Success()
 
 ---
 
-## Zip
+## Zip - Obsolete, can be achieved with Bind or Map and separate methods
 
 Combines two results into one result with a tuple of values.
 ``` csharp

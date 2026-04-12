@@ -1,15 +1,10 @@
-[![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.MinimalApi.svg)](https://www.nuget.org/packages/Toarnbeike.Toarnbeike.Results.MinimalApi)
-
 ![CI](https://github.com/Toarnbeike/Toarnbeike.Results/actions/workflows/build.yaml/badge.svg)
-[![Code Coverage](https://toarnbeike.github.io/Toarnbeike.Results/badge_shieldsio_linecoverage_brightgreen.svg)](https://github.com/Toarnbeike/Toarnbeike.Results/blob/gh-pages/SummaryGithub.md)
-[![.NET 9](https://img.shields.io/badge/.NET-9.0-blueviolet.svg)](https://dotnet.microsoft.com/)
+[![.NET 10](https://img.shields.io/badge/.NET-10.0-blueviolet.svg)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 # Toarnbeike.Results.MinimalApi
 
 Seamlessly return [Toarnbeike.Results](https://www.nuget.org/packages/Toarnbeike.Results) from your Minimal API endpoints with automatic HTTP response mapping.
-
----
 
 ## Features
 
@@ -20,27 +15,49 @@ Seamlessly return [Toarnbeike.Results](https://www.nuget.org/packages/Toarnbeike
 
 ---
 
-## Getting started
+## Contents
+1. [Quick start](#quick-start)
+1. [Core concepts](#core-concepts)
+1. [Design principles](#design-principles-and-best-practices)
+
+---
+
+## Quick start
+
+Apply the `ResultMappingEndpointFilter` to any endpoint that returns a `Result` or `Result<TValue>`:
+``` csharp
+  App.MapGet("customer/{id}", (int id, ICustomerService service) =>
+  {
+      Result<Customer> result = service.GetById(id);
+      return result;
+  }).AddEndpointFilter<ResultMappingEndpointFilter>();
+```
+
+This will convert the `Result` into an appropriate HTTP response based on its success or failure state, without needing to manually check the result in your endpoint logic.
+
+---
+
+## Core concepts
+
+### Installation
 
 ``` bash
 dotnet add package Toarnbeike.Results.MinimalApi
 ```
 
-This package targets `.NET 9+` and depends on:
-- [![Toarnbeike.Results](https://img.shields.io/badge/Toarnbeike.Results-v1.0.0-info)](https://www.nuget.org/packages/Toarnbeike.Results/1.0.0)
-- [AspNetCore](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/metapackage-app?view=aspnetcore-9.0)
-
----
-
-## Usage
+This package targets `.NET 10` and depends on:
+- [![Toarnbeike.Results](https://img.shields.io/badge/Toarnbeike.Results-v1.1.4-info)](https://www.nuget.org/packages/Toarnbeike.Results/1.1.4)
+- [AspNetCore](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/metapackage-app?view=aspnetcore-10.0)
 
 ### Register result mapping
+
 Add result mappping support to your DI container:
 ``` csharp
   builder.Services.AddResultMapping();
 ```
 
 ### Apply the endpoint filter
+
 Apply the `ResultMappingEndpointFilter` to any endpoint that returns a `Result` or `Result<TValue>`:
 ``` csharp
   App.MapGet("customer/{id}", (int id, ICustomerService service) =>
@@ -77,7 +94,7 @@ Custom failures can be mapped by registing your own mappers:
 
 ---
 
-## Recommended approach: group filter
+## Design Principles and best practices
 To avoid repeating `.AddEndpointFilter<ResultMappingEndpointFilter>()` on every endpoint, 
 you can use the `MapResultGroup()` extension method to apply the filter to a group of endpoints:
 
@@ -97,4 +114,5 @@ If you rely on Result mapping for all endpoints in your application, you can cre
 ```csharp
   var endpoints = app.MapResultGroup("/api");
 ```
+
 ---

@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.1.4] - 2026-4-12
+
+### Added
+- Added docs for specific pages, removing the generic README.md files from within the source.
+- Added a future document highlighting the future of the package and the roadmap for the next versions.
+
+### Changed
+- Improved documentation of the main package, bringing it more in line with the other `Toarnbeike` packages.
+
 ## [1.1.3] - 2026-4-11
 
 ### Added

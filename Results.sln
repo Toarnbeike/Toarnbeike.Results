@@ -38,6 +38,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Results.Abstractions", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Results.Abstractions.Tests", "tests\Results.Abstractions.Tests\Results.Abstractions.Tests.csproj", "{457B77E0-FEF1-C60D-0E33-4BF47E70B81D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{2FD8B078-122C-42FD-B0D9-A0726844B66E}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Extensions.md = docs\Extensions.md
+		docs\Failures.md = docs\Failures.md
+		docs\Future.md = docs\Future.md
+		docs\Linq.md = docs\Linq.md
+		docs\TestExtensions.md = docs\TestExtensions.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
