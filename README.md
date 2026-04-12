@@ -139,19 +139,19 @@ if (g.TryGetFailure(out var failure))
 
 The `Toarnbeike.Results.Extensions` namespace includes rich extensions for `Result` and `Result<TValue>`:
 
-| Method			| `Result`		| `Result<TValue>` | Description													|
-|-------------------|---------------|------------------|----------------------------------------------------------------|
-| `Bind(...)`		| ✔	            | ✔	               | Chains operations returning `Result<TOut>`						|
-| `Check(...)`		| ✖				| ✔	               | Check a condition on the success value, or returns a failure	|
-| `Map(...)`		| ✖				| ✔	               | Maps the success value to another type							|
-| `Match(...)`		| ✔	            | ✔	               | Converts to another type using success/failure lambdas			|
-| `Tap(...)`		| ✔	            | ✔	               | Executes side-effects on success								|
-| `TapAlways(...)`	| ✔	            | ✔	               | Executes side-effects on any result                            |
-| `TapFailure(...)`	| ✔	            | ✔	               | Executes side-effects on failure								|
-| `Verify(...)`		| ✔	            | ✔	               | Verifies another result; propagates failure if needed			|
-| `VerifyWhen(...)`	| ✔	            | ✔	               | Conditionally verifies another result							|
-| `WithValue(...)`	| ✔	            | ✖	               | Adds a value to a non-generic result							|
-| `Zip(...)`		| ✖	            | ✔	               | Combines two results into a `Result<(T1,T2)>`					|
+| Method                | `Result`  | `Result<T>` | Description                                      |
+|-----------------------|-----------|-------------|--------------------------------------------------|
+| `Bind(...)`           | [x]       | [x]         | Chains operations returning `Result<TOut>`       |
+| `Map(...)`            | [ ]       | [x]         | Transforms the success value                     |
+| `Tap(...)`            | [x]       | [x]         | Executes side-effects on success                 |
+| `TapFailure(...)`     | [x]       | [x]         | Executes side-effects on failure                 |
+| `BindTap(...)`        | [x]       | [x]         | Chains a result operation without changing value |
+| `Combine(...)`        | [ ]       | [x]         | Combines two results into a new value            |
+| `CombineBind(...)`    | [ ]       | [x]         | Combines two results into a new result           |
+| `WithValue(...)`      | [x]       | [ ]         | Converts to `Result<TValue>` with a value        |
+| `TryGetValue(...)`    | [ ]       | [x]         | Gets the success value if available              |
+| `TryGetFailure(...)`  | [x]       | [x]         | Gets the failure if present                      |
+| `Match(...)`          | [x]       | [x]         | Maps success or failure to a value               |
 
 All methods support `async` variants and operate seamlessly with `Task<Result<TValue>>`.
 

@@ -8,25 +8,25 @@ These extensions are inspired by functional programming concepts like monads and
 
 ## Overview
 
-| Method			                | `Result`		| `Result<TValue>` | Description													|
-|-----------------------------------|---------------|------------------|----------------------------------------------------------------|
-| [`Bind(...)`](#bind)	            | ✔	            | ✔	               | Chains operations returning `Result<TOut>`						|
-| [`Check(...)`](#check)		    | ✖				| ✔	               | Check a condition on the success value, or returns a failure	|
-| [`Map(...)`](#map)		        | ✖				| ✔	               | Maps the success value to another type							|
-| [`Match(...)`](#match)		    | ✔	            | ✔	               | Converts to another type using success/failure lambdas			|
-| [`Tap(...)`](#tap)		        | ✔	            | ✔	               | Executes side-effects on success								|
-| [`TapAlways(...)`](#tap)	        | ✔	            | ✔	               | Executes side-effects on any result                            |
-| [`TapFailure(...)`](#tap)	        | ✔	            | ✔	               | Executes side-effects on failure								|
-| [`Verify(...)`](#verify)		    | ✔	            | ✔	               | Verifies another result; propagates failure if needed			|
-| [`VerifyWhen(...)`](#verify)      | ✔	            | ✔	               | Conditionally verifies another result							|
-| [`WithValue(...)`](#withValue)	| ✔	            | ✖	               | Adds a value to a non-generic result							|
-| [`Zip(...)`](#zip)       		    | ✖	            | ✔	               | Combines two results into a `Result<(T1,T2)>`					|
+| Method                                 | `Result`  | `Result<T>` | Description                                      |
+|----------------------------------------|-----------|-------------|--------------------------------------------------|
+| [`Bind(...)`](#bind)                   | [x]       | [x]         | Chains operations returning `Result<TOut>`       |
+| [`Map(...)`](#map)                     | [ ]       | [x]         | Transforms the success value                     |
+| [`Tap(...)`](#tap)                     | [x]       | [x]         | Executes side-effects on success                 |
+| [`TapFailure(...)`](#tapfailure)       | [x]       | [x]         | Executes side-effects on failure                 |
+| [`BindTap(...)`](#bindtap)             | [x]       | [x]         | Chains a result operation without changing value |
+| [`Combine(...)`](#combine)             | [ ]       | [x]         | Combines two results into a new value            |
+| [`CombineBind(...)`](#combinebind)     | [ ]       | [x]         | Combines two results into a new result           |
+| [`WithValue(...)`](#withvalue)         | [x]       | [ ]         | Converts to `Result<TValue>` with a value        |
+| [`TryGetValue(...)`](#trygetvalue)     | [ ]       | [x]         | Gets the success value if available              |
+| [`TryGetFailure(...)`](#trygetfailure) | [x]       | [x]         | Gets the failure if present                      |
+| [`Match(...)`](#match)                 | [x]       | [x]         | Maps success or failure to a value               |
 
 ---
 
 ## Bind
 
-Projects a successful `Result` into a new `Result<TOut>` using a chained Result:
+Projects a successful `Result` into a new `Result<TOut>` using a chained result:
 ``` csharp
 Result<int> step1 = GetId();
 Result<User> result = step1.Bind(GetUserById);
@@ -37,78 +37,139 @@ Otherwise, the second result is returned.
 
 ---
 
-## Check
-
-Check that a condition on the initial result value is met, otherwise returns a failure.
-``` csharp
-var result = Result.Success(42)
-    .Check(x => x > 0, () => new Failure("Negative", "Value must be positive"));
-```
-
----
-
 ## Map
 
-Maps the value inside a success result to another type.
+Transforms the success value of a `Result<T>` into a new value:
 ``` csharp
-var result = Result.Success(1.3m)
-    .Map(x => (int)(x * 10)); // Result<int> with value 13
+Result<int> result = GetNumber();
+Result<string> mapped = result.Map(x => x.ToString());
 ```
-
----
-
-## Match 
-
-Converts a result to a new value by pattern matching on its state.
-``` csharp
-string message = result.Match(
-    success => $"User ID: {success}",
-    failure => $"Error: {failure.Message}"
-);
-```
+The mapping function is only executed on success.
+If the original result is a failure, that failure is returned unchanged.
+Otherwise, the mapped value is wrapped in a new `Result<TOut>`.
 
 ---
 
 ## Tap
 
-Applies side effects without modifying the result.
+Executes a side-effect when the result is successful:
 ``` csharp
-result
-    .Tap(user => _logger.Log($"User found: {user.Name}"))
-    .TapFailure(error => _logger.LogError(error.Message))
-    .TapAlways(() => _logger.Log("Pipeline finished"));
+Result<User> result = GetUser();
+result.Tap(user => logger.Log(user));
 ```
+The action is only executed on success.
+The original result is returned unchanged.
 
 ---
 
-## Verify - Obsolete, will be replaced by BindTap
+## TapFailure
 
-Verifies additional conditions or results without modifying the value.
+Executes a side-effect when the result is a failure:
 ``` csharp
-result.Verify(ValidateBusinessRules());
-result.VerifyWhen(condition, ValidateExtraStep());
+Result<User> result = GetUser();
+result.TapFailure(error => logger.Log(error));
 ```
+The action is only executed on failure.
+The original result is returned unchanged.
 
 ---
 
-## WithValue - Obsolete, will be replaced with Map
+## BindTap
 
-Attaches a value to a non-generic `Result` to make a `Result<T>`.
+Chains a result-producing operation without changing the original value:
 ``` csharp
-var result = Result.Success()
-    .WithValue(42);
+Result<User> result =
+    GetUser()
+        .BindTap(user => Audit(user));
 ```
+The chained operation may fail and short-circuit the pipeline.
+If the original result is a failure, that failure is returned.
+If the chained operation fails, its failure is returned.
+Otherwise, the original value is preserved.
 
 ---
 
-## Zip - Obsolete, can be achieved with Bind or Map and separate methods
+## Combine
 
-Combines two results into one result with a tuple of values.
+Combines two successful results into a new value:
 ``` csharp
-var r1 = Result.Success(1);
-var r2 = Result.Success("Hello");
-var zipped = r1.Zip(r2); // Result<(int, string)>
+Result<User> user = GetUser();
+Result<Permissions> permissions = GetPermissions();
+
+Result<UserContext> result =
+    user.Combine(permissions, (u, p) => new UserContext(u, p));
 ```
+Both results are evaluated independently.
+If either result is a failure, that failure is returned.
+Otherwise, the projector is applied and its result is wrapped.
+
+---
+
+## CombineBind
+
+Combines two successful results into a new `Result<TOut>`:
+``` csharp
+Result<User> user = GetUser();
+Result<Permissions> permissions = GetPermissions();
+
+Result<UserContext> result =
+    user.CombineBind(permissions, CreateContext);
+```
+The projector returns a `Result<TOut>`.
+If either input result is a failure, that failure is returned.
+Otherwise, the projector result is returned directly.
+
+---
+
+## WithValue
+
+Converts a non-generic `Result` into a `Result<TValue>`.
+``` csharp
+Result result = Validate();
+Result<int> valued = result.WithValue(42);
+```
+If the original result is a failure, that failure is returned.
+Otherwise, the provided value is wrapped in a successful result.
+
+---
+
+## TryGetValue
+Attempts to get the success value from a `Result<T>`.
+``` csharp
+if (result.TryGetValue(out var value))
+{
+    // use value
+}
+```
+Returns `true` if the result is successful.
+Returns `false` if the result is a failure.
+
+---
+
+## TryGetFailure
+Attempts to retrieve the failure from a `Result` or `Result<T>`.
+``` csharp
+if (result.TryGetFailure(out var failure))
+{
+    // handle failure
+}
+```
+Returns `true` if the result is a failure.
+Returns `false` if the result is successful.
+
+---
+
+## Match 
+
+Projects a result into a value using success and failure functions:
+``` csharp
+string message = result.Match(
+    onSuccess: value => $"Success: {value}",
+    onFailure: error => $"Error: {error}");
+);
+```
+Exactly one of the functions is executed.
+The result of that function is returned.
 
 ---
 
