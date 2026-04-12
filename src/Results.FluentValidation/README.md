@@ -1,16 +1,11 @@
-[![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.FluentValidation.svg)](https://www.nuget.org/packages/Toarnbeike.Toarnbeike.Results.FluentValidation)
-
 ![CI](https://github.com/Toarnbeike/Toarnbeike.Results/actions/workflows/build.yaml/badge.svg)
-[![Code Coverage](https://toarnbeike.github.io/Toarnbeike.Results/badge_shieldsio_linecoverage_brightgreen.svg)](https://github.com/Toarnbeike/Toarnbeike.Results/blob/gh-pages/SummaryGithub.md)
-[![.NET 9](https://img.shields.io/badge/.NET-9.0-blueviolet.svg)](https://dotnet.microsoft.com/)
+[![.NET 10](https://img.shields.io/badge/.NET-10.0-blueviolet.svg)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 # Toarnbeike.Results.FluentValidation
 
 Integrate fluent result handling from [Toarnbeike.Results](https://www.nuget.org/packages/Toarnbeike.Results) with expressive validation logic from [FluentValidation](https://fluentvalidation.net/), 
 providing seamless validation support for `Result<T>` using one or more `IValidator<T>` instances.
-
----
 
 ## Features
 
@@ -21,19 +16,34 @@ providing seamless validation support for `Result<T>` using one or more `IValida
 
 ---
 
-## Getting started
+## Contents
+1. [Quick start](#quick-start)
+1. [Core concepts](#core-concepts)
 
+---
+
+## Quick start
+
+This example demonstrates how to use `Toarnbeike.Results.FluentValidation` to validate a dto using a FluentValidation validator and return a `Result`.
+``` csharp
+Result<RegisterUserCommand> result = new RegisterUserCommand("John", "john@email.com");
+
+// Validate using one or more FluentValidation validators
+var validated = result.Validate(new RegisterUserCommandValidator());
+```
+
+## Core concepts
+
+### Installation
 ``` bash
 dotnet add package Toarnbeike.Results.FluentValidation
 ```
 
-This package targets `.NET 9+` and depends on:
-- [![Toarnbeike.Results](https://img.shields.io/badge/Toarnbeike.Results-v1.0.0-info)](https://www.nuget.org/packages/Toarnbeike.Results/1.0.0)
-- [![FluentValidation](https://img.shields.io/badge/FluentValidation-v12.0.0-info)](https://www.nuget.org/packages/FluentValidation/12.0.0)
+This package targets `.NET 10` and depends on:
+- [![Toarnbeike.Results](https://img.shields.io/badge/Toarnbeike.Results-v1.1.4-info)](https://www.nuget.org/packages/Toarnbeike.Results)
+- [![FluentValidation](https://img.shields.io/badge/FluentValidation-v12.1.1-info)](https://www.nuget.org/packages/FluentValidation)
 
----
-
-## Usage
+### Usage
 
 Validate the value of a `Result<TValue>` if the result is successful.
 ``` csharp
@@ -69,6 +79,6 @@ Use:
 - `.Validate()` when your validators are fully synchronous
 - `.ValidateAsync()` when any of your validators use asynchronous logic, such as MustAsync, or if you are not sure.
 
-> There is currently no automatic way to detect whether an `IValidator<T>` from `FluentValidation` uses async logic; 
+There is currently no automatic way to detect whether an `IValidator<T>` from `FluentValidation` uses async logic; 
 when choosing the async method the full validation is always performed, even when the `IValidator<T>` does not contain async logic.
 
