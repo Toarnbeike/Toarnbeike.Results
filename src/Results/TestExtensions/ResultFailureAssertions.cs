@@ -1,4 +1,6 @@
-﻿namespace Toarnbeike.Results.TestExtensions;
+﻿using System.Diagnostics;
+
+namespace Toarnbeike.Results.TestExtensions;
 
 /// <summary>
 /// Provides assertion methods to verify that a <see cref="Result"/> or <see cref="Result{TValue}"/> represents a failing outcome.
@@ -14,6 +16,7 @@ public static class ResultFailureAssertions
         /// </summary>
         /// <returns>The failure contained in the result.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the result is null or not a failure.</exception>
+        [DebuggerStepThrough]
         public Failure ShouldBeFailure()
         {
             if (!result.TryGetFailure(out var failure))
@@ -31,6 +34,7 @@ public static class ResultFailureAssertions
         /// <param name="customMessage">Optional custom message for assertion failure.</param>
         /// <returns>The strongly typed failure instance.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the failure is not of the expected type.</exception>
+        [DebuggerStepThrough]
         public TFailure ShouldBeFailureOfType<TFailure>(string? customMessage = null)
             where TFailure : Failure
         {
@@ -43,5 +47,60 @@ public static class ResultFailureAssertions
 
             return converted;
         }
+    }
+
+    /// <summary>
+    /// Asserts that the async result is a failure and returns the associated <see cref="Failure"/>.
+    /// </summary>
+    /// <returns>The failure contained in the result.</returns>
+    /// <exception cref="ResultAssertionException">Thrown when the result is null or not a failure.</exception>
+    [DebuggerStepThrough]
+    public static async Task<Failure> ShouldBeFailureAsync(this Task<Result> resultTask)
+    {
+        var result = await resultTask;
+        return result.ShouldBeFailure();
+    }
+
+    /// <summary>
+    /// Asserts that the async result is a failure and returns the associated <see cref="Failure"/>.
+    /// </summary>
+    /// <returns>The failure contained in the result.</returns>
+    /// <exception cref="ResultAssertionException">Thrown when the result is null or not a failure.</exception>
+    [DebuggerStepThrough]
+    public static async Task<Failure> ShouldBeFailureAsync<TValue>(this Task<Result<TValue>> resultTask)
+    {
+        var result = await resultTask;
+        return result.ShouldBeFailure();
+    }
+
+    /// <summary>
+    /// Asserts that the async result is a failure of the expected failure type.
+    /// </summary>
+    /// <typeparam name="TFailure">The expected failure type.</typeparam>
+    /// <param name="resultTask">The async result to verify.</param>
+    /// <param name="customMessage">Optional custom message for assertion failure.</param>
+    /// <returns>The strongly typed failure instance.</returns>
+    /// <exception cref="ResultAssertionException">Thrown when the failure is not of the expected type.</exception>
+    [DebuggerStepThrough]
+    public static async Task<TFailure> ShouldBeFailureOfTypeAsync<TFailure>(this Task<Result> resultTask, string? customMessage = null) where TFailure : Failure
+    {
+        var result = await resultTask;
+        return result.ShouldBeFailureOfType<TFailure>(customMessage);
+    }
+
+    /// <summary>
+    /// Asserts that the async result is a failure of the expected failure type.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the value of the result.</typeparam>
+    /// <typeparam name="TFailure">The expected failure type.</typeparam>
+    /// <param name="resultTask">The async result to verify.</param>
+    /// <param name="customMessage">Optional custom message for assertion failure.</param>
+    /// <returns>The strongly typed failure instance.</returns>
+    /// <exception cref="ResultAssertionException">Thrown when the failure is not of the expected type.</exception>
+    [DebuggerStepThrough]
+    public static async Task<TFailure> ShouldBeFailureOfTypeAsync<TFailure, TValue>(this Task<Result<TValue>> resultTask, string? customMessage = null) where TFailure : Failure
+    {
+        var result = await resultTask;
+        return result.ShouldBeFailureOfType<TFailure>(customMessage);
     }
 }
