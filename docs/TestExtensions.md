@@ -64,8 +64,8 @@ public class MyTests
     {
         IResult result = AnotherServiceCall();
 
-        var validation = result.ShouldBeFailureOfType<ValidationError>();
-        validation.Failures.ShouldNotBeEmpty();
+        var error = result.ShouldBeFailureOfType<ValidationError>();
+        error.Failures.ShouldNotBeEmpty();
     }
 }
 
