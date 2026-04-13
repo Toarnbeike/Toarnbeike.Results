@@ -9,10 +9,10 @@ namespace Toarnbeike.Results.Tests.Extensions.Obsolete;
 public class TapAlwaysResultTValueExtensionsTests
 {
     private readonly Result<int> _success = Result.Success(42);
-    private readonly Result<int> _failure = Result<int>.Failure(new Failure("original", "Original failure"));
+    private readonly Result<int> _failure = Result<int>.Failure(new TestFailure("original"));
 
     private readonly Task<Result<int>> _successTask = Task.FromResult(Result.Success(42));
-    private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new TestFailure("original")));
 
     [Test]
     public void TapAlways_ShouldExecute_WhenResultIsSuccess()

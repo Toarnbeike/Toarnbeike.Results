@@ -8,6 +8,18 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Toarnbeike.Results.Integration.Tests.Examples;
 
+public record EntityFailure<TEntity> : Failure
+{
+    private Type Entity { get; }
+
+    public EntityFailure(string message)
+    {
+        Message = message;
+        Entity = typeof(TEntity);
+        Category = FailureCategory.Business;
+    }
+}
+
 /// <summary>
 /// Example entity with some properties.
 /// </summary>
@@ -45,7 +57,7 @@ public class CustomerRepository : ICustomerRepository
         var customer = _customers.FirstOrDefault(c => c.Id == id);
         if (customer is null)
         {
-            return new Failure("CustomerNotFound", "Customer not found");
+            return new EntityFailure<Customer>("Customer not found");
         }
         return customer;
     }

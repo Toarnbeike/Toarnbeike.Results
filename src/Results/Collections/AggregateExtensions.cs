@@ -9,12 +9,12 @@ public static class AggregateExtensions
     /// </summary>
     /// <param name="results">The collection of <see cref="Result"/> instances to evaluate. Cannot be <c>null</c>.</param>
     /// <remarks>
-    /// All failures in <paramref name="results"/> are collected into an <see cref="AggregateFailure"/>.
+    /// All failures in <paramref name="results"/> are collected into an <see cref="AggregateFailureSummary"/>.
     /// If all results are successful, a single success result is returned.
     /// </remarks>
     /// <returns>
     /// A successful <see cref="Result"/> if all results succeeded;
-    /// otherwise, a failure with <see cref="AggregateFailure"/>.
+    /// otherwise, a failure with <see cref="AggregateFailureSummary"/>.
     /// </returns>
     public static Result Aggregate(this IEnumerable<Result> results)
     {
@@ -30,19 +30,19 @@ public static class AggregateExtensions
 
         return failures.Count == 0
             ? Result.Success()
-            : new AggregateFailure(failures);
+            : new AggregateFailureSummary(failures);
     }
 
     /// <summary>
     /// Converts a sequence of async <see cref="Result"/> into a single <see cref="Result"/> using an aggregate strategy.
     /// </summary>
     /// <remarks>
-    /// All failures in <paramref name="resultTasks"/> are collected into an <see cref="AggregateFailure"/>.
+    /// All failures in <paramref name="resultTasks"/> are collected into an <see cref="AggregateFailureSummary"/>.
     /// If all results are successful, a single successful result is returned.
     /// </remarks>
     /// <returns>
     /// A successful <see cref="Result"/> if all results succeeded;
-    /// otherwise, a failure result with an <see cref="AggregateFailure"/>.
+    /// otherwise, a failure result with an <see cref="AggregateFailureSummary"/>.
     /// </returns>
     public static async Task<Result> AggregateAsync(this IEnumerable<Task<Result>> resultTasks)
     {
@@ -58,12 +58,12 @@ public static class AggregateExtensions
     /// <param name="results">The collection of <see cref="Result{TValue}"/> instances to evaluate. Cannot be <c>null</c>.</param>
     /// <typeparam name="TValue">The type of the success values.</typeparam>
     /// <remarks>
-    /// All failures in <paramref name="results"/> are collected into an <see cref="AggregateFailure"/>.
+    /// All failures in <paramref name="results"/> are collected into an <see cref="AggregateFailureSummary"/>.
     /// If all results are successful, a single successful result containing all values is returned.
     /// </remarks>
     /// <returns>
     /// A successful <see cref="Result{IEnumerable}"/> if all results succeeded;
-    /// otherwise, a failure with <see cref="AggregateFailure"/>.
+    /// otherwise, a failure with <see cref="AggregateFailureSummary"/>.
     /// </returns>
     public static Result<IEnumerable<TValue>> Aggregate<TValue>(this IEnumerable<Result<TValue>> results)
     {
@@ -85,19 +85,19 @@ public static class AggregateExtensions
 
         return failures.Count == 0
             ? Result.Success(successfulResults.AsEnumerable())
-            : new AggregateFailure(failures);
+            : new AggregateFailureSummary(failures);
     }
 
     /// <summary>
     /// Converts a sequence of <see cref="Result{T}"/> into a single <see cref="Result{IEnumerable}"/> using an aggregate strategy.
     /// </summary>
     /// <remarks>
-    /// All failures in <paramref name="resultTasks"/> are collected into an <see cref="AggregateFailure"/>.
+    /// All failures in <paramref name="resultTasks"/> are collected into an <see cref="AggregateFailureSummary"/>.
     /// If all results are successful, a single successful result is returned.
     /// </remarks>
     /// <returns>
     /// A successful <see cref="Result{IEnumerable}"/> if all results succeeded;
-    /// otherwise, a failure result with an <see cref="AggregateFailure"/>.
+    /// otherwise, a failure result with an <see cref="AggregateFailureSummary"/>.
     /// </returns>
     public static async Task<Result<IEnumerable<TValue>>> AggregateAsync<TValue>(this IEnumerable<Task<Result<TValue>>> resultTasks)
     {

@@ -13,7 +13,7 @@ public class ValidationFailuresResultMapperTests
         var failure1 = new ValidationFailure("Name", "Invalid input");
         var failure2 = new ValidationFailure("Email", "Email is required");
 
-        var failures = new ValidationFailures(new[] { failure1, failure2 });
+        var failures = new ValidationFailureSummary(new[] { failure1, failure2 });
 
         var mapper = new ValidationFailuresResultMapper();
 
@@ -22,10 +22,10 @@ public class ValidationFailuresResultMapperTests
         result.ShouldBeOfType<ValidationProblemDetails>();
         var validationDetails = (ValidationProblemDetails)result;
         validationDetails.Title.ShouldBe("Validation Errors");
-        validationDetails.Detail.ShouldBe("One or more validations failed:");
+        validationDetails.Detail.ShouldBe("One or more validation failures occured.");
         validationDetails.Status.ShouldBe(400);
         validationDetails.Type.ShouldBe("https://tools.ietf.org/html/rfc7231#section-6.5.1");
-        validationDetails.Extensions["code"].ShouldBe("validation_failures");
+        validationDetails.Extensions["Category"].ShouldBe("Validation");
 
         validationDetails.Errors.ShouldContainKey("Name");
         validationDetails.Errors["Name"].ShouldBe(["Invalid input"]);

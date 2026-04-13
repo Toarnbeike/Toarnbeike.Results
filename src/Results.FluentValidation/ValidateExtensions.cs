@@ -7,7 +7,7 @@ public static class ValidateExtensions
 {
     /// <summary>
     /// Validates the result value using one or more <see cref="IValidator{T}"/> instances.
-    /// If the result is a failure or contains validation errors, a <see cref="ValidationFailures"/> is returned.
+    /// If the result is a failure or contains validation errors, a <see cref="ValidationFailureSummary"/> is returned.
     /// </summary>
     /// <remarks>
     /// ⚠️ WARNING:
@@ -18,7 +18,7 @@ public static class ValidateExtensions
     /// <param name="result">The result to validate.</param>
     /// <param name="validators">One or more validators to apply to the result value.</param>
     /// <returns>
-    /// The original result if it is a failure or passes validation; otherwise a <see cref="ValidationFailures"/> failure.
+    /// The original result if it is a failure or passes validation; otherwise a <see cref="ValidationFailureSummary"/> failure.
     /// </returns>
     public static Result<TValue> Validate<TValue>(this Result<TValue> result, params IEnumerable<IValidator<TValue>> validators)
     {
@@ -43,13 +43,13 @@ public static class ValidateExtensions
 
     /// <summary>
     /// Asynchronously validates the result value using one or more <see cref="IValidator{T}"/> instances.
-    /// If the result is a failure or contains validation errors, a <see cref="ValidationFailures"/> is returned.
+    /// If the result is a failure or contains validation errors, a <see cref="ValidationFailureSummary"/> is returned.
     /// </summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>
     /// <param name="result">The result to validate.</param>
     /// <param name="validators">One or more validators to apply to the result value.</param>
     /// <returns>
-    /// The original result if it is a failure or passes validation; otherwise a <see cref="ValidationFailures"/> failure.
+    /// The original result if it is a failure or passes validation; otherwise a <see cref="ValidationFailureSummary"/> failure.
     /// </returns>
     public static async Task<Result<TValue>> ValidateAsync<TValue>(this Result<TValue> result, params IEnumerable<IValidator<TValue>> validators)
     {
@@ -76,7 +76,7 @@ public static class ValidateExtensions
 
     /// <summary>
     /// Validates the result value using one or more <see cref="IValidator{T}"/> instances.
-    /// If the result is a failure or contains validation errors, a <see cref="ValidationFailures"/> is returned.
+    /// If the result is a failure or contains validation errors, a <see cref="ValidationFailureSummary"/> is returned.
     /// </summary>
     /// <remarks>
     /// ⚠️ WARNING:
@@ -87,7 +87,7 @@ public static class ValidateExtensions
     /// <param name="resultTask">The async result to validate.</param>
     /// <param name="validators">One or more validators to apply to the result value.</param>
     /// <returns>
-    /// The original result if it is a failure or passes validation; otherwise a <see cref="ValidationFailures"/> failure.
+    /// The original result if it is a failure or passes validation; otherwise a <see cref="ValidationFailureSummary"/> failure.
     /// </returns>
     public static async Task<Result<TValue>> Validate<TValue>(this Task<Result<TValue>> resultTask, params IEnumerable<IValidator<TValue>> validators)
     {
@@ -97,13 +97,13 @@ public static class ValidateExtensions
 
     /// <summary>
     /// Asynchronously validates the result value using one or more <see cref="IValidator{T}"/> instances.
-    /// If the result is a failure or contains validation errors, a <see cref="ValidationFailures"/> is returned.
+    /// If the result is a failure or contains validation errors, a <see cref="ValidationFailureSummary"/> is returned.
     /// </summary>
     /// <typeparam name="TValue">The type of the result value.</typeparam>
     /// <param name="resultTask">The async result to validate.</param>
     /// <param name="validators">One or more validators to apply to the result value.</param>
     /// <returns>
-    /// The original result if it is a failure or passes validation; otherwise a <see cref="ValidationFailures"/> failure.
+    /// The original result if it is a failure or passes validation; otherwise a <see cref="ValidationFailureSummary"/> failure.
     /// </returns>
     public static async Task<Result<TValue>> ValidateAsync<TValue>(this Task<Result<TValue>> resultTask, params IEnumerable<IValidator<TValue>> validators)
     {

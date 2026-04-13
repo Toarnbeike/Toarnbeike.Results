@@ -1,4 +1,5 @@
 ﻿using Toarnbeike.Results.Extensions;
+using Toarnbeike.Results.Failures;
 
 namespace Toarnbeike.Results.Linq;
 
@@ -67,7 +68,7 @@ public static class LinqExtensions
             return result.Bind(value => 
                 predicate(value) 
                 ? Result.Success(value) 
-                : new Failure("whereLinq", "LINQ predicate was not satisfied."));
+                : new DefaultFailure("whereLinq", "LINQ predicate was not satisfied."));
         }
     }
 }

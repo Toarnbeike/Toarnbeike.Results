@@ -11,7 +11,7 @@ public class ResultFailureAssertionTests
     [Test]
     public void ShouldBeFailure_ReturnsFailure_WhenResultIsFailure()
     {
-        var failure = new Failure("X", "fail");
+        var failure = new TestFailure("X");
         var result = Result.Failure(failure);
 
         var actual = result.ShouldBeFailure();
@@ -38,18 +38,18 @@ public class ResultFailureAssertionTests
     [Test]
     public void ShouldBeFailureOfType_Throws_WhenWrongType()
     {
-        var result = Result.Failure(new Failure("X", "msg"));
+        var result = Result.Failure(new TestFailure("X"));
 
         var ex = Should.Throw<ResultAssertionException>(() =>
             result.ShouldBeFailureOfType<ValidationFailure>());
 
-        ex.Message.ShouldBe("Expected failure of type 'ValidationFailure', but got 'Failure'.");
+        ex.Message.ShouldBe("Expected failure of type 'ValidationFailure', but got 'TestFailure'.");
     }
 
     [Test]
     public void ShouldBeFailureOfType_ThrowsWithCustomMessage_WhenWrongType()
     {
-        var result = Result.Failure(new Failure("X", "msg"));
+        var result = Result.Failure(new TestFailure("X"));
 
         var ex = Should.Throw<ResultAssertionException>(() =>
             result.ShouldBeFailureOfType<ValidationFailure>("custom message"));
@@ -60,7 +60,7 @@ public class ResultFailureAssertionTests
     [Test]
     public async Task ShouldBeFailureAsync_ReturnsFailure_WhenResultIsFailure()
     {
-        var failure = new Failure("X", "fail");
+        var failure = new TestFailure("X");
         var result = Task.FromResult(Result.Failure(failure));
 
         var actual = await result.ShouldBeFailureAsync();
@@ -79,7 +79,7 @@ public class ResultFailureAssertionTests
     [Test]
     public async Task ShouldBeFailureAsync_ReturnsFailure_WhenResultIsFailure_ResultT()
     {
-        var failure = new Failure("X", "fail");
+        var failure = new TestFailure("X");
         var result = Task.FromResult(Result<int>.Failure(failure));
 
         var actual = await result.ShouldBeFailureAsync();
@@ -108,19 +108,19 @@ public class ResultFailureAssertionTests
     [Test]
     public async Task ShouldBeFailureOfTypeAsync_Throws_WhenWrongType()
     {
-        var failure = new Failure("X", "msg");
+        var failure = new TestFailure("X");
         var result = Task.FromResult(Result.Failure(failure));
 
         var ex = await Should.ThrowAsync<ResultAssertionException>(() =>
             result.ShouldBeFailureOfTypeAsync<ValidationFailure>());
 
-        ex.Message.ShouldBe("Expected failure of type 'ValidationFailure', but got 'Failure'.");
+        ex.Message.ShouldBe("Expected failure of type 'ValidationFailure', but got 'TestFailure'.");
     }
 
     [Test]
     public async Task ShouldBeFailureOfTypeAsync_ThrowsWithCustomMessage_WhenWrongType()
     {
-        var failure = new Failure("X", "msg");
+        var failure = new TestFailure("X");
         var result = Task.FromResult(Result.Failure(failure));
 
         var ex = await Should.ThrowAsync<ResultAssertionException>(() =>
@@ -142,19 +142,19 @@ public class ResultFailureAssertionTests
     [Test]
     public async Task ShouldBeFailureOfTypeAsync_Throws_WhenWrongType_ResultT()
     {
-        var failure = new Failure("X", "msg");
+        var failure = new TestFailure("X");
         var result = Task.FromResult(Result<int>.Failure(failure));
 
         var ex = await Should.ThrowAsync<ResultAssertionException>(() =>
             result.ShouldBeFailureOfTypeAsync<ValidationFailure, int>());
 
-        ex.Message.ShouldBe("Expected failure of type 'ValidationFailure', but got 'Failure'.");
+        ex.Message.ShouldBe("Expected failure of type 'ValidationFailure', but got 'TestFailure'.");
     }
 
     [Test]
     public async Task ShouldBeFailureOfTypeAsync_ThrowsWithCustomMessage_WhenWrongType_ResultT()
     {
-        var failure = new Failure("X", "msg");
+        var failure = new TestFailure("X");
         var result = Task.FromResult(Result<int>.Failure(failure));
 
         var ex = await Should.ThrowAsync<ResultAssertionException>(() =>

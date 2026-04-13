@@ -12,7 +12,7 @@ public class AggregateFailureResultMapperTests
         // Arrange
         var failureA = new DummyFailureA();
         var failureB = new DummyFailureB();
-        var aggregate = new AggregateFailure([failureA, failureB]);
+        var aggregate = new AggregateFailureSummary([failureA, failureB]);
 
         var mapperA = Substitute.For<IFailureResultMapper>();
         mapperA.FailureType.Returns(typeof(DummyFailureA));
@@ -25,7 +25,7 @@ public class AggregateFailureResultMapperTests
         mapperB.Map(failureB).Returns(pdB);
 
         var selfMapper = Substitute.For<IFailureResultMapper>();
-        selfMapper.FailureType.Returns(typeof(AggregateFailure));
+        selfMapper.FailureType.Returns(typeof(AggregateFailureSummary));
 
         var serviceProvider = Substitute.For<IServiceProvider>();
         var mappers = new[] { mapperA, mapperB, selfMapper };
@@ -46,7 +46,7 @@ public class AggregateFailureResultMapperTests
     public void Map_UsesFallback_WhenNoMapperAvailable()
     {
         var unmappedFailure = new UnmappedFailure();
-        var aggregate = new AggregateFailure([unmappedFailure]);
+        var aggregate = new AggregateFailureSummary([unmappedFailure]);
 
         var fallback = Substitute.For<IFallbackFailureResultMapper>();
         var fallbackProblem = new ProblemDetails { Title = "Fallback", Status = 500 };
@@ -65,7 +65,27 @@ public class AggregateFailureResultMapperTests
         agg.Status.ShouldBe(500);
     }
 
-    private record DummyFailureA() : Failure("dummyA", "A");
-    private record DummyFailureB() : Failure("dummyB", "B");
-    private record UnmappedFailure() : Failure("unmapped", "Details");
+    private record DummyFailureA : Failure
+    {
+        public DummyFailureA()
+        {
+            Message = "dummyA";
+        }
+    }
+
+    private record DummyFailureB : Failure
+    {
+        public DummyFailureB()
+        {
+            Message = "dummyB";
+        }
+    }
+
+    private record UnmappedFailure : Failure
+    {
+        public UnmappedFailure()
+        {
+            Message = "unmapped";
+        }
+    }
 }

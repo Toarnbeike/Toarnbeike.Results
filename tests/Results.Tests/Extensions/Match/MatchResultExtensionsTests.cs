@@ -8,10 +8,10 @@ namespace Toarnbeike.Results.Tests.Extensions.Match;
 public class MatchResultExtensionsTests
 {
     private readonly Result _success = Result.Success();
-    private readonly Result _failure = Result.Failure(new Failure("original", "Original failure"));
+    private readonly Result _failure = Result.Failure(new TestFailure("original"));
 
     private readonly Task<Result> _successTask = Task.FromResult(Result.Success());
-    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new TestFailure("original")));
 
     private readonly Func<bool> _onSuccess = () => true;
     private readonly Func<Failure, bool> _onFailure = _ => false;

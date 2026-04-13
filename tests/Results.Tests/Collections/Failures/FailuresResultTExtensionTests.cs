@@ -19,7 +19,7 @@ public class FailuresResultTExtensionTests : CollectionResultTExtensionTestBase
     {
         var result = MixedCollection.Failures().ToList();
         result.Count.ShouldBe(2);
-        result.Select(f => f.Code).ShouldBe(["code1", "code2"]);
+        result.Select(f => f.Message).ShouldBe(["code1", "code2"]);
     }
 
     [Test]
@@ -41,7 +41,7 @@ public class FailuresResultTExtensionTests : CollectionResultTExtensionTestBase
     {
         var result = (await MixedTaskCollection.FailuresAsync()).ToList();
         result.Count.ShouldBe(2);
-        result.Select(f => f.Code).ShouldBe(["code1", "code2"]);
+        result.Select(f => f.Message).ShouldBe(["code1", "code2"]);
     }
 
     [Test]

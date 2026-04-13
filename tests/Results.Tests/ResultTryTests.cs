@@ -21,9 +21,7 @@ public class ResultTryTests
         var failure = result.ShouldBeFailureOfType<ExceptionFailure>();
 
         failure.Exception.ShouldBeOfType<InvalidOperationException>();
-        failure.Code.ShouldBe("exception:InvalidOperationException");
-        failure.Message.ShouldBe("Something went wrong");
-        failure.ExceptionType.ShouldBe("InvalidOperationException");
+        failure.Message.ShouldBe("Exception: Something went wrong");
     }
 
     [Test]
@@ -42,9 +40,7 @@ public class ResultTryTests
         var failure = result.ShouldBeFailureOfType<ExceptionFailure>();
 
         failure.Exception.ShouldBeOfType<ArgumentException>();
-        failure.Code.ShouldBe("exception:ArgumentException");
-        failure.Message.ShouldBe("Invalid input");
-        failure.ExceptionType.ShouldBe("ArgumentException");
+        failure.Message.ShouldBe("Exception: Invalid input");
     }
 
     [Test]
@@ -67,9 +63,7 @@ public class ResultTryTests
         var failure = result.ShouldBeFailureOfType<ExceptionFailure>();
 
         failure.Exception.ShouldBeOfType<NotSupportedException>();
-        failure.Code.ShouldBe("exception:NotSupportedException");
-        failure.Message.ShouldBe("Not supported!");
-        failure.ExceptionType.ShouldBe("NotSupportedException");
+        failure.Message.ShouldBe("Exception: Not supported!");
     }
 
     [Test]
@@ -92,9 +86,7 @@ public class ResultTryTests
         var failure = result.ShouldBeFailureOfType<ExceptionFailure>();
 
         failure.Exception.ShouldBeOfType<NotSupportedException>();
-        failure.Code.ShouldBe("exception:NotSupportedException");
-        failure.Message.ShouldBe("Not supported!");
-        failure.ExceptionType.ShouldBe("NotSupportedException");
+        failure.Message.ShouldBe("Exception: Not supported!");
     }
 
 
@@ -122,9 +114,7 @@ public class ResultTryTests
         var failure = result.ShouldBeFailureOfType<ExceptionFailure>();
 
         failure.Exception.ShouldBeOfType<NullReferenceException>();
-        failure.Code.ShouldBe("exception:NullReferenceException");
-        failure.Message.ShouldBe("Something is null");
-        failure.ExceptionType.ShouldBe("NullReferenceException");
+        failure.Message.ShouldBe("Exception: Something is null");
     }
 
     [Test]
@@ -151,8 +141,6 @@ public class ResultTryTests
         var failure = result.ShouldBeFailureOfType<ExceptionFailure>();
 
         failure.Exception.ShouldBeOfType<NullReferenceException>();
-        failure.Code.ShouldBe("exception:NullReferenceException");
-        failure.Message.ShouldBe("Something is null");
-        failure.ExceptionType.ShouldBe("NullReferenceException");
+        failure.Message.ShouldBe("Exception: Something is null");
     }
 }

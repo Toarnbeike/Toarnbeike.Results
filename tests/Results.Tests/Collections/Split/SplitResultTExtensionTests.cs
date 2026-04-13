@@ -25,7 +25,7 @@ public class SplitResultTExtensionTests : CollectionResultTExtensionTestBase
 
         var actualFailures = failures.ToList();
         actualFailures.Count.ShouldBe(2);
-        actualFailures.Select(f => f.Code).ShouldBe(["code1", "code2"]);
+        actualFailures.Select(f => f.Message).ShouldBe(["code1", "code2"]);
     }
 
     [Test]
@@ -55,7 +55,7 @@ public class SplitResultTExtensionTests : CollectionResultTExtensionTestBase
         
         var actualFailures = failures.ToList();
         actualFailures.Count.ShouldBe(2);
-        actualFailures.Select(f => f.Code).ShouldBe(["code1", "code2"]);
+        actualFailures.Select(f => f.Message).ShouldBe(["code1", "code2"]);
     }
 
     [Test]

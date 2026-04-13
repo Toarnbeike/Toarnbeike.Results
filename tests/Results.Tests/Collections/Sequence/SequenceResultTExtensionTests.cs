@@ -1,4 +1,5 @@
 ﻿using Toarnbeike.Results.Collections;
+using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.TestExtensions;
 
 namespace Toarnbeike.Results.Tests.Collections.Sequence;
@@ -19,7 +20,7 @@ public class SequenceResultTExtensionTests : CollectionResultTExtensionTestBase
     public void Sequence_ShouldReturnFailure_WhenCollectionContainsFailures()
     {
         var result = MixedCollection.Sequence();
-        result.ShouldBeFailure().Code.ShouldBe("code1"); // first failure in the collection
+        result.ShouldBeFailureOfType<TestFailure>().Message.ShouldBe("code1"); // first failure in the collection
     }
 
     [Test]
@@ -40,7 +41,7 @@ public class SequenceResultTExtensionTests : CollectionResultTExtensionTestBase
     public async Task SequenceAsync_ShouldReturnFailure_WhenCollectionContainsFailures()
     {
         var result = await MixedTaskCollection.SequenceAsync();
-        result.ShouldBeFailure().Code.ShouldBe("code1"); // first failure in the collection
+        result.ShouldBeFailureOfType<TestFailure>().Message.ShouldBe("code1"); // first failure in the collection
     }
 
     [Test]

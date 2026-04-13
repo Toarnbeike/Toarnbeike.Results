@@ -20,12 +20,12 @@ public class LinqExtensionsTests
     [Test]
     public void Select_should_propagate_failure()
     {
-        var failure = Result<int>.Failure(new Failure("code", "error"));
+        var failure = Result<int>.Failure(new TestFailure("failed"));
 
         var result = from x in failure
                      select x * 2;
 
-        result.ShouldBeFailure().Code.ShouldBe("code");
+        result.ShouldBeFailure().Message.ShouldBe("failed");
     }
 
     [Test]
@@ -41,21 +41,21 @@ public class LinqExtensionsTests
     [Test]
     public void SelectMany_Should_PropagateFailure_FromFirstResult()
     {
-        var result = from x in Result<int>.Failure(new Failure("first", "error"))
+        var result = from x in Result<int>.Failure(new TestFailure("first"))
                      from y in Result.Success(3)
                      select x + y;
 
-        result.ShouldBeFailure().Code.ShouldBe("first");
+        result.ShouldBeFailure().Message.ShouldBe("first");
     }
 
     [Test]
     public void SelectMany_Should_PropagateFailure_FromSecondResult()
     {
         var result = from x in Result.Success(2)
-                     from y in Result<int>.Failure(new Failure("second", "error"))
+                     from y in Result<int>.Failure(new TestFailure("second"))
                      select x + y;
 
-        result.ShouldBeFailure().Code.ShouldBe("second");
+        result.ShouldBeFailure().Message.ShouldBe("second");
     }
 
     [Test]
@@ -75,19 +75,19 @@ public class LinqExtensionsTests
                      where x > 5
                      select x;
 
-        result.ShouldBeFailure().Code.ShouldBe("whereLinq");
+        result.ShouldBeFailure().Message.ShouldBe("LINQ predicate was not satisfied.");
     }
 
     [Test]
     public void Where_Should_PropagateOriginalFailure()
     {
-        var failed = Result<int>.Failure(new Failure("code", "error"));
+        var failed = Result<int>.Failure(new TestFailure("failed"));
 
         var result = from x in failed
                      where x > 5
                      select x;
 
-        result.ShouldBeFailure().Code.ShouldBe("code");
+        result.ShouldBeFailure().Message.ShouldBe("failed");
     }
 
     [Test]

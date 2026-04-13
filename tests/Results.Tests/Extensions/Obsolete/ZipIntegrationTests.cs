@@ -11,7 +11,7 @@ public class ZipIntegrationTests
     {
 
         var result = Result.Success(20)
-            .Zip(value => value > 10 ? Result<decimal>.Success(5.3m) : new Failure("out of bound", "result should exceed 20"));
+            .Zip(value => value > 10 ? Result<decimal>.Success(5.3m) : new TestFailure("out of bound"));
 
         result.ShouldBeSuccessWithValue((20, 5.3m));
 
@@ -19,7 +19,7 @@ public class ZipIntegrationTests
         result.Tap(((int @base, decimal multiplier) tuple) => value = tuple.@base * tuple.multiplier);
         value.ShouldBe(106m);
 
-        result.Check(((int @base, decimal multiplier) tuple) => tuple.multiplier > 5, () => new Failure("out of bound", "multiplier should exceed 20"));
+        result.Check(((int @base, decimal multiplier) tuple) => tuple.multiplier > 5, () => new TestFailure("out of bound"));
 
         var actual = result
             .Map(((int @base, decimal multiplier) tuple) => tuple.@base * tuple.multiplier)

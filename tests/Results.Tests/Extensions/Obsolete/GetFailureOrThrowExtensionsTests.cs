@@ -10,14 +10,14 @@ namespace Toarnbeike.Results.Tests.Extensions.Obsolete;
 public class GetFailureOrThrowExtensionsTests
 {
     private readonly Result _success = Result.Success();
-    private readonly Result _failure = Result.Failure(new Failure("original", "Original failure"));
+    private readonly Result _failure = Result.Failure(new TestFailure("original"));
 
     private readonly Task<Result> _successTask = Task.FromResult(Result.Success());
-    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new TestFailure("original")));
 
 
     private readonly Task<Result<int>> _successTaskOfT = Task.FromResult(Result.Success(42));
-    private readonly Task<Result<int>> _failureTaskOfT = Task.FromResult(Result<int>.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result<int>> _failureTaskOfT = Task.FromResult(Result<int>.Failure(new TestFailure("original")));
 
     [Test]
     public void GetFailureOrThrow_ShouldThrow_WhenResultIsSuccess()
@@ -30,7 +30,7 @@ public class GetFailureOrThrowExtensionsTests
     public void GetFailureOrThrow_ShouldReturnFailure_WhenResultIsFailure()
     {
         var failure = _failure.GetFailureOrThrow();
-        failure.Code.ShouldBe("original");
+        failure.Message.ShouldBe("original");
     }
 
     [Test]
@@ -44,7 +44,7 @@ public class GetFailureOrThrowExtensionsTests
     public async Task GetFailureOrThrow_ShouldReturnFailure_WhenResultTaskIsFailure()
     {
         var failure = await _failureTask.GetFailureOrThrow();
-        failure.Code.ShouldBe("original");
+        failure.Message.ShouldBe("original");
     }
 
     [Test]
@@ -58,6 +58,6 @@ public class GetFailureOrThrowExtensionsTests
     public async Task GetFailureOrThrow_ShouldReturnFailure_WhenResultTaskOfTIsFailure()
     {
         var failure = await _failureTaskOfT.GetFailureOrThrow();
-        failure.Code.ShouldBe("original");
+        failure.Message.ShouldBe("original");
     }
 }

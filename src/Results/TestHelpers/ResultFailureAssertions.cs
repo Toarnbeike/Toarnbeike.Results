@@ -1,4 +1,6 @@
-﻿namespace Toarnbeike.Results.TestHelpers;
+﻿using Toarnbeike.Results.Failures;
+
+namespace Toarnbeike.Results.TestHelpers;
 
 /// <summary>
 /// Provides assertion methods to verify that a <see cref="Result"/> or <see cref="Result{TValue}"/> represents a failing outcome.
@@ -39,9 +41,14 @@ public static class ResultFailureAssertions
         {
             var actual = result.ShouldBeFailure();
 
-            if (actual.Code != expectedCode)
+            if (actual is not DefaultFailure defaultFailure)
             {
-                throw new ResultAssertionException(customMessage ?? $"Expected failure result with code '{expectedCode}', but got '{actual.Code}'.");
+                throw new ResultAssertionException(customMessage ?? $"Expected failure result with code '{expectedCode}', but got failure that has no code.");
+            }
+
+            if (defaultFailure.Code != expectedCode)
+            {
+                throw new ResultAssertionException(customMessage ?? $"Expected failure result with code '{expectedCode}', but got '{defaultFailure.Code}'.");
             }
 
             return actual;
@@ -84,9 +91,14 @@ public static class ResultFailureAssertions
         {
             var actual = result.ShouldBeFailure();
 
-            if (actual.Code != expectedCode || actual.Message != expectedMessage)
+            if (actual is not DefaultFailure defaultFailure)
             {
-                throw new ResultAssertionException(customMessage ?? $"Expected failure result with code '{expectedCode}' and message '{expectedMessage}', but got code '{actual.Code}' and message '{actual.Message}'.");
+                throw new ResultAssertionException(customMessage ?? $"Expected failure result with code '{expectedCode}', but got failure that has no code.");
+            }
+
+            if (defaultFailure.Code != expectedCode || actual.Message != expectedMessage)
+            {
+                throw new ResultAssertionException(customMessage ?? $"Expected failure result with code '{expectedCode}' and message '{expectedMessage}', but got code '{defaultFailure.Code}' and message '{actual.Message}'.");
             }
 
             return actual;

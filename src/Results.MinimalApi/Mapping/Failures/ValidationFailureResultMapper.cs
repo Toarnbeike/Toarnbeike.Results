@@ -37,7 +37,7 @@ internal sealed class ValidationFailureResultMapper : FailureResultMapper<Valida
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Extensions =
             {
-                ["code"] = failure.Code
+                ["Category"] = failure.Category.ToString()
             }
         };
     }

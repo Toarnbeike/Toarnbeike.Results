@@ -9,10 +9,10 @@ namespace Toarnbeike.Results.Tests.Extensions.WithValue;
 public class WithValueExtensionsTests
 {
     private readonly Result _success = Result.Success();
-    private readonly Result _failure = Result.Failure(new Failure("original", "Original failure"));
+    private readonly Result _failure = Result.Failure(new TestFailure("original"));
 
     private readonly Task<Result> _successTask = Task.FromResult(Result.Success());
-    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new TestFailure("original")));
 
     private readonly string _value = "WithValue";
     private readonly Func<string> _valueFunc = () => "WithValue";
@@ -31,7 +31,7 @@ public class WithValueExtensionsTests
     public void WithValue_Should_ReturnFailureFromValue_WhenResultIsFailure()
     {
         var result = _failure.WithValue(_value);
-        result.ShouldBeFailure().Code.ShouldBe("original");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 
     [Test]
@@ -45,7 +45,7 @@ public class WithValueExtensionsTests
     public void WithValue_Should_ReturnFailureFromValueFunc_WhenResultIsFailure()
     {
         var result = _failure.WithValue(_forbiddenFunc);
-        result.ShouldBeFailure().Code.ShouldBe("original");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 
     [Test]
@@ -59,7 +59,7 @@ public class WithValueExtensionsTests
     public async Task WithValueAsync_Should_ReturnFailure_WhenResultIsFailure()
     {
         var result = await _failure.WithValueAsync(_forbiddenFuncAsync);
-        result.ShouldBeFailure().Code.ShouldBe("original");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 
     [Test]
@@ -73,7 +73,7 @@ public class WithValueExtensionsTests
     public async Task WithValue_Should_ReturnFailureFromValue_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.WithValue(_value);
-        result.ShouldBeFailure().Code.ShouldBe("original");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 
     [Test]
@@ -87,7 +87,7 @@ public class WithValueExtensionsTests
     public async Task WithValue_Should_ReturnFailureFromValueFunc_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.WithValue(_forbiddenFunc);
-        result.ShouldBeFailure().Code.ShouldBe("original");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 
     [Test]
@@ -101,6 +101,6 @@ public class WithValueExtensionsTests
     public async Task WithValueAsync_Should_ReturnFailure_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.WithValueAsync(_forbiddenFuncAsync);
-        result.ShouldBeFailure().Code.ShouldBe("original");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 }

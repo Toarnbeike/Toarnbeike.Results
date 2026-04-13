@@ -16,11 +16,12 @@ public class ValidationFailureResultMapperTests
         
         response.Title.ShouldBe("Validation Error");
         response.Status.ShouldBe(400);
-        response.Detail.ShouldBe("Name: Invalid input");
+        response.Detail.ShouldBe("Validation failed for Name with message Invalid input");
         response.Type.ShouldBe("https://tools.ietf.org/html/rfc7231#section-6.5.1");
-        response.Extensions["code"].ShouldBe("validation_Name");
+        response.Extensions["Category"].ShouldBe("Validation");
 
         var errors = response.ShouldBeOfType<ValidationProblemDetails>().Errors;
         errors.ShouldContainKey("Name");
+        errors["Name"].Single().ShouldBe("Invalid input");
     }
 }

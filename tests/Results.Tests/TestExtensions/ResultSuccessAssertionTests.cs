@@ -27,10 +27,10 @@ public class ResultSuccessAssertionTests
     [Test]
     public void ShouldBeSuccess_Throws_WhenResultIsFailure()
     {
-        Result result = new Failure("fail", "Failed");
+        Result result = new TestFailure("fail");
 
         var ex = Should.Throw<ResultAssertionException>(() => result.ShouldBeSuccess());
-        ex.Message.ShouldBe("Expected success result, but got failure: 'Failed'.");
+        ex.Message.ShouldBe("Expected success result, but got failure: 'fail'.");
     }
 
     [Test]
@@ -54,10 +54,10 @@ public class ResultSuccessAssertionTests
     [Test]
     public void ShouldBeSuccess_Throws_WhenResultIsFailureOfT()
     {
-        Result<int> result = new Failure("fail", "Failed");
+        Result<int> result = new TestFailure("fail");
 
         var ex = Should.Throw<ResultAssertionException>(() => result.ShouldBeSuccess());
-        ex.Message.ShouldBe("Expected success result, but got failure: 'Failed'.");
+        ex.Message.ShouldBe("Expected success result, but got failure: 'fail'.");
     }
 
     [Test]
@@ -71,10 +71,10 @@ public class ResultSuccessAssertionTests
     [Test]
     public async Task ShouldBeSuccessAsync_Throws_WhenResultIsFailure()
     {
-        var result = Task.FromResult(Result.Failure(new Failure("fail", "Failed")));
+        var result = Task.FromResult(Result.Failure(new TestFailure("fail")));
 
         var ex = await Should.ThrowAsync<ResultAssertionException>(() => result.ShouldBeSuccessAsync());
-        ex.Message.ShouldBe("Expected success result, but got failure: 'Failed'.");
+        ex.Message.ShouldBe("Expected success result, but got failure: 'fail'.");
     }
 
     [Test]
@@ -89,9 +89,9 @@ public class ResultSuccessAssertionTests
     [Test]
     public async Task ShouldBeSuccessAsync_Throws_WhenResultIsFailureOfT()
     {
-        var result = Task.FromResult(Result<int>.Failure(new Failure("fail", "Failed")));
+        var result = Task.FromResult(Result<int>.Failure(new TestFailure("fail")));
 
         var ex = await Should.ThrowAsync<ResultAssertionException>(() => result.ShouldBeSuccessAsync());
-        ex.Message.ShouldBe("Expected success result, but got failure: 'Failed'.");
+        ex.Message.ShouldBe("Expected success result, but got failure: 'fail'.");
     }
 }

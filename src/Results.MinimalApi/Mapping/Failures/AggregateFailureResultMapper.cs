@@ -5,14 +5,14 @@ using Toarnbeike.Results.Failures;
 namespace Toarnbeike.Results.MinimalApi.Mapping.Failures;
 
 /// <summary>
-/// Maps an <see cref="AggregateFailure"/> to a single <see cref="AggregateProblemDetails"/> object,
+/// Maps an <see cref="AggregateFailureSummary"/> to a single <see cref="AggregateProblemDetails"/> object,
 /// using the configured failure mappers for the individual failures.
 /// </summary>
 /// <param name="serviceProvider">The serviceProvider to delay resolving the IEnumerable{IFailureResultMapper} because 
 /// early resolving would result in an circular reference.</param>
 /// <param name="fallbackFailureResultMapper">The fallback failure result mapper for when no innerMapper is available.</param>
 internal sealed class AggregateFailureResultMapper(IServiceProvider serviceProvider,
-    IFallbackFailureResultMapper fallbackFailureResultMapper) : FailureResultMapper<AggregateFailure>
+    IFallbackFailureResultMapper fallbackFailureResultMapper) : FailureResultMapper<AggregateFailureSummary>
 {
     /// <summary>
     /// Collection of failure mappers, grouped by the type of <see cref="Failure"/> they can handle.
@@ -26,7 +26,7 @@ internal sealed class AggregateFailureResultMapper(IServiceProvider serviceProvi
     private readonly Lazy<Dictionary<Type, IFailureResultMapper>> _failureMappers = new(() =>
             serviceProvider
                 .GetServices<IFailureResultMapper>() // resolves the Func to get the actual collection
-                .Where(m => m.FailureType != typeof(AggregateFailure)) // Exclude the aggregate mapper itself
+                .Where(m => m.FailureType != typeof(AggregateFailureSummary)) // Exclude the aggregate mapper itself
                 .GroupBy(mapper => mapper.FailureType)
                 .ToDictionary(group => group.Key, group => group.Last()));
 
@@ -37,7 +37,7 @@ internal sealed class AggregateFailureResultMapper(IServiceProvider serviceProvi
     /// <returns>
     /// A <see cref="ProblemDetails"/> representing the aggregate failure, with status code 500 and a generic error detail.
     /// </returns>
-    public override ProblemDetails Map(AggregateFailure failure)
+    public override ProblemDetails Map(AggregateFailureSummary failure)
     {
         var problemDetailsList = new List<ProblemDetails>();
 

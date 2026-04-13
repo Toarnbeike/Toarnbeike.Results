@@ -20,7 +20,7 @@ public class AggregateResultExtensionTests : CollectionResultExtensionTestBase
     public void Aggregate_ShouldReturnAggregateFailure_WhenCollectionContainsFailures()
     {
         var result = MixedCollection.Aggregate();
-        var aggregateFailure = result.ShouldBeFailureOfType<AggregateFailure>();
+        var aggregateFailure = result.ShouldBeFailureOfType<AggregateFailureSummary>();
         aggregateFailure.Failures.Count.ShouldBe(2);
     }
 
@@ -42,7 +42,7 @@ public class AggregateResultExtensionTests : CollectionResultExtensionTestBase
     public async Task AggregateAsync_ShouldReturnAggregateFailure_WhenCollectionContainsFailures()
     {
         var result = await MixedTaskCollection.AggregateAsync();
-        var aggregateFailure = result.ShouldBeFailureOfType<AggregateFailure>();
+        var aggregateFailure = result.ShouldBeFailureOfType<AggregateFailureSummary>();
         aggregateFailure.Failures.Count.ShouldBe(2);
     }
 
