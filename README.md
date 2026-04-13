@@ -82,11 +82,12 @@ At any point, the result is either in a success state or in a failure state.
 ### What is a `Failure`?
 
 A failure is a state of the `Result`, which is represented by a `Failure` record.
-This record has at least the `Code` and `Message` properties, for computer and human readable information
+This record has at least the `Message` and `FailureCategory` properties, for human readable information
 about what caused the failure. 
-It is encouraged to inherit the base `Failure` object and create specific failures for specific situations.
-These inherited objects can carry additional metadata specific for the failure that occurred.
-For the already provided failure overloads, see [Failures](docs/failures.md)
+
+The `Failure` record is abstract, an some concrete failure types are already provided.
+It is encouraged to create specific failure types for e.g. business related failures.
+For the more details regarding failures and the already provided failure overloads, see [Failures](docs/failures.md)
 
 ### What is a `Result<TValue>`?
 

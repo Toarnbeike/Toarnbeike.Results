@@ -43,7 +43,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{2FD8B078-1
 		docs\Collections.md = docs\Collections.md
 		docs\Extensions.md = docs\Extensions.md
 		docs\Failures.md = docs\Failures.md
-		docs\Future.md = docs\Future.md
 		docs\Linq.md = docs\Linq.md
 		docs\TestExtensions.md = docs\TestExtensions.md
 	EndProjectSection
