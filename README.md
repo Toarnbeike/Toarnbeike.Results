@@ -205,12 +205,12 @@ See the [Test extensions docs](docs/TestExtensions.md) for details and examples.
 
 The Toarnbeike.Results ecosystem consist of a couple of packages:
 
-| Package                               | Description                                           | NuGet                                                                                                                                                   |
-|---------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`Toarnbeike.Results`                   | Core result type, extension methods and collections   | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.svg)](https://www.nuget.org/packages/Toarnbeike.Results)                                    |
-|`Toarnbeike.Results.Abstractions`      | Abstractions, as netstandard2.0 project for sourceGen | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.Abstractions.svg)](https://www.nuget.org/packages/Toarnbeike.Results.Abstractions)                       |
-|`Toarnbeike.Results.FluentValidation`  | Validation integration using `FluentValidation`       | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.FluentValidation.svg)](https://www.nuget.org/packages/Toarnbeike.Results.FluentValidation)  |
-|`Toarnbeike.Results.MinimalApi`        | Integration with `Microsoft.AspNetCore` minimal API's | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.MinimalApi.svg)](https://www.nuget.org/packages/Toarnbeike.Results.MinimalApi)              |
+| Package                                                                           | Description                                           | NuGet                                                                                                                                                   |
+|-----------------------------------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`Toarnbeike.Results`                                                               | Core result type, extension methods and collections   | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.svg)](https://www.nuget.org/packages/Toarnbeike.Results)                                    |
+|[`Toarnbeike.Results.Abstractions`](src\Results.Abstractions\README.md)            | Abstractions, as netstandard2.0 project for sourceGen | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.Abstractions.svg)](https://www.nuget.org/packages/Toarnbeike.Results.Abstractions)          |
+|[`Toarnbeike.Results.FluentValidation`](src\Results.FluentValidation\README.md)    | Validation integration using `FluentValidation`       | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.FluentValidation.svg)](https://www.nuget.org/packages/Toarnbeike.Results.FluentValidation)  |
+|[`Toarnbeike.Results.MinimalApi`](src\Results.MinimalApi\README.md)                | Integration with `Microsoft.AspNetCore` minimal API's | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.MinimalApi.svg)](https://www.nuget.org/packages/Toarnbeike.Results.MinimalApi)              |
 
 ---
 
