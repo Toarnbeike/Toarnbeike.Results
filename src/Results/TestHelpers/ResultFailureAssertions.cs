@@ -41,7 +41,7 @@ public static class ResultFailureAssertions
         {
             var actual = result.ShouldBeFailure();
 
-            if (actual is not DefaultFailure defaultFailure)
+            if (actual is not SimpleFailure defaultFailure)
             {
                 throw new ResultAssertionException(customMessage ?? $"Expected failure result with code '{expectedCode}', but got failure that has no code.");
             }
@@ -91,7 +91,7 @@ public static class ResultFailureAssertions
         {
             var actual = result.ShouldBeFailure();
 
-            if (actual is not DefaultFailure defaultFailure)
+            if (actual is not SimpleFailure defaultFailure)
             {
                 throw new ResultAssertionException(customMessage ?? $"Expected failure result with code '{expectedCode}', but got failure that has no code.");
             }

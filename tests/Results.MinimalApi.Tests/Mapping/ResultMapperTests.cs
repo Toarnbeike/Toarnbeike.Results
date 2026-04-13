@@ -32,7 +32,7 @@ public class ResultMapperTests
     [Test]
     public void Map_ShouldReturnFallbackProblemDetails_WhenFailureIsNotMapped()
     {
-        Result failure = new DefaultFailure("test", "test message");
+        Result failure = new SimpleFailure("test", "test message");
 
         var response = _mapper.Map(failure);
 

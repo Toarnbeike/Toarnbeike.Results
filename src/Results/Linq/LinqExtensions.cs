@@ -68,7 +68,7 @@ public static class LinqExtensions
             return result.Bind(value => 
                 predicate(value) 
                 ? Result.Success(value) 
-                : new DefaultFailure("whereLinq", "LINQ predicate was not satisfied."));
+                : new SimpleFailure("whereLinq", "LINQ predicate was not satisfied."));
         }
     }
 }

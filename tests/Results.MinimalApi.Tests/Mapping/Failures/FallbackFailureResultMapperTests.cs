@@ -8,7 +8,7 @@ public class FallbackFailureResultMapperTests
     [Test]
     public void Map_ShouldReturnProblemDetails_WhenFallbackIsUsed()
     {
-        var failure = new DefaultFailure("fallback", "Fallback error");
+        var failure = new SimpleFailure("fallback", "Fallback error");
 
         var mapper = new FallbackFailureResultMapper();
 
