@@ -40,6 +40,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Results.Abstractions.Tests"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{2FD8B078-122C-42FD-B0D9-A0726844B66E}"
 	ProjectSection(SolutionItems) = preProject
+		docs\Collections.md = docs\Collections.md
 		docs\Extensions.md = docs\Extensions.md
 		docs\Failures.md = docs\Failures.md
 		docs\Future.md = docs\Future.md

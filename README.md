@@ -163,16 +163,18 @@ For information per method see the [Extensions docs](docs/Extensions.md).
 
 The `Toarnbeike.Results.Collections` namespace provides extension methods for working with collections of results:
 
-| Method			| ReturnType                                | Description														            |
-|-------------------|-------------------------------------------|-------------------------------------------------------------------------------|
-| `AllSuccess()`	| `bool`                                    | Returns `true` if all results in the collection are successful			    |
-| `Sequence()`      | `Result<IEnumerable<T>>`                  | Returns all success values or the first encountered failure                   |
-| `Aggregate()`     | `Result<IEnumerable<T>>`                  | Returns all success values or an `AggregateFailure` containing all failures   |
-| `SuccessValues()` | `IEnumerable<T>`                          | Extracts all success values from a collection of results			            |
-| `Failures()`      | `IEnumerable<Failure>`                    | Extracts all failures from a collection of results			                |
-| `Split()`         | `(IEnumerable<T>, IEnumerable<Failure>)`  | Splits the collection into success values and failures			            |
+| Method              | `Result`  | `Result<T>` | Description                                 |
+|---------------------|-----------|-------------|---------------------------------------------|
+| `Aggregate(...)`    | [x]       | [x]         | Collects all successes or all failures      |
+| `Sequence(...)`     | [ ]       | [x]         | Collects successes or returns first failure |
+| `AllSuccess(...)`   | [x]       | [x]         | Checks if all results are successful        |
+| `Failures(...)`     | [x]       | [x]         | Extracts all failures                       |
+| `SuccessValues(...)`| [ ]       | [x]         | Extracts all success values                 |
+| `Split(...)`        | [ ]       | [x]         | Splits results into successes and failures  |
 
 All methods support `async` variants and operate seamlessly with `IEnumerable<Task<Result<TValue>>>`.
+
+For information per method see the [Collections docs](docs/Collections.md).
 
 ---
 
