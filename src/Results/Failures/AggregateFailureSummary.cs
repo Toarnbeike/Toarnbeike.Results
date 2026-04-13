@@ -15,6 +15,11 @@ public sealed record AggregateFailureSummary : Failure
     public IReadOnlyCollection<Failure> Failures { get; }
 
     /// <summary>
+    /// Get the set of all distinct categories present in the aggregate.
+    /// </summary>
+    public IReadOnlySet<FailureCategory> Categories => Failures.Select(f => f.Category).ToHashSet();
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="AggregateFailureSummary"/> class with a collection of failures.
     /// Nested <see cref="AggregateFailureSummary"/> instances are flattened automatically.
     /// </summary>
@@ -33,7 +38,7 @@ public sealed record AggregateFailureSummary : Failure
 
         Failures = flattened.AsReadOnly();
         Message = message ?? "Multiple failures occurred";
-        Category = Failures.Max(x => x.Category);
+        Category = FailureCategory.Unknown;
     }
 
     /// <summary>

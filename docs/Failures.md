@@ -96,7 +96,7 @@ new AggregateFailureSummary(failures);
 ```
 This type is used when combining multiple Result instances (e.g. via Aggregate), and more than one failure occurred.
 
-The FailureCategory is determined based on the provided results. The highest failure category is taken.
+The FailureCategory is `Unknown`, but the set of categories is exposed for consumer needs.
 
 #### Notes
 - The contained failures are flattened and read-only
@@ -114,13 +114,13 @@ Failure categories are used to:
 - distinguish between expected and unexpected failures
 - improve logging and diagnostics
 
-| Category          | Rank  |Description                        | Retry interpretation |
-|-------------------|-------|-----------------------------------|----------------------|
-| `Validation`      | 1     | Input or domain validation errors | Never                |
-| `Business`        | 2     | Business rule violations          | Never                |
-| `System`          | 3     | Internal unexpected errors        | Usually              |
-| `External`        | 4     | Failures from external services   | Always               |
-| `Unknown`         | max   | Unclassified or generic failures  | ?                    |
+| Category      |Description                        | Retry interpretation |
+|---------------|-----------------------------------|----------------------|
+| `Validation`  | Input or domain validation errors | Never                |
+| `Business`    | Business rule violations          | Never                |
+| `System`      | Internal unexpected errors        | Usually              |
+| `External`    | Failures from external services   | Always               |
+| `Unknown`     | Unclassified or generic failures  | ?                    |
 
 
 ---

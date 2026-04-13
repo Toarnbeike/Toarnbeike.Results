@@ -5,35 +5,46 @@ namespace Toarnbeike.Results.Tests.Failures;
 /// <summary>
 /// Tests for the <see cref="AggregateFailureSummary"/> record.
 /// </summary>
-public class AggregateFailureTests
+public class AggregateFailureSummaryTests
 {
     [Test]
-    public void AggregateFailure_Should_BeCreatedFromFailureIEnumerable()
+    public void AggregateFailureSummary_Should_BeCreatedFromFailureIEnumerable()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
         var innerFailure2 = new ValidationFailure("Property", "ValidationMessage");
 
         var failure = new AggregateFailureSummary([innerFailure1, innerFailure2]);
 
-        failure.Category.ShouldBe(FailureCategory.System);
         failure.Message.ShouldBe("Multiple failures occurred");
         failure.Failures.Count.ShouldBe(2);
     }
 
     [Test]
-    public void AggregateFailure_ShouldThrow_WhenCreatedWithNullFailures()
+    public void AggregateFailureSummary_ShouldExposeCategoryAndCategories()
+    {
+        var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
+        var innerFailure2 = new ValidationFailure("Property", "ValidationMessage");
+
+        var failure = new AggregateFailureSummary([innerFailure1, innerFailure2]);
+        failure.Category.ShouldBe(FailureCategory.Unknown);
+        failure.Categories.ShouldBe([FailureCategory.Validation, FailureCategory.System], true);
+
+    }
+
+    [Test]
+    public void AggregateFailureSummary_ShouldThrow_WhenCreatedWithNullFailures()
     {
         Should.Throw<ArgumentNullException>(() => new AggregateFailureSummary(null!));
     }
 
     [Test]
-    public void AggregateFailure_ShouldThrow_WhenCreatedWithEmptyFailures()
+    public void AggregateFailureSummary_ShouldThrow_WhenCreatedWithEmptyFailures()
     {
         Should.Throw<ArgumentException>(() => new AggregateFailureSummary([]));
     }
 
     [Test]
-    public void AggregateFailure_Should_FlattenInnerAggregateFailures()
+    public void AggregateFailureSummary_Should_FlattenInnerAggregateFailures()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
         var innerFailure2 = new AggregateFailureSummary([new ValidationFailure("Property", "ValidationMessage"), new TestFailure("test")]);
@@ -46,7 +57,7 @@ public class AggregateFailureTests
     }
 
     [Test]
-    public void AggregateFailure_Should_BeAbleToChangeBaseProperties_UsingWithSyntax()
+    public void AggregateFailureSummary_Should_BeAbleToChangeBaseProperties_UsingWithSyntax()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
         var innerFailure2 = new ValidationFailure("Property", "ValidationMessage");
