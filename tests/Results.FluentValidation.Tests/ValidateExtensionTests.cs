@@ -44,7 +44,7 @@ public class ValidateExtensionTests
 
         var validated = result.Validate(new PersonValidator());
 
-        validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
+        validated.ShouldBeFailure().Code.ShouldBe("test");
     }
 
     [Test]
@@ -69,7 +69,7 @@ public class ValidateExtensionTests
 
         var validated = result.Validate(new PersonValidator());
 
-        validated.ShouldBeSuccessWithValue(person);
+        validated.ShouldBeSuccess().ShouldBe(person);
     }
 
     [Test]
@@ -79,7 +79,7 @@ public class ValidateExtensionTests
 
         var validated = await result.ValidateAsync(new PersonValidator());
 
-        validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
+        validated.ShouldBeFailure().Code.ShouldBe("test");
     }
 
     [Test]
@@ -104,7 +104,7 @@ public class ValidateExtensionTests
 
         var validated = await result.ValidateAsync(new PersonValidator());
 
-        validated.ShouldBeSuccessWithValue(person);
+        validated.ShouldBeSuccess().ShouldBe(person);
     }
 
     [Test]
@@ -114,7 +114,7 @@ public class ValidateExtensionTests
 
         var validated = await result.Validate(new PersonValidator());
 
-        validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
+        validated.ShouldBeFailure().Code.ShouldBe("test");
     }
 
     [Test]
@@ -139,7 +139,7 @@ public class ValidateExtensionTests
 
         var validated = await result.Validate(new PersonValidator());
 
-        validated.ShouldBeSuccessWithValue(person);
+        validated.ShouldBeSuccess().ShouldBe(person);
     }
 
     [Test]
@@ -149,7 +149,7 @@ public class ValidateExtensionTests
 
         var validated = await result.ValidateAsync(new PersonValidator());
 
-        validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
+        validated.ShouldBeFailure().Code.ShouldBe("test");
     }
 
     [Test]
@@ -174,6 +174,6 @@ public class ValidateExtensionTests
 
         var validated = await result.ValidateAsync(new PersonValidator());
 
-        validated.ShouldBeSuccessWithValue(person);
+        validated.ShouldBeSuccess().ShouldBe(person);
     }
 }

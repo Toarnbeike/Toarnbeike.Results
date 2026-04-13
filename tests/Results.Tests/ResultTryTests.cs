@@ -31,7 +31,7 @@ public class ResultTryTests
     {
         var result = Result.Try(() => 42);
 
-        result.ShouldBeSuccessWithValue(42);
+        result.ShouldBeSuccess().ShouldBe(42);
     }
 
     [Test]
@@ -107,7 +107,7 @@ public class ResultTryTests
             return "async value";
         });
 
-        result.ShouldBeSuccessWithValue("async value");
+        result.ShouldBeSuccess().ShouldBe("async value");
     }
 
     [Test]
@@ -136,7 +136,7 @@ public class ResultTryTests
             return "async value";
         });
 
-        result.ShouldBeSuccessWithValue("async value");
+        result.ShouldBeSuccess().ShouldBe("async value");
     }
 
     [Test]

@@ -13,7 +13,7 @@ public class AggregateResultTExtensionTests : CollectionResultTExtensionTestBase
     public void Aggregate_ShouldReturnSuccess_WhenAllResultsAreSuccessful()
     {
         var result = AllSuccessCollection.Aggregate();
-        result.ShouldBeSuccessWithValue([1, 2, 3]);
+        result.ShouldBeSuccess().ShouldBe([1, 2, 3]);
     }
 
     [Test]
@@ -21,21 +21,21 @@ public class AggregateResultTExtensionTests : CollectionResultTExtensionTestBase
     {
         var result = MixedCollection.Aggregate();
         var aggregateFailure = result.ShouldBeFailureOfType<AggregateFailure>();
-        aggregateFailure.Failures.Count().ShouldBe(2);
+        aggregateFailure.Failures.Count.ShouldBe(2);
     }
 
     [Test]
     public void Aggregate_ShouldReturnSuccess_WhenCollectionIsEmpty()
     {
         var result = EmptyCollection.Aggregate();
-        result.ShouldBeSuccessWithValue([]);
+        result.ShouldBeSuccess().ShouldBeEmpty();
     }
 
     [Test]
     public async Task AggregateAsync_ShouldReturnSuccess_WhenAllResultsAreSuccessful()
     {
         var result = await AllSuccessTaskCollection.AggregateAsync();
-        result.ShouldBeSuccessWithValue([1, 2, 3]);
+        result.ShouldBeSuccess().ShouldBe([1, 2, 3]);
     }
 
     [Test]
@@ -50,6 +50,6 @@ public class AggregateResultTExtensionTests : CollectionResultTExtensionTestBase
     public async Task AggregateAsync_ShouldReturnSuccess_WhenCollectionIsEmpty()
     {
         var result = await EmptyTaskCollection.AggregateAsync();
-        result.ShouldBeSuccessWithValue([]);
+        result.ShouldBeSuccess().ShouldBeEmpty();
     }
 }

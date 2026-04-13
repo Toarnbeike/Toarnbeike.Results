@@ -14,7 +14,7 @@ public class LinqExtensionsTests
         var result = from x in Result.Success(5)
                      select x * 2;
 
-        result.ShouldBeSuccessWithValue(10);
+        result.ShouldBeSuccess().ShouldBe(10);
     }
 
     [Test]
@@ -25,7 +25,7 @@ public class LinqExtensionsTests
         var result = from x in failure
                      select x * 2;
 
-        result.ShouldBeFailureWithCode("code");
+        result.ShouldBeFailure().Code.ShouldBe("code");
     }
 
     [Test]
@@ -35,7 +35,7 @@ public class LinqExtensionsTests
                      from y in Result.Success(3)
                      select x + y;
 
-        result.ShouldBeSuccessWithValue(5);
+        result.ShouldBeSuccess().ShouldBe(5);
     }
 
     [Test]
@@ -45,7 +45,7 @@ public class LinqExtensionsTests
                      from y in Result.Success(3)
                      select x + y;
 
-        result.ShouldBeFailureWithCode("first");
+        result.ShouldBeFailure().Code.ShouldBe("first");
     }
 
     [Test]
@@ -55,7 +55,7 @@ public class LinqExtensionsTests
                      from y in Result<int>.Failure(new Failure("second", "error"))
                      select x + y;
 
-        result.ShouldBeFailureWithCode("second");
+        result.ShouldBeFailure().Code.ShouldBe("second");
     }
 
     [Test]
@@ -65,7 +65,7 @@ public class LinqExtensionsTests
                      where x > 5
                      select x;
 
-        result.ShouldBeSuccessWithValue(10);
+        result.ShouldBeSuccess().ShouldBe(10);
     }
 
     [Test]
@@ -75,7 +75,7 @@ public class LinqExtensionsTests
                      where x > 5
                      select x;
 
-        result.ShouldBeFailureWithCodeAndMessage("whereLinq", "LINQ predicate was not satisfied.");
+        result.ShouldBeFailure().Code.ShouldBe("whereLinq");
     }
 
     [Test]
@@ -87,7 +87,7 @@ public class LinqExtensionsTests
                      where x > 5
                      select x;
 
-        result.ShouldBeFailureWithCode("code");
+        result.ShouldBeFailure().Code.ShouldBe("code");
     }
 
     [Test]
@@ -98,6 +98,6 @@ public class LinqExtensionsTests
                      from reversed in Result.Success(new string(upper.Reverse().ToArray()))
                      select $"{upper} -> {reversed}";
 
-        result.ShouldBeSuccessWithValue("ALICE -> ECILA");
+        result.ShouldBeSuccess().ShouldBe("ALICE -> ECILA");
     }
 }

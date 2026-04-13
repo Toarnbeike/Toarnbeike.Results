@@ -12,41 +12,41 @@ public class SequenceResultTExtensionTests : CollectionResultTExtensionTestBase
     public void Sequence_ShouldReturnSuccess_WhenAllResultsAreSuccessful()
     {
         var result = AllSuccessCollection.Sequence();
-        result.ShouldBeSuccessWithValue([1, 2, 3]);
+        result.ShouldBeSuccess().ShouldBe([1, 2, 3]);
     }
 
     [Test]
     public void Sequence_ShouldReturnFailure_WhenCollectionContainsFailures()
     {
         var result = MixedCollection.Sequence();
-        result.ShouldBeFailureWithCode("code1"); // first failure in the collection
+        result.ShouldBeFailure().Code.ShouldBe("code1"); // first failure in the collection
     }
 
     [Test]
     public void Sequence_ShouldReturnSuccess_WhenCollectionIsEmpty()
     {
         var result = EmptyCollection.Sequence();
-        result.ShouldBeSuccessWithValue([]);
+        result.ShouldBeSuccess().ShouldBeEmpty();
     }
 
     [Test]
     public async Task SequenceAsync_ShouldReturnSuccess_WhenAllResultsAreSuccessful()
     {
         var result = await AllSuccessTaskCollection.SequenceAsync();
-        result.ShouldBeSuccessWithValue([1, 2, 3]);
+        result.ShouldBeSuccess().ShouldBe([1, 2, 3]);
     }
 
     [Test]
     public async Task SequenceAsync_ShouldReturnFailure_WhenCollectionContainsFailures()
     {
         var result = await MixedTaskCollection.SequenceAsync();
-        result.ShouldBeFailureWithCode("code1"); // first failure in the collection
+        result.ShouldBeFailure().Code.ShouldBe("code1"); // first failure in the collection
     }
 
     [Test]
     public async Task SequenceAsync_ShouldReturnSuccess_WhenCollectionIsEmpty()
     {
         var result = await EmptyTaskCollection.SequenceAsync();
-        result.ShouldBeSuccessWithValue([]);
+        result.ShouldBeSuccess().ShouldBeEmpty();
     }
 }

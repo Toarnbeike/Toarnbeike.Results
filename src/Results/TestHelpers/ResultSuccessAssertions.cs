@@ -60,7 +60,8 @@ public static class ResultSuccessAssertions
         /// <param name="customMessage">Optional custom message for assertion failure.</param>
         /// <returns>The value contained in the successful result.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the result is a failure or the value does not match.</exception>
-        [Obsolete("Moved to the Toarnbeike.Extensions.TestExtensions namespace")]
+        [Obsolete("Use ShouldBeSuccess() and assert on the returned value instead." +
+                  "Example: result.ShouldBeSuccess().ShouldBe(expected, customMessage).")]
         public TValue ShouldBeSuccessWithValue(TValue expected, string? customMessage = null)
         {
             var actual = result.ShouldBeSuccess();
@@ -95,7 +96,8 @@ public static class ResultSuccessAssertions
         /// <param name="customMessage">Optional custom message for assertion failure.</param>
         /// <returns>The value contained in the successful result.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the result is a failure or the predicate is not satisfied.</exception>
-        [Obsolete("Moved to the Toarnbeike.Extensions.TestExtensions namespace")]
+        [Obsolete("Use ShouldBeSuccess() and assert on the returned value instead." +
+                  "Example: result.ShouldBeSuccess().ShouldBeTrue(value => predicate(value), customMessage).")]
         public TValue ShouldBeSuccessThatSatisfiesPredicate(Func<TValue, bool> predicate, string? customMessage = null)
         {
             ArgumentNullException.ThrowIfNull(predicate);

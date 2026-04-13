@@ -189,7 +189,7 @@ See the [LINQ extensions docs](docs/Linq.md) for details on how to use this feat
 
 ## Test Extensions
 
-These are ideal for unit testing and compatible with any test framework. See the [Test extensions docs](src/Results/TestHelpers/README.md) for details.
+These are ideal for unit testing and compatible with any test framework. See the [Test extensions docs](docs/TestExtensions.md) for details.
 
 ---
 

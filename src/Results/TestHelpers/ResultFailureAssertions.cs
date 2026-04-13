@@ -33,7 +33,8 @@ public static class ResultFailureAssertions
         /// <param name="customMessage">Optional custom message for assertion failure.</param>
         /// <returns>The failure contained in the result.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the code does not match.</exception>
-        [Obsolete("Moved to the Toarnbeike.Extensions.TestExtensions namespace")]
+        [Obsolete("Use ShouldBeFailure() and assert on returned failure. " +
+                  "Example: result.ShouldBeFailure().Code.ShouldBe(expectedCode, customMessage)")]
         public Failure ShouldBeFailureWithCode(string expectedCode, string? customMessage = null)
         {
             var actual = result.ShouldBeFailure();
@@ -53,7 +54,8 @@ public static class ResultFailureAssertions
         /// <param name="customMessage">Optional custom message for assertion failure.</param>
         /// <returns>The failure contained in the result.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the message does not match.</exception>
-        [Obsolete("Moved to the Toarnbeike.Extensions.TestExtensions namespace")]
+        [Obsolete("Use ShouldBeFailure() and assert on returned failure. " +
+                  "Example: result.ShouldBeFailure().Message.ShouldBe(expectedMessage, customMessage)")]
         public Failure ShouldBeFailureWithMessage(string expectedMessage, string? customMessage = null)
         {
             var actual = result.ShouldBeFailure();
@@ -74,7 +76,10 @@ public static class ResultFailureAssertions
         /// <param name="customMessage">Optional custom message for assertion failure.</param>
         /// <returns>The failure contained in the result.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the code or message does not match.</exception>
-        [Obsolete("Moved to the Toarnbeike.Extensions.TestExtensions namespace")]
+        [Obsolete("Use ShouldBeFailure() and assert on returned failure. " +
+                  "Example: failure = result.ShouldBeFailure(); " +
+                  "failure.Code.ShouldBe(expectedCode, customMessage); " +
+                  "failure.Message.ShouldBe(expectedMessage, customMessage)")]
         public Failure ShouldBeFailureWithCodeAndMessage(string expectedCode, string expectedMessage, string? customMessage = null)
         {
             var actual = result.ShouldBeFailure();
@@ -94,7 +99,8 @@ public static class ResultFailureAssertions
         /// <param name="customMessage">Optional custom message for assertion failure.</param>
         /// <returns>The failure contained in the result.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the predicate is not satisfied.</exception>
-        [Obsolete("Moved to the Toarnbeike.Extensions.TestExtensions namespace")]
+        [Obsolete("Use ShouldBeFailure() and assert on returned failure. " +
+                  "Example: result.ShouldBeFailure().ShouldBeTrue(failure => predicate(failure), customMessage)")]
         public Failure ShouldBeFailureThatSatisfiesPredicate(Func<Failure, bool> predicate, string? customMessage = null)
         {
             ArgumentNullException.ThrowIfNull(predicate);

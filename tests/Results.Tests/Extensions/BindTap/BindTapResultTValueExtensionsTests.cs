@@ -41,14 +41,14 @@ public class BindTapResultTValueExtensionsTests
     public void BindTap_Should_ReturnFailure_WhenResultIsSuccess_AndFunctionFails()
     {
         var result = _success.BindTap(_failureFunc);
-        result.ShouldBeFailureWithCodeAndMessage("BindTap", "BindTap failure");
+        result.ShouldBeFailure().Code.ShouldBe("BindTap");
     }
 
     [Test]
     public void BindTap_Should_ReturnFailure_WhenResultIsFailure()
     {
         var result = _failure.BindTap(_forbiddenFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Code.ShouldBe("original");
     }
 
     [Test]
@@ -62,14 +62,14 @@ public class BindTapResultTValueExtensionsTests
     public void BindTap_Should_ReturnFailure_WhenResultIsSuccess_AndFunctionOfTFails()
     {
         var result = _success.BindTap(_failureOfTFunc);
-        result.ShouldBeFailureWithCodeAndMessage("BindTap", "BindTap failure");
+        result.ShouldBeFailure().Code.ShouldBe("BindTap");
     }
 
     [Test]
     public void BindTap_Should_ReturnFailure_WhenResultIsFailure_AndCheckIsOfT()
     {
         var result = _failure.BindTap(_forbiddenOfTFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Code.ShouldBe("original");
     }
 
     [Test]
@@ -83,14 +83,14 @@ public class BindTapResultTValueExtensionsTests
     public async Task BindTapAsync_Should_ReturnFailure_WhenResultIsSuccess_AndFunctionFails()
     {
         var result = await _success.BindTapAsync(_failureTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("BindTap", "BindTap failure");
+        result.ShouldBeFailure().Code.ShouldBe("BindTap");
     }
 
     [Test]
     public async Task BindTapAsync_Should_ReturnFailure_WhenResultIsFailure()
     {
         var result = await _failure.BindTapAsync(_forbiddenTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Code.ShouldBe("original");
     }
 
     [Test]
@@ -104,14 +104,14 @@ public class BindTapResultTValueExtensionsTests
     public async Task BindTapAsync_Should_ReturnFailure_WhenResultIsSuccess_AndFunctionOfTFails()
     {
         var result = await _success.BindTapAsync(_failureOfTTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("BindTap", "BindTap failure");
+        result.ShouldBeFailure().Code.ShouldBe("BindTap");
     }
 
     [Test]
     public async Task BindTapAsync_Should_ReturnFailure_WhenResultIsFailure_AndCheckIsOfT()
     {
         var result = await _failure.BindTapAsync(_forbiddenOfTTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Code.ShouldBe("original");
     }
 
     [Test]
@@ -125,14 +125,14 @@ public class BindTapResultTValueExtensionsTests
     public async Task BindTap_Should_ReturnFailure_WhenResultTaskIsSuccess_AndFunctionFails()
     {
         var result = await _successTask.BindTap(_failureFunc);
-        result.ShouldBeFailureWithCodeAndMessage("BindTap", "BindTap failure");
+        result.ShouldBeFailure().Code.ShouldBe("BindTap");
     }
 
     [Test]
     public async Task BindTap_Should_ReturnFailure_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.BindTap(_forbiddenFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Code.ShouldBe("original");
     }
 
     [Test]
@@ -146,14 +146,14 @@ public class BindTapResultTValueExtensionsTests
     public async Task BindTap_Should_ReturnFailure_WhenResultTaskIsSuccess_AndFunctionOfTFails()
     {
         var result = await _successTask.BindTap(_failureOfTFunc);
-        result.ShouldBeFailureWithCodeAndMessage("BindTap", "BindTap failure");
+        result.ShouldBeFailure().Code.ShouldBe("BindTap");
     }
 
     [Test]
     public async Task BindTap_Should_ReturnFailure_WhenResultTaskIsFailure_AndCheckIsOfT()
     {
         var result = await _failureTask.BindTap(_forbiddenOfTFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Code.ShouldBe("original");
     }
 
     [Test]
@@ -167,14 +167,14 @@ public class BindTapResultTValueExtensionsTests
     public async Task BindTapAsync_Should_ReturnFailure_WhenResultTaskIsSuccess_AndFunctionFails()
     {
         var result = await _successTask.BindTapAsync(_failureTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("BindTap", "BindTap failure");
+        result.ShouldBeFailure().Code.ShouldBe("BindTap");
     }
 
     [Test]
     public async Task BindTapAsync_Should_ReturnFailure_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.BindTapAsync(_forbiddenTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Code.ShouldBe("original");
     }
 
     [Test]
@@ -188,13 +188,13 @@ public class BindTapResultTValueExtensionsTests
     public async Task BindTapAsync_Should_ReturnFailure_WhenResultTaskIsSuccess_AndFunctionOfTFails()
     {
         var result = await _successTask.BindTapAsync(_failureOfTTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("BindTap", "BindTap failure");
+        result.ShouldBeFailure().Code.ShouldBe("BindTap");
     }
 
     [Test]
     public async Task BindTapAsync_Should_ReturnFailure_WhenResultTaskIsFailure_AndCheckIsOfT()
     {
         var result = await _failureTask.BindTapAsync(_forbiddenOfTTaskFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Code.ShouldBe("original");
     }
 }

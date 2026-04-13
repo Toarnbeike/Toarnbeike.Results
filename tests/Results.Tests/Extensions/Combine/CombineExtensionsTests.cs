@@ -27,83 +27,83 @@ public class CombineExtensionsTests
     public void Combine_ShouldReturnSuccess_WhenBothResultsAreSuccess()
     {
         var result = _firstSuccess.Combine(_secondSuccess, _mapFunc);
-        result.ShouldBeSuccessWithValue("1 success");
+        result.ShouldBeSuccess().ShouldBe("1 success");
     }
 
     [Test]
     public void Combine_ShouldReturnFailure_WhenFirstResultIsFailure()
     {
         var result = _firstFailure.Combine(_secondSuccess, _forbiddenFunc);
-        result.ShouldBeFailureWithCode("first");
+        result.ShouldBeFailure().Code.ShouldBe("first");
     }
 
     [Test]
     public void Combine_ShouldReturnFailure_WhenSecondResultIsFailure()
     {
         var result = _firstSuccess.Combine(_secondFailure, _forbiddenFunc);
-        result.ShouldBeFailureWithCode("second");
+        result.ShouldBeFailure().Code.ShouldBe("second");
     }
 
     [Test]
     public async Task CombineAsync_ShouldReturnSuccess_WhenBothResultsAreSuccess()
     {
         var result = await _firstSuccess.CombineAsync(_secondSuccess, _mapTaskFunc);
-        result.ShouldBeSuccessWithValue("1 success");
+        result.ShouldBeSuccess().ShouldBe("1 success");
     }
 
     [Test]
     public async Task CombineAsync_ShouldReturnFailure_WhenFirstResultIsFailure()
     {
         var result = await _firstFailure.CombineAsync(_secondSuccess, _forbiddenTaskFunc);
-        result.ShouldBeFailureWithCode("first");
+        result.ShouldBeFailure().Code.ShouldBe("first");
     }
 
     [Test]
     public async Task CombineAsync_ShouldReturnFailure_WhenSecondResultIsFailure()
     {
         var result = await _firstSuccess.CombineAsync(_secondFailure, _forbiddenTaskFunc);
-        result.ShouldBeFailureWithCode("second");
+        result.ShouldBeFailure().Code.ShouldBe("second");
     }
 
     [Test]
     public async Task Combine_ShouldReturnSuccess_WhenBothResultTasksAreSuccess()
     {
         var result = await _firstSuccessTask.Combine(_secondSuccessTask, _mapFunc);
-        result.ShouldBeSuccessWithValue("1 success");
+        result.ShouldBeSuccess().ShouldBe("1 success");
     }
 
     [Test]
     public async Task Combine_ShouldReturnFailure_WhenFirstResultTaskIsFailure()
     {
         var result = await _firstFailureTask.Combine(_secondSuccessTask, _forbiddenFunc);
-        result.ShouldBeFailureWithCode("first");
+        result.ShouldBeFailure().Code.ShouldBe("first");
     }
 
     [Test]
     public async Task Combine_ShouldReturnFailure_WhenSecondResultTaskIsFailure()
     {
         var result = await _firstSuccessTask.Combine(_secondFailureTask, _forbiddenFunc);
-        result.ShouldBeFailureWithCode("second");
+        result.ShouldBeFailure().Code.ShouldBe("second");
     }
 
     [Test]
     public async Task CombineAsync_ShouldReturnSuccess_WhenBothResultTasksAreSuccess()
     {
         var result = await _firstSuccessTask.CombineAsync(_secondSuccessTask, _mapTaskFunc);
-        result.ShouldBeSuccessWithValue("1 success");
+        result.ShouldBeSuccess().ShouldBe("1 success");
     }
 
     [Test]
     public async Task CombineAsync_ShouldReturnFailure_WhenFirstResultTaskIsFailure()
     {
         var result = await _firstFailureTask.CombineAsync(_secondSuccessTask, _forbiddenTaskFunc);
-        result.ShouldBeFailureWithCode("first");
+        result.ShouldBeFailure().Code.ShouldBe("first");
     }
 
     [Test]
     public async Task CombineAsync_ShouldReturnFailure_WhenSecondResultTaskIsFailure()
     {
         var result = await _firstSuccessTask.CombineAsync(_secondFailureTask, _forbiddenTaskFunc);
-        result.ShouldBeFailureWithCode("second");
+        result.ShouldBeFailure().Code.ShouldBe("second");
     }
 }
