@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 
-namespace Toarnbeike.Results.TestHelpers;
+namespace Toarnbeike.Results.TestExtensions;
 
 /// <summary>
 /// Provides assertion methods to verify that a <see cref="Result"/> or <see cref="Result{TValue}"/> represents a successful outcome.
 /// These methods are intended exclusively for unit testing. Not recommended for use in production logic.
 /// </summary>
-[Obsolete("Moved to the Toarnbeike.Extensions.TestExtensions namespace")]
 public static class ResultSuccessAssertions
 {
     /// <summary>
@@ -37,7 +36,6 @@ public static class ResultSuccessAssertions
         /// </summary>
         /// <returns>The value contained in the successful result.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the result is a failure.</exception>
-        [Obsolete("Moved to the Toarnbeike.Extensions.TestExtensions namespace")]
         public TValue ShouldBeSuccess()
         {
             if (result.Equals(default))
@@ -60,7 +58,6 @@ public static class ResultSuccessAssertions
         /// <param name="customMessage">Optional custom message for assertion failure.</param>
         /// <returns>The value contained in the successful result.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the result is a failure or the value does not match.</exception>
-        [Obsolete("Moved to the Toarnbeike.Extensions.TestExtensions namespace")]
         public TValue ShouldBeSuccessWithValue(TValue expected, string? customMessage = null)
         {
             var actual = result.ShouldBeSuccess();
@@ -95,7 +92,6 @@ public static class ResultSuccessAssertions
         /// <param name="customMessage">Optional custom message for assertion failure.</param>
         /// <returns>The value contained in the successful result.</returns>
         /// <exception cref="ResultAssertionException">Thrown when the result is a failure or the predicate is not satisfied.</exception>
-        [Obsolete("Moved to the Toarnbeike.Extensions.TestExtensions namespace")]
         public TValue ShouldBeSuccessThatSatisfiesPredicate(Func<TValue, bool> predicate, string? customMessage = null)
         {
             ArgumentNullException.ThrowIfNull(predicate);

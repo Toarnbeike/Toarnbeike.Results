@@ -1,4 +1,4 @@
-﻿using Toarnbeike.Results.TestHelpers;
+﻿using Toarnbeike.Results.TestExtensions;
 
 namespace Toarnbeike.Results.Tests.TestHelpers;
 

@@ -1,5 +1,5 @@
 ﻿using Toarnbeike.Results.Extensions;
-using Toarnbeike.Results.TestHelpers;
+using Toarnbeike.Results.TestExtensions;
 
 namespace Toarnbeike.Results.Tests.Extensions.Bind;
 
