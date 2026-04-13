@@ -7,7 +7,7 @@ namespace Toarnbeike.Results.Tests.Failures;
 /// </summary>
 public class ValidationFailureSummaryTests
 {
-    private readonly ValidationFailure _validationFailure = new ValidationFailure("Property", "Something is wrong");
+    private readonly ValidationFailure _validationFailure = new ("Property", "Something is wrong");
     private readonly ValidationFailureSummary _existingFailureSummary;
 
     public ValidationFailureSummaryTests()

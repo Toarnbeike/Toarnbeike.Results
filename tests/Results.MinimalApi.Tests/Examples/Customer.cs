@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.MinimalApi.DependencyInjection;
-using Microsoft.AspNetCore.Routing;
 
-namespace Toarnbeike.Results.Integration.Tests.Examples;
+namespace Toarnbeike.Results.MinimalApi.Tests.Examples;
 
 public record EntityFailure<TEntity> : Failure
 {

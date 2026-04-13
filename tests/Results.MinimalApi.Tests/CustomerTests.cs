@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
-using System.Net.Http.Json;
-using System.Text.Json;
-using Toarnbeike.Results.Integration.Tests.Examples;
 using Toarnbeike.Results.MinimalApi.DependencyInjection;
+using Toarnbeike.Results.MinimalApi.Tests.Examples;
 
-namespace Toarnbeike.Results.Integration.Tests;
+namespace Toarnbeike.Results.MinimalApi.Tests;
 
 public class CustomerTests()
 {

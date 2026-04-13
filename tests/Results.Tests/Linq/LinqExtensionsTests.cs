@@ -95,7 +95,7 @@ public class LinqExtensionsTests
     {
         var result = from name in Result.Success("Alice")
                      let upper = name.ToUpper()
-                     from reversed in Result.Success(new string(upper.Reverse().ToArray()))
+                     from reversed in Result.Success(new string([.. upper.Reverse()]))
                      select $"{upper} -> {reversed}";
 
         result.ShouldBeSuccess().ShouldBe("ALICE -> ECILA");
