@@ -180,16 +180,23 @@ For information per method see the [Collections docs](docs/Collections.md).
 
 ## LINQ Query syntax support
 
-Toarnbeike.Results supports optional integration with [C# LINQ query syntax](https://learn.microsoft.com/en-us/dotnet/csharp/linq/get-started/write-linq-queries),
-making it easier to compose multiple `Result<TValue>` computations in a declarative style.
+Toarnbeike.Results supports C# LINQ query syntax for composing `Result<TValue>` pipelines using `from`, `select`, `let`, and `where`.
 
-See the [LINQ extensions docs](docs/Linq.md) for details on how to use this feature.
+This provides an alternative, declarative way to compose `Bind`, `Map`, and `BindTap` operations while preserving the same failure propagation semantics.
+
+Failures are automatically propagated and short-circuit execution of the query.
+
+See the [LINQ extensions docs](docs/Linq.md) for details and examples.
 
 ---
 
 ## Test Extensions
 
-These are ideal for unit testing and compatible with any test framework. See the [Test extensions docs](docs/TestExtensions.md) for details.
+Toarnbeike.Results provides optional test extensions for verifying Result and `Result<TValue>` instances in unit tests.
+
+These extensions offer a minimal set of assertions for checking success and failure outcomes, including typed failure assertions.
+
+See the [Test extensions docs](docs/TestExtensions.md) for details and examples.
 
 ---
 
