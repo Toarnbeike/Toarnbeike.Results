@@ -1,13 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<PackageId>Toarnbeike.Results.Ensure</PackageId>
+		<TargetFramework>net10.0</TargetFramework>
+		<!-- Version is managed centrally in Directory.build.props to keep versions in sync.-->
+		<Description>Composable guard library that enables clean, fail-fast domain validation without exceptions.</Description>
+		<PackageTags>result ensure pipeline fuctional domain validation async</PackageTags>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Results\Results.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Results\Results.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
 
 </Project>
