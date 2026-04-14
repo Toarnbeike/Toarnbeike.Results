@@ -12,6 +12,9 @@ Major rework of the Failure system.
 - AggregateFailure and ValidationFailures have become atomic summaries.
 - For a full description of the new failure system, see the [failure docs](docs/Failures.md).
 
+Introduced `Toarnbeike.Results.Ensure` library for domain validation.
+See [Ensure ReadMe](src/Results.Ensure/README.md)
+
 ### Added
 - Extensions.BindTap - Chains a result-producing operation without changing the original value
 - Extensions.Combine - Combines two successful results into a new value
