@@ -43,4 +43,15 @@ public sealed record GuardFailure : Failure
         Message = customMessage ?? error.MessageBuilder(expression);
         Category = FailureCategory.Business;
     }
+
+    public GuardFailure(string guardName, string message, string? expr)
+    {
+        var expression = expr ?? "<unknown>";
+        GuardName = guardName;
+        Expression = expression;
+        Constraint = null;
+        AttemptedValue = null;
+        Message = message;
+        Category = FailureCategory.Business;
+    }
 }
