@@ -42,6 +42,9 @@ jobs:
       - name: Pack Results.MinimalApi
         run: dotnet pack src/Results.MinimalApi/Results.MinimalApi.csproj --configuration Release --no-build --output ./nupkgs
         
+      - name: Pack Results.Ensure
+        run: dotnet pack src/Results.Ensure/Results.Ensure.csproj --configuration Release --no-build --output ./nupkgs
+
       - name: Push to NuGet
         run: dotnet nuget push ./nupkgs/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
 
