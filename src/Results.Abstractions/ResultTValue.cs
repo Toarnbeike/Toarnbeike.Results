@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Toarnbeike.Results;
 
@@ -11,6 +12,7 @@ namespace Toarnbeike.Results;
 /// If it failed, the failure can be inspected using <see cref="TryGetFailure(out Results.Failure)"/>.
 /// </remarks>
 /// <typeparam name="TValue">The type of the success value.</typeparam>
+[DebuggerDisplay("{DebuggerToString(),nq}")]
 public readonly record struct Result<TValue> : IResult
 {
     private readonly TValue? _value;
@@ -104,4 +106,12 @@ public readonly record struct Result<TValue> : IResult
         result.TryGetFailure(out var failure) ? Result.Failure(failure!) : Result.Success();
 
     private Result(bool isSuccess, TValue? value, Failure? failure) => (IsSuccess, _value, _failure) = (isSuccess, value, failure);
+
+    /// <summary>
+    /// Debugger string representation of the object.
+    /// </summary>
+    internal string DebuggerToString()
+    {
+        return IsSuccess ? $"Success: {_value}" : $"Failure: {_failure}";
+    }
 }

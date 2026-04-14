@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Toarnbeike.Results.Extensions;
+﻿namespace Toarnbeike.Results.Extensions;
 
 /// <summary>
 /// TapAlways: Extension method for executing side effects on any <see cref="Result"/> or <see cref="Result{TValue}"/>, 

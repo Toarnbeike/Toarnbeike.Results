@@ -1,5 +1,4 @@
 ﻿using Toarnbeike.Results.Collections;
-using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.TestExtensions;
 
 namespace Toarnbeike.Results.Tests.Collections.Sequence;

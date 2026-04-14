@@ -24,5 +24,3 @@ public static class ResultMappingRegistrationExtension
         return services;
     }
 }
-
-// todo: maak echte unit tests van de failure mappers!
