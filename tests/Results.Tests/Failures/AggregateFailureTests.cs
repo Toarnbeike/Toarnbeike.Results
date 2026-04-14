@@ -3,49 +3,52 @@
 namespace Toarnbeike.Results.Tests.Failures;
 
 /// <summary>
-/// Tests for the <see cref="AggregateFailure"/> record.
+/// Tests for the <see cref="AggregateFailureSummary"/> record.
 /// </summary>
-public class AggregateFailureTests
+public class AggregateFailureSummaryTests
 {
     [Test]
-    public void AggregateFailure_Should_BeCreatedFromFailureIEnumerable()
+    public void AggregateFailureSummary_Should_BeCreatedFromFailureIEnumerable()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
         var innerFailure2 = new ValidationFailure("Property", "ValidationMessage");
 
-        var failure = new AggregateFailure([innerFailure1, innerFailure2]);
+        var failure = new AggregateFailureSummary([innerFailure1, innerFailure2]);
 
-        failure.Code.ShouldBe("aggregate");
         failure.Message.ShouldBe("Multiple failures occurred");
         failure.Failures.Count.ShouldBe(2);
     }
 
     [Test]
-    public void AggregateFailure_ShouldThrow_WhenCreatedWithNullFailures()
-    {
-        Should.Throw<ArgumentNullException>(() => new AggregateFailure(null!));
-    }
-
-    [Test]
-    public void AggregateFailure_ShouldThrow_WhenCreatedWithEmptyFailures()
-    {
-        Should.Throw<ArgumentException>(() => new AggregateFailure([]));
-    }
-
-    [Test]
-    public void AggregateFailure_ShouldThrow_WhenCreatedWithAnyNullElementInFailures()
-    {
-        IEnumerable<Failure> failures = [null!, new ExceptionFailure(new ArgumentOutOfRangeException("arg1"))];
-        
-        Should.Throw<ArgumentException>(() => new AggregateFailure(failures));
-    }
-
-    [Test]
-    public void AggregateFailure_Should_FlattenInnerAggregateFailures()
+    public void AggregateFailureSummary_ShouldExposeCategoryAndCategories()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
-        var innerFailure2 = new AggregateFailure([new ValidationFailure("Property", "ValidationMessage"), new Failure("test", "Test")]);
-        var failure = new AggregateFailure([innerFailure1, innerFailure2]);
+        var innerFailure2 = new ValidationFailure("Property", "ValidationMessage");
+
+        var failure = new AggregateFailureSummary([innerFailure1, innerFailure2]);
+        failure.Category.ShouldBe(FailureCategory.Unknown);
+        failure.Categories.ShouldBe([FailureCategory.Validation, FailureCategory.System], true);
+
+    }
+
+    [Test]
+    public void AggregateFailureSummary_ShouldThrow_WhenCreatedWithNullFailures()
+    {
+        Should.Throw<ArgumentNullException>(() => new AggregateFailureSummary(null!));
+    }
+
+    [Test]
+    public void AggregateFailureSummary_ShouldThrow_WhenCreatedWithEmptyFailures()
+    {
+        Should.Throw<ArgumentException>(() => new AggregateFailureSummary([]));
+    }
+
+    [Test]
+    public void AggregateFailureSummary_Should_FlattenInnerAggregateFailures()
+    {
+        var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
+        var innerFailure2 = new AggregateFailureSummary([new ValidationFailure("Property", "ValidationMessage"), new TestFailure("test")]);
+        var failure = new AggregateFailureSummary([innerFailure1, innerFailure2]);
 
         failure.Failures.Count.ShouldBe(3);
         failure.Failures.ShouldContain(innerFailure1);
@@ -54,46 +57,14 @@ public class AggregateFailureTests
     }
 
     [Test]
-    public void Add_Should_AddNewFailureToAggregate()
-    {
-        var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
-        var innerFailure2 = new ValidationFailure("Property", "ValidationMessage");
-        var originalFailure = new AggregateFailure([innerFailure1, innerFailure2]);
-
-        var newFailure = new Failure("new", "New failure");
-        var updatedFailure = originalFailure.Add(newFailure);
-
-        updatedFailure.Failures.Count.ShouldBe(3);
-        updatedFailure.Failures.ShouldContain(innerFailure1);
-        updatedFailure.Failures.ShouldContain(innerFailure2);
-        updatedFailure.Failures.ShouldContain(newFailure);
-    }
-
-    [Test]
-    public void Combine_Should_CombineTwoAggregateFailures()
-    {
-        var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
-        var innerFailure2 = new ValidationFailure("Property", "ValidationMessage");
-        var originalFailure = new AggregateFailure([innerFailure1, innerFailure2]);
-
-        var additionalFailure = new AggregateFailure([new Failure("new", "New failure")]);
-        var mergedFailure = originalFailure.Combine(additionalFailure);
-        mergedFailure.Failures.Count.ShouldBe(3);
-
-        mergedFailure.Failures.ShouldContain(innerFailure1);
-        mergedFailure.Failures.ShouldContain(innerFailure2);
-        mergedFailure.Failures.ShouldContain(additionalFailure.Failures.Single());
-    }
-
-    [Test]
-    public void AggregateFailure_Should_BeAbleToChangeBaseProperties_UsingWithSyntax()
+    public void AggregateFailureSummary_Should_BeAbleToChangeBaseProperties_UsingWithSyntax()
     {
         var innerFailure1 = new ExceptionFailure(new ArgumentOutOfRangeException("arg1"));
         var innerFailure2 = new ValidationFailure("Property", "ValidationMessage");
 
-        var originalFailure = new AggregateFailure([innerFailure1, innerFailure2]);
+        var originalFailure = new AggregateFailureSummary([innerFailure1, innerFailure2]);
 
-        var newFailure = originalFailure with { Code = "Something else" };
-        newFailure.Code.ShouldBe("Something else");
+        var newFailure = originalFailure with { Message = "Something else" };
+        newFailure.Message.ShouldBe("Something else");
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Toarnbeike.Results.Extensions;
-using Toarnbeike.Results.TestHelpers;
+using Toarnbeike.Results.TestExtensions;
 
 namespace Toarnbeike.Results.Tests.Extensions.WithValue;
 
@@ -9,10 +9,10 @@ namespace Toarnbeike.Results.Tests.Extensions.WithValue;
 public class WithValueExtensionsTests
 {
     private readonly Result _success = Result.Success();
-    private readonly Result _failure = Result.Failure(new Failure("original", "Original failure"));
+    private readonly Result _failure = Result.Failure(new TestFailure("original"));
 
     private readonly Task<Result> _successTask = Task.FromResult(Result.Success());
-    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new TestFailure("original")));
 
     private readonly string _value = "WithValue";
     private readonly Func<string> _valueFunc = () => "WithValue";
@@ -24,83 +24,83 @@ public class WithValueExtensionsTests
     public void WithValue_Should_ReturnSuccessFromValue_WhenResultIsSuccess()
     {
         var result = _success.WithValue(_value);
-        result.ShouldBeSuccessWithValue("WithValue");
+        result.ShouldBeSuccess().ShouldBe("WithValue");
     }
 
     [Test]
     public void WithValue_Should_ReturnFailureFromValue_WhenResultIsFailure()
     {
         var result = _failure.WithValue(_value);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 
     [Test]
     public void WithValue_Should_ReturnSuccessFromValueFunc_WhenResultIsSuccess()
     {
         var result = _success.WithValue(_valueFunc);
-        result.ShouldBeSuccessWithValue("WithValue");
+        result.ShouldBeSuccess().ShouldBe("WithValue");
     }
 
     [Test]
     public void WithValue_Should_ReturnFailureFromValueFunc_WhenResultIsFailure()
     {
         var result = _failure.WithValue(_forbiddenFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 
     [Test]
     public async Task WithValueAsync_Should_ReturnSuccess_WhenResultIsSuccess()
     {
         var result = await _success.WithValueAsync(_valueFuncAsync);
-        result.ShouldBeSuccessWithValue("WithValue");
+        result.ShouldBeSuccess().ShouldBe("WithValue");
     }
 
     [Test]
     public async Task WithValueAsync_Should_ReturnFailure_WhenResultIsFailure()
     {
         var result = await _failure.WithValueAsync(_forbiddenFuncAsync);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 
     [Test]
     public async Task WithValue_Should_ReturnSuccessFromValue_WhenResultTaskIsSuccess()
     {
         var result = await _successTask.WithValue(_value);
-        result.ShouldBeSuccessWithValue("WithValue");
+        result.ShouldBeSuccess().ShouldBe("WithValue");
     }
 
     [Test]
     public async Task WithValue_Should_ReturnFailureFromValue_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.WithValue(_value);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 
     [Test]
     public async Task WithValue_Should_ReturnSuccessFromValueFunc_WhenResultTaskIsSuccess()
     {
         var result = await _successTask.WithValue(_valueFunc);
-        result.ShouldBeSuccessWithValue("WithValue");
+        result.ShouldBeSuccess().ShouldBe("WithValue");
     }
 
     [Test]
     public async Task WithValue_Should_ReturnFailureFromValueFunc_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.WithValue(_forbiddenFunc);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 
     [Test]
     public async Task WithValueAsync_Should_ReturnSuccess_WhenResultTaskIsSuccess()
     {
         var result = await _successTask.WithValueAsync(_valueFuncAsync);
-        result.ShouldBeSuccessWithValue("WithValue");
+        result.ShouldBeSuccess().ShouldBe("WithValue");
     }
 
     [Test]
     public async Task WithValueAsync_Should_ReturnFailure_WhenResultTaskIsFailure()
     {
         var result = await _failureTask.WithValueAsync(_forbiddenFuncAsync);
-        result.ShouldBeFailureWithCodeAndMessage("original", "Original failure");
+        result.ShouldBeFailure().Message.ShouldBe("original");
     }
 }

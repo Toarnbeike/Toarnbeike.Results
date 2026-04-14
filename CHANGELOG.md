@@ -4,6 +4,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [2.0.0] - 2026-4-14
+
+Major rework of the Failure system. 
+- Failure is abstract, contains a FailureCategory enum.
+- SimpleFailure is introduced to represent failures when specific failures are not applicable.
+- AggregateFailure and ValidationFailures have become atomic summaries.
+- For a full description of the new failure system, see the [failure docs](docs/Failures.md).
+
+Introduced `Toarnbeike.Results.Ensure` library for domain validation.
+See [Ensure ReadMe](src/Results.Ensure/README.md)
+
+### Added
+- Extensions.BindTap - Chains a result-producing operation without changing the original value
+- Extensions.Combine - Combines two successful results into a new value
+- Extensions.CombineBind - Combines two successful results into a new result
+- Async overloads for assertions, such as `ShouldBeSuccessAsync()` and `ShouldBeFailureOfTypeAsync<>()`
+
+### Obsolete
+- `Result<TValue>`.`TryGetValue(out var value, out var failure)` - made internal to force using the `TryGetValue(out var value)` or `Match()` methods instead, which are more explicit and less error-prone.
+- Extensions.Check - Improves discoverability of the library. Use `Bind` instead
+- Extensions.TapAlways - Improves discoverability in pipelines. Use `Tap()` followed by `TapFailure()` to achieve the same goal
+- Extensions.Verify - Renamed to `BindTap` to improve consistency
+- Extensions.VerifyWhen - To improve discoverability. Use `BindTap` or a specific method instead.
+- Extensions.Zip - To discurrage tuple use. Use the newly introduced `Combine` extensions to directly map two results, or use a method to avoid having to use a tuple
+- Extensions.Unsafe.GetFailureOrThrow() - To improve discoverability of the library. Use `TryGetFailure(out var failure)` instead.
+- Results.TestHelpers - Namespace is renamed to Results.TestExtensions for consistency with other `Toarnbeike` libraries.
+- Results.TestHelpers.ShouldBeSuccessWithValue() - Removes API surface duplication. Use `ShouldBeSuccess().ShouldBe(expected)` instead.
+- Results.TestHelpers.ShouldBeSuccessThatSatisfiesPredicate() - Removes API surface duplication. Do an assertion on the `TValue` direct after `ShouldBeSuccess()`.
+- Results.TestHelpers.ShouldBeFailureWithCode() - Removes API surface duplication. Use `ShouldBeFailure().Code.ShouldBe(expected)`.
+- Results.TestHelpers.ShouldBeFailureWithMessage() - Removes API surface duplication. Use `ShouldBeFailure().Message.ShouldBe(expected)`.
+- Results.TestHelpers.ShouldBeFailureWithCodeAndMessage() - Removes API surface duplication. Use `ShouldBeFailure()` followed by assertions on the `Failure`.
+- Results.TestHelpers.ShouldBeFailureThatSatisfiesPredicate() - Removes API surface duplication. Use `ShouldBeFailure()` followed by assertions on the `Failure`.
+
+### Changed
+- Refactored code to use extension blocks for better organization and readability.
+- Refactored collections into logical groups without modifying the API surface.
+- Greatly improved readability of the documentation
+
+### Tooling
+- Introduced DebuggerDisplay on `Failure`, `Result` and `Result<T>` for improved debugging.
+
 ## [1.1.4] - 2026-4-12
 
 ### Added

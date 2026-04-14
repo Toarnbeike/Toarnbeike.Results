@@ -1,12 +1,24 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.MinimalApi.DependencyInjection;
-using Microsoft.AspNetCore.Routing;
 
-namespace Toarnbeike.Results.Integration.Tests.Examples;
+namespace Toarnbeike.Results.MinimalApi.Tests.Examples;
+
+public record EntityFailure<TEntity> : Failure
+{
+    private Type Entity { get; }
+
+    public EntityFailure(string message)
+    {
+        Message = message;
+        Entity = typeof(TEntity);
+        Category = FailureCategory.Business;
+    }
+}
 
 /// <summary>
 /// Example entity with some properties.
@@ -45,7 +57,7 @@ public class CustomerRepository : ICustomerRepository
         var customer = _customers.FirstOrDefault(c => c.Id == id);
         if (customer is null)
         {
-            return new Failure("CustomerNotFound", "Customer not found");
+            return new EntityFailure<Customer>("Customer not found");
         }
         return customer;
     }
@@ -131,8 +143,8 @@ public static class CustomerEndpoints
         customers.MapPost("", async (Customer customer, ICustomerRepository repository, IValidator<Customer> validator) =>
         {
             Result result = await Result.Success(customer)
-                .Check(c => c.Name != "Alice", () => new ValidationFailure("Name", "Cannot create customer with name 'Alice'"))
-                .VerifyAsync(async c => await Result.TryAsync(async () => await repository.UnsafeSaveAsync(c)));
+                .Bind(c => c.Name != "Alice" ? Result.Success(customer) : new ValidationFailure("Name", "Cannot create customer with name 'Alice'"))
+                .BindTapAsync(async c => await Result.TryAsync(async () => await repository.UnsafeSaveAsync(c)));
             return result;
         });
     }

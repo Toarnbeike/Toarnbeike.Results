@@ -14,9 +14,8 @@ public class ExceptionFailureTests
         var failure = new ExceptionFailure(exception);
 
         failure.Exception.ShouldBeOfType<ArgumentOutOfRangeException>();
-        failure.Code.ShouldBe("exception:ArgumentOutOfRangeException");
-        failure.Message.ShouldBe("Specified argument was out of the range of valid values. (Parameter 'argument')");
-        failure.ExceptionType.ShouldBe("ArgumentOutOfRangeException");
+        failure.Message.ShouldBe("Exception: Specified argument was out of the range of valid values. (Parameter 'argument')");
+        failure.Category.ShouldBe(FailureCategory.System);
     }
 
     [Test]
@@ -25,7 +24,7 @@ public class ExceptionFailureTests
         var exception = new ArgumentOutOfRangeException("Argument bad");
         var firstFailure = new ExceptionFailure(exception);
 
-        var newFailure = firstFailure with { Code = "Something else" };
-        newFailure.Code.ShouldBe("Something else");
+        var newFailure = firstFailure with { Message = "Something else" };
+        newFailure.Message.ShouldBe("Something else");
     }
 }

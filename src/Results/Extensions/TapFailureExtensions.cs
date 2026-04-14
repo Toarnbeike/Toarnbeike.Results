@@ -1,164 +1,170 @@
 ﻿namespace Toarnbeike.Results.Extensions;
 
 /// <summary>
-/// TapFailure: Extension method for executing side-effects on a failing <see cref="Result"/> or <see cref="Result{TValue}"/>, 
+/// TapFailure: Extension method for executing side effects on a failing <see cref="Result"/> or <see cref="Result{TValue}"/>, 
 /// without modifying the result.
 /// </summary>
 public static class TapFailureExtensions
 {
-    /// <summary>
-    /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
-    /// </summary>
     /// <param name="result">The result to inspect.</param>
-    /// <param name="onFailure">The side-effect to perform if the result is a failure.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) when the result is a failure.
-    /// The error of the result is not modified.
-    /// </remarks>
-    public static Result TapFailure(this Result result, Action<Failure> onFailure)
+    extension<TResult>(TResult result) where TResult : IResult
     {
-        ArgumentNullException.ThrowIfNull(onFailure);
-
-        if (result.IsFailure && result.TryGetFailure(out var failure))
+        /// <summary>
+        /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
+        /// </summary>
+        /// <param name="onFailure">The side effect to perform if the result is a failure.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) when the result is a failure.
+        /// The error of the result is not modified.
+        /// </remarks>
+        public TResult TapFailure(Action<Failure> onFailure)
         {
-            onFailure(failure);
+            ArgumentNullException.ThrowIfNull(onFailure);
+
+            if (result.IsFailure && result.TryGetFailure(out var failure))
+            {
+                onFailure(failure);
+            }
+
+            return result;
         }
 
-        return result;
+        /// <summary>
+        /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
+        /// </summary>
+        /// <param name="onFailure">The async side effect to perform if the result is a failure.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) when the result is a failure.
+        /// The error of the result is not modified.
+        /// </remarks>
+        public async Task<TResult> TapFailureAsync(Func<Failure, Task> onFailure)
+        {
+            ArgumentNullException.ThrowIfNull(onFailure);
+
+            if (result.IsFailure && result.TryGetFailure(out var failure))
+            {
+                await onFailure(failure).ConfigureAwait(false);
+            }
+
+            return result;
+        }
     }
 
-    /// <summary>
-    /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
-    /// </summary>
-    /// <param name="result">The result to inspect.</param>
-    /// <param name="onFailure">The async side-effect to perform if the result is a failure.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) when the result is a failure.
-    /// The error of the result is not modified.
-    /// </remarks>
-    public static async Task<Result> TapFailureAsync(this Result result, Func<Failure, Task> onFailure)
+    /// <param name="resultTask">The async result to inspect.</param>
+    extension(Task<Result> resultTask)
     {
-        ArgumentNullException.ThrowIfNull(onFailure);
-
-        if (result.IsFailure && result.TryGetFailure(out var failure))
+        /// <summary>
+        /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
+        /// </summary>
+        /// <param name="onFailure">The side effect to perform if the result is a failure.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) when the result is a failure.
+        /// The error of the result is not modified.
+        /// </remarks>
+        public async Task<Result> TapFailure(Action<Failure> onFailure)
         {
-            await onFailure(failure).ConfigureAwait(false);
+            var result = await resultTask.ConfigureAwait(false);
+            return result.TapFailure(onFailure);
         }
 
-        return result;
-    }
-
-    /// <summary>
-    /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
-    /// </summary>
-    /// <param name="resultTask">The async result to inspect.</param>
-    /// <param name="onFailure">The side-effect to perform if the result is a failure.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) when the result is a failure.
-    /// The error of the result is not modified.
-    /// </remarks>
-    public static async Task<Result> TapFailure(this Task<Result> resultTask, Action<Failure> onFailure)
-    {
-        var result = await resultTask.ConfigureAwait(false);
-        return TapFailure(result, onFailure);
-    }
-
-    /// <summary>
-    /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
-    /// </summary>
-    /// <param name="resultTask">The async result to inspect.</param>
-    /// <param name="onFailure">The async side-effect to perform if the result is a failure.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) when the result is a failure.
-    /// The error of the result is not modified.
-    /// </remarks>
-    public static async Task<Result> TapFailureAsync(this Task<Result> resultTask, Func<Failure, Task> onFailure)
-    {
-        var result = await resultTask.ConfigureAwait(false);
-        return await TapFailureAsync(result, onFailure).ConfigureAwait(false);
-    }
-
-    /// <summary>
-    /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
-    /// </summary>
-    /// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
-    /// <param name="result">The result to inspect.</param>
-    /// <param name="onFailure">The side-effect to perform if the result is a failure.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) when the result is a failure.
-    /// The error of the result is not modified.
-    /// </remarks>
-    public static Result<TValue> TapFailure<TValue>(this Result<TValue> result, Action<Failure> onFailure)
-    {
-        ArgumentNullException.ThrowIfNull(onFailure);
-
-        if (result.IsFailure && result.TryGetFailure(out var failure))
+        /// <summary>
+        /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
+        /// </summary>
+        /// <param name="onFailure">The async side effect to perform if the result is a failure.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) when the result is a failure.
+        /// The error of the result is not modified.
+        /// </remarks>
+        public async Task<Result> TapFailureAsync(Func<Failure, Task> onFailure)
         {
-            onFailure(failure);
+            var result = await resultTask.ConfigureAwait(false);
+            return await result.TapFailureAsync(onFailure).ConfigureAwait(false);
+        }
+    }
+
+    ///// <param name="result">The result to inspect.</param>
+    ///// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
+    //extension<TValue>(Result<TValue> result)
+    //{
+    //    /// <summary>
+    //    /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
+    //    /// </summary>
+    //    /// <param name="onFailure">The side effect to perform if the result is a failure.</param>
+    //    /// <returns>The original result instance.</returns>
+    //    /// <remarks>
+    //    /// Use this method to perform a side effect (e.g., logging) when the result is a failure.
+    //    /// The error of the result is not modified.
+    //    /// </remarks>
+    //    public Result<TValue> TapFailure(Action<Failure> onFailure)
+    //    {
+    //        ArgumentNullException.ThrowIfNull(onFailure);
+
+    //        if (result.IsFailure && result.TryGetFailure(out var failure))
+    //        {
+    //            onFailure(failure);
+    //        }
+
+    //        return result;
+    //    }
+
+    //    /// <summary>
+    //    /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
+    //    /// </summary>
+    //    /// <param name="onFailure">The async side effect to perform if the result is a failure.</param>
+    //    /// <returns>The original result instance.</returns>
+    //    /// <remarks>
+    //    /// Use this method to perform a side effect (e.g., logging) when the result is a failure.
+    //    /// The error of the result is not modified.
+    //    /// </remarks>
+    //    public async Task<Result<TValue>> TapFailureAsync(Func<Failure, Task> onFailure)
+    //    {
+    //        ArgumentNullException.ThrowIfNull(onFailure);
+
+    //        if (result.IsFailure && result.TryGetFailure(out var failure))
+    //        {
+    //            await onFailure(failure).ConfigureAwait(false);
+    //        }
+
+    //        return result;
+    //    }
+    //}
+
+    /// <param name="resultTask">The async result to inspect.</param>
+    /// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
+    extension<TValue>(Task<Result<TValue>> resultTask)
+    {
+        /// <summary>
+        /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
+        /// </summary>
+        /// <param name="onFailure">The side effect to perform if the result is a failure.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) when the result is a failure.
+        /// The error of the result is not modified.
+        /// </remarks>
+        public async Task<Result<TValue>> TapFailure(Action<Failure> onFailure)
+        {
+            var result = await resultTask.ConfigureAwait(false);
+            return result.TapFailure(onFailure);
         }
 
-        return result;
-    }
-
-    /// <summary>
-    /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
-    /// </summary>
-    /// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
-    /// <param name="result">The result to inspect.</param>
-    /// <param name="onFailure">The async side-effect to perform if the result is a failure.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) when the result is a failure.
-    /// The error of the result is not modified.
-    /// </remarks>
-    public static async Task<Result<TValue>> TapFailureAsync<TValue>(this Result<TValue> result, Func<Failure, Task> onFailure)
-    {
-        ArgumentNullException.ThrowIfNull(onFailure);
-
-        if (result.IsFailure && result.TryGetFailure(out var failure))
+        /// <summary>
+        /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
+        /// </summary>
+        /// <param name="onFailure">The async side effect to perform if the result is a failure.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) when the result is a failure.
+        /// The error of the result is not modified.
+        /// </remarks>
+        public async Task<Result<TValue>> TapFailureAsync(Func<Failure, Task> onFailure)
         {
-            await onFailure(failure).ConfigureAwait(false);
+            var result = await resultTask.ConfigureAwait(false);
+            return await result.TapFailureAsync(onFailure).ConfigureAwait(false);
         }
-
-        return result;
-    }
-
-    /// <summary>
-    /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
-    /// </summary>
-    /// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
-    /// <param name="resultTask">The async result to inspect.</param>
-    /// <param name="onFailure">The side-effect to perform if the result is a failure.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) when the result is a failure.
-    /// The error of the result is not modified.
-    /// </remarks>
-    public static async Task<Result<TValue>> TapFailure<TValue>(this Task<Result<TValue>> resultTask, Action<Failure> onFailure)
-    {
-        var result = await resultTask.ConfigureAwait(false);
-        return TapFailure(result, onFailure);
-    }
-
-    /// <summary>
-    /// Executes the specified <paramref name="onFailure"/> action if the result is a failure.
-    /// </summary>
-    /// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
-    /// <param name="resultTask">The async result to inspect.</param>
-    /// <param name="onFailure">The async side-effect to perform if the result is a failure.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) when the result is a failure.
-    /// The error of the result is not modified.
-    /// </remarks>
-    public static async Task<Result<TValue>> TapFailureAsync<TValue>(this Task<Result<TValue>> resultTask, Func<Failure, Task> onFailure)
-    {
-        var result = await resultTask.ConfigureAwait(false);
-        return await TapFailureAsync(result, onFailure).ConfigureAwait(false);
     }
 }

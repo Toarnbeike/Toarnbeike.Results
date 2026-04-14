@@ -6,7 +6,7 @@ namespace Toarnbeike.Results;
 /// Represents the outcome of an operation, which can either be a success or a failure.
 /// </summary>
 /// <remarks>
-/// If the operation failed, the failure reason can be retrieved via <see cref="TryGetFailure(out Failure)"/>.
+/// If the operation failed, the failure reason can be retrieved via <see cref="TryGetFailure(out Results.Failure)"/>.
 /// </remarks>
 public interface IResult
 {

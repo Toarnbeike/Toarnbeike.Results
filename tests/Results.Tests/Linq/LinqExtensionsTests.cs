@@ -1,5 +1,5 @@
 ﻿using Toarnbeike.Results.Linq;
-using Toarnbeike.Results.TestHelpers;
+using Toarnbeike.Results.TestExtensions;
 
 namespace Toarnbeike.Results.Tests.Linq;
 
@@ -14,18 +14,18 @@ public class LinqExtensionsTests
         var result = from x in Result.Success(5)
                      select x * 2;
 
-        result.ShouldBeSuccessWithValue(10);
+        result.ShouldBeSuccess().ShouldBe(10);
     }
 
     [Test]
     public void Select_should_propagate_failure()
     {
-        var failure = Result<int>.Failure(new Failure("code", "error"));
+        var failure = Result<int>.Failure(new TestFailure("failed"));
 
         var result = from x in failure
                      select x * 2;
 
-        result.ShouldBeFailureWithCode("code");
+        result.ShouldBeFailure().Message.ShouldBe("failed");
     }
 
     [Test]
@@ -35,27 +35,27 @@ public class LinqExtensionsTests
                      from y in Result.Success(3)
                      select x + y;
 
-        result.ShouldBeSuccessWithValue(5);
+        result.ShouldBeSuccess().ShouldBe(5);
     }
 
     [Test]
     public void SelectMany_Should_PropagateFailure_FromFirstResult()
     {
-        var result = from x in Result<int>.Failure(new Failure("first", "error"))
+        var result = from x in Result<int>.Failure(new TestFailure("first"))
                      from y in Result.Success(3)
                      select x + y;
 
-        result.ShouldBeFailureWithCode("first");
+        result.ShouldBeFailure().Message.ShouldBe("first");
     }
 
     [Test]
     public void SelectMany_Should_PropagateFailure_FromSecondResult()
     {
         var result = from x in Result.Success(2)
-                     from y in Result<int>.Failure(new Failure("second", "error"))
+                     from y in Result<int>.Failure(new TestFailure("second"))
                      select x + y;
 
-        result.ShouldBeFailureWithCode("second");
+        result.ShouldBeFailure().Message.ShouldBe("second");
     }
 
     [Test]
@@ -65,7 +65,7 @@ public class LinqExtensionsTests
                      where x > 5
                      select x;
 
-        result.ShouldBeSuccessWithValue(10);
+        result.ShouldBeSuccess().ShouldBe(10);
     }
 
     [Test]
@@ -75,19 +75,19 @@ public class LinqExtensionsTests
                      where x > 5
                      select x;
 
-        result.ShouldBeFailureWithCodeAndMessage("whereLinq", "LINQ predicate was not satisfied.");
+        result.ShouldBeFailure().Message.ShouldBe("LINQ predicate was not satisfied.");
     }
 
     [Test]
     public void Where_Should_PropagateOriginalFailure()
     {
-        var failed = Result<int>.Failure(new Failure("code", "error"));
+        var failed = Result<int>.Failure(new TestFailure("failed"));
 
         var result = from x in failed
                      where x > 5
                      select x;
 
-        result.ShouldBeFailureWithCode("code");
+        result.ShouldBeFailure().Message.ShouldBe("failed");
     }
 
     [Test]
@@ -95,9 +95,9 @@ public class LinqExtensionsTests
     {
         var result = from name in Result.Success("Alice")
                      let upper = name.ToUpper()
-                     from reversed in Result.Success(new string(upper.Reverse().ToArray()))
+                     from reversed in Result.Success(new string([.. upper.Reverse()]))
                      select $"{upper} -> {reversed}";
 
-        result.ShouldBeSuccessWithValue("ALICE -> ECILA");
+        result.ShouldBeSuccess().ShouldBe("ALICE -> ECILA");
     }
 }

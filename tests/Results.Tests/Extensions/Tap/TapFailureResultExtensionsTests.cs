@@ -8,10 +8,10 @@ namespace Toarnbeike.Results.Tests.Extensions.Tap;
 public class TapFailureResultExtensionsTests
 {
     private readonly Result _success = Result.Success();
-    private readonly Result _failure = Result.Failure(new Failure("original", "Original failure"));
+    private readonly Result _failure = Result.Failure(new TestFailure("original"));
 
     private readonly Task<Result> _successTask = Task.FromResult(Result.Success());
-    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result> _failureTask = Task.FromResult(Result.Failure(new TestFailure("original")));
 
     [Test]
     public void TapFailure_ShouldNotExecute_WhenResultIsSuccess()
@@ -26,7 +26,7 @@ public class TapFailureResultExtensionsTests
     {
         var failureMessage = string.Empty;
         _failure.TapFailure(failure => failureMessage = failure.Message);
-        failureMessage.ShouldBe("Original failure");
+        failureMessage.ShouldBe("original");
     }
 
     [Test]
@@ -42,7 +42,7 @@ public class TapFailureResultExtensionsTests
     {
         var failureMessage = string.Empty;
         await _failure.TapFailureAsync(async failure => await Task.Run(() => failureMessage = failure.Message));
-        failureMessage.ShouldBe("Original failure");
+        failureMessage.ShouldBe("original");
     }
 
     [Test]
@@ -58,7 +58,7 @@ public class TapFailureResultExtensionsTests
     {
         var failureMessage = string.Empty;
         await _failureTask.TapFailure(failure => failureMessage = failure.Message);
-        failureMessage.ShouldBe("Original failure");
+        failureMessage.ShouldBe("original");
     }
 
     [Test]
@@ -74,6 +74,6 @@ public class TapFailureResultExtensionsTests
     {
         var failureMessage = string.Empty;
         await _failureTask.TapFailureAsync(async failure => await Task.Run(() => failureMessage = failure.Message));
-        failureMessage.ShouldBe("Original failure");
+        failureMessage.ShouldBe("original");
     }
 }

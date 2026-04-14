@@ -19,7 +19,7 @@ public class ValidationFailureTests
     public void ValidationFailure_Should_PopulateCode_WithValidationProperty()
     {
         var failure = new ValidationFailure("Property", "Something is wrong with this property");
-        failure.Code.ShouldBe("validation_Property");
+        failure.Category.ShouldBe(FailureCategory.Validation);
     }
 
     [Test]
@@ -27,7 +27,7 @@ public class ValidationFailureTests
     {
         var failure = new ValidationFailure("Property", "Something is wrong with this property");
         var baseFailure = failure as Failure;
-        baseFailure.Message.ShouldBe($"Property: Something is wrong with this property");
+        baseFailure.Message.ShouldBe($"Validation failed for Property with message Something is wrong with this property");
     }
 }
 

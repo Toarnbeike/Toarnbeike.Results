@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Toarnbeike.Results;
 
@@ -9,6 +10,7 @@ namespace Toarnbeike.Results;
 /// Use <see cref="Success"/> to create a successful result without a value,
 /// or <see cref="Failure(Results.Failure)"/> to create a failed result.
 /// </remarks>
+[DebuggerDisplay("{DebuggerToString(),nq}")]
 public readonly record struct Result : IResult
 {
     private readonly Failure? _failure;
@@ -54,4 +56,12 @@ public readonly record struct Result : IResult
     public static implicit operator Result(Failure failure) => Failure(failure);
 
     private Result(bool isSuccess, Failure? failure) => (IsSuccess, _failure) = (isSuccess, failure);
+
+    /// <summary>
+    /// Debugger string representation of the object.
+    /// </summary>
+    internal string DebuggerToString()
+    {
+        return IsSuccess ? "Success" : $"Failure: {_failure}";
+    }
 }

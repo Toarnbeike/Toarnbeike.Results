@@ -2,7 +2,7 @@
 
 public class ResultTests
 {
-    private readonly Failure _testFailure = new("test", "Test failure");
+    private readonly TestFailure _testFailure = new("test", "Test failure");
 
     [Fact]
     public void Success_ShouldReturn_SuccessResult()
@@ -35,7 +35,6 @@ public class ResultTests
 
         result.TryGetFailure(out var actualFailure).ShouldBeTrue();
         actualFailure.ShouldNotBeNull();
-        actualFailure.Code.ShouldBe(_testFailure.Code);
         actualFailure.Message.ShouldBe(_testFailure.Message);
     }
 

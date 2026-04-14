@@ -2,6 +2,7 @@
 using Toarnbeike.Results.MinimalApi.Mapping.Failures;
 using Toarnbeike.Results.MinimalApi.Mapping;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Toarnbeike.Results.Failures;
 
 namespace Toarnbeike.Results.MinimalApi.Tests.Mapping;
 
@@ -31,7 +32,7 @@ public class ResultMapperTests
     [Test]
     public void Map_ShouldReturnFallbackProblemDetails_WhenFailureIsNotMapped()
     {
-        Result failure = new Failure("test", "test message");
+        Result failure = new SimpleFailure("test", "test message");
 
         var response = _mapper.Map(failure);
 
@@ -97,7 +98,13 @@ public class ResultMapperTests
         problemDetails.ProblemDetails.Detail.ShouldBe("dummy message");
     }
 
-    private record DummyFailure() : Failure("dummy", "dummy message");
+    private record DummyFailure : Failure
+    {
+        public DummyFailure()
+        {
+            Message = "dummy message";
+        }
+    }
 
     private class DummyResultMapper : FailureResultMapper<DummyFailure>
     {

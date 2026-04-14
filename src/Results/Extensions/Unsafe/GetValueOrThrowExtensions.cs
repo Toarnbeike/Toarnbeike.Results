@@ -17,11 +17,9 @@ public static class GetValueOrThrowExtensions
     /// <exception cref="InvalidOperationException">Thrown if the result is a failure.</exception>
     public static TValue GetValueOrThrow<TValue>(this Result<TValue> result)
     {
-        if (result.TryGetValue(out var value, out var failure))
-        {
-            return value;
-        }
-        throw new InvalidOperationException($"Trying to get the value of a failure result. Failure: '{failure.Message}'.");
+        return result.Deconstruct(out var value, out var failure) 
+            ? value 
+            : throw new InvalidOperationException($"Trying to get the value of a failure result. Failure: '{failure.Message}'.");
     }
 
     /// <summary>
@@ -34,6 +32,6 @@ public static class GetValueOrThrowExtensions
     public static async Task<TValue> GetValueOrThrow<TValue>(this Task<Result<TValue>> resultTask)
     {
         var result = await resultTask.ConfigureAwait(false);
-        return GetValueOrThrow(result);
+        return result.GetValueOrThrow();
     }
 }

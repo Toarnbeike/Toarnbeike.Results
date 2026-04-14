@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Toarnbeike.Results.MinimalApi.DependencyInjection;
 using Toarnbeike.Results.MinimalApi.Mapping;
 using Toarnbeike.Results.MinimalApi.Mapping.Failures;
@@ -74,8 +69,8 @@ public class ResultMappingBuilderTests
 
         var mappers = provider.GetServices<IFailureResultMapper>().ToList();
 
-        mappers.ShouldContain(x => x.GetType() == typeof(CustomMapper));
-        mappers.ShouldContain(x => x.GetType() == typeof(SecondCustomMapper));
+        mappers.ShouldContain(x => x is CustomMapper);
+        mappers.ShouldContain(x => x is SecondCustomMapper);
     }
 
     [Test]
@@ -86,25 +81,25 @@ public class ResultMappingBuilderTests
 
         var mappers = provider.GetServices<IFailureResultMapper>().ToList();
 
-        mappers.ShouldContain(x => x.GetType() == typeof(CustomMapper));
-        mappers.ShouldContain(x => x.GetType() == typeof(SecondCustomMapper));
+        mappers.ShouldContain(x => x is CustomMapper);
+        mappers.ShouldContain(x => x is SecondCustomMapper);
     }
 
     private sealed class CustomMapper : FailureResultMapper<Failure>
     {
         public override ProblemDetails Map(Failure failure) =>
-            throw new NotImplementedException();
+            throw new Exception();
     }
 
     private sealed class SecondCustomMapper : FailureResultMapper<Failure>
     {
         public override ProblemDetails Map(Failure failure) =>
-            throw new NotImplementedException();
+            throw new Exception();
     }
 
     private sealed class CustomFallbackMapper : FailureResultMapper<Failure>, IFallbackFailureResultMapper
     {
         public override ProblemDetails Map(Failure failure) =>
-            throw new NotImplementedException();
+            throw new Exception();
     }
 }

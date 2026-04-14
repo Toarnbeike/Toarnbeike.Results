@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Toarnbeike.Results.Failures;
-using Toarnbeike.Results.TestHelpers;
+using Toarnbeike.Results.TestExtensions;
 
 namespace Toarnbeike.Results.FluentValidation.Tests;
 
@@ -40,11 +40,11 @@ public class ValidateExtensionTests
     [Test]
     public void Validate_Should_ReturnOriginalResult_IfAlreadyFailed()
     {
-        var result = Result<Person>.Failure(new Failure("test", "already failed"));
+        var result = Result<Person>.Failure(new TestFailure("test"));
 
         var validated = result.Validate(new PersonValidator());
 
-        validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
+        validated.ShouldBeFailure().Message.ShouldBe("test");
     }
 
     [Test]
@@ -55,7 +55,7 @@ public class ValidateExtensionTests
 
         var validated = result.Validate(new PersonValidator());
 
-        var failures = validated.ShouldBeFailureOfType<ValidationFailures>();
+        var failures = validated.ShouldBeFailureOfType<ValidationFailureSummary>();
 
         failures.GetFailuresFor("Name").Count().ShouldBe(1);
         failures.GetFailuresFor("Age").Count().ShouldBe(1);
@@ -69,17 +69,17 @@ public class ValidateExtensionTests
 
         var validated = result.Validate(new PersonValidator());
 
-        validated.ShouldBeSuccessWithValue(person);
+        validated.ShouldBeSuccess().ShouldBe(person);
     }
 
     [Test]
     public async Task ValidateAsync_Should_ReturnOriginalResult_IfAlreadyFailed()
     {
-        var result = Result<Person>.Failure(new Failure("test", "already failed"));
+        var result = Result<Person>.Failure(new TestFailure("test"));
 
         var validated = await result.ValidateAsync(new PersonValidator());
 
-        validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
+        validated.ShouldBeFailure().Message.ShouldBe("test");
     }
 
     [Test]
@@ -90,7 +90,7 @@ public class ValidateExtensionTests
 
         var validated = await result.ValidateAsync(new PersonValidator());
 
-        var failures = validated.ShouldBeFailureOfType<ValidationFailures>();
+        var failures = validated.ShouldBeFailureOfType<ValidationFailureSummary>();
 
         failures.GetFailuresFor("Name").Count().ShouldBe(1);
         failures.GetFailuresFor("Age").Count().ShouldBe(1);
@@ -104,17 +104,17 @@ public class ValidateExtensionTests
 
         var validated = await result.ValidateAsync(new PersonValidator());
 
-        validated.ShouldBeSuccessWithValue(person);
+        validated.ShouldBeSuccess().ShouldBe(person);
     }
 
     [Test]
     public async Task Validate_Should_ReturnOriginalResultTask_IfAlreadyFailed()
     {
-        var result = Task.FromResult(Result<Person>.Failure(new Failure("test", "already failed")));
+        var result = Task.FromResult(Result<Person>.Failure(new TestFailure("test")));
 
         var validated = await result.Validate(new PersonValidator());
 
-        validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
+        validated.ShouldBeFailure().Message.ShouldBe("test");
     }
 
     [Test]
@@ -125,7 +125,7 @@ public class ValidateExtensionTests
 
         var validated = await result.Validate(new PersonValidator());
 
-        var failures = validated.ShouldBeFailureOfType<ValidationFailures>();
+        var failures = validated.ShouldBeFailureOfType<ValidationFailureSummary>();
 
         failures.GetFailuresFor("Name").Count().ShouldBe(1);
         failures.GetFailuresFor("Age").Count().ShouldBe(1);
@@ -139,17 +139,17 @@ public class ValidateExtensionTests
 
         var validated = await result.Validate(new PersonValidator());
 
-        validated.ShouldBeSuccessWithValue(person);
+        validated.ShouldBeSuccess().ShouldBe(person);
     }
 
     [Test]
     public async Task ValidateAsync_Should_ReturnOriginalResultTask_IfAlreadyFailed()
     {
-        var result = Task.FromResult(Result<Person>.Failure(new Failure("test", "already failed")));
+        var result = Task.FromResult(Result<Person>.Failure(new TestFailure("test")));
 
         var validated = await result.ValidateAsync(new PersonValidator());
 
-        validated.ShouldBeFailureWithCodeAndMessage("test", "already failed");
+        validated.ShouldBeFailure().Message.ShouldBe("test");
     }
 
     [Test]
@@ -160,7 +160,7 @@ public class ValidateExtensionTests
 
         var validated = await result.ValidateAsync(new PersonValidator());
 
-        var failures = validated.ShouldBeFailureOfType<ValidationFailures>();
+        var failures = validated.ShouldBeFailureOfType<ValidationFailureSummary>();
 
         failures.GetFailuresFor("Name").Count().ShouldBe(1);
         failures.GetFailuresFor("Age").Count().ShouldBe(1);
@@ -174,6 +174,6 @@ public class ValidateExtensionTests
 
         var validated = await result.ValidateAsync(new PersonValidator());
 
-        validated.ShouldBeSuccessWithValue(person);
+        validated.ShouldBeSuccess().ShouldBe(person);
     }
 }

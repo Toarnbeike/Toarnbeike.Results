@@ -1,146 +1,159 @@
-﻿using System;
-
-namespace Toarnbeike.Results.Extensions;
+﻿namespace Toarnbeike.Results.Extensions;
 
 /// <summary>
-/// TapAlways: Extension method for executing side-effects on any <see cref="Result"/> or <see cref="Result{TValue}"/>, 
+/// TapAlways: Extension method for executing side effects on any <see cref="Result"/> or <see cref="Result{TValue}"/>, 
 /// independent of the Success/Failure state and without modifying the result.
 /// </summary>
+[Obsolete("Use Tap and TapFailure sequentially instead.")]
 public static class TapAlwaysExtensions
 {
-    /// <summary>
-    /// Executes the specified <paramref name="action"/> action.
-    /// </summary>
     /// <param name="result">The result to keep in the pipeline.</param>
-    /// <param name="action">The side-effect to perform.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) on any result. The result is not modified.
-    /// </remarks>
-    public static Result TapAlways(this Result result, Action action)
+    extension(Result result)
     {
-        ArgumentNullException.ThrowIfNull(action);
+        /// <summary>
+        /// Executes the specified <paramref name="action"/> action.
+        /// </summary>
+        /// <param name="action">The side effect to perform.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) on any result. The result is not modified.
+        /// </remarks>
+        [Obsolete("Use Tap and TapFailure sequentially instead.")]
+        public Result TapAlways(Action action)
+        {
+            ArgumentNullException.ThrowIfNull(action);
 
-        action();
-        return result;
+            action();
+            return result;
+        }
+
+        /// <summary>
+        /// Executes the specified <paramref name="task"/> task.
+        /// </summary>
+        /// <param name="task">The side effect to perform.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) on any result. The result is not modified.
+        /// </remarks>
+        [Obsolete("Use Tap and TapFailure sequentially instead.")]
+        public async Task<Result> TapAlwaysAsync(Func<Task> task)
+        {
+            ArgumentNullException.ThrowIfNull(task);
+
+            await task().ConfigureAwait(false);
+            return result;
+        }
     }
 
-    /// <summary>
-    /// Executes the specified <paramref name="task"/> task.
-    /// </summary>
-    /// <param name="result">The result to keep in the pipeline.</param>
-    /// <param name="task">The side-effect to perform.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) on any result. The result is not modified.
-    /// </remarks>
-    public static async Task<Result> TapAlwaysAsync(this Result result, Func<Task> task)
-    {
-        ArgumentNullException.ThrowIfNull(task);
-
-        await task().ConfigureAwait(false);
-         return result;
-    }
-
-    /// <summary>
-    /// Executes the specified <paramref name="action"/> action.
-    /// </summary>
     /// <param name="resultTask">The async result to keep in the pipeline.</param>
-    /// <param name="action">The side-effect to perform.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) on any result. The result is not modified.
-    /// </remarks>
-    public static async Task<Result> TapAlways(this Task<Result> resultTask, Action action)
+    extension(Task<Result> resultTask)
     {
-        ArgumentNullException.ThrowIfNull(action);
+        /// <summary>
+        /// Executes the specified <paramref name="action"/> action.
+        /// </summary>
+        /// <param name="action">The side effect to perform.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) on any result. The result is not modified.
+        /// </remarks>
+        [Obsolete("Use Tap and TapFailure sequentially instead.")]
+        public async Task<Result> TapAlways(Action action)
+        {
+            ArgumentNullException.ThrowIfNull(action);
 
-        var result = await resultTask.ConfigureAwait(false);
-        return TapAlways(result, action);
+            var result = await resultTask.ConfigureAwait(false);
+            return result.TapAlways(action);
+        }
+
+        /// <summary>
+        /// Executes the specified <paramref name="task"/> task.
+        /// </summary>
+        /// <param name="task">The side effect to perform.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) on any result. The result is not modified.
+        /// </remarks>
+        [Obsolete("Use Tap and TapFailure sequentially instead.")]
+        public async Task<Result> TapAlwaysAsync(Func<Task> task)
+        {
+            ArgumentNullException.ThrowIfNull(task);
+
+            var result = await resultTask.ConfigureAwait(false);
+            return await result.TapAlwaysAsync(task).ConfigureAwait(false);
+        }
     }
 
-    /// <summary>
-    /// Executes the specified <paramref name="task"/> task.
-    /// </summary>
-    /// <param name="resultTask">The async result to keep in the pipeline.</param>
-    /// <param name="task">The side-effect to perform.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) on any result. The result is not modified.
-    /// </remarks>
-    public static async Task<Result> TapAlwaysAsync(this Task<Result> resultTask, Func<Task> task)
-    {
-        ArgumentNullException.ThrowIfNull(task);
-
-        var result = await resultTask.ConfigureAwait(false);
-        return await TapAlwaysAsync(result, task).ConfigureAwait(false);
-    }
-
-    /// <summary>
-    /// Executes the specified <paramref name="action"/> action.
-    /// </summary>
-    /// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
     /// <param name="result">The result to keep in the pipeline.</param>
-    /// <param name="action">The side-effect to perform.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) on any result. The result is not modified.
-    /// </remarks>
-    public static Result<TValue> TapAlways<TValue>(this Result<TValue> result, Action action)
+    /// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
+    extension<TValue>(Result<TValue> result)
     {
-        ArgumentNullException.ThrowIfNull(action);
+        /// <summary>
+        /// Executes the specified <paramref name="action"/> action.
+        /// </summary>
+        /// <param name="action">The side effect to perform.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) on any result. The result is not modified.
+        /// </remarks>
+        [Obsolete("Use Tap and TapFailure sequentially instead.")]
+        public Result<TValue> TapAlways(Action action)
+        {
+            ArgumentNullException.ThrowIfNull(action);
 
-        action();
-        return result;
+            action();
+            return result;
+        }
+
+        /// <summary>
+        /// Executes the specified <paramref name="task"/> task.
+        /// </summary>
+        /// <param name="task">The side effect to perform.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) on any result. The result is not modified.
+        /// </remarks>
+        [Obsolete("Use Tap and TapFailure sequentially instead.")]
+        public async Task<Result<TValue>> TapAlwaysAsync(Func<Task> task)
+        {
+            ArgumentNullException.ThrowIfNull(task);
+
+            await task().ConfigureAwait(false);
+            return result;
+        }
     }
 
-    /// <summary>
-    /// Executes the specified <paramref name="task"/> task.
-    /// </summary>
-    /// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
-    /// <param name="result">The result to keep in the pipeline.</param>
-    /// <param name="task">The side-effect to perform.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) on any result. The result is not modified.
-    /// </remarks>
-    public static async Task<Result<TValue>> TapAlwaysAsync<TValue>(this Result<TValue> result, Func<Task> task)
-    {
-        ArgumentNullException.ThrowIfNull(task);
-
-        await task().ConfigureAwait(false);
-        return result;
-    }
-
-    /// <summary>
-    /// Executes the specified <paramref name="action"/> action.
-    /// </summary>
-    /// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
     /// <param name="resultTask">The async result to inspect.</param>
-    /// <param name="action">The side-effect to perform.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) on any result. The result is not modified.
-    /// </remarks>
-    public static async Task<Result<TValue>> TapAlways<TValue>(this Task<Result<TValue>> resultTask, Action action)
-    {
-        var result = await resultTask.ConfigureAwait(false);
-        return TapAlways(result, action);
-    }
-
-    /// <summary>
-    /// Executes the specified <paramref name="task"/> task.
-    /// </summary>
     /// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
-    /// <param name="resultTask">The async result to inspect.</param>
-    /// <param name="task">The side-effect to perform.</param>
-    /// <returns>The original result instance.</returns>
-    /// <remarks>
-    /// Use this method to perform a side-effect (e.g., logging) on any result. The result is not modified.
-    /// </remarks>
-    public static async Task<Result<TValue>> TapAlwaysAsync<TValue>(this Task<Result<TValue>> resultTask, Func<Task> task)
+    extension<TValue>(Task<Result<TValue>> resultTask)
     {
-        var result = await resultTask.ConfigureAwait(false);
-        return await TapAlwaysAsync(result, task).ConfigureAwait(false);
+        /// <summary>
+        /// Executes the specified <paramref name="action"/> action.
+        /// </summary>
+        /// <param name="action">The side effect to perform.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) on any result. The result is not modified.
+        /// </remarks>
+        [Obsolete("Use Tap and TapFailure sequentially instead.")]
+        public async Task<Result<TValue>> TapAlways(Action action)
+        {
+            var result = await resultTask.ConfigureAwait(false);
+            return result.TapAlways(action);
+        }
+
+        /// <summary>
+        /// Executes the specified <paramref name="task"/> task.
+        /// </summary>
+        /// <param name="task">The side effect to perform.</param>
+        /// <returns>The original result instance.</returns>
+        /// <remarks>
+        /// Use this method to perform a side effect (e.g., logging) on any result. The result is not modified.
+        /// </remarks>
+        [Obsolete("Use Tap and TapFailure sequentially instead.")]
+        public async Task<Result<TValue>> TapAlwaysAsync(Func<Task> task)
+        {
+            var result = await resultTask.ConfigureAwait(false);
+            return await result.TapAlwaysAsync(task).ConfigureAwait(false);
+        }
     }
 }

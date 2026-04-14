@@ -8,10 +8,10 @@ namespace Toarnbeike.Results.Tests.Extensions.Unsafe;
 public class GetValueOrThrowExtensionsTests
 {
     private readonly Result<int> _success = Result.Success(42);
-    private readonly Result<int> _failure = Result<int>.Failure(new Failure("original", "Original failure"));
+    private readonly Result<int> _failure = Result<int>.Failure(new TestFailure("original"));
 
     private readonly Task<Result<int>> _successTask = Task.FromResult(Result.Success(42));
-    private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new TestFailure("original")));
 
     [Test]
     public void GetValueOrThrow_ShouldReturnValue_WhenResultIsSuccess()
@@ -24,7 +24,7 @@ public class GetValueOrThrowExtensionsTests
     public void GetValueOrThrow_ShouldThrow_WhenResultIsFailure()
     {
         var ex = Should.Throw<InvalidOperationException>(() => _failure.GetValueOrThrow());
-        ex.Message.ShouldBe("Trying to get the value of a failure result. Failure: 'Original failure'.");
+        ex.Message.ShouldBe("Trying to get the value of a failure result. Failure: 'original'.");
     }
 
     [Test]
@@ -39,6 +39,6 @@ public class GetValueOrThrowExtensionsTests
     {
         var ex = await Should.ThrowAsync<InvalidOperationException>(
             async () => await _failureTask.GetValueOrThrow());
-        ex.Message.ShouldBe("Trying to get the value of a failure result. Failure: 'Original failure'.");
+        ex.Message.ShouldBe("Trying to get the value of a failure result. Failure: 'original'.");
     }
 }

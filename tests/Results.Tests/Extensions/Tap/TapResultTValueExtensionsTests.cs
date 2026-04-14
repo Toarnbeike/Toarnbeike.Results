@@ -8,10 +8,10 @@ namespace Toarnbeike.Results.Tests.Extensions.Tap;
 public class TapResultTValueExtensionsTests
 {
     private readonly Result<int> _success = Result.Success(3);
-    private readonly Result<int> _failure = Result<int>.Failure(new Failure("original", "Original failure"));
+    private readonly Result<int> _failure = Result<int>.Failure(new TestFailure("original"));
 
     private readonly Task<Result<int>> _successTask = Task.FromResult(Result.Success(3));
-    private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new Failure("original", "Original failure")));
+    private readonly Task<Result<int>> _failureTask = Task.FromResult(Result<int>.Failure(new TestFailure("original")));
 
     [Test]
     public void Tap_ShouldExecute_WhenResultIsSuccess()

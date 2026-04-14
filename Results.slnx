@@ -1,0 +1,34 @@
+<Solution>
+  <Folder Name="/docs/">
+    <File Path="docs/Collections.md" />
+    <File Path="docs/Extensions.md" />
+    <File Path="docs/Failures.md" />
+    <File Path="docs/Linq.md" />
+    <File Path="docs/TestExtensions.md" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="CHANGELOG.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Results.Abstractions/Results.Abstractions.csproj" />
+    <Project Path="src/Results.Ensure/Results.Ensure.csproj" />
+    <Project Path="src/Results.FluentValidation/Results.FluentValidation.csproj" />
+    <Project Path="src/Results.MinimalApi/Results.MinimalApi.csproj" />
+    <Project Path="src/Results/Results.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Results.Abstractions.Tests/Results.Abstractions.Tests.csproj" />
+    <Project Path="tests/Results.Ensure.Tests/Results.Ensure.Tests.csproj" />
+    <Project Path="tests/Results.FluentValidation.Tests/Results.FluentValidation.Tests.csproj" />
+    <Project Path="tests/Results.MinimalApi.Tests/Results.MinimalApi.Tests.csproj" />
+    <Project Path="tests/Results.Tests/Results.Tests.csproj" />
+  </Folder>
+  <Folder Name="/workflows/">
+    <File Path=".github/workflows/build.yaml" />
+    <File Path=".github/workflows/publish.yaml" />
+    <File Path=".github/workflows/versionCheck.yaml" />
+  </Folder>
+</Solution>

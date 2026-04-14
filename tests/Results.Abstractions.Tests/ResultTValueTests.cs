@@ -2,7 +2,7 @@
 
 public class ResultTValueTests
 {
-    private readonly Failure _testFailure = new("test", "Test failure");
+    private readonly TestFailure _testFailure = new("test", "Test failure");
     private readonly int _expectedValue = 42;
 
     [Fact]
@@ -46,7 +46,7 @@ public class ResultTValueTests
     {
         var result = Result<int>.Success(_expectedValue);
 
-        result.TryGetValue(out var actualValue, out _).ShouldBeTrue();
+        result.Deconstruct(out var actualValue, out _).ShouldBeTrue();
 
         actualValue.ShouldBe(_expectedValue);
     }
@@ -56,10 +56,9 @@ public class ResultTValueTests
     {
         var result = Result<int>.Failure(_testFailure);
 
-        result.TryGetValue(out _, out var failure).ShouldBeFalse();
+        result.Deconstruct(out _, out var failure).ShouldBeFalse();
 
         failure.ShouldNotBeNull();
-        failure.Code.ShouldBe(_testFailure.Code);
         failure.Message.ShouldBe(_testFailure.Message);
     }
 
@@ -70,7 +69,6 @@ public class ResultTValueTests
 
         result.TryGetFailure(out var actualFailure).ShouldBeTrue();
         actualFailure.ShouldNotBeNull();
-        actualFailure.Code.ShouldBe(_testFailure.Code);
         actualFailure.Message.ShouldBe(_testFailure.Message);
     }
 

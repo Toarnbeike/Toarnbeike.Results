@@ -1,36 +1,29 @@
-# Toarnbeike.Results.TestHelpers
+# Toarnbeike.Results.TestExtensions
 
-Assertion extensions for verifying `Toarnbeike.Results` in unit tests. 
+Assertion extensions for verifying `Result` and `Result<TValue>` in unit tests.
 
-This namespace provides fluent-style, exception-based assertions to validate the outcome of `Result` and `Result<T>` instances. 
-It has no external dependencies and can be used with xUnit, NUnit, or MSTest.
-Even though it is part of the main library, these extension methods are not intended for use in production logic.
-
----
-
-## Features
-
-- Assert that a Result or Result<T> is a failure
-- Validate the failure's code and/or message
-- Assert on specific Failure types
-- Add custom messages or predicates for failure verification
+These extensions provide a minimal set of fluent, exception-based assertions for validating success and failure outcomes.
+They are intended for test code only and should not be used in production logic.
 
 ---
 
-## Available assertions 
+## Contents
+1. [Extensions](#extensions)
+2. [Usage](#usage)
+3. [Async Usage](#async-usage)
+4. [Design](#design)
+5. [Conclusion](#conclusion)
 
-| Method                                                | Description                                                                       |
-|-------------------------------------------------------|-----------------------------------------------------------------------------------|
-| `ShouldBeSuccess()`                         	        | Verifies that a Result is successful.                                             |
-| `ShouldBeSuccess<T>()`                                | Verifies success and returns the inner value.                                     |
-| `ShouldBeSuccessWithValue(expected)`	                | Verifies success and that the result has the expected value.                      |
-| `ShouldBeSuccessThatSatisfiedPredicate(predicate)`    | Verifies success and that the result value satisfies the given predicate.         |
-| `ShouldBeFailure()`                                   | Verifies that the result is a failure.                                            |
-| `ShouldBeFailureWithCode(code)`                 	    | Verifies that the failure has the specified code.                                 |
-| `ShouldBeFailureWithMessage(message)`                 | Verifies that the failure has the specified message.                              |
-| `ShouldBeFailureWithCodeAndMessage(code, message)`    | Verifies that the failure has the specified code and message.                     |
-| `ShouldBeFailureOfType<TFailure>()`                   | Verifies that the failure is of the specified type.                               |
-| `ShouldBeFailureThatSatisfiesPredicate(predicate)`    | Verifies that the failure matches the given condition.                            |
+---
+
+## Extensions
+
+| Method                             | Description                              |
+|------------------------------------|------------------------------------------|
+| `ShouldBeSuccess()`                | Asserts the result is successful         |
+| `ShouldBeSuccess<T>()`             | Asserts success and returns the value    |
+| `ShouldBeFailure()`                | Asserts the result is a failure          |
+| `ShouldBeFailureOfType<TFailure>()`| Asserts failure of a specific type       |
 
 ---
 
@@ -39,34 +32,80 @@ Even though it is part of the main library, these extension methods are not inte
 ``` csharp
 using Toarnbeike.Results;
 using Toarnbeike.Results.Failures;
-using Toarnbeike.Results.TestHelpers;;
+using Toarnbeike.Results.TestExtensions;
 
 public class MyTests
 {
-    [Fact]
+    [Test] or [Fact]
     public void Should_Succeed_WithExpectedValue()
     {
         Result<string> result = GetConfigurationItem();
 
-        result.ShouldBeSuccessWithValue("configItem1");
+        var value = result.ShouldBeSuccess();
+        value.ShouldBe("configItem1");
     }
 
-    [Fact]
+    [Test] or [Fact]
     public void Should_Fail_WithExpectedCode()
     {
-        IResult result = SomeServiceCall();
+        Result result = SomeServiceCall();
 
-        result.ShouldBeFailureWithCode("Unauthorized");
+        var failure = result.ShouldBeFailure();
+        failure.Code.ShouldBe("Unauthorized");
     }
 
-    [Fact]
+    [Test] or [Fact]
     public void Should_Fail_WithExpectedFailureType()
     {
-        IResult result = AnotherServiceCall();
+        Result result = AnotherServiceCall();
 
-        var validation = result.ShouldBeFailureOfType<ValidationError>();
-        validation.Failures.ShouldNotBeEmpty();
+        var failure = result.ShouldBeFailureOfType<ValidationError>();
+        failure.Failures.ShouldNotBeEmpty();
     }
 }
 
 ```
+
+---
+
+## Async Usage
+
+``` csharp
+[Test] or [Fact]
+public async Task Should_Succeed_Asynchronously()
+{
+    var value = await service.Call().ShouldBeSuccess();
+    value.ShouldBe(42);
+}
+```
+
+---
+
+## Design
+
+### Minimal API surface
+The assertion API is intentionally small and focused on a few core primitives:
+- success vs failure
+- retrieving the success value
+- retrieving the failure (optionally typed)
+
+More specialized assertions (such as checking codes or messages) are not included.
+Instead, the returned value or failure can be verified using standard assertion libraries such as Shouldly.
+
+### Composition over specialization
+Rather than providing many specific assertion methods, the API relies on composition:
+
+```csharp
+var failure = result.ShouldBeFailure();
+failure.Code.ShouldBe("Unauthorized");
+failure.Message.ShouldBe("Access denied");
+```
+This avoids combinatorial growth in assertion methods while remaining expressive and flexible.
+
+---
+
+## Conclusion
+
+- All assertions throw descriptive exceptions on failure
+- Async overloads are provided for Task<Result> and Task<Result<T>>
+- These extensions are designed to work alongside assertion libraries such as Shouldly or FluentAssertions

@@ -82,11 +82,12 @@ At any point, the result is either in a success state or in a failure state.
 ### What is a `Failure`?
 
 A failure is a state of the `Result`, which is represented by a `Failure` record.
-This record has at least the `Code` and `Message` properties, for computer and human readable information
+This record has at least the `Message` and `FailureCategory` properties, for human readable information
 about what caused the failure. 
-It is encouraged to inherit the base `Failure` object and create specific failures for specific situations.
-These inherited objects can carry additional metadata specific for the failure that occurred.
-For the already provided failure overloads, see [Failures](docs/failures.md)
+
+The `Failure` record is abstract, an some concrete failure types are already provided.
+It is encouraged to create specific failure types for e.g. business related failures.
+For the more details regarding failures and the already provided failure overloads, see [Failures](docs/failures.md)
 
 ### What is a `Result<TValue>`?
 
@@ -139,19 +140,19 @@ if (g.TryGetFailure(out var failure))
 
 The `Toarnbeike.Results.Extensions` namespace includes rich extensions for `Result` and `Result<TValue>`:
 
-| Method			| `Result`		| `Result<TValue>` | Description													|
-|-------------------|---------------|------------------|----------------------------------------------------------------|
-| `Bind(...)`		| ✔	            | ✔	               | Chains operations returning `Result<TOut>`						|
-| `Check(...)`		| ✖				| ✔	               | Check a condition on the success value, or returns a failure	|
-| `Map(...)`		| ✖				| ✔	               | Maps the success value to another type							|
-| `Match(...)`		| ✔	            | ✔	               | Converts to another type using success/failure lambdas			|
-| `Tap(...)`		| ✔	            | ✔	               | Executes side-effects on success								|
-| `TapAlways(...)`	| ✔	            | ✔	               | Executes side-effects on any result                            |
-| `TapFailure(...)`	| ✔	            | ✔	               | Executes side-effects on failure								|
-| `Verify(...)`		| ✔	            | ✔	               | Verifies another result; propagates failure if needed			|
-| `VerifyWhen(...)`	| ✔	            | ✔	               | Conditionally verifies another result							|
-| `WithValue(...)`	| ✔	            | ✖	               | Adds a value to a non-generic result							|
-| `Zip(...)`		| ✖	            | ✔	               | Combines two results into a `Result<(T1,T2)>`					|
+| Method                | `Result`  | `Result<T>` | Description                                      |
+|-----------------------|-----------|-------------|--------------------------------------------------|
+| `Bind(...)`           | [x]       | [x]         | Chains operations returning `Result<TOut>`       |
+| `Map(...)`            | [ ]       | [x]         | Transforms the success value                     |
+| `Tap(...)`            | [x]       | [x]         | Executes side-effects on success                 |
+| `TapFailure(...)`     | [x]       | [x]         | Executes side-effects on failure                 |
+| `BindTap(...)`        | [x]       | [x]         | Chains a result operation without changing value |
+| `Combine(...)`        | [ ]       | [x]         | Combines two results into a new value            |
+| `CombineBind(...)`    | [ ]       | [x]         | Combines two results into a new result           |
+| `WithValue(...)`      | [x]       | [ ]         | Converts to `Result<TValue>` with a value        |
+| `TryGetValue(...)`    | [ ]       | [x]         | Gets the success value if available              |
+| `TryGetFailure(...)`  | [x]       | [x]         | Gets the failure if present                      |
+| `Match(...)`          | [x]       | [x]         | Maps success or failure to a value               |
 
 All methods support `async` variants and operate seamlessly with `Task<Result<TValue>>`.
 
@@ -163,31 +164,40 @@ For information per method see the [Extensions docs](docs/Extensions.md).
 
 The `Toarnbeike.Results.Collections` namespace provides extension methods for working with collections of results:
 
-| Method			| ReturnType                                | Description														            |
-|-------------------|-------------------------------------------|-------------------------------------------------------------------------------|
-| `AllSuccess()`	| `bool`                                    | Returns `true` if all results in the collection are successful			    |
-| `Sequence()`      | `Result<IEnumerable<T>>`                  | Returns all success values or the first encountered failure                   |
-| `Aggregate()`     | `Result<IEnumerable<T>>`                  | Returns all success values or an `AggregateFailure` containing all failures   |
-| `SuccessValues()` | `IEnumerable<T>`                          | Extracts all success values from a collection of results			            |
-| `Failures()`      | `IEnumerable<Failure>`                    | Extracts all failures from a collection of results			                |
-| `Split()`         | `(IEnumerable<T>, IEnumerable<Failure>)`  | Splits the collection into success values and failures			            |
+| Method              | `Result`  | `Result<T>` | Description                                 |
+|---------------------|-----------|-------------|---------------------------------------------|
+| `Aggregate(...)`    | [x]       | [x]         | Collects all successes or all failures      |
+| `Sequence(...)`     | [ ]       | [x]         | Collects successes or returns first failure |
+| `AllSuccess(...)`   | [x]       | [x]         | Checks if all results are successful        |
+| `Failures(...)`     | [x]       | [x]         | Extracts all failures                       |
+| `SuccessValues(...)`| [ ]       | [x]         | Extracts all success values                 |
+| `Split(...)`        | [ ]       | [x]         | Splits results into successes and failures  |
 
 All methods support `async` variants and operate seamlessly with `IEnumerable<Task<Result<TValue>>>`.
+
+For information per method see the [Collections docs](docs/Collections.md).
 
 ---
 
 ## LINQ Query syntax support
 
-Toarnbeike.Results supports optional integration with [C# LINQ query syntax](https://learn.microsoft.com/en-us/dotnet/csharp/linq/get-started/write-linq-queries),
-making it easier to compose multiple `Result<TValue>` computations in a declarative style.
+Toarnbeike.Results supports C# LINQ query syntax for composing `Result<TValue>` pipelines using `from`, `select`, `let`, and `where`.
 
-See the [LINQ extensions docs](docs/Linq.md) for details on how to use this feature.
+This provides an alternative, declarative way to compose `Bind`, `Map`, and `BindTap` operations while preserving the same failure propagation semantics.
+
+Failures are automatically propagated and short-circuit execution of the query.
+
+See the [LINQ extensions docs](docs/Linq.md) for details and examples.
 
 ---
 
 ## Test Extensions
 
-These are ideal for unit testing and compatible with any test framework. See the [Test extensions docs](src/Results/TestHelpers/README.md) for details.
+Toarnbeike.Results provides optional test extensions for verifying Result and `Result<TValue>` instances in unit tests.
+
+These extensions offer a minimal set of assertions for checking success and failure outcomes, including typed failure assertions.
+
+See the [Test extensions docs](docs/TestExtensions.md) for details and examples.
 
 ---
 
@@ -195,12 +205,12 @@ These are ideal for unit testing and compatible with any test framework. See the
 
 The Toarnbeike.Results ecosystem consist of a couple of packages:
 
-| Package                               | Description                                           | NuGet                                                                                                                                                   |
-|---------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`Toarnbeike.Results`                   | Core result type, extension methods and collections   | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.svg)](https://www.nuget.org/packages/Toarnbeike.Results)                                    |
-|`Toarnbeike.Results.Abstractions`      | Abstractions, as netstandard2.0 project for sourceGen | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.Abstractions.svg)](https://www.nuget.org/packages/Toarnbeike.Results.Abstractions)                       |
-|`Toarnbeike.Results.FluentValidation`  | Validation integration using `FluentValidation`       | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.FluentValidation.svg)](https://www.nuget.org/packages/Toarnbeike.Results.FluentValidation)  |
-|`Toarnbeike.Results.MinimalApi`        | Integration with `Microsoft.AspNetCore` minimal API's | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.MinimalApi.svg)](https://www.nuget.org/packages/Toarnbeike.Results.MinimalApi)              |
+| Package                                                                           | Description                                           | NuGet                                                                                                                                                   |
+|-----------------------------------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`Toarnbeike.Results`                                                               | Core result type, extension methods and collections   | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.svg)](https://www.nuget.org/packages/Toarnbeike.Results)                                    |
+|[`Toarnbeike.Results.Abstractions`](src\Results.Abstractions\README.md)            | Abstractions, as netstandard2.0 project for sourceGen | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.Abstractions.svg)](https://www.nuget.org/packages/Toarnbeike.Results.Abstractions)          |
+|[`Toarnbeike.Results.FluentValidation`](src\Results.FluentValidation\README.md)    | Validation integration using `FluentValidation`       | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.FluentValidation.svg)](https://www.nuget.org/packages/Toarnbeike.Results.FluentValidation)  |
+|[`Toarnbeike.Results.MinimalApi`](src\Results.MinimalApi\README.md)                | Integration with `Microsoft.AspNetCore` minimal API's | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.MinimalApi.svg)](https://www.nuget.org/packages/Toarnbeike.Results.MinimalApi)              |
 
 ---
 

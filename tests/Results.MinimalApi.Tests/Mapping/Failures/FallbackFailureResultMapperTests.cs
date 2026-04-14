@@ -1,4 +1,5 @@
-﻿using Toarnbeike.Results.MinimalApi.Mapping.Failures;
+﻿using Toarnbeike.Results.Failures;
+using Toarnbeike.Results.MinimalApi.Mapping.Failures;
 
 namespace Toarnbeike.Results.MinimalApi.Tests.Mapping.Failures;
 
@@ -7,7 +8,7 @@ public class FallbackFailureResultMapperTests
     [Test]
     public void Map_ShouldReturnProblemDetails_WhenFallbackIsUsed()
     {
-        var failure = new Failure("fallback", "Fallback error");
+        var failure = new SimpleFailure("fallback", "Fallback error");
 
         var mapper = new FallbackFailureResultMapper();
 
@@ -16,6 +17,6 @@ public class FallbackFailureResultMapperTests
         response.Status.ShouldBe(400);
         response.Detail.ShouldBe("Fallback error");
         response.Type.ShouldBe("https://tools.ietf.org/html/rfc7231#section-6.5.1");
-        response.Extensions["code"].ShouldBe("fallback");
+        response.Extensions["category"].ShouldBe("Unknown");
     }
 }
