@@ -14,12 +14,14 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Results.Abstractions/Results.Abstractions.csproj" />
+    <Project Path="src/Results.Ensure/Results.Ensure.csproj" />
     <Project Path="src/Results.FluentValidation/Results.FluentValidation.csproj" />
     <Project Path="src/Results.MinimalApi/Results.MinimalApi.csproj" />
     <Project Path="src/Results/Results.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Results.Abstractions.Tests/Results.Abstractions.Tests.csproj" />
+    <Project Path="tests/Results.Ensure.Tests/Results.Ensure.Tests.csproj" />
     <Project Path="tests/Results.FluentValidation.Tests/Results.FluentValidation.Tests.csproj" />
     <Project Path="tests/Results.MinimalApi.Tests/Results.MinimalApi.Tests.csproj" />
     <Project Path="tests/Results.Tests/Results.Tests.csproj" />

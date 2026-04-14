@@ -37,7 +37,7 @@ Major rework of the Failure system.
 ### Changed
 - Refactored code to use extension blocks for better organization and readability.
 - Refactored collections into logical groups without modifying the API surface.
-- Greatly improved readability of the library
+- Greatly improved readability of the documentation
 
 ### Tooling
 - Introduced DebuggerDisplay on `Failure`, `Result` and `Result<T>` for improved debugging.
