@@ -11,15 +11,15 @@ This is syntactic sugar over Bind and Map, preserving the same failure propagati
 1. [Failure propagation](#failure-propagation)
 1. [When to use](#when-to-use)
 1. [When not to use](#when-not-to-use)
-1. [Design](#design)
+1. [Design notes](#design-notes)
 
 ## How it works
 LINQ query syntax is translated by the compiler into method calls:
 
-- `from x in ...` → `Bind`
-- `select ...` → `Map`
-- `let ...` → `Map` (intermediate projection)
-- `where ...` → `Where`
+- `from x in ...` -> `Bind`
+- `select ...` -> `Map`
+- `let ...` -> `Map` (intermediate projection)
+- `where ...` -> `Where`
 
 Failures are propagated automatically without executing subsequent steps.
 
@@ -79,13 +79,13 @@ LINQ syntax is most useful when:
 
 ## When not to use
 Prefer method chaining when:
-- only 1–2 transformations are involved
+- only 1 or 2 transformations are involved
 - no intermediate naming is required
 - performance-critical code prefers explicit flow
 
 ---
 
-Design notes
+## Design notes
 
 1. Pure syntactic sugar => No new semantics are introduced
 1. No behaviour differences => Both styles propagate failures identically

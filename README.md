@@ -112,7 +112,7 @@ Result<int> g = failure;                // Result<int>, state: failure
 
 Results can be transformed on value using the many provided extension methods.
 For an overview of the available methods, see [Extension methods](#extension-methods).
-For a detailed description of each of the methods, see [Extension documentation](src/Results/Extensions/README.md).
+For a detailed description of each of the methods, see [Extension documentation](docs/Extensions.md).
 
 ### Consumption
 
@@ -121,7 +121,7 @@ Results can be consumed either by
 - using the TryGet methods, either to get the value if a success or the failure if a failure.
 
 ```csharp
-var output = c.Match(
+var output = result.Match(
     onSuccess: value => $"success: {value}",
     onFailure: failure => failure.Message
 );
@@ -193,7 +193,7 @@ See the [LINQ extensions docs](docs/Linq.md) for details and examples.
 
 ## Test Extensions
 
-Toarnbeike.Results provides optional test extensions for verifying Result and `Result<TValue>` instances in unit tests.
+Toarnbeike.Results provides optional test extensions for verifying `Result` and `Result<TValue>` instances in unit tests.
 
 These extensions offer a minimal set of assertions for checking success and failure outcomes, including typed failure assertions.
 
