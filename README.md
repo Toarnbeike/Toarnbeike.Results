@@ -136,7 +136,7 @@ if (g.TryGetFailure(out var failure))
 
 ---
 
-## Extension Methods
+## Extensions
 
 The `Toarnbeike.Results.Extensions` namespace includes rich extensions for `Result` and `Result<TValue>`:
 
