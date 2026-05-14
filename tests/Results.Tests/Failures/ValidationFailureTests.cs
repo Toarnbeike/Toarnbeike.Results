@@ -29,5 +29,14 @@ public class ValidationFailureTests
         var baseFailure = failure as Failure;
         baseFailure.Message.ShouldBe($"Validation failed for Property with message Something is wrong with this property");
     }
+
+    [Test]
+    public void ValidationFailure_Should_BeAbleToChangeBaseProperties_UsingWithSyntax()
+    {
+        var failure = new ValidationFailure("Property", "Something is wrong with this property");
+
+        var newFailure = failure with { Message = "Something else" };
+        newFailure.Message.ShouldBe("Something else");
+    }
 }
 

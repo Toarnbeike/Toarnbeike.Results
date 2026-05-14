@@ -112,7 +112,7 @@ Result<int> g = failure;                // Result<int>, state: failure
 
 Results can be transformed on value using the many provided extension methods.
 For an overview of the available methods, see [Extension methods](#extension-methods).
-For a detailed description of each of the methods, see [Extension documentation](src/Results/Extensions/README.md).
+For a detailed description of each of the methods, see [Extension documentation](docs/Extensions.md).
 
 ### Consumption
 
@@ -121,7 +121,7 @@ Results can be consumed either by
 - using the TryGet methods, either to get the value if a success or the failure if a failure.
 
 ```csharp
-var output = c.Match(
+var output = result.Match(
     onSuccess: value => $"success: {value}",
     onFailure: failure => failure.Message
 );
@@ -136,7 +136,7 @@ if (g.TryGetFailure(out var failure))
 
 ---
 
-## Extension Methods
+## Extensions
 
 The `Toarnbeike.Results.Extensions` namespace includes rich extensions for `Result` and `Result<TValue>`:
 
@@ -193,7 +193,7 @@ See the [LINQ extensions docs](docs/Linq.md) for details and examples.
 
 ## Test Extensions
 
-Toarnbeike.Results provides optional test extensions for verifying Result and `Result<TValue>` instances in unit tests.
+Toarnbeike.Results provides optional test extensions for verifying `Result` and `Result<TValue>` instances in unit tests.
 
 These extensions offer a minimal set of assertions for checking success and failure outcomes, including typed failure assertions.
 
@@ -211,6 +211,7 @@ The Toarnbeike.Results ecosystem consist of a couple of packages:
 |[`Toarnbeike.Results.Abstractions`](src\Results.Abstractions\README.md)            | Abstractions, as netstandard2.0 project for sourceGen | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.Abstractions.svg)](https://www.nuget.org/packages/Toarnbeike.Results.Abstractions)          |
 |[`Toarnbeike.Results.FluentValidation`](src\Results.FluentValidation\README.md)    | Validation integration using `FluentValidation`       | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.FluentValidation.svg)](https://www.nuget.org/packages/Toarnbeike.Results.FluentValidation)  |
 |[`Toarnbeike.Results.MinimalApi`](src\Results.MinimalApi\README.md)                | Integration with `Microsoft.AspNetCore` minimal API's | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.MinimalApi.svg)](https://www.nuget.org/packages/Toarnbeike.Results.MinimalApi)              |
+|[`Toarnbeike.Results.Ensure`](src\Results.Ensure\README.md)                        | Domain validation using Ensure pipelines              | [![NuGet](https://img.shields.io/nuget/v/Toarnbeike.Results.Ensure.svg)](https://www.nuget.org/packages/Toarnbeike.Results.Ensure)                      |
 
 ---
 

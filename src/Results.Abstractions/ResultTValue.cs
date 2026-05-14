@@ -37,20 +37,6 @@ public readonly record struct Result<TValue> : IResult
     }
 
     /// <summary>
-    /// Attempts to retrieve both the value, if success, and the failure reason, if failure, of the result.
-    /// </summary>
-    /// <param name="value">When this method returns <c>true</c>, contains the value of the result; otherwise, the default value.</param>
-    /// <param name="failure">When this method returns <c>false</c>, contains the reason the result is a failure; otherwise, <c>null</c>.</param>
-    /// <returns><c>true</c> if the result is successful; otherwise, <c>false</c>.</returns>
-    [Obsolete("Use TryGetValue(out TValue) or Match() methods instead, which are more explicit and less error-prone.")]
-    public bool TryGetValue([NotNullWhen(true)] out TValue? value, [NotNullWhen(false)] out Failure? failure)
-    {
-        value = _value;
-        failure = _failure;
-        return IsSuccess;
-    }
-
-    /// <summary>
     /// Deconstruct the result into its value and failure components. The <paramref name="value"/> will be non-null if the result is successful, while the <paramref name="failure"/> will be non-null if the result is a failure.
     /// </summary>
     /// <param name="value">The value if success</param>
