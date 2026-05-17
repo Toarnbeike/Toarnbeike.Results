@@ -8,7 +8,6 @@ Composable guard library for C# that enables clean, fail-fast domain validation 
 
 ## Features
 
-- Static Ensure API: `Ensure.GreaterThan(value, 10);` 
 - Extension methods on primitives: `value.GreaterThan(10)`
 - Validation pipeline: `Result.Ensure(() => value.GreaterThan(10))`
 
@@ -55,13 +54,6 @@ This makes the approach useful for domain rules, not for input validation. It is
 dotnet add package Toarnbeike.Results.Ensure
 ```
 
-### Static Ensure API
-Useful for single domain checks during execution:
-``` csharp
-Result<DateTime> result = Ensure.After(date, comparison);
-```
-Does not pollute the primitive with additional extension methods.
-
 ### Extension methods on primitives
 Useful for ensure pipelines:
 ``` csharp
@@ -92,22 +84,20 @@ This failure provides additional information regarding the failure:
 
 ## Extensions
 
-The following guards are currently provided:
+The following guards types are currently provided:
 
-| Method                        | Target            | Description                                                   | Strategy      |
-|-------------------------------|-------------------|---------------------------------------------------------------|---------------|
-| NotEmpty()                    | `string`          | Verifies string is not empty                                  |               |
-| NotWhiteSpace()               | `string`          | Verifies string is not white space                            |               |
-| MinLength(`int`)              | `string`          | Verifies minimum string length (inclusive)                    | inclusive     |
-| MaxLength(`int`)              | `string`          | Verifies maximum string length (inclusive)                    | inclusive     |
-| Matches(`Regex`)              | `string`          | Verifies string matches provided regular expression           |               |
-| GreaterThan(`TNumber`)        | `TNumber`         | Verifies value is greater than comparison (exclusive)         | exclusive     |
-| LessThan(`TNumber`)           | `TNumber`         | Verifies value is less than comparison (exclusive)            | exclusive     |
-| InRange(`TNumber`,`TNumber`)  | `TNumber`         | Verifies value is between provided range (inclusive)          | inclusive     |
-| After(`TDate`)                | `TDate`           | Verifies date (`DateTime`, `DateOnly`) is after comparison    | inclusive     |
-| Before(`TDate`)               | `TDate`           | Verifies date (`DateTime`, `DateOnly`) is before comparison   | inclusive     |
-| NotEmpty()                    | `IEnumerable<>`   | Verifies collection contains at least one element             |               |
-| IsDefined()                   | `enum`            | Verifies provided element is defined within the `enum`        |               |
+| GuardType		| Description											|
+|---------------|-------------------------------------------------------|
+| Collection	| Ensures the number of items in the collection			|
+| Date			| Ensures comparisons between dates and DayOfWeek		|
+| Enum			| Ensures enum value is defined							|
+| Guid			| Ensures not empty and guid version					|
+| Numbers		| Ensures comparisons between numbers and multipleOf	|
+| Predicate		| Ensures a predicate is True/False						|
+| String		| Ensures not empty and string length					|
+| TimeSpan		| Ensures comparsions between durations					|
+
+For a detailed list of all extensions, see the [Ensure docs](..\..\docs\Ensure.md)
 
 ### Custom guards
 

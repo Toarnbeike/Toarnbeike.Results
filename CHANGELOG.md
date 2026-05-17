@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [2.2.0] - 2026-5-14
+
+Complete rework of the Ensure library
+- Added many additional primitive extensions
+- Improved failure messages, provide more failure context such as failing value.
+- Added 3 new guard types: Guids, TimeSpans and Predicates (see readme for all new features)
+- Improved testing (#52)
+- Removed unused Ensure. syntax completely, everything relies on the extensions on the primitives.
+
+
 ## [2.1.0] - 2026-5-14
 
 ### Removed

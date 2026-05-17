@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/docs/">
     <File Path="docs/Collections.md" />
+    <File Path="docs/Ensure.md" />
     <File Path="docs/Extensions.md" />
     <File Path="docs/Failures.md" />
     <File Path="docs/Linq.md" />

@@ -1,5 +1,8 @@
-﻿namespace Toarnbeike.Results.Ensure;
+﻿using Toarnbeike.Results.Ensure.Implementation.RuleResults;
 
+namespace Toarnbeike.Results.Ensure;
+
+//[Obsolete]
 internal readonly record struct GuardResult(bool IsValid, Func<string, string> MessageBuilder, object? Constraint);
 
 /// <summary>
@@ -33,6 +36,7 @@ public sealed record GuardFailure : Failure
     public string ParameterName =>
         Expression.Contains('.') ? Expression[(Expression.LastIndexOf('.') + 1)..] : Expression;
 
+    //[Obsolete]
     internal GuardFailure(GuardResult error, string guardName, string? expr, object? attemptedValue, string? customMessage)
     {
         var expression = expr ?? "<unknown>";
@@ -44,14 +48,16 @@ public sealed record GuardFailure : Failure
         Category = FailureCategory.Business;
     }
 
-    public GuardFailure(string guardName, string message, string? expr)
+    internal static GuardFailure FromRuleResult(IFailingRuleResult result) =>
+        new(result.Message, result.GuardName, result.ArgumentName, result.Constraint, result.AttemptedValueAsObject);
+
+    private GuardFailure(string message, string guardName, string expression, object? constraint, object? attemptedValue)
     {
-        var expression = expr ?? "<unknown>";
+        Category = FailureCategory.Business;
         GuardName = guardName;
         Expression = expression;
-        Constraint = null;
-        AttemptedValue = null;
+        Constraint = constraint;
+        AttemptedValue = attemptedValue;
         Message = message;
-        Category = FailureCategory.Business;
     }
 }

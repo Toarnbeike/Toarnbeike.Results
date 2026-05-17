@@ -1,0 +1,121 @@
+﻿using System.Numerics;
+using Toarnbeike.Results.Ensure.Guards;
+using Toarnbeike.Results.Ensure.Implementation.RuleResults;
+
+namespace Toarnbeike.Results.Ensure.Rules;
+
+public static class IntegerNumberRules
+{
+    extension<TInteger>(IGuardTarget<TInteger> target) where TInteger : struct, IBinaryInteger<TInteger>
+    {
+        /// <summary>
+        /// Rule that the targeted number must be strictly greater than the specified minimum.
+        /// </summary>
+        public IGuardRuleResult GreaterThan(TInteger min) =>
+            target.Evaluate(ComparisonGuards.GreaterThan(target.Value, min),
+                $"{nameof(IntegerNumberRules)}.{nameof(GreaterThan)}", min);
+
+        /// <summary>
+        /// Rule that the targeted number must be at least the specified minimum.
+        /// </summary>
+        public IGuardRuleResult AtLeast(TInteger min) =>
+            target.Evaluate(ComparisonGuards.AtLeast(target.Value, min),
+                $"{nameof(IntegerNumberRules)}.{nameof(AtLeast)}", min);
+
+        /// <summary>
+        /// Rule that the targeted number must be at most the specified maximum.
+        /// </summary>
+        public IGuardRuleResult AtMost(TInteger max) =>
+            target.Evaluate(ComparisonGuards.AtMost(target.Value, max),
+                $"{nameof(IntegerNumberRules)}.{nameof(AtMost)}", max);
+
+        /// <summary>
+        /// Rule that the targeted number must be less than the specified maximum.
+        /// </summary>
+        public IGuardRuleResult LessThan(TInteger max) =>
+            target.Evaluate(ComparisonGuards.LessThan(target.Value, max),
+                $"{nameof(IntegerNumberRules)}.{nameof(LessThan)}", max);
+
+        /// <summary>
+        /// Rule that the targeted number must be between the specified minimum and maximum, inclusive.
+        /// </summary>
+        public IGuardRuleResult Between(TInteger min, TInteger max) =>
+            target.Evaluate(ComparisonGuards.AtLeast(target.Value, min) &&
+                            ComparisonGuards.AtMost(target.Value, max),
+                $"{nameof(IntegerNumberRules)}.{nameof(Between)}", (min, max));
+
+        /// <summary>
+        /// Rule that the targeted number must be positive, that is, strictly greater than 0.
+        /// </summary>
+        public IGuardRuleResult Positive() =>
+            target.Evaluate(ComparisonGuards.GreaterThan(target.Value, TInteger.Zero),
+                $"{nameof(IntegerNumberRules)}.{nameof(Positive)}");
+
+        /// <summary>
+        /// Rule that the targeted number must be at least 0.
+        /// </summary>
+        public IGuardRuleResult AtLeastZero() =>
+            target.Evaluate(ComparisonGuards.AtLeast(target.Value, TInteger.Zero),
+                $"{nameof(IntegerNumberRules)}.{nameof(AtLeastZero)}");
+
+        /// <summary>
+        /// Rule that the targeted number must be at most 0.
+        /// </summary>
+        public IGuardRuleResult AtMostZero() =>
+            target.Evaluate(ComparisonGuards.AtMost(target.Value, TInteger.Zero),
+                $"{nameof(IntegerNumberRules)}.{nameof(AtMostZero)}");
+
+        /// <summary>
+        /// Rule that the targeted number must be negative, that is, strictly less than 0.
+        /// </summary>
+        public IGuardRuleResult Negative() =>
+            target.Evaluate(ComparisonGuards.LessThan(target.Value, TInteger.Zero),
+                $"{nameof(IntegerNumberRules)}.{nameof(Negative)}");
+
+        /// <summary>
+        /// Rule that the targeted number must be negative, that is, strictly less than 0.
+        /// </summary>
+        public IGuardRuleResult NotZero() =>
+            target.Evaluate(ComparisonGuards.NotEqual(target.Value, TInteger.Zero),
+                $"{nameof(IntegerNumberRules)}.{nameof(NotZero)}");
+
+        /// <summary>
+        /// Rule that the targeted number must be multiple of the specified factor.
+        /// </summary>
+        public IGuardRuleResult MultipleOf(TInteger factor) =>
+            target.Evaluate(ToleranceGuards.MultipleOf(target.Value, factor, TInteger.Zero),
+                $"{nameof(IntegerNumberRules)}.{nameof(MultipleOf)}");
+
+        /// <summary>
+        /// Rule that the targeted number must be an even number.
+        /// </summary>
+        public IGuardRuleResult Even() =>
+            target.Evaluate(IntegerGuards.Even(target.Value),
+                $"{nameof(IntegerNumberRules)}.{nameof(Even)}");
+
+        /// <summary>
+        /// Rule that the targeted number must be an odd number.
+        /// </summary>
+        public IGuardRuleResult Odd() =>
+            target.Evaluate(IntegerGuards.Odd(target.Value),
+                $"{nameof(IntegerNumberRules)}.{nameof(Odd)}");
+
+        /// <summary>
+        /// Rule that the targeted number must be a power of two.
+        /// </summary>
+        public IGuardRuleResult PowerOf2() =>
+            target.Evaluate(IntegerGuards.PowerOf2(target.Value),
+                $"{nameof(IntegerNumberRules)}.{nameof(PowerOf2)}");
+
+        /// <summary>
+        /// Rule that the targeted number must be a prime number.
+        /// </summary>
+        /// <remarks>
+        /// Checking for primality is more expensive than other guards, so use this rule only when necessary.
+        /// The implementation uses trial division, which is fine for small integers but may not be suitable for large values.
+        /// </remarks>
+        public IGuardRuleResult Prime() =>
+            target.Evaluate(IntegerGuards.Prime(target.Value),
+                $"{nameof(IntegerNumberRules)}.{nameof(Prime)}");
+    }
+}
