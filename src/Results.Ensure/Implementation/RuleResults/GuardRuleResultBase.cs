@@ -17,8 +17,8 @@ internal abstract class GuardRuleResultBase(IGuardChain chain) : IGuardRuleResul
 
     /// <inheritdoc />
     public IGuardRuleResult RegisterEvaluation<T>(T attemptedValue, string expression, bool isValid, string guardName,
-        object? constraint) =>
-        chain.RegisterEvaluation(attemptedValue, expression, isValid, guardName, constraint);
+        RuleContext ruleContext) =>
+        chain.RegisterEvaluation(attemptedValue, expression, isValid, guardName, ruleContext);
 
     public IToleranceProvider ToleranceProvider => chain.ToleranceProvider;
 
@@ -26,7 +26,7 @@ internal abstract class GuardRuleResultBase(IGuardChain chain) : IGuardRuleResul
     public abstract IGuardRuleResult WithMessage(string? message);
 
     /// <inheritdoc />
-    public abstract IGuardRuleResult WithMessage(Func<string, object?, string> messageBuilder);
+    public abstract IGuardRuleResult WithMessage(Func<string, RuleContext, string> messageBuilder);
 
     /// <inheritdoc />
     public abstract IGuardRuleResult WithArgumentName(string? name);

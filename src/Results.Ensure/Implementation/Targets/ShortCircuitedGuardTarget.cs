@@ -14,7 +14,7 @@ internal sealed class ShortCircuitedGuardTarget<T>(IGuardChain chain) : IGuardTa
     public string CapturedExpression => string.Empty;
     public IToleranceProvider ToleranceProvider => chain.ToleranceProvider;
 
-    public IGuardRuleResult Evaluate(bool isValid, string guardName, object? constraint = null)
+    public IGuardRuleResult Evaluate(bool isValid, string guardName, params (string Key, object? Value)[] context)
         => new SuccessRuleResult(chain);
 
     public IGuardTarget<TOther> As<TOther>(Func<T, TOther> converter) =>

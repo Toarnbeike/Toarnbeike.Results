@@ -1,6 +1,4 @@
-﻿using Toarnbeike.Results.Ensure.Implementation.RuleResults;
-
-namespace Toarnbeike.Results.Ensure.Implementation.Chaining;
+﻿namespace Toarnbeike.Results.Ensure.Implementation.Chaining;
 
 public static class GuardChainTaskExtensions
 {

@@ -1,4 +1,7 @@
-﻿using Toarnbeike.Results.Ensure.Implementation.Chaining;
+﻿using Toarnbeike.Results.Ensure.Abstractions;
+using Toarnbeike.Results.Ensure.Implementation.Chaining;
+using Toarnbeike.Results.Ensure.Implementation.FailureMessages;
+using Toarnbeike.Results.Ensure.Implementation.Tolerances;
 
 namespace Toarnbeike.Results.Ensure;
 
@@ -6,14 +9,14 @@ public static class EnsureExtensions
 {
     extension(Result)
     {
-        public static IGuardChain Ensure()
+        public static IGuardChain Ensure(IFailureMessageProvider? failureMessageProvider = null, IToleranceProvider? toleranceProvider = null)
         {
-            return new EnsureGuardChain();
+            return new EnsureGuardChain(failureMessageProvider ?? new DefaultFailureMessageProvider(), toleranceProvider ?? new DefaultToleranceProvider());
         }
 
-        public static IGuardChain Validate()
+        public static IGuardChain Validate(IFailureMessageProvider? failureMessageProvider = null, IToleranceProvider? toleranceProvider = null)
         {
-            return new ValidateGuardChain();
+            return new ValidateGuardChain(failureMessageProvider ?? new DefaultFailureMessageProvider(), toleranceProvider ?? new DefaultToleranceProvider());
         }
     }
 }

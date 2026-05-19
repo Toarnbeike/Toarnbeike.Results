@@ -107,7 +107,7 @@ public static class DateTimeExtensions
         /// <returns>Result containing either the incoming date or a <see cref="GuardFailure"/></returns>
         public Result<DateTime> CloseTo(DateTime other, TimeSpan timespan, string? message = null,
             [CallerArgumentExpression(nameof(date))] string? expr = null) =>
-            Result.Ensure().That(date).CloseTo(other, timespan)
+            Result.Ensure().That(date).Around(other, timespan)
                 .WithMessage(message).WithArgumentName(expr)
                 .ToResult(date);
 

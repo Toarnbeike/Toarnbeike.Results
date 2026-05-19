@@ -55,9 +55,9 @@ public static class TimeSpanExtensions
         /// <param name="message">Optional: failure message specific for this time span.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming time span.</param>
         /// <returns>Result containing either the incoming time span or a <see cref="GuardFailure"/></returns>
-        public Result<TimeSpan> CloseTo(TimeSpan expected, TimeSpan tolerance, string? message = null,
+        public Result<TimeSpan> Around(TimeSpan expected, TimeSpan tolerance, string? message = null,
             [CallerArgumentExpression(nameof(timeSpan))] string? expr = null) =>
-            Result.Ensure().That(timeSpan).CloseTo(expected, tolerance)
+            Result.Ensure().That(timeSpan).Around(expected, tolerance)
                 .WithArgumentName(expr).WithMessage(message)
                 .ToResult(timeSpan);
 
@@ -82,18 +82,6 @@ public static class TimeSpanExtensions
         public Result<TimeSpan> AtMostZero(string? message = null,
             [CallerArgumentExpression(nameof(timeSpan))] string? expr = null) =>
             Result.Ensure().That(timeSpan).AtMostZero()
-                .WithArgumentName(expr).WithMessage(message)
-                .ToResult(timeSpan);
-
-        /// <summary>
-        /// Ensure that the provided time span is not equal to zero.
-        /// </summary>
-        /// <param name="message">Optional: failure message specific for this time span.</param>
-        /// <param name="expr">Auto: CallerArgumentExpression of the incoming time span.</param>
-        /// <returns>Result containing either the incoming time span or a <see cref="GuardFailure"/></returns>
-        public Result<TimeSpan> NotZero(string? message = null,
-            [CallerArgumentExpression(nameof(timeSpan))] string? expr = null) =>
-            Result.Ensure().That(timeSpan).NotZero()
                 .WithArgumentName(expr).WithMessage(message)
                 .ToResult(timeSpan);
     }

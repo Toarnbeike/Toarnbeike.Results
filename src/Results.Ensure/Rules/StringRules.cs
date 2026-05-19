@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using Toarnbeike.Results.Ensure.Guards;
-using Toarnbeike.Results.Ensure.Implementation.RuleResults;
 
 namespace Toarnbeike.Results.Ensure.Rules;
 
@@ -30,14 +29,18 @@ public static class StringRules
         /// </summary>
         public IGuardRuleResult MinLength(int minLength) =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value.Length, minLength),
-                $"{nameof(StringRules)}.{nameof(MinLength)}", minLength);
+                $"{nameof(StringRules)}.{nameof(MinLength)}", 
+                ("MinLength", minLength),
+                ("ActualLength", target.Value.Length));
 
         /// <summary>
         /// Rule that the targeted string must have at most the specified maximum length.
         /// </summary>
         public IGuardRuleResult MaxLength(int maxLength) =>
             target.Evaluate(ComparisonGuards.AtMost(target.Value.Length, maxLength),
-                $"{nameof(StringRules)}.{nameof(MaxLength)}", maxLength);
+                $"{nameof(StringRules)}.{nameof(MaxLength)}", 
+                ("MaxLength", maxLength),
+                ("ActualLength", target.Value.Length));
 
         /// <summary>
         /// Rule that the targeted string must have a length between the specified minimum and maximum, inclusive.
@@ -45,14 +48,19 @@ public static class StringRules
         public IGuardRuleResult LengthBetween(int minLength, int maxLength) =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value.Length, minLength) &&
                             ComparisonGuards.AtMost(target.Value.Length, maxLength),
-                $"{nameof(StringRules)}.{nameof(LengthBetween)}", (minLength, maxLength));
+                $"{nameof(StringRules)}.{nameof(LengthBetween)}", 
+                ("MinLength", minLength),
+                ("MaxLength", maxLength),
+                ("ActualLength", target.Value.Length));
 
         /// <summary>
         /// Rule that the targeted string matches the specified pattern.
         /// </summary>
-        public IGuardRuleResult Matches(string pattern, RegexOptions options) =>
+        public IGuardRuleResult Matches(string pattern, RegexOptions options = default) =>
             target.Evaluate(StringGuards.Matches(target.Value, new Regex(pattern, options)),
-                $"{nameof(StringRules)}.{nameof(Matches)}", pattern);
+                $"{nameof(StringRules)}.{nameof(Matches)}", 
+                ("Pattern", pattern),
+                ("Options", options));
 
         /// <summary>
         /// Rule that the targeted string contains only alphabetic characters.
@@ -71,9 +79,9 @@ public static class StringRules
         /// <summary>
         /// Rule that the targeted string contains only digits.
         /// </summary>
-        public IGuardRuleResult Digits() =>
+        public IGuardRuleResult Numeric() =>
             target.Evaluate(StringGuards.Digits(target.Value),
-                $"{nameof(StringRules)}.{nameof(Digits)}");
+                $"{nameof(StringRules)}.{nameof(Numeric)}");
 
         /// <summary>
         /// Rule that the targeted string contains only valid ASCII characters.

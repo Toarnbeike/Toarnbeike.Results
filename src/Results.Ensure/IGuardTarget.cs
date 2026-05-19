@@ -1,5 +1,4 @@
 ﻿using Toarnbeike.Results.Ensure.Abstractions;
-using Toarnbeike.Results.Ensure.Implementation.RuleResults;
 
 namespace Toarnbeike.Results.Ensure;
 
@@ -26,14 +25,14 @@ public interface IGuardTarget<out T>
     /// </summary>
     /// <param name="isValid"> Indicates whether the guard condition succeeded. </param>
     /// <param name="guardName"> The name of the guard that performed the evaluation. </param>
-    /// <param name="constraint"> Optional constraint metadata associated with the guard. </param>
+    /// <param name="context"> Optional rule context associated with the guard. </param>
     /// <returns>
     /// A configurable rule result representing the outcome of the evaluation.
     /// </returns>
     internal IGuardRuleResult Evaluate(
         bool isValid,
         string guardName,
-        object? constraint = null);
+        params (string Key, object? Value)[] context);
 
     internal IGuardTarget<TOther> As<TOther>(Func<T, TOther> converter);
 }

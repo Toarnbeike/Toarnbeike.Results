@@ -4,7 +4,7 @@ internal interface IFailingRuleResult
 {
     string Message { get; }
     string ArgumentName { get; }
-    object? Constraint { get; }
+    RuleContext Context { get; }
     string GuardName { get; }
     object? AttemptedValueAsObject { get; }
 }

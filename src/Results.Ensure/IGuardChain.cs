@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using Toarnbeike.Results.Ensure.Abstractions;
-using Toarnbeike.Results.Ensure.Implementation.RuleResults;
 using Toarnbeike.Results.Failures;
 
 namespace Toarnbeike.Results.Ensure;
@@ -44,7 +43,7 @@ public interface IGuardChain
     /// </returns>
     Result<T> ToResult<T>(T value);
 
-    internal IGuardRuleResult RegisterEvaluation<T>(T attemptedValue, string expression, bool isValid, string guardName, object? constraint);
+    internal IGuardRuleResult RegisterEvaluation<T>(T attemptedValue, string expression, bool isValid, string guardName, RuleContext context);
 
     internal IToleranceProvider ToleranceProvider { get; }
 }

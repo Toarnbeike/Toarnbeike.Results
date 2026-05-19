@@ -1,8 +1,11 @@
-﻿using Toarnbeike.Results.Ensure.Implementation.RuleResults;
+﻿using Toarnbeike.Results.Ensure.Abstractions;
+using Toarnbeike.Results.Ensure.Implementation.RuleResults;
 
 namespace Toarnbeike.Results.Ensure.Implementation.Chaining;
 
-internal sealed class EnsureGuardChain : GuardChainBase
+internal sealed class EnsureGuardChain(
+    IFailureMessageProvider failureMessageProvider, IToleranceProvider toleranceProvider) 
+    : GuardChainBase(failureMessageProvider, toleranceProvider)
 {
     private IFailingRuleResult? _failure;
 

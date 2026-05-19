@@ -1,9 +1,12 @@
-﻿using Toarnbeike.Results.Ensure.Implementation.RuleResults;
+﻿using Toarnbeike.Results.Ensure.Abstractions;
+using Toarnbeike.Results.Ensure.Implementation.RuleResults;
 using Toarnbeike.Results.Failures;
 
 namespace Toarnbeike.Results.Ensure.Implementation.Chaining;
 
-internal sealed class ValidateGuardChain : GuardChainBase
+internal sealed class ValidateGuardChain(
+    IFailureMessageProvider failureMessageProvider, IToleranceProvider toleranceProvider)
+    : GuardChainBase(failureMessageProvider, toleranceProvider)
 {
     private readonly List<IFailingRuleResult> _failures = [];
 

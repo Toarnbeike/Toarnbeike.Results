@@ -8,8 +8,8 @@ public static class GuardRuleResultTaskExtensions
         public async Task<IGuardRuleResult> WithMessage(string? message) => 
             (await resultTask).WithMessage(message);
 
-        /// <inheritdoc cref="IGuardRuleResult.WithMessage(Func{string, object?, string})"/>
-        public async Task<IGuardRuleResult> WithMessage(Func<string, object?, string> messageBuilder) => 
+        /// <inheritdoc cref="IGuardRuleResult.WithMessage(Func{string, RuleContext, string})"/>
+        public async Task<IGuardRuleResult> WithMessage(Func<string, RuleContext, string> messageBuilder) => 
             (await resultTask).WithMessage(messageBuilder);
 
         /// <inheritdoc cref="IGuardRuleResult.WithArgumentName(string)"/>

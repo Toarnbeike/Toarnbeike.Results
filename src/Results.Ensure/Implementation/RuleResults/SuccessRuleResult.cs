@@ -6,7 +6,7 @@ internal sealed class SuccessRuleResult : GuardRuleResultBase, IGuardRuleResult
 
     public override IGuardRuleResult WithMessage(string? message) => this;
 
-    public override IGuardRuleResult WithMessage(Func<string, object?, string> messageBuilder) => this;
+    public override IGuardRuleResult WithMessage(Func<string, RuleContext, string> messageBuilder) => this;
 
     public override IGuardRuleResult WithArgumentName(string? argumentName) => this;
 }

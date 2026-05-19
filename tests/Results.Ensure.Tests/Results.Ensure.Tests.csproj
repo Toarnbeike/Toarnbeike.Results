@@ -19,4 +19,8 @@
 		<Using Include="Shouldly" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Guards\" />
+	</ItemGroup>
+
 </Project>

@@ -12,62 +12,86 @@ public static class DateTimeOffsetRules
         /// <summary>
         /// Rule that the targeted date must be on or after the specified date.
         /// </summary>
-        public IGuardRuleResult OnOrAfter(DateTimeOffset other) =>
-            target.Evaluate(ComparisonGuards.AtLeast(target.Value, other),
-                $"{nameof(DateTimeOffsetRules)}.{nameof(OnOrAfter)}", other);
+        public IGuardRuleResult OnOrAfter(DateTimeOffset min) =>
+            target.Evaluate(ComparisonGuards.AtLeast(target.Value, min),
+                $"{nameof(DateRules)}.{nameof(OnOrAfter)}", 
+                ("Min", min));
 
         /// <summary>
         /// Rule that the targeted date must be on or before the specified date.
         /// </summary>
-        public IGuardRuleResult OnOrBefore(DateTimeOffset other) =>
-            target.Evaluate(ComparisonGuards.AtMost(target.Value, other),
-                $"{nameof(DateTimeOffsetRules)}.{nameof(OnOrBefore)}", other);
+        public IGuardRuleResult OnOrBefore(DateTimeOffset max) =>
+            target.Evaluate(ComparisonGuards.AtMost(target.Value, max),
+                $"{nameof(DateRules)}.{nameof(OnOrBefore)}", 
+                ("Max", max));
 
         /// <summary>
         /// Rule that the targeted date must be between the specified dates.
         /// </summary>
-        public IGuardRuleResult Between(DateTimeOffset start, DateTimeOffset end) =>
-            target.Evaluate(ComparisonGuards.AtLeast(target.Value, start) &&
-                            ComparisonGuards.AtMost(target.Value, end),
-                $"{nameof(DateTimeOffsetRules)}.{nameof(Between)}", (start, end));
+        public IGuardRuleResult Between(DateTimeOffset min, DateTimeOffset max) =>
+            target.Evaluate(ComparisonGuards.AtLeast(target.Value, min) &&
+                            ComparisonGuards.AtMost(target.Value, max),
+                $"{nameof(DateRules)}.{nameof(Between)}", 
+                ("Min", min), 
+                ("Max", max));
 
         /// <summary>
         /// Rule that the targeted date must be in the future.
         /// </summary>
-        public IGuardRuleResult Future() =>
-            target.Evaluate(ComparisonGuards.AtLeast(target.Value, DateTimeOffset.UtcNow),
-                $"{nameof(DateTimeOffsetRules)}.{nameof(Future)}");
+        public IGuardRuleResult Future()
+        {
+            var utcNow = DateTimeOffset.UtcNow;
+            return target.Evaluate(ComparisonGuards.AtLeast(target.Value, utcNow),
+                $"{nameof(DateRules)}.{nameof(Future)}",
+                ("Now", utcNow));
+        }
 
         /// <summary>
         /// Rule that the targeted date must be in the past.
         /// </summary>
-        public IGuardRuleResult Past() =>
-            target.Evaluate(ComparisonGuards.AtMost(target.Value, DateTimeOffset.UtcNow),
-                $"{nameof(DateTimeOffsetRules)}.{nameof(Past)}");
+        public IGuardRuleResult Past()
+        {
+            var utcNow = DateTimeOffset.UtcNow;
+            return target.Evaluate(ComparisonGuards.AtMost(target.Value, utcNow),
+                $"{nameof(DateRules)}.{nameof(Past)}",
+                ("Now", utcNow));
+        }
 
         /// <summary>
         /// Rule that the targeted date must be in the future, but by no more than the provided time span.
         /// </summary>
-        public IGuardRuleResult WithinFuture(TimeSpan timeSpan) =>
-            target.Evaluate(ComparisonGuards.AtLeast(target.Value, DateTimeOffset.UtcNow) &&
-                            ComparisonGuards.AtMost(target.Value, DateTimeOffset.UtcNow + timeSpan),
-                $"{nameof(DateTimeOffsetRules)}.{nameof(WithinFuture)}", timeSpan);
+        public IGuardRuleResult WithinFuture(TimeSpan timeSpan)
+        {
+            var utcNow = DateTimeOffset.UtcNow;
+            return target.Evaluate(ComparisonGuards.AtLeast(target.Value, utcNow) &&
+                                   ComparisonGuards.AtMost(target.Value, utcNow + timeSpan),
+                $"{nameof(DateTimeOffsetRules)}.{nameof(WithinFuture)}",
+                ("Now", utcNow),
+                ("TimeSpan", timeSpan));
+        }
 
 
         /// <summary>
         /// Rule that the targeted date must be in the past, but by no more than the provided time span.
         /// </summary>
-        public IGuardRuleResult WithinPast(TimeSpan timeSpan) =>
-            target.Evaluate(ComparisonGuards.AtLeast(target.Value, DateTimeOffset.UtcNow - timeSpan) &&
-                            ComparisonGuards.AtMost(target.Value, DateTimeOffset.UtcNow),
-                $"{nameof(DateTimeOffsetRules)}.{nameof(WithinPast)}", timeSpan);
+        public IGuardRuleResult WithinPast(TimeSpan timeSpan)
+        {
+            var utcNow = DateTimeOffset.UtcNow;
+            return target.Evaluate(ComparisonGuards.AtLeast(target.Value, utcNow - timeSpan) &&
+                                   ComparisonGuards.AtMost(target.Value, utcNow),
+                $"{nameof(DateTimeOffsetRules)}.{nameof(WithinPast)}",
+                ("Now", utcNow),
+                ("TimeSpan", timeSpan));
+        }
 
         /// <summary>
         /// Rule that the targeted date must be close to the specified date, within the provided time span.
         /// </summary>
-        public IGuardRuleResult CloseTo(DateTimeOffset expected, TimeSpan tolerance) =>
-            target.Evaluate(ToleranceGuards.Equal(target.Value.Ticks, expected.Ticks, tolerance.Ticks),
-                $"{nameof(DateTimeOffsetRules)}.{nameof(CloseTo)}", (expected, tolerance));
+        public IGuardRuleResult Around(DateTimeOffset comparison, TimeSpan tolerance) =>
+            target.Evaluate(ToleranceGuards.Equal(target.Value.Ticks, comparison.Ticks, tolerance.Ticks),
+                $"{nameof(DateTimeOffsetRules)}.{nameof(Around)}", 
+                ("Comparison", comparison), 
+                ("Tolerance", tolerance));
 
         /// <summary>
         /// Rule that the targeted date must be on the specified day of the week.

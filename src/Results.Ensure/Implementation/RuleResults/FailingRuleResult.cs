@@ -31,16 +31,16 @@ internal sealed class FailingRuleResult<T> : GuardRuleResultBase, IFailingRuleRe
     /// Optionally the constraint associated with the guard that failed.
     /// This can be used to provide additional context for failure messages or for custom handling in the parent guard chain.
     /// </summary>
-    public object? Constraint { get; }
+    public RuleContext Context { get; }
 
     internal FailingRuleResult(IGuardChain chain, string message, string argumentName,
-        T attemptedValue, string guardName, object? constraint) : base(chain)
+        T attemptedValue, string guardName, RuleContext context) : base(chain)
     {
         Message = message;
         ArgumentName = argumentName;
         AttemptedValue = attemptedValue;
         GuardName = guardName;
-        Constraint = constraint;
+        Context = context;
     }
 
     /// <inheritdoc/>
@@ -54,9 +54,9 @@ internal sealed class FailingRuleResult<T> : GuardRuleResultBase, IFailingRuleRe
     }
 
     /// <inheritdoc/>
-    public override IGuardRuleResult WithMessage(Func<string, object?, string> messageBuilder)
+    public override IGuardRuleResult WithMessage(Func<string, RuleContext, string> messageBuilder)
     {
-        Message = messageBuilder(ArgumentName, Constraint);
+        Message = messageBuilder(ArgumentName, Context);
         return this;
     }
 

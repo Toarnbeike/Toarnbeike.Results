@@ -1,6 +1,8 @@
-﻿namespace Toarnbeike.Results.Ensure.Abstractions;
+﻿using Toarnbeike.Results.Ensure.Implementation.FailureMessages;
+
+namespace Toarnbeike.Results.Ensure.Abstractions;
 
 public interface IFailureMessageProvider
 {
-    string GetMessage(string guardName, object? attemptedValue, object? constraint);
+    string CreateMessage(FailureMessageContext context);
 }

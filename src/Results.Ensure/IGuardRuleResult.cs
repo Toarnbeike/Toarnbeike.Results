@@ -23,7 +23,7 @@ public interface IGuardRuleResult : IGuardChain
     /// A delegate that creates the failure message based on the argument name and guard constraint.
     /// </param>
     /// <returns>The updated guard rule result.</returns>
-    IGuardRuleResult WithMessage(Func<string, object?, string> messageBuilder);
+    IGuardRuleResult WithMessage(Func<string, RuleContext, string> messageBuilder);
 
     /// <summary>
     /// Overrides the captured argument name used in generated failures.
