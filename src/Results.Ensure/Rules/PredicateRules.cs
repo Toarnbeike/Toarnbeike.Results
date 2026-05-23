@@ -2,6 +2,8 @@
 
 public static class PredicateRules
 {
+    private const string RuleCategory = "Predicate";
+
     extension<T>(IGuardTarget<T> target)
     {
         /// <summary>
@@ -9,7 +11,7 @@ public static class PredicateRules
         /// </summary>
         public IGuardRuleResult Satisfies(Func<T, bool> predicate) =>
             target.Evaluate(predicate(target.Value),
-                $"{nameof(PredicateRules)}.{nameof(Satisfies)}",
+                $"{RuleCategory}.{nameof(Satisfies)}",
                 ("Predicate", predicate)
             );
 
@@ -18,7 +20,7 @@ public static class PredicateRules
         /// </summary>
         public IGuardRuleResult NotSatisfies(Func<T, bool> predicate) =>
             target.Evaluate(!predicate(target.Value),
-                $"{nameof(PredicateRules)}.{nameof(NotSatisfies)}",
+                $"{RuleCategory}.{nameof(NotSatisfies)}",
                 ("Predicate", predicate)
             );
 
@@ -27,7 +29,7 @@ public static class PredicateRules
         /// </summary>
         public async Task<IGuardRuleResult> SatisfiesAsync(Func<T, Task<bool>> predicate) =>
             target.Evaluate(await predicate(target.Value),
-                $"{nameof(PredicateRules)}.{nameof(Satisfies)}",
+                $"{RuleCategory}.{nameof(Satisfies)}",
                 ("Predicate", predicate)
             );
 
@@ -36,7 +38,7 @@ public static class PredicateRules
         /// </summary>
         public async Task<IGuardRuleResult> NotSatisfiesAsync(Func<T, Task<bool>> predicate) =>
             target.Evaluate(!await predicate(target.Value),
-                $"{nameof(PredicateRules)}.{nameof(NotSatisfies)}",
+                $"{RuleCategory}.{nameof(NotSatisfies)}",
                 ("Predicate", predicate)
             );
     }

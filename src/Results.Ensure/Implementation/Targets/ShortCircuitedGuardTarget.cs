@@ -13,6 +13,7 @@ internal sealed class ShortCircuitedGuardTarget<T>(IGuardChain chain) : IGuardTa
     public T Value => default!;
     public string CapturedExpression => string.Empty;
     public IToleranceProvider ToleranceProvider => chain.ToleranceProvider;
+    public TimeProvider TimeProvider => chain.TimeProvider;
 
     public IGuardRuleResult Evaluate(bool isValid, string guardName, params (string Key, object? Value)[] context)
         => new SuccessRuleResult(chain);

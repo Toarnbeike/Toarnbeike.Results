@@ -50,24 +50,26 @@ public static class DateOnlyExtensions
         /// <summary>
         /// Ensure that the provided date is in the future compared to the current date.
         /// </summary>
+        /// <param name="timeProvider">Optional: the date time provider used.</param>
         /// <param name="message">Optional: failure message specific for this date.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming date.</param>
         /// <returns>Result containing either the incoming date or a <see cref="GuardFailure"/></returns>
-        public Result<DateOnly> Future(string? message = null,
+        public Result<DateOnly> Future(TimeProvider? timeProvider = null, string? message = null,
             [CallerArgumentExpression(nameof(date))] string? expr = null) =>
-            Result.Ensure().That(date).Future()
+            Result.Ensure(timeProvider: timeProvider).That(date).Future()
                 .WithMessage(message).WithArgumentName(expr)
                 .ToResult(date);
 
         /// <summary>
         /// Ensure that the provided date is in the past compared to the current date.
         /// </summary>
+        /// <param name="timeProvider">Optional: the date time provider used.</param>
         /// <param name="message">Optional: failure message specific for this date.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming date.</param>
         /// <returns>Result containing either the incoming date or a <see cref="GuardFailure"/></returns>
-        public Result<DateOnly> Past(string? message = null,
+        public Result<DateOnly> Past(TimeProvider? timeProvider = null, string? message = null,
             [CallerArgumentExpression(nameof(date))] string? expr = null) =>
-            Result.Ensure().That(date).Past()
+            Result.Ensure(timeProvider: timeProvider).That(date).Past()
                 .WithMessage(message).WithArgumentName(expr)
                 .ToResult(date);
 
@@ -75,12 +77,13 @@ public static class DateOnlyExtensions
         /// Ensure that the provided date is in the future within the specified days compared to the current date.
         /// </summary>
         /// <param name="days">The number of days within which the date should be in the past.</param>
+        /// <param name="timeProvider">Optional: the date time provider used.</param>
         /// <param name="message">Optional: failure message specific for this date.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming date.</param>
         /// <returns>Result containing either the incoming date or a <see cref="GuardFailure"/></returns>
-        public Result<DateOnly> WithinFuture(int days, string? message = null,
+        public Result<DateOnly> WithinFuture(int days, TimeProvider? timeProvider = null, string? message = null,
             [CallerArgumentExpression(nameof(date))] string? expr = null) =>
-            Result.Ensure().That(date).WithinFuture(days)
+            Result.Ensure(timeProvider: timeProvider).That(date).WithinFuture(days)
                 .WithMessage(message).WithArgumentName(expr)
                 .ToResult(date);
 
@@ -88,12 +91,13 @@ public static class DateOnlyExtensions
         /// Ensure that the provided date is in the past within the specified days compared to the current date.
         /// </summary>
         /// <param name="days">The number of days within which the date should be in the past.</param>
+        /// <param name="timeProvider">Optional: the date time provider used.</param>
         /// <param name="message">Optional: failure message specific for this date.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming date.</param>
         /// <returns>Result containing either the incoming date or a <see cref="GuardFailure"/></returns>
-        public Result<DateOnly> WithinPast(int days, string? message = null,
+        public Result<DateOnly> WithinPast(int days, TimeProvider? timeProvider = null, string? message = null,
             [CallerArgumentExpression(nameof(date))] string? expr = null) =>
-            Result.Ensure().That(date).WithinPast(days)
+            Result.Ensure(timeProvider: timeProvider).That(date).WithinPast(days)
                 .WithMessage(message).WithArgumentName(expr)
                 .ToResult(date);
 

@@ -1,5 +1,4 @@
 ﻿using Toarnbeike.Results.Ensure.Abstractions;
-using Toarnbeike.Results.Ensure.Rules;
 
 namespace Toarnbeike.Results.Ensure.Implementation.Targets;
 
@@ -11,6 +10,8 @@ internal sealed class GuardTarget<T> : IGuardTarget<T>
     public string CapturedExpression { get; }
 
     public IToleranceProvider ToleranceProvider => _chain.ToleranceProvider;
+
+    public TimeProvider TimeProvider => _chain.TimeProvider;
 
     /// <summary>
     /// The <see cref="IGuardChain"/> is used to delegate the actual registration of guard evaluations and the finalization of the guard pipeline to the parent chain.

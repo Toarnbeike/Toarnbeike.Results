@@ -17,7 +17,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _yesterday,
             expectedArgumentName: "_yesterday",
-            expectedGuardName: "DateRules.OnOrAfter",
+            expectedGuardName: "Date.OnOrAfter",
             ("Min", _tomorrow)
         );
     }
@@ -29,7 +29,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _tomorrow,
             expectedArgumentName: "_tomorrow",
-            expectedGuardName: "DateRules.OnOrBefore",
+            expectedGuardName: "Date.OnOrBefore",
             ("Max", _yesterday)
         );
     }
@@ -41,7 +41,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _tomorrow,
             expectedArgumentName: "_tomorrow",
-            expectedGuardName: "DateRules.Between",
+            expectedGuardName: "Date.Between",
             ("Min", _yesterday),
             ("Max", _yesterday)
         );
@@ -54,7 +54,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _yesterday,
             expectedArgumentName: "_yesterday",
-            expectedGuardName: "DateRules.Future",
+            expectedGuardName: "Date.Future",
             ("Now", _today)
         );
     }
@@ -66,7 +66,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _tomorrow,
             expectedArgumentName: "_tomorrow",
-            expectedGuardName: "DateRules.Past",
+            expectedGuardName: "Date.Past",
             ("Now", _today)
         );
     }
@@ -78,7 +78,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _yesterday,
             expectedArgumentName: "_yesterday",
-            expectedGuardName: "DateOnlyRules.WithinFuture",
+            expectedGuardName: "Date.DateOnly.WithinFuture",
             ("Today", _today),
             ("Days", 10)
         );
@@ -91,7 +91,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _tomorrow,
             expectedArgumentName: "_tomorrow",
-            expectedGuardName: "DateOnlyRules.WithinPast",
+            expectedGuardName: "Date.DateOnly.WithinPast",
             ("Today", _today),
             ("Days", 10)
         );
@@ -104,7 +104,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _saturday,
             expectedArgumentName: "_saturday",
-            expectedGuardName: "DateRules.OnDayOfWeek",
+            expectedGuardName: "Date.OnDayOfWeek",
             ("ExpectedDay", DayOfWeek.Friday),
             ("Actual", DayOfWeek.Saturday)
         );
@@ -118,7 +118,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _saturday,
             expectedArgumentName: "_saturday",
-            expectedGuardName: "DateRules.OnDaysOfWeek",
+            expectedGuardName: "Date.OnDaysOfWeek",
             ("Allowed", allowedDays),
             ("Actual", DayOfWeek.Saturday)
         );
@@ -131,7 +131,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _saturday,
             expectedArgumentName: "_saturday",
-            expectedGuardName: "DateRules.OnWeekday",
+            expectedGuardName: "Date.OnWeekday",
             ("Actual", DayOfWeek.Saturday)
         );
     }
@@ -143,7 +143,7 @@ public class DateOnlyRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _monday,
             expectedArgumentName: "_monday",
-            expectedGuardName: "DateRules.OnWeekend",
+            expectedGuardName: "Date.OnWeekend",
             ("Actual", DayOfWeek.Monday)
         );
     }

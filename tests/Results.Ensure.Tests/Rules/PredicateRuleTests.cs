@@ -17,7 +17,7 @@ public class PredicateRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "PredicateRules.Satisfies",
+            expectedGuardName: "Predicate.Satisfies",
             ("Predicate", _negative)
         );
     }
@@ -29,7 +29,7 @@ public class PredicateRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _negativeValue,
             expectedArgumentName: "_negativeValue",
-            expectedGuardName: "PredicateRules.NotSatisfies",
+            expectedGuardName: "Predicate.NotSatisfies",
             ("Predicate", _negative)
         );
     }
@@ -41,7 +41,7 @@ public class PredicateRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "PredicateRules.Satisfies",
+            expectedGuardName: "Predicate.Satisfies",
             ("Predicate", _negativeAsync)
         );
     }
@@ -53,7 +53,7 @@ public class PredicateRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _negativeValue,
             expectedArgumentName: "_negativeValue",
-            expectedGuardName: "PredicateRules.NotSatisfies",
+            expectedGuardName: "Predicate.NotSatisfies",
             ("Predicate", _negativeAsync)
         );
     }

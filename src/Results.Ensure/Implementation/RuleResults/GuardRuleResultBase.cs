@@ -21,6 +21,7 @@ internal abstract class GuardRuleResultBase(IGuardChain chain) : IGuardRuleResul
         chain.RegisterEvaluation(attemptedValue, expression, isValid, guardName, ruleContext);
 
     public IToleranceProvider ToleranceProvider => chain.ToleranceProvider;
+    public TimeProvider TimeProvider => chain.TimeProvider;
 
     /// <inheritdoc />
     public abstract IGuardRuleResult WithMessage(string? message);

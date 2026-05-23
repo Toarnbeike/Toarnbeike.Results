@@ -4,6 +4,8 @@ namespace Toarnbeike.Results.Ensure.Rules;
 
 public static class TimeSpanRules
 {
+    private const string RuleCategory = "TimeSpan";
+
     extension(IGuardTarget<TimeSpan> target)
     {
         /// <summary>
@@ -11,7 +13,7 @@ public static class TimeSpanRules
         /// </summary>
         public IGuardRuleResult AtLeast(TimeSpan min) =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value, min),
-                $"{nameof(TimeSpanRules)}.{nameof(AtLeast)}", 
+                $"{RuleCategory}.{nameof(AtLeast)}", 
                 ("Min", min));
 
         /// <summary>
@@ -19,7 +21,7 @@ public static class TimeSpanRules
         /// </summary>
         public IGuardRuleResult AtMost(TimeSpan max) =>
             target.Evaluate(ComparisonGuards.AtMost(target.Value, max),
-                $"{nameof(TimeSpanRules)}.{nameof(AtMost)}", 
+                $"{RuleCategory}.{nameof(AtMost)}", 
                 ("Max", max));
 
         /// <summary>
@@ -28,7 +30,7 @@ public static class TimeSpanRules
         public IGuardRuleResult Between(TimeSpan min, TimeSpan max) =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value, min) &&
                             ComparisonGuards.AtMost(target.Value, max),
-                $"{nameof(TimeSpanRules)}.{nameof(Between)}", 
+                $"{RuleCategory}.{nameof(Between)}", 
                 ("Min", min),
                 ("Max", max));
 
@@ -37,7 +39,7 @@ public static class TimeSpanRules
         /// </summary>
         public IGuardRuleResult Around(TimeSpan expected, TimeSpan tolerance) =>
             target.Evaluate(ToleranceGuards.Equal(target.Value.Ticks, expected.Ticks, tolerance.Ticks),
-                $"{nameof(TimeSpanRules)}.{nameof(Around)}", 
+                $"{RuleCategory}.{nameof(Around)}", 
                 ("Expected", expected),
                 ("Tolerance", tolerance));
 
@@ -46,13 +48,13 @@ public static class TimeSpanRules
         /// </summary>
         public IGuardRuleResult AtLeastZero() =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value, TimeSpan.Zero),
-                $"{nameof(TimeSpanRules)}.{nameof(AtLeastZero)}");
+                $"{RuleCategory}.{nameof(AtLeastZero)}");
 
         /// <summary>
         /// Rule that the targeted timespan must be at most zero.
         /// </summary>
         public IGuardRuleResult AtMostZero() =>
             target.Evaluate(ComparisonGuards.AtMost(target.Value, TimeSpan.Zero),
-                $"{nameof(TimeSpanRules)}.{nameof(AtMostZero)}");
+                $"{RuleCategory}.{nameof(AtMostZero)}");
     }
 }

@@ -21,7 +21,7 @@ public class EnumRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _undefined,
             expectedArgumentName: "_undefined",
-            expectedGuardName: "EnumRules.IsDefined",
+            expectedGuardName: "Enum.IsDefined",
             ("EnumType", typeof(TestEnum))
         );
     }
@@ -34,7 +34,7 @@ public class EnumRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "EnumRules.OneOf",
+            expectedGuardName: "Enum.OneOf",
             ("ValidValues", validValues.Select(v => v.ToString()))
         );
     }
@@ -47,7 +47,7 @@ public class EnumRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "EnumRules.NotOneOf",
+            expectedGuardName: "Enum.NotOneOf",
             ("InvalidValues", invalidValues.Select(v => v.ToString()))
         );
     }

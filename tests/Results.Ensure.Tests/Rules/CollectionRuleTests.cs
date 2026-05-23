@@ -14,7 +14,7 @@ public class CollectionRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _empty,
             expectedArgumentName: "_empty",
-            expectedGuardName: "CollectionRules.NotEmpty"
+            expectedGuardName: "Collection.NotEmpty"
         );
     }
 
@@ -25,7 +25,7 @@ public class CollectionRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "CollectionRules.Empty",
+            expectedGuardName: "Collection.Empty",
             ("Actual", _value.Count)
         );
     }
@@ -37,7 +37,7 @@ public class CollectionRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "CollectionRules.AtLeast",
+            expectedGuardName: "Collection.AtLeast",
             ("Actual", _value.Count),
             ("Min", 4)
         );
@@ -50,7 +50,7 @@ public class CollectionRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "CollectionRules.AtMost",
+            expectedGuardName: "Collection.AtMost",
             ("Actual", _value.Count),
             ("Max", 2)
         );
@@ -63,7 +63,7 @@ public class CollectionRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "CollectionRules.Between",
+            expectedGuardName: "Collection.Between",
             ("Actual", _value.Count),
             ("Min", 4),
             ("Max", 6)
@@ -77,7 +77,7 @@ public class CollectionRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "CollectionRules.Exactly",
+            expectedGuardName: "Collection.Exactly",
             ("Actual", _value.Count),
             ("Expected", 2)
         );
@@ -90,7 +90,7 @@ public class CollectionRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "CollectionRules.Single",
+            expectedGuardName: "Collection.Single",
             ("Actual", _value.Count)
         );
     }

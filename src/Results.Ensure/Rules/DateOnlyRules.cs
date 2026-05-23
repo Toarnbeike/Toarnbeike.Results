@@ -4,16 +4,19 @@ namespace Toarnbeike.Results.Ensure.Rules;
 
 public static class DateOnlyRules
 {
-    private static DateOnly Today => DateOnly.FromDateTime(DateTime.UtcNow);
+    private const string RuleCategory = "Date";
+    private const string QualifiedRuleCategory = "Date.DateOnly";
 
     extension(IGuardTarget<DateOnly> target)
     {
+        private DateOnly Today => DateOnly.FromDateTime(target.TimeProvider.GetUtcNow().DateTime);
+
         /// <summary>
         /// Rule that the targeted date must be on or after the specified date.
         /// </summary>
         public IGuardRuleResult OnOrAfter(DateOnly min) =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value, min),
-                $"{nameof(DateRules)}.{nameof(OnOrAfter)}", 
+                $"{RuleCategory}.{nameof(OnOrAfter)}", 
                 ("Min", min));
 
         /// <summary>
@@ -21,7 +24,7 @@ public static class DateOnlyRules
         /// </summary>
         public IGuardRuleResult OnOrBefore(DateOnly max) =>
             target.Evaluate(ComparisonGuards.AtMost(target.Value, max),
-                $"{nameof(DateRules)}.{nameof(OnOrBefore)}", 
+                $"{RuleCategory}.{nameof(OnOrBefore)}", 
                 ("Max", max));
 
         /// <summary>
@@ -30,7 +33,7 @@ public static class DateOnlyRules
         public IGuardRuleResult Between(DateOnly min, DateOnly max) =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value, min) &&
                             ComparisonGuards.AtMost(target.Value, max),
-                $"{nameof(DateRules)}.{nameof(Between)}", 
+                $"{RuleCategory}.{nameof(Between)}", 
                 ("Min", min),
                 ("Max", max));
 
@@ -38,36 +41,36 @@ public static class DateOnlyRules
         /// Rule that the targeted date must be in the future.
         /// </summary>
         public IGuardRuleResult Future() =>
-            target.Evaluate(ComparisonGuards.AtLeast(target.Value, Today),
-                $"{nameof(DateRules)}.{nameof(Future)}",
-                ("Now", Today));
+            target.Evaluate(ComparisonGuards.AtLeast(target.Value, target.Today),
+                $"{RuleCategory}.{nameof(Future)}",
+                ("Now", target.Today));
 
         /// <summary>
         /// Rule that the targeted date must be in the past.
         /// </summary>
         public IGuardRuleResult Past() =>
-            target.Evaluate(ComparisonGuards.AtMost(target.Value, Today),
-                $"{nameof(DateRules)}.{nameof(Past)}",
-                ("Now", Today));
+            target.Evaluate(ComparisonGuards.AtMost(target.Value, target.Today),
+                $"{RuleCategory}.{nameof(Past)}",
+                ("Now", target.Today));
 
         /// <summary>
         /// Rule that the targeted date must be in the future, but by no more than the provided number of days.
         /// </summary>
         public IGuardRuleResult WithinFuture(int days) =>
-            target.Evaluate(ComparisonGuards.AtLeast(target.Value, Today) &&
-                            ComparisonGuards.AtMost(target.Value, Today.AddDays(days)),
-                $"{nameof(DateOnlyRules)}.{nameof(WithinFuture)}", 
-                ("Today", Today),
+            target.Evaluate(ComparisonGuards.AtLeast(target.Value, target.Today) &&
+                            ComparisonGuards.AtMost(target.Value, target.Today.AddDays(days)),
+                $"{QualifiedRuleCategory}.{nameof(WithinFuture)}", 
+                ("Today", target.Today),
                 ("Days", days));
 
         /// <summary>
         /// Rule that the targeted date must be in the past, but by no more than the provided number of days.
         /// </summary>
         public IGuardRuleResult WithinPast(int days) =>
-            target.Evaluate(ComparisonGuards.AtLeast(target.Value, Today.AddDays(-days)) &&
-                            ComparisonGuards.AtMost(target.Value, Today),
-                $"{nameof(DateOnlyRules)}.{nameof(WithinPast)}", 
-                ("Today", Today), 
+            target.Evaluate(ComparisonGuards.AtLeast(target.Value, target.Today.AddDays(-days)) &&
+                            ComparisonGuards.AtMost(target.Value, target.Today),
+                $"{QualifiedRuleCategory}.{nameof(WithinPast)}", 
+                ("Today", target.Today), 
                 ("Days", days));
 
         /// <summary>
@@ -75,7 +78,7 @@ public static class DateOnlyRules
         /// </summary>
         public IGuardRuleResult OnDayOfWeek(DayOfWeek dayOfWeek) =>
             target.Evaluate(DayOfWeekGuards.OnDayOfWeek(target.Value, dayOfWeek),
-                $"{nameof(DateRules)}.{nameof(OnDayOfWeek)}",
+                $"{RuleCategory}.{nameof(OnDayOfWeek)}",
                 ("Actual", target.Value.DayOfWeek), 
                 ("ExpectedDay", dayOfWeek));
 
@@ -84,7 +87,7 @@ public static class DateOnlyRules
         /// </summary>
         public IGuardRuleResult OnDaysOfWeek(params DayOfWeek[] allowed) =>
             target.Evaluate(DayOfWeekGuards.OnDaysOfWeek(target.Value, allowed),
-                $"{nameof(DateRules)}.{nameof(OnDaysOfWeek)}",
+                $"{RuleCategory}.{nameof(OnDaysOfWeek)}",
                 ("Actual", target.Value.DayOfWeek),
                 ("Allowed", allowed));
 
@@ -93,7 +96,7 @@ public static class DateOnlyRules
         /// </summary>
         public IGuardRuleResult OnWeekday() =>
             target.Evaluate(DayOfWeekGuards.OnDaysOfWeek(target.Value, [DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday]),
-                $"{nameof(DateRules)}.{nameof(OnWeekday)}", 
+                $"{RuleCategory}.{nameof(OnWeekday)}", 
                 ("Actual", target.Value.DayOfWeek));
 
         /// <summary>
@@ -101,7 +104,7 @@ public static class DateOnlyRules
         /// </summary>
         public IGuardRuleResult OnWeekend() =>
             target.Evaluate(DayOfWeekGuards.OnDaysOfWeek(target.Value, [DayOfWeek.Saturday, DayOfWeek.Sunday]),
-                $"{nameof(DateRules)}.{nameof(OnWeekend)}",
+                $"{RuleCategory}.{nameof(OnWeekend)}",
                 ("Actual", target.Value.DayOfWeek));
     }
 }

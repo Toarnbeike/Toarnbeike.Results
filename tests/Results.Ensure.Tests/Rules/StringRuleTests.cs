@@ -16,7 +16,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _empty,
             expectedArgumentName: "_empty",
-            expectedGuardName: "StringRules.NotEmpty"
+            expectedGuardName: "String.NotEmpty"
         );
     }
 
@@ -27,7 +27,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _empty,
             expectedArgumentName: "_empty",
-            expectedGuardName: "StringRules.NotWhiteSpace"
+            expectedGuardName: "String.NotWhiteSpace"
         );
     }
 
@@ -39,7 +39,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "StringRules.MinLength",
+            expectedGuardName: "String.MinLength",
             ("MinLength", min),
             ("ActualLength", _value.Length)
         );
@@ -53,7 +53,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "StringRules.MaxLength",
+            expectedGuardName: "String.MaxLength",
             ("MaxLength", max),
             ("ActualLength", _value.Length)
         );
@@ -68,7 +68,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "StringRules.LengthBetween",
+            expectedGuardName: "String.LengthBetween",
             ("MinLength", min),
             ("MaxLength", max),
             ("ActualLength", _value.Length)
@@ -83,7 +83,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "StringRules.Matches",
+            expectedGuardName: "String.Matches",
             ("Pattern", pattern),
             ("Options", default(RegexOptions))
         );
@@ -96,7 +96,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "StringRules.Alphabetic"
+            expectedGuardName: "String.Alphabetic"
         );
     }
 
@@ -107,7 +107,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "StringRules.AlphaNumeric"
+            expectedGuardName: "String.AlphaNumeric"
         );
     }
 
@@ -118,7 +118,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "StringRules.Numeric"
+            expectedGuardName: "String.Numeric"
         );
     }
 
@@ -129,7 +129,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "StringRules.EmailAddress"
+            expectedGuardName: "String.EmailAddress"
         );
     }
 
@@ -140,7 +140,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _invalidUri,
             expectedArgumentName: "_invalidUri",
-            expectedGuardName: "StringRules.Uri"
+            expectedGuardName: "String.Uri"
         );
     }
 
@@ -151,7 +151,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _invalidUri,
             expectedArgumentName: "_invalidUri",
-            expectedGuardName: "StringRules.AbsoluteUri"
+            expectedGuardName: "String.AbsoluteUri"
         );
     }
 
@@ -162,7 +162,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _invalidUri,
             expectedArgumentName: "_invalidUri",
-            expectedGuardName: "StringRules.RelativeUri"
+            expectedGuardName: "String.RelativeUri"
         );
     }
 
@@ -173,7 +173,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "StringRules.IpAddress"
+            expectedGuardName: "String.IpAddress"
         );
     }
 
@@ -184,7 +184,7 @@ public class StringRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "StringRules.Slug"
+            expectedGuardName: "String.Slug"
         );
     }
 }

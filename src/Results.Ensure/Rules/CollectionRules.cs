@@ -5,6 +5,8 @@ namespace Toarnbeike.Results.Ensure.Rules;
 
 public static class CollectionRules
 {
+    private const string RuleCategory = "Collection";
+
     extension<TCollection>(IGuardTarget<TCollection> target) where TCollection : IEnumerable
     {
         /// <summary>
@@ -14,7 +16,7 @@ public static class CollectionRules
         {
             var actualCount = target.GetCount();
             return target.Evaluate(ComparisonGuards.GreaterThan(actualCount, 0),
-                $"{nameof(CollectionRules)}.{nameof(NotEmpty)}");
+                $"{RuleCategory}.{nameof(NotEmpty)}");
         }
 
         /// <summary>
@@ -24,7 +26,7 @@ public static class CollectionRules
         {
             var actualCount = target.GetCount();
             return target.Evaluate(ComparisonGuards.Equal(actualCount, 0),
-                $"{nameof(CollectionRules)}.{nameof(Empty)}", 
+                $"{RuleCategory}.{nameof(Empty)}", 
                 ("Actual", actualCount));
         }
 
@@ -36,7 +38,7 @@ public static class CollectionRules
         {
             var actualCount = target.GetCount();
             return target.Evaluate(ComparisonGuards.AtLeast(actualCount, min),
-                $"{nameof(CollectionRules)}.{nameof(AtLeast)}",
+                $"{RuleCategory}.{nameof(AtLeast)}",
                 ("Actual", actualCount), ("Min", min));
         }
 
@@ -48,7 +50,7 @@ public static class CollectionRules
         {
             var actualCount = target.GetCount();
             return target.Evaluate(ComparisonGuards.AtMost(actualCount, max),
-                $"{nameof(CollectionRules)}.{nameof(AtMost)}",
+                $"{RuleCategory}.{nameof(AtMost)}",
                 ("Actual", actualCount), ("Max", max));
         }
 
@@ -62,7 +64,7 @@ public static class CollectionRules
             var actualCount = target.GetCount();
             return target.Evaluate(ComparisonGuards.AtLeast(actualCount, min) &&
                                    ComparisonGuards.AtMost(actualCount, max),
-                $"{nameof(CollectionRules)}.{nameof(Between)}",
+                $"{RuleCategory}.{nameof(Between)}",
                 ("Actual", actualCount), ("Min", min), ("Max", max));
         }
 
@@ -74,7 +76,7 @@ public static class CollectionRules
         {
             var actualCount = target.GetCount();
             return target.Evaluate(ComparisonGuards.Equal(actualCount, expected),
-                $"{nameof(CollectionRules)}.{nameof(Exactly)}",
+                $"{RuleCategory}.{nameof(Exactly)}",
                 ("Actual", actualCount),
                 ("Expected", expected));
         }
@@ -86,7 +88,7 @@ public static class CollectionRules
         {
             var actualCount = target.GetCount();
             return target.Evaluate(ComparisonGuards.Equal(actualCount, 1),
-                $"{nameof(CollectionRules)}.{nameof(Single)}",
+                $"{RuleCategory}.{nameof(Single)}",
                 ("Actual", actualCount));
         }
 

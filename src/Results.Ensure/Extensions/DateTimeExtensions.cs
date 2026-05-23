@@ -50,24 +50,26 @@ public static class DateTimeExtensions
         /// <summary>
         /// Ensure that the provided date is in the future compared to the current date.
         /// </summary>
+        /// <param name="timeProvider">Optional: the date time provider used.</param>
         /// <param name="message">Optional: failure message specific for this date.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming date.</param>
         /// <returns>Result containing either the incoming date or a <see cref="GuardFailure"/></returns>
-        public Result<DateTime> Future(string? message = null,
+        public Result<DateTime> Future(TimeProvider? timeProvider = null, string? message = null,
             [CallerArgumentExpression(nameof(date))] string? expr = null) =>
-            Result.Ensure().That(date).Future()
+            Result.Ensure(timeProvider: timeProvider).That(date).Future()
                 .WithMessage(message).WithArgumentName(expr)
                 .ToResult(date);
 
         /// <summary>
         /// Ensure that the provided date is in the past compared to the current date.
         /// </summary>
+        /// <param name="timeProvider">Optional: the date time provider used.</param>
         /// <param name="message">Optional: failure message specific for this date.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming date.</param>
         /// <returns>Result containing either the incoming date or a <see cref="GuardFailure"/></returns>
-        public Result<DateTime> Past(string? message = null,
+        public Result<DateTime> Past(TimeProvider? timeProvider = null, string? message = null,
             [CallerArgumentExpression(nameof(date))] string? expr = null) =>
-            Result.Ensure().That(date).Past()
+            Result.Ensure(timeProvider: timeProvider).That(date).Past()
                 .WithMessage(message).WithArgumentName(expr)
                 .ToResult(date);
 
@@ -75,12 +77,13 @@ public static class DateTimeExtensions
         /// Ensure that the provided date is in the future within the specified timespan compared to the current date.
         /// </summary>
         /// <param name="timespan">The timespan within which the date should be in the future.</param>
+        /// <param name="timeProvider">Optional: the date time provider used.</param>
         /// <param name="message">Optional: failure message specific for this date.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming date.</param>
         /// <returns>Result containing either the incoming date or a <see cref="GuardFailure"/></returns>
-        public Result<DateTime> WithinFuture(TimeSpan timespan, string? message = null,
+        public Result<DateTime> WithinFuture(TimeSpan timespan, TimeProvider? timeProvider = null, string? message = null,
             [CallerArgumentExpression(nameof(date))] string? expr = null) =>
-            Result.Ensure().That(date).WithinFuture(timespan)
+            Result.Ensure(timeProvider: timeProvider).That(date).WithinFuture(timespan)
                 .WithMessage(message).WithArgumentName(expr)
                 .ToResult(date);
 
@@ -88,12 +91,13 @@ public static class DateTimeExtensions
         /// Ensure that the provided date is in the past within the specified timespan compared to the current date.
         /// </summary>
         /// <param name="timespan">The timespan within which the date should be in the past.</param>
+        /// <param name="timeProvider">Optional: the date time provider used.</param>
         /// <param name="message">Optional: failure message specific for this date.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming date.</param>
         /// <returns>Result containing either the incoming date or a <see cref="GuardFailure"/></returns>
-        public Result<DateTime> WithinPast(TimeSpan timespan, string? message = null,
+        public Result<DateTime> WithinPast(TimeSpan timespan, TimeProvider? timeProvider = null, string? message = null,
             [CallerArgumentExpression(nameof(date))] string? expr = null) =>
-            Result.Ensure().That(date).WithinPast(timespan)
+            Result.Ensure(timeProvider: timeProvider).That(date).WithinPast(timespan)
                 .WithMessage(message).WithArgumentName(expr)
                 .ToResult(date);
 
@@ -105,7 +109,7 @@ public static class DateTimeExtensions
         /// <param name="message">Optional: failure message specific for this date.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming date.</param>
         /// <returns>Result containing either the incoming date or a <see cref="GuardFailure"/></returns>
-        public Result<DateTime> CloseTo(DateTime other, TimeSpan timespan, string? message = null,
+        public Result<DateTime> Around(DateTime other, TimeSpan timespan, string? message = null,
             [CallerArgumentExpression(nameof(date))] string? expr = null) =>
             Result.Ensure().That(date).Around(other, timespan)
                 .WithMessage(message).WithArgumentName(expr)

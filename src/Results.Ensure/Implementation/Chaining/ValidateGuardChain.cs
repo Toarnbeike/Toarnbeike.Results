@@ -5,8 +5,8 @@ using Toarnbeike.Results.Failures;
 namespace Toarnbeike.Results.Ensure.Implementation.Chaining;
 
 internal sealed class ValidateGuardChain(
-    IFailureMessageProvider failureMessageProvider, IToleranceProvider toleranceProvider)
-    : GuardChainBase(failureMessageProvider, toleranceProvider)
+    IFailureMessageProvider failureMessageProvider, IToleranceProvider toleranceProvider, TimeProvider timeProvider)
+    : GuardChainBase(failureMessageProvider, toleranceProvider, timeProvider)
 {
     private readonly List<IFailingRuleResult> _failures = [];
 
@@ -20,6 +20,6 @@ internal sealed class ValidateGuardChain(
         return _failures.Count == 0
             ? Result.Success()
             : new ValidationFailureSummary(_failures.Select(result => 
-                new ValidationFailure(result.ArgumentName, result.Message)));
+                new ValidationFailure(result.ArgumentName, base.CreateMessage(result))));
     }
 }

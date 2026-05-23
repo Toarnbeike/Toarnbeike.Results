@@ -4,6 +4,8 @@ namespace Toarnbeike.Results.Ensure.Rules;
 
 public static class EnumRules
 {
+    private const string RuleCategory = "Enum";
+
     extension<TEnum>(IGuardTarget<TEnum> target) where TEnum : struct, Enum
     {
         /// <summary>
@@ -11,7 +13,7 @@ public static class EnumRules
         /// </summary>
         public IGuardRuleResult IsDefined() =>
             target.Evaluate(EnumGuards.IsDefined(target.Value),
-                $"{nameof(EnumRules)}.{nameof(IsDefined)}",
+                $"{RuleCategory}.{nameof(IsDefined)}",
                 ("EnumType", typeof(TEnum)));
 
         /// <summary>
@@ -19,7 +21,7 @@ public static class EnumRules
         /// </summary>
         public IGuardRuleResult OneOf(params TEnum[] validValues) =>
             target.Evaluate(EnumGuards.OneOf(target.Value, validValues),
-                $"{nameof(EnumRules)}.{nameof(OneOf)}", 
+                $"{RuleCategory}.{nameof(OneOf)}", 
                 ("ValidValues", validValues.Select(x => x.ToString())));
 
         /// <summary>
@@ -27,7 +29,7 @@ public static class EnumRules
         /// </summary>
         public IGuardRuleResult NotOneOf(params TEnum[] invalidValues) =>
             target.Evaluate(EnumGuards.NotOneOf(target.Value, invalidValues),
-                $"{nameof(EnumRules)}.{nameof(NotOneOf)}", 
+                $"{RuleCategory}.{nameof(NotOneOf)}", 
                 ("InvalidValues", invalidValues.Select(x => x.ToString())));
     }
 }

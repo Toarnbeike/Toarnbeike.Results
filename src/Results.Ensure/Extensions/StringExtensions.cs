@@ -113,7 +113,7 @@ public static class StringExtensions
         /// <param name="message">Optional: failure message specific for this value.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming value.</param>
         /// <returns>Result containing either the incoming value or a <see cref="GuardFailure"/></returns>
-        public Result<string> Digits(string? message = null,
+        public Result<string> Numeric(string? message = null,
             [CallerArgumentExpression(nameof(value))] string? expr = null) =>
             Result.Ensure().That(value).Numeric()
                 .WithArgumentName(expr).WithMessage(message)
@@ -127,7 +127,7 @@ public static class StringExtensions
         /// <returns>Result containing either the incoming value or a <see cref="GuardFailure"/></returns>
         public Result<string> Ascii(string? message = null,
             [CallerArgumentExpression(nameof(value))] string? expr = null) =>
-            Result.Ensure().That(value).Numeric()
+            Result.Ensure().That(value).Ascii()
                 .WithArgumentName(expr).WithMessage(message)
                 .ToResult(value);
 

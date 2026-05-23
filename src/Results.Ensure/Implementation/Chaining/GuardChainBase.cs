@@ -7,7 +7,10 @@ using Toarnbeike.Results.Extensions;
 
 namespace Toarnbeike.Results.Ensure.Implementation.Chaining;
 
-internal abstract class GuardChainBase(IFailureMessageProvider messageProvider, IToleranceProvider toleranceProvider) : IGuardChain
+internal abstract class GuardChainBase(
+    IFailureMessageProvider messageProvider, 
+    IToleranceProvider toleranceProvider, 
+    TimeProvider timeProvider) : IGuardChain
 {
     protected abstract bool ShouldSkipExecution { get; }
     public IGuardTarget<T> That<T>(T value, [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -25,7 +28,6 @@ internal abstract class GuardChainBase(IFailureMessageProvider messageProvider, 
 
         var failingResult = new FailingRuleResult<T>(
             this,
-            messageProvider.CreateMessage(new FailureMessageContext(expression, attemptedValue, ruleContext, guardName)),
             expression,
             attemptedValue,
             guardName,
@@ -38,9 +40,15 @@ internal abstract class GuardChainBase(IFailureMessageProvider messageProvider, 
 
     public IToleranceProvider ToleranceProvider => toleranceProvider;
 
+    public TimeProvider TimeProvider => timeProvider;
+
     protected abstract void HandleFailure<T>(FailingRuleResult<T> result);
 
     public abstract Result ToResult();
 
     public Result<T> ToResult<T>(T value) => ToResult().WithValue(value);
+
+    protected string CreateMessage(IFailingRuleResult failure) =>
+        failure.CustomMessage ?? messageProvider.CreateMessage(
+            new FailureMessageContext(failure.ArgumentName, failure.AttemptedValueAsObject, failure.Context, failure.GuardName));
 }

@@ -9,6 +9,32 @@ public class FloatingPointNumberRuleTests
     private readonly double _tolerance = 0.4;
 
     [Test]
+    public void GreaterThan_Should_ReturnFailingRuleResult_WhenFailure()
+    {
+        var min = 2;
+        var result = Result.Ensure().That(_value).GreaterThan(min);
+        result.AssertFailure(
+            expectedAttemptedValue: _value,
+            expectedArgumentName: "_value",
+            expectedGuardName: "Number.GreaterThan",
+            ("Min", min)
+        );
+    }
+
+    [Test]
+    public void LessThan_Should_ReturnFailingRuleResult_WhenFailure()
+    {
+        var max = 0;
+        var result = Result.Ensure().That(_value).LessThan(max);
+        result.AssertFailure(
+            expectedAttemptedValue: _value,
+            expectedArgumentName: "_value",
+            expectedGuardName: "Number.LessThan",
+            ("Max", max)
+        );
+    }
+
+    [Test]
     public void AtLeast_Should_ReturnFailingRuleResult_WhenFailure()
     {
         var min = 2.0d;
@@ -16,7 +42,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "FloatingPointNumberRules.AtLeast",
+            expectedGuardName: "Number.Floating.AtLeast",
             ("Min", min),
             ("Tolerance", _tolerance)
         );
@@ -30,7 +56,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "FloatingPointNumberRules.AtMost",
+            expectedGuardName: "Number.Floating.AtMost",
             ("Max", max),
             ("Tolerance", _tolerance)
         );
@@ -45,10 +71,32 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "FloatingPointNumberRules.Between",
+            expectedGuardName: "Number.Floating.Between",
             ("Min", min),
             ("Max", max),
             ("Tolerance", _tolerance)
+        );
+    }
+
+    [Test]
+    public void Positive_Should_ReturnFailingRuleResult_WhenFailure()
+    {
+        var result = Result.Ensure().That(_negativeValue).Positive();
+        result.AssertFailure(
+            expectedAttemptedValue: _negativeValue,
+            expectedArgumentName: "_negativeValue",
+            expectedGuardName: "Number.Positive"
+        );
+    }
+
+    [Test]
+    public void Negative_Should_ReturnFailingRuleResult_WhenFailure()
+    {
+        var result = Result.Ensure().That(_value).Negative();
+        result.AssertFailure(
+            expectedAttemptedValue: _value,
+            expectedArgumentName: "_value",
+            expectedGuardName: "Number.Negative"
         );
     }
 
@@ -59,7 +107,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _negativeValue,
             expectedArgumentName: "_negativeValue",
-            expectedGuardName: "FloatingPointNumberRules.AtLeastZero",
+            expectedGuardName: "Number.Floating.AtLeastZero",
             ("Tolerance", _tolerance)
         );
     }
@@ -71,7 +119,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "FloatingPointNumberRules.AtMostZero",
+            expectedGuardName: "Number.Floating.AtMostZero",
             ("Tolerance", _tolerance)
         );
     }
@@ -83,7 +131,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "FloatingPointNumberRules.Zero",
+            expectedGuardName: "Number.Floating.Zero",
             ("Tolerance", _tolerance)
         );
     }
@@ -95,7 +143,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "FloatingPointNumberRules.NotZero",
+            expectedGuardName: "Number.Floating.NotZero",
             ("Tolerance", _value)
         );
     }
@@ -108,7 +156,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "FloatingPointNumberRules.MultipleOf",
+            expectedGuardName: "Number.Floating.MultipleOf",
             ("Factor", factor),
             ("Tolerance", _tolerance)
         );
@@ -121,7 +169,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "FloatingPointNumberRules.WholeNumber",
+            expectedGuardName: "Number.Floating.WholeNumber",
             ("Tolerance", _tolerance)
         );
     }
@@ -133,7 +181,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "FloatingPointNumberRules.MaxDecimalPlaces",
+            expectedGuardName: "Number.Floating.MaxDecimalPlaces",
             ("Tolerance", _tolerance)
         );
     }
@@ -146,7 +194,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: value,
             expectedArgumentName: "value",
-            expectedGuardName: "FloatingPointNumberRules.Finite"
+            expectedGuardName: "Number.Floating.Finite"
         );
     }
 
@@ -158,7 +206,7 @@ public class FloatingPointNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: value,
             expectedArgumentName: "value",
-            expectedGuardName: "FloatingPointNumberRules.NotNaN"
+            expectedGuardName: "Number.Floating.NotNaN"
         );
     }
 

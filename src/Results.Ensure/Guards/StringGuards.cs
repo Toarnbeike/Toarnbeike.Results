@@ -24,7 +24,7 @@ internal static partial class StringGuards
     public static bool Matches(string value, Regex regex) => regex.IsMatch(value);
     public static bool Alphabetic(string value) => AlphaRegex.IsMatch(value);
     public static bool AlphaNumeric(string value) => AlphaNumericRegex.IsMatch(value);
-    public static bool Digits(string value) => DigitsOnlyRegex.IsMatch(value);
+    public static bool Numeric(string value) => DigitsOnlyRegex.IsMatch(value);
     public static bool Ascii(string value) => value.All(char.IsAscii);
 
     public static bool EmailAddress(string value) => MailAddress.TryCreate(value, out _);

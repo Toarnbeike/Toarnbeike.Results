@@ -14,7 +14,7 @@ public class TimeSpanRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _oneHourAgo,
             expectedArgumentName: "_oneHourAgo",
-            expectedGuardName: "TimeSpanRules.AtLeast",
+            expectedGuardName: "TimeSpan.AtLeast",
             ("Min", _inAnHour)
         );
     }
@@ -26,7 +26,7 @@ public class TimeSpanRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _inAnHour,
             expectedArgumentName: "_inAnHour",
-            expectedGuardName: "TimeSpanRules.AtMost",
+            expectedGuardName: "TimeSpan.AtMost",
             ("Max", _oneHourAgo)
         );
     }
@@ -38,7 +38,7 @@ public class TimeSpanRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _inAnHour,
             expectedArgumentName: "_inAnHour",
-            expectedGuardName: "TimeSpanRules.Between",
+            expectedGuardName: "TimeSpan.Between",
             ("Min", _oneHourAgo),
             ("Max", _oneHourAgo)
         );
@@ -52,7 +52,7 @@ public class TimeSpanRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _inAnHour,
             expectedArgumentName: "_inAnHour",
-            expectedGuardName: "TimeSpanRules.Around",
+            expectedGuardName: "TimeSpan.Around",
             ("Expected", _oneHourAgo),
             ("Tolerance", timeSpan)
         );
@@ -65,7 +65,7 @@ public class TimeSpanRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _oneHourAgo,
             expectedArgumentName: "_oneHourAgo",
-            expectedGuardName: "TimeSpanRules.AtLeastZero"
+            expectedGuardName: "TimeSpan.AtLeastZero"
         );
     }
 
@@ -76,7 +76,7 @@ public class TimeSpanRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _inAnHour,
             expectedArgumentName: "_inAnHour",
-            expectedGuardName: "TimeSpanRules.AtMostZero"
+            expectedGuardName: "TimeSpan.AtMostZero"
         );
     }
 }

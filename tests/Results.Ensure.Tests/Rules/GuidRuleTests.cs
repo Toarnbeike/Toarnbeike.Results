@@ -15,7 +15,7 @@ public class GuidRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _empty,
             expectedArgumentName: "_empty",
-            expectedGuardName: "GuidRules.NotEmpty"
+            expectedGuardName: "Guid.NotEmpty"
         );
     }
 
@@ -26,7 +26,7 @@ public class GuidRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _version7,
             expectedArgumentName: "_version7",
-            expectedGuardName: "GuidRules.Version4",
+            expectedGuardName: "Guid.Version4",
             ("Actual", 7)
         );
     }
@@ -38,7 +38,7 @@ public class GuidRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _version4,
             expectedArgumentName: "_version4",
-            expectedGuardName: "GuidRules.Version7",
+            expectedGuardName: "Guid.Version7",
             ("Actual", 4)
         );
     }

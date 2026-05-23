@@ -20,6 +20,8 @@ public interface IGuardTarget<out T>
 
     internal IToleranceProvider ToleranceProvider { get; }
 
+    internal TimeProvider TimeProvider { get; }
+
     /// <summary>
     /// Evaluates a guard condition for the current value.
     /// </summary>

@@ -4,16 +4,19 @@ namespace Toarnbeike.Results.Ensure.Rules;
 
 public static class DateTimeRules
 {
+    private const string RuleCategory = "Date";
+    private const string QualifiedRuleCategory = "Date.DateTime";
+
     extension(IGuardTarget<DateTime> target)
     { 
-        private IGuardTarget<DateOnly> AsDateOnly() => target.As(DateOnly.FromDateTime);
+        private DateOnly DateOnlyValue => DateOnly.FromDateTime(target.Value);
 
         /// <summary>
         /// Rule that the targeted date must be on or after the specified date.
         /// </summary>
         public IGuardRuleResult OnOrAfter(DateTime min) =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value, min),
-                $"{nameof(DateRules)}.{nameof(OnOrAfter)}", 
+                $"{RuleCategory}.{nameof(OnOrAfter)}", 
                 ("Min", min));
 
         /// <summary>
@@ -21,7 +24,7 @@ public static class DateTimeRules
         /// </summary>
         public IGuardRuleResult OnOrBefore(DateTime max) =>
             target.Evaluate(ComparisonGuards.AtMost(target.Value, max),
-                $"{nameof(DateRules)}.{nameof(OnOrBefore)}", 
+                $"{RuleCategory}.{nameof(OnOrBefore)}", 
                 ("Max", max));
 
         /// <summary>
@@ -30,7 +33,7 @@ public static class DateTimeRules
         public IGuardRuleResult Between(DateTime min, DateTime max) =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value, min) &&
                             ComparisonGuards.AtMost(target.Value, max),
-                $"{nameof(DateRules)}.{nameof(Between)}", 
+                $"{RuleCategory}.{nameof(Between)}", 
                 ("Min", min), 
                 ("Max", max));
 
@@ -39,10 +42,10 @@ public static class DateTimeRules
         /// </summary>
         public IGuardRuleResult Future()
         {
-            var utcNow = DateTime.UtcNow;
+            var utcNow = target.TimeProvider.GetUtcNow();
             return target.Evaluate(ComparisonGuards.AtLeast(target.Value, utcNow),
-                $"{nameof(DateRules)}.{nameof(Future)}",
-                ("Now", utcNow));
+                $"{RuleCategory}.{nameof(Future)}",
+                ("Now", utcNow.DateTime));
         }
 
         /// <summary>
@@ -50,10 +53,10 @@ public static class DateTimeRules
         /// </summary>
         public IGuardRuleResult Past()
         {
-            var utcNow = DateTime.UtcNow;
+            var utcNow = target.TimeProvider.GetUtcNow();
             return target.Evaluate(ComparisonGuards.AtMost(target.Value, utcNow),
-                $"{nameof(DateRules)}.{nameof(Past)}",
-                ("Now", utcNow));
+                $"{RuleCategory}.{nameof(Past)}",
+                ("Now", utcNow.DateTime));
         }
 
         /// <summary>
@@ -61,11 +64,11 @@ public static class DateTimeRules
         /// </summary>
         public IGuardRuleResult WithinFuture(TimeSpan timeSpan)
         {
-            var utcNow = DateTime.UtcNow;
+            var utcNow = target.TimeProvider.GetUtcNow();
             return target.Evaluate(ComparisonGuards.AtLeast(target.Value, utcNow) &&
                                    ComparisonGuards.AtMost(target.Value, utcNow + timeSpan),
-                $"{nameof(DateTimeRules)}.{nameof(WithinFuture)}",
-                ("Now", utcNow),
+                $"{QualifiedRuleCategory}.{nameof(WithinFuture)}",
+                ("Now", utcNow.DateTime),
                 ("TimeSpan", timeSpan));
         }
 
@@ -75,11 +78,11 @@ public static class DateTimeRules
         /// </summary>
         public IGuardRuleResult WithinPast(TimeSpan timeSpan)
         {
-            var utcNow = DateTime.UtcNow;
+            var utcNow = target.TimeProvider.GetUtcNow();
             return target.Evaluate(ComparisonGuards.AtLeast(target.Value, utcNow - timeSpan) &&
                             ComparisonGuards.AtMost(target.Value, utcNow),
-                $"{nameof(DateTimeRules)}.{nameof(WithinPast)}", 
-                ("Now", utcNow),
+                $"{QualifiedRuleCategory}.{nameof(WithinPast)}", 
+                ("Now", utcNow.DateTime),
                 ("TimeSpan", timeSpan));
         }
 
@@ -88,7 +91,7 @@ public static class DateTimeRules
         /// </summary>
         public IGuardRuleResult Around(DateTime comparison, TimeSpan tolerance) =>
             target.Evaluate(ToleranceGuards.Equal(target.Value.Ticks, comparison.Ticks, tolerance.Ticks),
-                $"{nameof(DateTimeRules)}.{nameof(Around)}", 
+                $"{QualifiedRuleCategory}.{nameof(Around)}", 
                 ("Comparison", comparison),
                 ("Tolerance", tolerance));
 
@@ -96,22 +99,34 @@ public static class DateTimeRules
         /// Rule that the targeted date must be on the specified day of the week.
         /// </summary>
         public IGuardRuleResult OnDayOfWeek(DayOfWeek dayOfWeek) =>
-            target.AsDateOnly().OnDayOfWeek(dayOfWeek);
+            target.Evaluate(DayOfWeekGuards.OnDayOfWeek(target.DateOnlyValue, dayOfWeek),
+                $"{RuleCategory}.{nameof(OnDayOfWeek)}",
+                ("Actual", target.Value.DayOfWeek),
+                ("ExpectedDay", dayOfWeek));
 
         /// <summary>
         /// Rule that the targeted date must be on one of the specified days of the week.
         /// </summary>
         public IGuardRuleResult OnDaysOfWeek(params DayOfWeek[] allowed) =>
-            target.AsDateOnly().OnDaysOfWeek(allowed);
+            target.Evaluate(DayOfWeekGuards.OnDaysOfWeek(target.DateOnlyValue, allowed),
+                $"{RuleCategory}.{nameof(OnDaysOfWeek)}",
+                ("Actual", target.Value.DayOfWeek),
+                ("Allowed", allowed));
 
         /// <summary>
         /// Rule that the targeted date must be on a weekday.
         /// </summary>
-        public IGuardRuleResult OnWeekday() => target.AsDateOnly().OnWeekday();
+        public IGuardRuleResult OnWeekday() =>
+            target.Evaluate(DayOfWeekGuards.OnDaysOfWeek(target.DateOnlyValue, [DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday]),
+                $"{RuleCategory}.{nameof(OnWeekday)}",
+                ("Actual", target.Value.DayOfWeek));
 
         /// <summary>
         /// Rule that the targeted date must be on a weekend day.
         /// </summary>
-        public IGuardRuleResult OnWeekend() => target.AsDateOnly().OnWeekend();
+        public IGuardRuleResult OnWeekend() =>
+            target.Evaluate(DayOfWeekGuards.OnDaysOfWeek(target.DateOnlyValue, [DayOfWeek.Saturday, DayOfWeek.Sunday]),
+                $"{RuleCategory}.{nameof(OnWeekend)}",
+                ("Actual", target.Value.DayOfWeek));
     }
 }

@@ -33,8 +33,8 @@ public sealed record GuardFailure : Failure
     public string ParameterName =>
         Expression.Contains('.') ? Expression[(Expression.LastIndexOf('.') + 1)..] : Expression;
 
-    internal static GuardFailure FromRuleResult(IFailingRuleResult result) =>
-        new(result.Message, result.GuardName, result.ArgumentName, result.Context, result.AttemptedValueAsObject);
+    internal static GuardFailure FromRuleResult(string message, IFailingRuleResult result) =>
+        new(message, result.GuardName, result.ArgumentName, result.Context, result.AttemptedValueAsObject);
 
     private GuardFailure(string message, string guardName, string expression, RuleContext context, object? attemptedValue)
     {

@@ -36,7 +36,7 @@ public static class FloatingPointExtensions
         /// <param name="message">Optional: failure message specific for this value.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming value.</param>
         /// <returns>Result containing either the incoming value or a <see cref="GuardFailure"/></returns>
-        public Result<TFloatingPoint> AtLeast(TFloatingPoint min, TFloatingPoint tolerance, string? message = null,
+        public Result<TFloatingPoint> AtLeast(TFloatingPoint min, TFloatingPoint? tolerance = null, string? message = null,
             [CallerArgumentExpression(nameof(value))] string? expr = null) =>
             Result.Ensure().That(value).AtLeast(min, tolerance)
                 .WithArgumentName(expr).WithMessage(message)
@@ -55,7 +55,7 @@ public static class FloatingPointExtensions
         /// <param name="message">Optional: failure message specific for this value.</param>
         /// <param name="expr">Auto: CallerArgumentExpression of the incoming value.</param>
         /// <returns>Result containing either the incoming value or a <see cref="GuardFailure"/></returns>
-        public Result<TFloatingPoint> AtMost(TFloatingPoint max, TFloatingPoint tolerance, string? message = null,
+        public Result<TFloatingPoint> AtMost(TFloatingPoint max, TFloatingPoint? tolerance = null, string? message = null,
             [CallerArgumentExpression(nameof(value))] string? expr = null) =>
             Result.Ensure().That(value).AtMost(max, tolerance)
                 .WithArgumentName(expr).WithMessage(message)
@@ -206,6 +206,24 @@ public static class FloatingPointExtensions
         public Result<TFloatingPoint> MultipleOf(TFloatingPoint factor, TFloatingPoint? tolerance = null, string? message = null,
             [CallerArgumentExpression(nameof(value))] string? expr = null) =>
             Result.Ensure().That(value).MultipleOf(factor, tolerance)
+                .WithArgumentName(expr).WithMessage(message)
+                .ToResult(value);
+
+        /// <summary>
+        /// Ensure that the provided value is a whole number, eg, has no decimal places.
+        /// </summary>
+        /// <remarks>
+        /// The comparison takes into account a small tolerance for floating point values,
+        /// to avoid false positives due to jittering.
+        /// The default tolerance can be overwritten using the <paramref name="tolerance"/> parameter.
+        /// </remarks>
+        /// <param name="tolerance">Optional: overwrite the default tolerance.</param>
+        /// <param name="message">Optional: failure message specific for this value.</param>
+        /// <param name="expr">Auto: CallerArgumentExpression of the incoming value.</param>
+        /// <returns>Result containing either the incoming value or a <see cref="GuardFailure"/></returns>
+        public Result<TFloatingPoint> WholeNumber(TFloatingPoint? tolerance = null, string? message = null,
+            [CallerArgumentExpression(nameof(value))] string? expr = null) =>
+            Result.Ensure().That(value).WholeNumber(tolerance)
                 .WithArgumentName(expr).WithMessage(message)
                 .ToResult(value);
 

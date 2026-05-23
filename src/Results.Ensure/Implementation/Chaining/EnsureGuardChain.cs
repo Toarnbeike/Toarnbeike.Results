@@ -4,8 +4,8 @@ using Toarnbeike.Results.Ensure.Implementation.RuleResults;
 namespace Toarnbeike.Results.Ensure.Implementation.Chaining;
 
 internal sealed class EnsureGuardChain(
-    IFailureMessageProvider failureMessageProvider, IToleranceProvider toleranceProvider) 
-    : GuardChainBase(failureMessageProvider, toleranceProvider)
+    IFailureMessageProvider failureMessageProvider, IToleranceProvider toleranceProvider, TimeProvider timeProvider) 
+    : GuardChainBase(failureMessageProvider, toleranceProvider, timeProvider)
 {
     private IFailingRuleResult? _failure;
 
@@ -19,5 +19,5 @@ internal sealed class EnsureGuardChain(
     public override Result ToResult() 
         => _failure is null 
             ? Result.Success()
-            : GuardFailure.FromRuleResult(_failure);
+            : GuardFailure.FromRuleResult(CreateMessage(_failure), _failure);
 }

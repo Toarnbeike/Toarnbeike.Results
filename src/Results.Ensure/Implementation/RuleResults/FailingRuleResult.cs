@@ -5,11 +5,11 @@ internal sealed class FailingRuleResult<T> : GuardRuleResultBase, IFailingRuleRe
     public object? AttemptedValueAsObject => AttemptedValue;
 
     /// <summary>
-    /// Message describing the failure.
-    /// This can still be modified after the evaluation using the WithMessage methods,
+    /// Custom message describing the failure.
+    /// This is the value that is saved using the WithMessage methods,
     /// allowing for fluent customization of the failure message while still continuing the guard chain.
     /// </summary>
-    public string Message { get; private set; }
+    public string? CustomMessage { get; private set; } = null;
 
     /// <summary>
     /// Argument name of the attempted value.
@@ -33,10 +33,9 @@ internal sealed class FailingRuleResult<T> : GuardRuleResultBase, IFailingRuleRe
     /// </summary>
     public RuleContext Context { get; }
 
-    internal FailingRuleResult(IGuardChain chain, string message, string argumentName,
+    internal FailingRuleResult(IGuardChain chain, string argumentName,
         T attemptedValue, string guardName, RuleContext context) : base(chain)
     {
-        Message = message;
         ArgumentName = argumentName;
         AttemptedValue = attemptedValue;
         GuardName = guardName;
@@ -48,7 +47,7 @@ internal sealed class FailingRuleResult<T> : GuardRuleResultBase, IFailingRuleRe
     {
         if (message is not null)
         {
-            Message = message;
+            CustomMessage = message;
         }
         return this;
     }
@@ -56,7 +55,7 @@ internal sealed class FailingRuleResult<T> : GuardRuleResultBase, IFailingRuleRe
     /// <inheritdoc/>
     public override IGuardRuleResult WithMessage(Func<string, RuleContext, string> messageBuilder)
     {
-        Message = messageBuilder(ArgumentName, Context);
+        CustomMessage = messageBuilder(ArgumentName, Context);
         return this;
     }
 

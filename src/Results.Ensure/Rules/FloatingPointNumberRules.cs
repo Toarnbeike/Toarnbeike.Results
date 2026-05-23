@@ -5,17 +5,36 @@ namespace Toarnbeike.Results.Ensure.Rules;
 
 public static class FloatingPointNumberRules
 {
+    private const string RuleCategory = "Number";
+    private const string QualifiedRuleCategory = "Number.Floating";
+
     extension<TFloatingPoint>(IGuardTarget<TFloatingPoint> target) where TFloatingPoint : struct, IFloatingPointIeee754<TFloatingPoint>
     {
         private TFloatingPoint GetTolerance(TFloatingPoint? providedTolerance) =>
             providedTolerance ?? target.ToleranceProvider.GetTolerance<TFloatingPoint>();
 
         /// <summary>
+        /// Rule that the targeted number must be strictly greater than the specified minimum.
+        /// </summary>
+        public IGuardRuleResult GreaterThan(TFloatingPoint min) =>
+            target.Evaluate(ComparisonGuards.GreaterThan(target.Value, min),
+                $"{RuleCategory}.{nameof(GreaterThan)}",
+                ("Min", min));
+
+        /// <summary>
+        /// Rule that the targeted number must be less than the specified maximum.
+        /// </summary>
+        public IGuardRuleResult LessThan(TFloatingPoint max) =>
+            target.Evaluate(ComparisonGuards.LessThan(target.Value, max),
+                $"{RuleCategory}.{nameof(LessThan)}",
+                ("Max", max));
+
+        /// <summary>
         /// Rule that the targeted number must be at least the specified minimum.
         /// </summary>
         public IGuardRuleResult AtLeast(TFloatingPoint min, TFloatingPoint? tolerance = null) =>
             target.Evaluate(ToleranceGuards.AtLeast(target.Value, min, target.GetTolerance(tolerance)),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(AtLeast)}", 
+                $"{QualifiedRuleCategory}.{nameof(AtLeast)}", 
                 ("Min", min),
                 ("Tolerance", tolerance));
 
@@ -24,7 +43,7 @@ public static class FloatingPointNumberRules
         /// </summary>
         public IGuardRuleResult AtMost(TFloatingPoint max, TFloatingPoint? tolerance = null) =>
             target.Evaluate(ToleranceGuards.AtMost(target.Value, max, target.GetTolerance(tolerance)),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(AtMost)}", 
+                $"{QualifiedRuleCategory}.{nameof(AtMost)}", 
                 ("Max", max),
                 ("Tolerance", tolerance));
 
@@ -34,17 +53,31 @@ public static class FloatingPointNumberRules
         public IGuardRuleResult Between(TFloatingPoint min, TFloatingPoint max, TFloatingPoint? tolerance = null) =>
             target.Evaluate(ToleranceGuards.AtLeast(target.Value, min, target.GetTolerance(tolerance)) &&
                             ToleranceGuards.AtMost(target.Value, max, target.GetTolerance(tolerance)),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(Between)}", 
+                $"{QualifiedRuleCategory}.{nameof(Between)}", 
                 ("Min", min),
                 ("Max", max),
                 ("Tolerance", tolerance));
+
+        /// <summary>
+        /// Rule that the targeted number must be positive, that is, strictly greater than 0.
+        /// </summary>
+        public IGuardRuleResult Positive() =>
+            target.Evaluate(ComparisonGuards.GreaterThan(target.Value, TFloatingPoint.Zero),
+                $"{RuleCategory}.{nameof(Positive)}");
+
+        /// <summary>
+        /// Rule that the targeted number must be negative, that is, strictly less than 0.
+        /// </summary>
+        public IGuardRuleResult Negative() =>
+            target.Evaluate(ComparisonGuards.LessThan(target.Value, TFloatingPoint.Zero),
+                $"{RuleCategory}.{nameof(Negative)}");
 
         /// <summary>
         /// Rule that the targeted number must be at least 0.
         /// </summary>
         public IGuardRuleResult AtLeastZero(TFloatingPoint? tolerance = null) =>
             target.Evaluate(ToleranceGuards.AtLeast(target.Value, TFloatingPoint.Zero, target.GetTolerance(tolerance)),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(AtLeastZero)}", 
+                $"{QualifiedRuleCategory}.{nameof(AtLeastZero)}", 
                 ("Tolerance", tolerance));
 
         /// <summary>
@@ -52,7 +85,7 @@ public static class FloatingPointNumberRules
         /// </summary>
         public IGuardRuleResult AtMostZero(TFloatingPoint? tolerance = null) =>
             target.Evaluate(ToleranceGuards.AtMost(target.Value, TFloatingPoint.Zero, target.GetTolerance(tolerance)),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(AtMostZero)}", 
+                $"{QualifiedRuleCategory}.{nameof(AtMostZero)}", 
                 ("Tolerance", tolerance));
 
         /// <summary>
@@ -60,7 +93,7 @@ public static class FloatingPointNumberRules
         /// </summary>
         public IGuardRuleResult Zero(TFloatingPoint? tolerance = null) =>
             target.Evaluate(ToleranceGuards.Equal(target.Value, TFloatingPoint.Zero, target.GetTolerance(tolerance)),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(Zero)}", 
+                $"{QualifiedRuleCategory}.{nameof(Zero)}", 
                 ("Tolerance", tolerance));
 
         /// <summary>
@@ -68,7 +101,7 @@ public static class FloatingPointNumberRules
         /// </summary>
         public IGuardRuleResult NotZero(TFloatingPoint? tolerance = null) =>
             target.Evaluate(ToleranceGuards.NotEqual(target.Value, TFloatingPoint.Zero, target.GetTolerance(tolerance)),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(NotZero)}", 
+                $"{QualifiedRuleCategory}.{nameof(NotZero)}", 
                 ("Tolerance", tolerance));
 
         /// <summary>
@@ -76,7 +109,7 @@ public static class FloatingPointNumberRules
         /// </summary>
         public IGuardRuleResult MultipleOf(TFloatingPoint factor, TFloatingPoint? tolerance = null) =>
             target.Evaluate(ToleranceGuards.MultipleOf(target.Value, factor, target.GetTolerance(tolerance)),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(MultipleOf)}", 
+                $"{QualifiedRuleCategory}.{nameof(MultipleOf)}", 
                 ("Factor", factor),
                 ("Tolerance", tolerance));
 
@@ -85,7 +118,7 @@ public static class FloatingPointNumberRules
         /// </summary>
         public IGuardRuleResult WholeNumber(TFloatingPoint? tolerance = null) =>
             target.Evaluate(ToleranceGuards.MultipleOf(target.Value, TFloatingPoint.One, target.GetTolerance(tolerance)),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(WholeNumber)}", 
+                $"{QualifiedRuleCategory}.{nameof(WholeNumber)}", 
                 ("Tolerance", tolerance));
 
         /// <summary>
@@ -95,7 +128,7 @@ public static class FloatingPointNumberRules
         {
             var factor = TFloatingPoint.One / Power10<TFloatingPoint>(maxPlaces);
             return target.Evaluate(ToleranceGuards.MultipleOf(target.Value, factor, target.GetTolerance(tolerance)),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(MaxDecimalPlaces)}", 
+                $"{QualifiedRuleCategory}.{nameof(MaxDecimalPlaces)}", 
                 ("MaxPlaces", maxPlaces),
                 ("Tolerance", tolerance));
         }
@@ -105,14 +138,14 @@ public static class FloatingPointNumberRules
         /// </summary>
         public IGuardRuleResult Finite() =>
             target.Evaluate(FloatingPointGuards.Finite(target.Value),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(Finite)}");
+                $"{QualifiedRuleCategory}.{nameof(Finite)}");
 
         /// <summary>
         /// Rule that the targeted number must be a defined value, that is, not NaN.
         /// </summary>
         public IGuardRuleResult NotNaN() =>
             target.Evaluate(FloatingPointGuards.NotNaN(target.Value),
-                $"{nameof(FloatingPointNumberRules)}.{nameof(NotNaN)}");
+                $"{QualifiedRuleCategory}.{nameof(NotNaN)}");
     }
 
     /// <summary>

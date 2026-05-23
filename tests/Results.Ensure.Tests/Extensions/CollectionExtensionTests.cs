@@ -11,10 +11,7 @@ public class CollectionExtensionTests
         var result = list.NotEmpty();
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: list,
-            expectedArgumentName: "list",
-            expectedGuardName: "CollectionRules.NotEmpty",
-            expectedMessage: "expected");
-        //"'list' must not be empty, but is.");
+            expectedMessage: "'list' must not be empty, but is.");
     }
 
     [Test]
@@ -24,8 +21,7 @@ public class CollectionExtensionTests
         var result = list.Empty();
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: list,
-            expectedArgumentName: "list",
-            expectedGuardName: "CollectionRules.Empty");
+            expectedMessage: "'list' must be empty, but contains 1 item.");
     }
 
     [Test]
@@ -35,8 +31,7 @@ public class CollectionExtensionTests
         var result = list.AtLeast(3);
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: list,
-            expectedArgumentName: "list",
-            expectedGuardName: "CollectionRules.AtLeast");
+            expectedMessage: "'list' must contain at least 3 items, but contains 2 items.");
     }
 
     [Test]
@@ -46,8 +41,7 @@ public class CollectionExtensionTests
         var result = list.AtMost(2);
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: list,
-            expectedArgumentName: "list",
-            expectedGuardName: "CollectionRules.AtMost");
+            expectedMessage: "'list' must contain at most 2 items, but contains 3 items.");
     }
 
     [Test]
@@ -57,8 +51,7 @@ public class CollectionExtensionTests
         var result = list.Between(1, 2);
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: list,
-            expectedArgumentName: "list",
-            expectedGuardName: "CollectionRules.Between");
+            expectedMessage: "'list' must contain between 1 and 2 items, but contains 3 items.");
     }
 
     [Test]
@@ -68,8 +61,7 @@ public class CollectionExtensionTests
         var result = list.Exactly(2);
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: list,
-            expectedArgumentName: "list",
-            expectedGuardName: "CollectionRules.Exactly");
+            expectedMessage: "'list' must contain exactly 2 items, but contains 3 items.");
     }
 
     [Test]
@@ -79,7 +71,6 @@ public class CollectionExtensionTests
         var result = list.Single();
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: list,
-            expectedArgumentName: "list",
-            expectedGuardName: "CollectionRules.Single");
+            expectedMessage: "'list' must contain exactly 1 item, but contains 2 items.");
     }
 }

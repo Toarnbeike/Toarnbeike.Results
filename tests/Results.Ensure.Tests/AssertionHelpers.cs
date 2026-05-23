@@ -8,25 +8,10 @@ internal static class AssertionHelpers
     extension<T>(Result<T> result)
     {
         public GuardFailure ShouldBeGuardFailure(T expectedAttemptedValue,
-            string expectedArgumentName,
-            string expectedGuardName)
-        {
-            var failure = result.ShouldBeFailureOfType<GuardFailure>();
-            failure.AttemptedValue.ShouldBe(expectedAttemptedValue);
-            failure.ParameterName.ShouldBe(expectedArgumentName);
-            failure.GuardName.ShouldBe(expectedGuardName);
-            return failure;
-        }
-
-        public GuardFailure ShouldBeGuardFailure(T expectedAttemptedValue,
-            string expectedArgumentName,
-            string expectedGuardName,
             string expectedMessage)
         {
             var failure = result.ShouldBeFailureOfType<GuardFailure>();
             failure.AttemptedValue.ShouldBe(expectedAttemptedValue);
-            failure.ParameterName.ShouldBe(expectedArgumentName);
-            failure.GuardName.ShouldBe(expectedGuardName);
             failure.Message.ShouldBe(expectedMessage);
             return failure;
         }

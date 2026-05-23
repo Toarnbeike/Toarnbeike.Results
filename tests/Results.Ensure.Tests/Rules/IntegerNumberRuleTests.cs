@@ -8,6 +8,32 @@ public class IntegerNumberRuleTests
     private readonly int _negativeValue = -1;
 
     [Test]
+    public void GreaterThan_Should_ReturnFailingRuleResult_WhenFailure()
+    {
+        var min = 2;
+        var result = Result.Ensure().That(_value).GreaterThan(min);
+        result.AssertFailure(
+            expectedAttemptedValue: _value,
+            expectedArgumentName: "_value",
+            expectedGuardName: "Number.GreaterThan",
+            ("Min", min)
+        );
+    }
+
+    [Test]
+    public void LessThan_Should_ReturnFailingRuleResult_WhenFailure()
+    {
+        var max = 0;
+        var result = Result.Ensure().That(_value).LessThan(max);
+        result.AssertFailure(
+            expectedAttemptedValue: _value,
+            expectedArgumentName: "_value",
+            expectedGuardName: "Number.LessThan",
+            ("Max", max)
+        );
+    }
+
+    [Test]
     public void AtLeast_Should_ReturnFailingRuleResult_WhenFailure()
     {
         var min = 2;
@@ -15,7 +41,7 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "IntegerNumberRules.AtLeast",
+            expectedGuardName: "Number.Integer.AtLeast",
             ("Min", min)
         );
     }
@@ -28,7 +54,7 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "IntegerNumberRules.AtMost",
+            expectedGuardName: "Number.Integer.AtMost",
             ("Max", max)
         );
     }
@@ -42,9 +68,31 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "IntegerNumberRules.Between",
+            expectedGuardName: "Number.Integer.Between",
             ("Min", min),
             ("Max", max)
+        );
+    }
+
+    [Test]
+    public void Positive_Should_ReturnFailingRuleResult_WhenFailure()
+    {
+        var result = Result.Ensure().That(_negativeValue).Positive();
+        result.AssertFailure(
+            expectedAttemptedValue: _negativeValue,
+            expectedArgumentName: "_negativeValue",
+            expectedGuardName: "Number.Positive"
+        );
+    }
+
+    [Test]
+    public void Negative_Should_ReturnFailingRuleResult_WhenFailure()
+    {
+        var result = Result.Ensure().That(_value).Negative();
+        result.AssertFailure(
+            expectedAttemptedValue: _value,
+            expectedArgumentName: "_value",
+            expectedGuardName: "Number.Negative"
         );
     }
 
@@ -55,7 +103,7 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _negativeValue,
             expectedArgumentName: "_negativeValue",
-            expectedGuardName: "IntegerNumberRules.AtLeastZero"
+            expectedGuardName: "Number.Integer.AtLeastZero"
         );
     }
 
@@ -66,7 +114,7 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "IntegerNumberRules.AtMostZero"
+            expectedGuardName: "Number.Integer.AtMostZero"
         );
     }
 
@@ -78,7 +126,7 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: value,
             expectedArgumentName: "value",
-            expectedGuardName: "IntegerNumberRules.NotZero"
+            expectedGuardName: "Number.Integer.NotZero"
         );
     }
 
@@ -90,7 +138,7 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _value,
             expectedArgumentName: "_value",
-            expectedGuardName: "IntegerNumberRules.MultipleOf",
+            expectedGuardName: "Number.Integer.MultipleOf",
             ("Factor", factor)
         );
     }
@@ -103,7 +151,7 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: value,
             expectedArgumentName: "value",
-            expectedGuardName: "IntegerNumberRules.Even"
+            expectedGuardName: "Number.Integer.Even"
         );
     }
 
@@ -115,7 +163,7 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: value,
             expectedArgumentName: "value",
-            expectedGuardName: "IntegerNumberRules.Odd"
+            expectedGuardName: "Number.Integer.Odd"
         );
     }
 
@@ -127,7 +175,7 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: value,
             expectedArgumentName: "value",
-            expectedGuardName: "IntegerNumberRules.PowerOf2"
+            expectedGuardName: "Number.Integer.PowerOf2"
         );
     }
 
@@ -139,7 +187,7 @@ public class IntegerNumberRuleTests
         result.AssertFailure(
             expectedAttemptedValue: value,
             expectedArgumentName: "value",
-            expectedGuardName: "IntegerNumberRules.Prime"
+            expectedGuardName: "Number.Integer.Prime"
         );
     }
 }

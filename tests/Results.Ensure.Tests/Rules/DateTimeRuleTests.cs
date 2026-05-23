@@ -17,7 +17,7 @@ public class DateTimeRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _oneHourAgo,
             expectedArgumentName: "_oneHourAgo",
-            expectedGuardName: "DateRules.OnOrAfter",
+            expectedGuardName: "Date.OnOrAfter",
             ("Min", _inAnHour)
         );
     }
@@ -29,7 +29,7 @@ public class DateTimeRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _inAnHour,
             expectedArgumentName: "_inAnHour",
-            expectedGuardName: "DateRules.OnOrBefore",
+            expectedGuardName: "Date.OnOrBefore",
             ("Max", _oneHourAgo)
         );
     }
@@ -41,7 +41,7 @@ public class DateTimeRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _inAnHour,
             expectedArgumentName: "_inAnHour",
-            expectedGuardName: "DateRules.Between",
+            expectedGuardName: "Date.Between",
             ("Min", _oneHourAgo),
             ("Max", _oneHourAgo)
         );
@@ -54,7 +54,7 @@ public class DateTimeRuleTests
         var failingResult = result.AssertFailure(
             expectedAttemptedValue: _oneHourAgo,
             expectedArgumentName: "_oneHourAgo",
-            expectedGuardName: "DateRules.Future"
+            expectedGuardName: "Date.Future"
         );
         failingResult.Context.Get<DateTime>("Now").ShouldBe(_now, TimeSpan.FromSeconds(1));
     }
@@ -66,7 +66,7 @@ public class DateTimeRuleTests
         var failingResult = result.AssertFailure(
             expectedAttemptedValue: _inAnHour,
             expectedArgumentName: "_inAnHour",
-            expectedGuardName: "DateRules.Past"
+            expectedGuardName: "Date.Past"
         );
         failingResult.Context.Get<DateTime>("Now").ShouldBe(_now, TimeSpan.FromSeconds(1));
     }
@@ -79,7 +79,7 @@ public class DateTimeRuleTests
         var failingResult = result.AssertFailure(
             expectedAttemptedValue: _oneHourAgo,
             expectedArgumentName: "_oneHourAgo",
-            expectedGuardName: "DateTimeRules.WithinFuture",
+            expectedGuardName: "Date.DateTime.WithinFuture",
             ("TimeSpan", timeSpan)
         );
         failingResult.Context.Get<DateTime>("Now").ShouldBe(_now, TimeSpan.FromSeconds(1));
@@ -93,7 +93,7 @@ public class DateTimeRuleTests
         var failingResult = result.AssertFailure(
             expectedAttemptedValue: _inAnHour,
             expectedArgumentName: "_inAnHour",
-            expectedGuardName: "DateTimeRules.WithinPast",
+            expectedGuardName: "Date.DateTime.WithinPast",
             ("TimeSpan", timeSpan)
         );
         failingResult.Context.Get<DateTime>("Now").ShouldBe(_now, TimeSpan.FromSeconds(1));
@@ -107,7 +107,7 @@ public class DateTimeRuleTests
         result.AssertFailure(
             expectedAttemptedValue: _inAnHour,
             expectedArgumentName: "_inAnHour",
-            expectedGuardName: "DateTimeRules.Around",
+            expectedGuardName: "Date.DateTime.Around",
             ("Tolerance", timeSpan)
         );
     }
@@ -117,9 +117,9 @@ public class DateTimeRuleTests
     {
         var result = Result.Ensure().That(_saturday).OnDayOfWeek(DayOfWeek.Friday);
         result.AssertFailure(
-            expectedAttemptedValue: DateOnly.FromDateTime(_saturday),
+            expectedAttemptedValue: _saturday,
             expectedArgumentName: "_saturday",
-            expectedGuardName: "DateRules.OnDayOfWeek",
+            expectedGuardName: "Date.OnDayOfWeek",
             ("ExpectedDay", DayOfWeek.Friday),
             ("Actual", DayOfWeek.Saturday)
         );
@@ -131,9 +131,9 @@ public class DateTimeRuleTests
         DayOfWeek[] allowedDays = [DayOfWeek.Monday, DayOfWeek.Friday];
         var result = Result.Ensure().That(_saturday).OnDaysOfWeek(allowedDays);
         result.AssertFailure(
-            expectedAttemptedValue: DateOnly.FromDateTime(_saturday),
+            expectedAttemptedValue: _saturday,
             expectedArgumentName: "_saturday",
-            expectedGuardName: "DateRules.OnDaysOfWeek",
+            expectedGuardName: "Date.OnDaysOfWeek",
             ("Allowed", allowedDays),
             ("Actual", DayOfWeek.Saturday)
         );
@@ -144,9 +144,9 @@ public class DateTimeRuleTests
     {
         var result = Result.Ensure().That(_saturday).OnWeekday();
         result.AssertFailure(
-            expectedAttemptedValue: DateOnly.FromDateTime(_saturday),
+            expectedAttemptedValue: _saturday,
             expectedArgumentName: "_saturday",
-            expectedGuardName: "DateRules.OnWeekday",
+            expectedGuardName: "Date.OnWeekday",
             ("Actual", DayOfWeek.Saturday)
         );
     }
@@ -156,9 +156,9 @@ public class DateTimeRuleTests
     {
         var result = Result.Ensure().That(_monday).OnWeekend();
         result.AssertFailure(
-            expectedAttemptedValue: DateOnly.FromDateTime(_monday),
+            expectedAttemptedValue: _monday,
             expectedArgumentName: "_monday",
-            expectedGuardName: "DateRules.OnWeekend",
+            expectedGuardName: "Date.OnWeekend",
             ("Actual", DayOfWeek.Monday)
         );
     }

@@ -9,14 +9,26 @@ public static class EnsureExtensions
 {
     extension(Result)
     {
-        public static IGuardChain Ensure(IFailureMessageProvider? failureMessageProvider = null, IToleranceProvider? toleranceProvider = null)
+        public static IGuardChain Ensure(
+            IFailureMessageProvider? failureMessageProvider = null, 
+            IToleranceProvider? toleranceProvider = null,
+            TimeProvider? timeProvider = null)
         {
-            return new EnsureGuardChain(failureMessageProvider ?? new DefaultFailureMessageProvider(), toleranceProvider ?? new DefaultToleranceProvider());
+            return new EnsureGuardChain(
+                failureMessageProvider ?? new DefaultFailureMessageProvider(), 
+                toleranceProvider ?? new DefaultToleranceProvider(),
+                timeProvider ?? TimeProvider.System);
         }
 
-        public static IGuardChain Validate(IFailureMessageProvider? failureMessageProvider = null, IToleranceProvider? toleranceProvider = null)
+        public static IGuardChain Validate(
+            IFailureMessageProvider? failureMessageProvider = null, 
+            IToleranceProvider? toleranceProvider = null,
+            TimeProvider? timeProvider = null)
         {
-            return new ValidateGuardChain(failureMessageProvider ?? new DefaultFailureMessageProvider(), toleranceProvider ?? new DefaultToleranceProvider());
+            return new ValidateGuardChain(
+                failureMessageProvider ?? new DefaultFailureMessageProvider(), 
+                toleranceProvider ?? new DefaultToleranceProvider(),
+                timeProvider ?? TimeProvider.System);
         }
     }
 }

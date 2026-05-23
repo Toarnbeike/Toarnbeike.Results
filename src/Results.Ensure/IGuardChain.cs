@@ -46,4 +46,6 @@ public interface IGuardChain
     internal IGuardRuleResult RegisterEvaluation<T>(T attemptedValue, string expression, bool isValid, string guardName, RuleContext context);
 
     internal IToleranceProvider ToleranceProvider { get; }
+
+    internal TimeProvider TimeProvider { get; }
 }

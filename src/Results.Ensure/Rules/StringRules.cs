@@ -5,6 +5,8 @@ namespace Toarnbeike.Results.Ensure.Rules;
 
 public static class StringRules
 {
+    private const string RuleCategory = "String";
+
     extension(IGuardTarget<string?> target)
     {
         /// <summary>
@@ -12,14 +14,14 @@ public static class StringRules
         /// </summary>
         public IGuardRuleResult NotEmpty() =>
             target.Evaluate(StringGuards.NotEmpty(target.Value),
-                $"{nameof(StringRules)}.{nameof(NotEmpty)}");
+                $"{RuleCategory}.{nameof(NotEmpty)}");
 
         /// <summary>
         /// Rule that the targeted string must not be whiteSpace.
         /// </summary>
         public IGuardRuleResult NotWhiteSpace() =>
             target.Evaluate(StringGuards.NotWhiteSpace(target.Value),
-                $"{nameof(StringRules)}.{nameof(NotWhiteSpace)}");
+                $"{RuleCategory}.{nameof(NotWhiteSpace)}");
     }
 
     extension(IGuardTarget<string> target)
@@ -29,7 +31,7 @@ public static class StringRules
         /// </summary>
         public IGuardRuleResult MinLength(int minLength) =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value.Length, minLength),
-                $"{nameof(StringRules)}.{nameof(MinLength)}", 
+                $"{RuleCategory}.{nameof(MinLength)}", 
                 ("MinLength", minLength),
                 ("ActualLength", target.Value.Length));
 
@@ -38,7 +40,7 @@ public static class StringRules
         /// </summary>
         public IGuardRuleResult MaxLength(int maxLength) =>
             target.Evaluate(ComparisonGuards.AtMost(target.Value.Length, maxLength),
-                $"{nameof(StringRules)}.{nameof(MaxLength)}", 
+                $"{RuleCategory}.{nameof(MaxLength)}", 
                 ("MaxLength", maxLength),
                 ("ActualLength", target.Value.Length));
 
@@ -48,7 +50,7 @@ public static class StringRules
         public IGuardRuleResult LengthBetween(int minLength, int maxLength) =>
             target.Evaluate(ComparisonGuards.AtLeast(target.Value.Length, minLength) &&
                             ComparisonGuards.AtMost(target.Value.Length, maxLength),
-                $"{nameof(StringRules)}.{nameof(LengthBetween)}", 
+                $"{RuleCategory}.{nameof(LengthBetween)}", 
                 ("MinLength", minLength),
                 ("MaxLength", maxLength),
                 ("ActualLength", target.Value.Length));
@@ -58,7 +60,7 @@ public static class StringRules
         /// </summary>
         public IGuardRuleResult Matches(string pattern, RegexOptions options = default) =>
             target.Evaluate(StringGuards.Matches(target.Value, new Regex(pattern, options)),
-                $"{nameof(StringRules)}.{nameof(Matches)}", 
+                $"{RuleCategory}.{nameof(Matches)}", 
                 ("Pattern", pattern),
                 ("Options", options));
 
@@ -67,63 +69,63 @@ public static class StringRules
         /// </summary>
         public IGuardRuleResult Alphabetic() =>
             target.Evaluate(StringGuards.Alphabetic(target.Value),
-                $"{nameof(StringRules)}.{nameof(Alphabetic)}");
+                $"{RuleCategory}.{nameof(Alphabetic)}");
 
         /// <summary>
         /// Rule that the targeted string contains only alphabetic characters and number.
         /// </summary>
         public IGuardRuleResult AlphaNumeric() =>
             target.Evaluate(StringGuards.AlphaNumeric(target.Value),
-                $"{nameof(StringRules)}.{nameof(AlphaNumeric)}");
+                $"{RuleCategory}.{nameof(AlphaNumeric)}");
 
         /// <summary>
         /// Rule that the targeted string contains only digits.
         /// </summary>
         public IGuardRuleResult Numeric() =>
-            target.Evaluate(StringGuards.Digits(target.Value),
-                $"{nameof(StringRules)}.{nameof(Numeric)}");
+            target.Evaluate(StringGuards.Numeric(target.Value),
+                $"{RuleCategory}.{nameof(Numeric)}");
 
         /// <summary>
         /// Rule that the targeted string contains only valid ASCII characters.
         /// </summary>
         public IGuardRuleResult Ascii() =>
             target.Evaluate(StringGuards.Ascii(target.Value),
-                $"{nameof(StringRules)}.{nameof(Ascii)}");
+                $"{RuleCategory}.{nameof(Ascii)}");
 
         /// <summary>
         /// Rule that the targeted string is a valid Email address.
         /// </summary>
         public IGuardRuleResult EmailAddress() =>
             target.Evaluate(StringGuards.EmailAddress(target.Value),
-                $"{nameof(StringRules)}.{nameof(EmailAddress)}");
+                $"{RuleCategory}.{nameof(EmailAddress)}");
 
         /// <summary>
         /// Rule that the targeted string is a valid Uri.
         /// </summary>
         public IGuardRuleResult Uri() =>
             target.Evaluate(StringGuards.Uri(target.Value),
-                $"{nameof(StringRules)}.{nameof(Uri)}");
+                $"{RuleCategory}.{nameof(Uri)}");
 
         /// <summary>
         /// Rule that the targeted string is a valid absolute Uri.
         /// </summary>
         public IGuardRuleResult AbsoluteUri() =>
             target.Evaluate(StringGuards.AbsoluteUri(target.Value),
-                $"{nameof(StringRules)}.{nameof(AbsoluteUri)}");
+                $"{RuleCategory}.{nameof(AbsoluteUri)}");
 
         /// <summary>
         /// Rule that the targeted string is a valid relative Uri.
         /// </summary>
         public IGuardRuleResult RelativeUri() =>
             target.Evaluate(StringGuards.RelativeUri(target.Value),
-                $"{nameof(StringRules)}.{nameof(RelativeUri)}");
+                $"{RuleCategory}.{nameof(RelativeUri)}");
 
         /// <summary>
         /// Rule that the targeted string is a valid relative IP Address.
         /// </summary>
         public IGuardRuleResult IpAddress() =>
             target.Evaluate(StringGuards.IpAddress(target.Value),
-                $"{nameof(StringRules)}.{nameof(IpAddress)}");
+                $"{RuleCategory}.{nameof(IpAddress)}");
 
         /// <summary>
         /// Rule that the targeted string is a valid slug.
@@ -136,6 +138,6 @@ public static class StringRules
         /// </remarks>
         public IGuardRuleResult Slug() =>
             target.Evaluate(StringGuards.Slug(target.Value),
-                $"{nameof(StringRules)}.{nameof(Slug)}");
+                $"{RuleCategory}.{nameof(Slug)}");
     }
 }

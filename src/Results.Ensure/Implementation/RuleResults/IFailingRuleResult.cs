@@ -2,7 +2,7 @@
 
 internal interface IFailingRuleResult
 {
-    string Message { get; }
+    string? CustomMessage { get; }
     string ArgumentName { get; }
     RuleContext Context { get; }
     string GuardName { get; }
