@@ -108,7 +108,7 @@ public static class FloatingPointNumberRules
         /// Rule that the targeted number must be multiple of the specified factor.
         /// </summary>
         public IGuardRuleResult MultipleOf(TFloatingPoint factor, TFloatingPoint? tolerance = null) =>
-            target.Evaluate(ToleranceGuards.MultipleOf(target.Value, factor, target.GetTolerance(tolerance)),
+            target.Evaluate(FloatingPointGuards.MultipleOf(target.Value, factor, target.GetTolerance(tolerance)),
                 $"{QualifiedRuleCategory}.{nameof(MultipleOf)}", 
                 ("Factor", factor),
                 ("Tolerance", tolerance));
@@ -117,7 +117,7 @@ public static class FloatingPointNumberRules
         /// Rule that the targeted number must be a whole number, that is, have no fractional part.
         /// </summary>
         public IGuardRuleResult WholeNumber(TFloatingPoint? tolerance = null) =>
-            target.Evaluate(ToleranceGuards.MultipleOf(target.Value, TFloatingPoint.One, target.GetTolerance(tolerance)),
+            target.Evaluate(FloatingPointGuards.MultipleOf(target.Value, TFloatingPoint.One, target.GetTolerance(tolerance)),
                 $"{QualifiedRuleCategory}.{nameof(WholeNumber)}", 
                 ("Tolerance", tolerance));
 
@@ -127,7 +127,7 @@ public static class FloatingPointNumberRules
         public IGuardRuleResult MaxDecimalPlaces(int maxPlaces, TFloatingPoint? tolerance = null)
         {
             var factor = TFloatingPoint.One / Power10<TFloatingPoint>(maxPlaces);
-            return target.Evaluate(ToleranceGuards.MultipleOf(target.Value, factor, target.GetTolerance(tolerance)),
+            return target.Evaluate(FloatingPointGuards.MultipleOf(target.Value, factor, target.GetTolerance(tolerance)),
                 $"{QualifiedRuleCategory}.{nameof(MaxDecimalPlaces)}", 
                 ("MaxPlaces", maxPlaces),
                 ("Tolerance", tolerance));

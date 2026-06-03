@@ -4,18 +4,25 @@ namespace Toarnbeike.Results.Ensure.Guards;
 
 internal static class IntegerGuards
 {
+    public static bool MultipleOf<T>(T value, T factor) where T : struct, IBinaryInteger<T>
+    {
+        if (factor == T.Zero)
+            throw new ArgumentOutOfRangeException(nameof(factor), factor, "The provided factor can't be zero.");
+        return value % factor == T.Zero;
+    }
+
     public static bool Even<T>(T value) where T : IBinaryInteger<T> => (value & T.One) == T.Zero;
     public static bool Odd<T>(T value) where T : IBinaryInteger<T> => (value & T.One) != T.Zero;
     public static bool PowerOf2<T>(T value) where T : IBinaryInteger<T> => 
         value > T.Zero && (value & (value - T.One)) == T.Zero;
     public static bool Prime<T>(T value) where T : IBinaryInteger<T>
     {
-        var two = T.CreateChecked(2);
+        if (value < T.Zero)
+            throw new ArgumentOutOfRangeException(nameof(value), value,
+                "Can't determine a prime of a non positive number");
 
-        if (value == two)
-        {
-            return true;
-        }
+        var two = T.CreateChecked(2);
+        if (value == two) return true;
 
         if (value < two || Even(value))
         {

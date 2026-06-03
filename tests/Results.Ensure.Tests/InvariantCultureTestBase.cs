@@ -2,8 +2,10 @@
 
 namespace Toarnbeike.Results.Ensure.Tests;
 
+[NotInParallel]
 public abstract class InvariantCultureTestBase
 {
+    private readonly CultureInfo _invariant = CultureInfo.InvariantCulture;
     private CultureInfo? _originalCulture;
     private CultureInfo? _originalUiCulture;
     private CultureInfo? _originalDefaultThreadCulture;
@@ -17,10 +19,10 @@ public abstract class InvariantCultureTestBase
         _originalDefaultThreadCulture = CultureInfo.DefaultThreadCurrentCulture;
         _originalUiDefaultThreadCulture = CultureInfo.DefaultThreadCurrentUICulture;
 
-        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
-        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-        CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
+        CultureInfo.DefaultThreadCurrentCulture = _invariant;
+        CultureInfo.DefaultThreadCurrentUICulture = _invariant;
+        CultureInfo.CurrentCulture = _invariant;
+        CultureInfo.CurrentUICulture = _invariant;
     }
 
     [After(Test)]

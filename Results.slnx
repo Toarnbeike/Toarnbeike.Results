@@ -17,6 +17,7 @@
     <Project Path="src/Results.Abstractions/Results.Abstractions.csproj" />
     <Project Path="src/Results.Ensure/Results.Ensure.csproj" />
     <Project Path="src/Results.FluentValidation/Results.FluentValidation.csproj" />
+    <Project Path="src/Results.Guards/Results.Guards.csproj" Id="68c214ad-cfa1-4675-aa31-25ebaa310555" />
     <Project Path="src/Results.MinimalApi/Results.MinimalApi.csproj" />
     <Project Path="src/Results/Results.csproj" />
   </Folder>
@@ -24,6 +25,7 @@
     <Project Path="tests/Results.Abstractions.Tests/Results.Abstractions.Tests.csproj" />
     <Project Path="tests/Results.Ensure.Tests/Results.Ensure.Tests.csproj" />
     <Project Path="tests/Results.FluentValidation.Tests/Results.FluentValidation.Tests.csproj" />
+    <Project Path="tests/Results.Guards.Tests/Results.Guards.Tests.csproj" Id="afb3742d-198d-42fa-b688-740ced11b302" />
     <Project Path="tests/Results.MinimalApi.Tests/Results.MinimalApi.Tests.csproj" />
     <Project Path="tests/Results.Tests/Results.Tests.csproj" />
   </Folder>

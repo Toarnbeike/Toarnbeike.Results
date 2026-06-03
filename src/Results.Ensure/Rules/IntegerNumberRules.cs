@@ -91,7 +91,7 @@ public static class IntegerNumberRules
         /// Rule that the targeted number must be multiple of the specified factor.
         /// </summary>
         public IGuardRuleResult MultipleOf(TInteger factor) =>
-            target.Evaluate(ToleranceGuards.MultipleOf(target.Value, factor, TInteger.Zero),
+            target.Evaluate(IntegerGuards.MultipleOf(target.Value, factor),
                 $"{QualifiedRuleCategory}.{nameof(MultipleOf)}", 
                 ("Factor", factor));
 

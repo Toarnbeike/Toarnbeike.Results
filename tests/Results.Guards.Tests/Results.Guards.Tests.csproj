@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<IsPackable>false</IsPackable>
+		<TargetFramework>net10.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+		<PackageReference Include="Shouldly" />
+		<PackageReference Include="TUnit" />
+		<PackageReference Include="TUnit.FsCheck" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Results.Guards\Results.Guards.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Shouldly" />
+	</ItemGroup>
+
+</Project>

@@ -10,6 +10,7 @@
 		<PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
 		<PackageReference Include="Shouldly" />
 		<PackageReference Include="TUnit" />
+		<PackageReference Include="TUnit.FsCheck" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -18,10 +19,6 @@
 
 	<ItemGroup>
 		<Using Include="Shouldly" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Guards\" />
 	</ItemGroup>
 
 </Project>
