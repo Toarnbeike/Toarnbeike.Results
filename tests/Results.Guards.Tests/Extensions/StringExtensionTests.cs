@@ -4,29 +4,8 @@ namespace Toarnbeike.Results.Guards.Tests.Extensions;
 
 public class StringExtensionTests
 {
-    private readonly string _empty = string.Empty;
     private readonly string _value = @"H€//☺";
     private readonly string _invalidUri = "http://[invalid";
-
-    [Test]
-    public void NotEmpty_Should_ReturnFormattedFailure()
-    {
-        var result = _empty.NotEmpty();
-        result.ShouldBeGuardFailure(
-            expectedAttemptedValue: _empty,
-            expectedMessage: "'_empty' must not be null or empty, but is."
-        );
-    }
-
-    [Test]
-    public void NotWhiteSpace_Should_ReturnFormattedFailure()
-    {
-        var result = _empty.NotWhiteSpace();
-        result.ShouldBeGuardFailure(
-            expectedAttemptedValue: _empty,
-            expectedMessage: "'_empty' must not be null or whitespace, but is."
-        );
-    }
 
     [Test]
     public void MinLength_Should_ReturnFormattedFailure()
@@ -155,16 +134,6 @@ public class StringExtensionTests
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: _value,
             expectedMessage: "'_value' must be a valid IP address, but is H€//☺."
-        );
-    }
-
-    [Test]
-    public void Slug_Should_ReturnFormattedFailure()
-    {
-        var result = _value.Slug();
-        result.ShouldBeGuardFailure(
-            expectedAttemptedValue: _value,
-            expectedMessage: "'_value' must be a valid slug, but is H€//☺."
         );
     }
 }

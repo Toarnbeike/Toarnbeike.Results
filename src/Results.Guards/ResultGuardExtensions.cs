@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using Toarnbeike.Results.Guards.Implementations.GuardContext;
+using Toarnbeike.Results.Guards.Core.GuardContext;
 using Toarnbeike.Results.Guards.Tolerances;
 
 namespace Toarnbeike.Results.Guards;

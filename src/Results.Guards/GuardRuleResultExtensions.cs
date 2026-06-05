@@ -1,5 +1,5 @@
 ﻿using Toarnbeike.Results.Failures;
-using Toarnbeike.Results.Guards.Implementations;
+using Toarnbeike.Results.Guards.Core;
 
 namespace Toarnbeike.Results.Guards;
 

@@ -1,4 +1,4 @@
-﻿using Toarnbeike.Results.Guards.Implementations.Guards;
+﻿using Toarnbeike.Results.Guards.Core.Guards;
 
 namespace Toarnbeike.Results.Guards.Rules;
 
@@ -11,36 +11,33 @@ public static class GuidRules
         /// <summary>
         /// Rule that the targeted guid must not be empty.
         /// </summary>
-        public IGuardRuleResult<Guid> NotEmpty()
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(GuidGuards.NotEmpty(target.Value),
-                    $"{RuleCategory}.{nameof(NotEmpty)}");
-        }
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<Guid> NotEmpty() =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    GuidGuards.NotEmpty(value),
+                    $"{RuleCategory}.{nameof(NotEmpty)}"));
 
         /// <summary>
         /// Rule that the targeted guid is created as guid v4.
         /// </summary>
-        public IGuardRuleResult<Guid> Version4()
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(GuidGuards.IsVersion(target.Value, 4),
-                    $"{RuleCategory}.{nameof(Version4)}", 
-                    ("Actual", target.Value.Version));
-        }
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<Guid> Version4() =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    GuidGuards.IsVersion(value, 4),
+                    $"{RuleCategory}.{nameof(Version4)}",
+                    ("Actual", value.Version)));
 
         /// <summary>
         /// Rule that the targeted guid is created as guid v7.
         /// </summary>
-        public IGuardRuleResult<Guid> Version7()
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(GuidGuards.IsVersion(target.Value, 7), 
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<Guid> Version7() =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    GuidGuards.IsVersion(value, 7),
                     $"{RuleCategory}.{nameof(Version7)}",
-                    ("Actual", target.Value.Version));
-        }
+                    ("Actual", value.Version)));
     }
 }

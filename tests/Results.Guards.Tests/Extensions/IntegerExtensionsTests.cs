@@ -149,15 +149,4 @@ public class IntegerExtensionsTests
             expectedMessage: "'value' must be a power of 2, but is 3."
         );
     }
-
-    [Test]
-    public void Prime_Should_ReturnFormattedFailure()
-    {
-        var value = 4;
-        var result = value.Prime();
-        result.ShouldBeGuardFailure(
-            expectedAttemptedValue: value,
-            expectedMessage: "'value' must be a prime number, but is 4."
-        );
-    }
 }

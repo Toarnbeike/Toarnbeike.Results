@@ -50,54 +50,6 @@ public class DateTimeOffsetExtensionTests
     }
 
     [Test]
-    public void Future_Should_ReturnFormattedFailure()
-    {
-        _timeProvider.SetUtcNow(_date);
-        var date = _date.AddDays(-1);
-        var result = date.Future(_timeProvider);
-        result.ShouldBeGuardFailure(
-            expectedAttemptedValue: date,
-            expectedMessage: "'date' must be in the future (on or after 01/01/2026 00:00:00 +00:00), but is 12/31/2025 00:00:00 +00:00."
-        );
-    }
-
-    [Test]
-    public void Past_Should_ReturnFormattedFailure()
-    {
-        _timeProvider.SetUtcNow(_date);
-        var date = _date.AddDays(1);
-        var result = date.Past(_timeProvider);
-        result.ShouldBeGuardFailure(
-            expectedAttemptedValue: date,
-            expectedMessage: "'date' must be in the past (on or before 01/01/2026 00:00:00 +00:00), but is 01/02/2026 00:00:00 +00:00."
-        );
-    }
-
-    [Test]
-    public void WithinFuture_Should_ReturnFormattedFailure()
-    {
-        _timeProvider.SetUtcNow(_date);
-        var date = _date.AddHours(11);
-        var result = date.WithinFuture(TimeSpan.FromHours(10), _timeProvider);
-        result.ShouldBeGuardFailure(
-            expectedAttemptedValue: date,
-            expectedMessage: "'date' must be within the next 10:00:00 (between 01/01/2026 00:00:00 +00:00 and 01/01/2026 10:00:00 +00:00), but is 01/01/2026 11:00:00 +00:00."
-        );
-    }
-
-    [Test]
-    public void WithinPast_Should_ReturnFormattedFailure()
-    {
-        _timeProvider.SetUtcNow(_date);
-        var date = _date.AddHours(-11);
-        var result = date.WithinPast(TimeSpan.FromHours(10), _timeProvider);
-        result.ShouldBeGuardFailure(
-            expectedAttemptedValue: date,
-            expectedMessage: "'date' must be within the last 10:00:00 (between 12/31/2025 14:00:00 +00:00 and 01/01/2026 00:00:00 +00:00), but is 12/31/2025 13:00:00 +00:00."
-        );
-    }
-
-    [Test]
     public void Around_Should_ReturnFormattedFailure()
     {
         var result = _date.Around(_earlier, TimeSpan.FromHours(10));

@@ -18,18 +18,18 @@ public class GuidExtensionTests
     }
 
     [Test]
-    public void IsVersion4_Should_ReturnFormattedFailure()
+    public void Version4_Should_ReturnFormattedFailure()
     {
-        var result = _version7.IsVersion4();
+        var result = _version7.Version4();
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: _version7,
             expectedMessage: "'_version7' must be a version 4 Guid, but is version 7.");
     }
 
     [Test]
-    public void IsVersion7_Should_ReturnFormattedFailure()
+    public void Version7_Should_ReturnFormattedFailure()
     {
-        var result = _version4.IsVersion7();
+        var result = _version4.Version7();
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: _version4,
             expectedMessage: "'_version4' must be a version 7 Guid, but is version 4.");

@@ -1,4 +1,4 @@
-﻿using Toarnbeike.Results.Guards.Implementations.Guards;
+﻿using Toarnbeike.Results.Guards.Core.Guards;
 using TUnit.FsCheck;
 
 namespace Toarnbeike.Results.Guards.Tests.Guards;

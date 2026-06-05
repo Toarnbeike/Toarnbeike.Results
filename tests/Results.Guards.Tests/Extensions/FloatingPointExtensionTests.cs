@@ -6,7 +6,6 @@ public class FloatingPointExtensionTests
 {
     private readonly double _value = 1.5;
     private readonly double _negativeValue = -1.5;
-    private readonly double _nan = double.NaN;
     private readonly double _tolerance = 0.4;
 
     [Test]
@@ -146,26 +145,6 @@ public class FloatingPointExtensionTests
         result.ShouldBeGuardFailure(
             expectedAttemptedValue: _value,
             expectedMessage: "'_value' must have at most 0 decimal places (± 0.4), but is 1.5."
-        );
-    }
-
-    [Test]
-    public void Finite_Should_ReturnFormattedFailure()
-    {
-        var result = _nan.Finite();
-        result.ShouldBeGuardFailure(
-            expectedAttemptedValue: _nan,
-            expectedMessage: "'_nan' must be a finite number, but is not."
-        );
-    }
-
-    [Test]
-    public void NotNaN_Should_ReturnFormattedFailure()
-    {
-        var result = _nan.NotNaN();
-        result.ShouldBeGuardFailure(
-            expectedAttemptedValue: _nan,
-            expectedMessage: "'_nan' must not be NaN, but is."
         );
     }
 }

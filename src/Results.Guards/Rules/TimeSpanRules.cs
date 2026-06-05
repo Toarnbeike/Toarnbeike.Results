@@ -1,4 +1,4 @@
-﻿using Toarnbeike.Results.Guards.Implementations.Guards;
+﻿using Toarnbeike.Results.Guards.Core.Guards;
 
 namespace Toarnbeike.Results.Guards.Rules;
 
@@ -11,74 +11,69 @@ public static class TimeSpanRules
         /// <summary>
         /// Rule that the targeted timespan must be at least the specified min.
         /// </summary>
-        public IGuardRuleResult<TimeSpan> AtLeast(TimeSpan min)
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(ComparisonGuards.AtLeast(target.Value, min),
-                    $"{RuleCategory}.{nameof(AtLeast)}", 
-                    ("Min", min));
-        }
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<TimeSpan> AtLeast(TimeSpan min) =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    ComparisonGuards.AtLeast(value, min),
+                    $"{RuleCategory}.{nameof(AtLeast)}",
+                    ("Min", min)));
 
         /// <summary>
         /// Rule that the targeted timespan must be at most the specified max.
         /// </summary>
-        public IGuardRuleResult<TimeSpan> AtMost(TimeSpan max)
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(ComparisonGuards.AtMost(target.Value, max),
-                    $"{RuleCategory}.{nameof(AtMost)}", 
-                    ("Max", max));
-        }
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<TimeSpan> AtMost(TimeSpan max) =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    ComparisonGuards.AtMost(value, max),
+                    $"{RuleCategory}.{nameof(AtMost)}",
+                    ("Max", max)));
 
         /// <summary>
         /// Rule that the targeted timespan must be between the specified durations (inclusive).
         /// </summary>
-        public IGuardRuleResult<TimeSpan> Between(TimeSpan min, TimeSpan max)
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(ComparisonGuards.AtLeast(target.Value, min) &&
-                                ComparisonGuards.AtMost(target.Value, max),
-                    $"{RuleCategory}.{nameof(Between)}", 
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<TimeSpan> Between(TimeSpan min, TimeSpan max) =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    ComparisonGuards.AtMost(value, max) && ComparisonGuards.AtLeast(value, min),
+                    $"{RuleCategory}.{nameof(Between)}",
                     ("Min", min),
-                    ("Max", max));
-        }
+                    ("Max", max)));
 
         /// <summary>
         /// Rule that the targeted timespan must be close to the specified timespan, within the provided time span.
         /// </summary>
-        public IGuardRuleResult<TimeSpan> Around(TimeSpan expected, TimeSpan tolerance)
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(ToleranceGuards.Equal(target.Value.Ticks, expected.Ticks, tolerance.Ticks),
-                    $"{RuleCategory}.{nameof(Around)}", 
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<TimeSpan> Around(TimeSpan expected, TimeSpan tolerance) =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    ToleranceGuards.Equal(value.Ticks, expected.Ticks, tolerance.Ticks),
+                    $"{RuleCategory}.{nameof(Around)}",
                     ("Expected", expected),
-                    ("Tolerance", tolerance));
-        }
+                    ("Tolerance", tolerance)));
 
         /// <summary>
         /// Rule that the targeted timespan must be at least zero.
         /// </summary>
-        public IGuardRuleResult<TimeSpan> AtLeastZero()
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(ComparisonGuards.AtLeast(target.Value, TimeSpan.Zero),
-                    $"{RuleCategory}.{nameof(AtLeastZero)}");
-        }
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<TimeSpan> AtLeastZero() =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    ComparisonGuards.AtLeast(value, TimeSpan.Zero),
+                    $"{RuleCategory}.{nameof(AtLeastZero)}",
+                    ("Min", TimeSpan.Zero)));
 
         /// <summary>
         /// Rule that the targeted timespan must be at most zero.
         /// </summary>
-        public IGuardRuleResult<TimeSpan> AtMostZero()
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(ComparisonGuards.AtMost(target.Value, TimeSpan.Zero),
-                    $"{RuleCategory}.{nameof(AtMostZero)}");
-        }
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<TimeSpan> AtMostZero() =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    ComparisonGuards.AtMost(value, TimeSpan.Zero),
+                    $"{RuleCategory}.{nameof(AtMostZero)}",
+                    ("Max", TimeSpan.Zero)));
     }
 }

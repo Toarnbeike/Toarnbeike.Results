@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using Toarnbeike.Results.Guards.Implementations.Targets;
+using Toarnbeike.Results.Guards.Core.Targets;
 
 namespace Toarnbeike.Results.Guards;
 

@@ -29,6 +29,9 @@
     <Project Path="tests/Results.MinimalApi.Tests/Results.MinimalApi.Tests.csproj" />
     <Project Path="tests/Results.Tests/Results.Tests.csproj" />
   </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Results.Guards.Generator/Results.Guards.Generator.csproj" Id="91ba7250-bbc9-4f79-8aac-d6356da37d74" />
+  </Folder>
   <Folder Name="/workflows/">
     <File Path=".github/workflows/build.yaml" />
     <File Path=".github/workflows/publish.yaml" />

@@ -1,4 +1,4 @@
-﻿using Toarnbeike.Results.Guards.Implementations.Guards;
+﻿using Toarnbeike.Results.Guards.Core.Guards;
 
 namespace Toarnbeike.Results.Guards.Rules;
 
@@ -11,37 +11,37 @@ public static class EnumRules
         /// <summary>
         /// Rule that the targeted enum value must be a defined value of the enum type.
         /// </summary>
-        public IGuardRuleResult<TEnum> IsDefined()
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(EnumGuards.IsDefined(target.Value),
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<TEnum> IsDefined() =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    EnumGuards.IsDefined(value),
                     $"{RuleCategory}.{nameof(IsDefined)}",
-                    ("EnumType", typeof(TEnum)));
-        }
+                    ("EnumType", typeof(TEnum))));
 
         /// <summary>
         /// Rule that the targeted enum value must be one of the specified values.
         /// </summary>
-        public IGuardRuleResult<TEnum> OneOf(params TEnum[] validValues)
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(EnumGuards.OneOf(target.Value, validValues),
-                    $"{RuleCategory}.{nameof(OneOf)}", 
-                    ("ValidValues", validValues.Select(x => x.ToString())));
-        }
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<TEnum> OneOf(params TEnum[] validValues) =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    EnumGuards.OneOf(value, validValues),
+                    $"{RuleCategory}.{nameof(OneOf)}",
+                    ("EnumType", typeof(TEnum)),
+                    ("ValidValues", validValues.Select(x => x.ToString()))));
+
 
         /// <summary>
         /// Rule that the targeted enum value must not be one of the specified values.
         /// </summary>
-        public IGuardRuleResult<TEnum> NotOneOf(params TEnum[] invalidValues)
-        {
-            return !target.GuardContext.ShouldContinueExecution
-                ? target.SkipEvaluation()
-                : target.Evaluate(EnumGuards.NotOneOf(target.Value, invalidValues),
-                    $"{RuleCategory}.{nameof(NotOneOf)}", 
-                    ("InvalidValues", invalidValues.Select(x => x.ToString())));
-        }
+        [GeneratePrimitiveOverload]
+        public IGuardRuleResult<TEnum> NotOneOf(params TEnum[] invalidValues) =>
+            target.Evaluate(value =>
+                new RuleEvaluation(
+                    EnumGuards.NotOneOf(value, invalidValues),
+                    $"{RuleCategory}.{nameof(NotOneOf)}",
+                    ("EnumType", typeof(TEnum)),
+                    ("InvalidValues", invalidValues.Select(x => x.ToString()))));
     }
 }
