@@ -8,7 +8,8 @@ namespace Toarnbeike.Results.Guards.Extensions;
 
 public static class GuidRulesPrimitiveExtensions
 {
-    public static Result<System.Guid> NotEmpty(
+ 
+   public static Result<System.Guid> NotEmpty(
         this System.Guid value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -18,7 +19,8 @@ public static class GuidRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.Guid> Version4(
+ 
+   public static Result<System.Guid> Version4(
         this System.Guid value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -28,7 +30,8 @@ public static class GuidRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.Guid> Version7(
+ 
+   public static Result<System.Guid> Version7(
         this System.Guid value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)

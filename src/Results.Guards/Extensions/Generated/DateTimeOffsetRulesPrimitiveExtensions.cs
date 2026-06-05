@@ -8,7 +8,8 @@ namespace Toarnbeike.Results.Guards.Extensions;
 
 public static class DateTimeOffsetRulesPrimitiveExtensions
 {
-    public static Result<System.DateTimeOffset> OnOrAfter(
+ 
+   public static Result<System.DateTimeOffset> OnOrAfter(
         this System.DateTimeOffset value, global::System.DateTimeOffset min,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -18,7 +19,8 @@ public static class DateTimeOffsetRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTimeOffset> OnOrBefore(
+ 
+   public static Result<System.DateTimeOffset> OnOrBefore(
         this System.DateTimeOffset value, global::System.DateTimeOffset max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -28,7 +30,8 @@ public static class DateTimeOffsetRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTimeOffset> Between(
+ 
+   public static Result<System.DateTimeOffset> Between(
         this System.DateTimeOffset value, global::System.DateTimeOffset min, global::System.DateTimeOffset max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -38,7 +41,8 @@ public static class DateTimeOffsetRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTimeOffset> Around(
+ 
+   public static Result<System.DateTimeOffset> Around(
         this System.DateTimeOffset value, global::System.DateTimeOffset comparison, global::System.TimeSpan tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -48,7 +52,8 @@ public static class DateTimeOffsetRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTimeOffset> OnDayOfWeek(
+ 
+   public static Result<System.DateTimeOffset> OnDayOfWeek(
         this System.DateTimeOffset value, global::System.DayOfWeek dayOfWeek,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -58,7 +63,8 @@ public static class DateTimeOffsetRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTimeOffset> OnDaysOfWeek(
+ 
+   public static Result<System.DateTimeOffset> OnDaysOfWeek(
         this System.DateTimeOffset value, global::System.DayOfWeek[] allowed,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -68,7 +74,8 @@ public static class DateTimeOffsetRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTimeOffset> OnWeekday(
+ 
+   public static Result<System.DateTimeOffset> OnWeekday(
         this System.DateTimeOffset value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -78,7 +85,8 @@ public static class DateTimeOffsetRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTimeOffset> OnWeekend(
+ 
+   public static Result<System.DateTimeOffset> OnWeekend(
         this System.DateTimeOffset value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)

@@ -8,6 +8,7 @@ namespace Toarnbeike.Results.Guards.Extensions;
 
 public static class {{ class_name }}
 {
-{{ for method in methods }} {{ method }} 
+{{ for method in methods }} 
+{{ method }} 
 {{ end }}
 }

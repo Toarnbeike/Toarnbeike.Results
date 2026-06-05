@@ -8,7 +8,8 @@ namespace Toarnbeike.Results.Guards.Extensions;
 
 public static class FloatingPointNumberRulesPrimitiveExtensions
 {
-    public static Result<TFloatingPoint> GreaterThan<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> GreaterThan<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint min,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -19,7 +20,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> LessThan<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> LessThan<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -30,7 +32,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> AtLeast<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> AtLeast<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint min, TFloatingPoint? tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -41,7 +44,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> AtMost<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> AtMost<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint max, TFloatingPoint? tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -52,7 +56,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> Between<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> Between<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint min, TFloatingPoint max, TFloatingPoint? tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -63,7 +68,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> Positive<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> Positive<TFloatingPoint>(
         this TFloatingPoint value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -74,7 +80,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> Negative<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> Negative<TFloatingPoint>(
         this TFloatingPoint value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -85,7 +92,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> AtLeastZero<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> AtLeastZero<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint? tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -96,7 +104,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> AtMostZero<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> AtMostZero<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint? tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -107,7 +116,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> Zero<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> Zero<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint? tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -118,7 +128,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> NotZero<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> NotZero<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint? tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -129,7 +140,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> MultipleOf<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> MultipleOf<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint factor, TFloatingPoint? tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -140,7 +152,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> WholeNumber<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> WholeNumber<TFloatingPoint>(
         this TFloatingPoint value, TFloatingPoint? tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -151,7 +164,8 @@ public static class FloatingPointNumberRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TFloatingPoint> MaxDecimalPlaces<TFloatingPoint>(
+ 
+   public static Result<TFloatingPoint> MaxDecimalPlaces<TFloatingPoint>(
         this TFloatingPoint value, int maxPlaces, TFloatingPoint? tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)

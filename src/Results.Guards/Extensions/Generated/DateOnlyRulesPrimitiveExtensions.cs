@@ -8,7 +8,8 @@ namespace Toarnbeike.Results.Guards.Extensions;
 
 public static class DateOnlyRulesPrimitiveExtensions
 {
-    public static Result<System.DateOnly> OnOrAfter(
+ 
+   public static Result<System.DateOnly> OnOrAfter(
         this System.DateOnly value, global::System.DateOnly min,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -18,7 +19,8 @@ public static class DateOnlyRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateOnly> OnOrBefore(
+ 
+   public static Result<System.DateOnly> OnOrBefore(
         this System.DateOnly value, global::System.DateOnly max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -28,7 +30,8 @@ public static class DateOnlyRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateOnly> Between(
+ 
+   public static Result<System.DateOnly> Between(
         this System.DateOnly value, global::System.DateOnly min, global::System.DateOnly max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -38,7 +41,8 @@ public static class DateOnlyRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateOnly> OnDayOfWeek(
+ 
+   public static Result<System.DateOnly> OnDayOfWeek(
         this System.DateOnly value, global::System.DayOfWeek dayOfWeek,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -48,7 +52,8 @@ public static class DateOnlyRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateOnly> OnDaysOfWeek(
+ 
+   public static Result<System.DateOnly> OnDaysOfWeek(
         this System.DateOnly value, global::System.DayOfWeek[] allowed,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -58,7 +63,8 @@ public static class DateOnlyRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateOnly> OnWeekday(
+ 
+   public static Result<System.DateOnly> OnWeekday(
         this System.DateOnly value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -68,7 +74,8 @@ public static class DateOnlyRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateOnly> OnWeekend(
+ 
+   public static Result<System.DateOnly> OnWeekend(
         this System.DateOnly value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)

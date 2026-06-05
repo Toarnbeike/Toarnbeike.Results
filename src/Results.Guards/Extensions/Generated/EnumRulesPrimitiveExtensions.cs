@@ -8,7 +8,8 @@ namespace Toarnbeike.Results.Guards.Extensions;
 
 public static class EnumRulesPrimitiveExtensions
 {
-    public static Result<TEnum> IsDefined<TEnum>(
+ 
+   public static Result<TEnum> IsDefined<TEnum>(
         this TEnum value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -19,7 +20,8 @@ public static class EnumRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TEnum> OneOf<TEnum>(
+ 
+   public static Result<TEnum> OneOf<TEnum>(
         this TEnum value, TEnum[] validValues,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -30,7 +32,8 @@ public static class EnumRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<TEnum> NotOneOf<TEnum>(
+ 
+   public static Result<TEnum> NotOneOf<TEnum>(
         this TEnum value, TEnum[] invalidValues,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)

@@ -8,7 +8,8 @@ namespace Toarnbeike.Results.Guards.Extensions;
 
 public static class DateTimeRulesPrimitiveExtensions
 {
-    public static Result<System.DateTime> OnOrAfter(
+ 
+   public static Result<System.DateTime> OnOrAfter(
         this System.DateTime value, global::System.DateTime min,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -18,7 +19,8 @@ public static class DateTimeRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTime> OnOrBefore(
+ 
+   public static Result<System.DateTime> OnOrBefore(
         this System.DateTime value, global::System.DateTime max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -28,7 +30,8 @@ public static class DateTimeRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTime> Between(
+ 
+   public static Result<System.DateTime> Between(
         this System.DateTime value, global::System.DateTime min, global::System.DateTime max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -38,7 +41,8 @@ public static class DateTimeRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTime> Around(
+ 
+   public static Result<System.DateTime> Around(
         this System.DateTime value, global::System.DateTime comparison, global::System.TimeSpan tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -48,7 +52,8 @@ public static class DateTimeRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTime> OnDayOfWeek(
+ 
+   public static Result<System.DateTime> OnDayOfWeek(
         this System.DateTime value, global::System.DayOfWeek dayOfWeek,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -58,7 +63,8 @@ public static class DateTimeRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTime> OnDaysOfWeek(
+ 
+   public static Result<System.DateTime> OnDaysOfWeek(
         this System.DateTime value, global::System.DayOfWeek[] allowed,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -68,7 +74,8 @@ public static class DateTimeRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTime> OnWeekday(
+ 
+   public static Result<System.DateTime> OnWeekday(
         this System.DateTime value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -78,7 +85,8 @@ public static class DateTimeRulesPrimitiveExtensions
             .WithCustomExpression(expr).WithCustomMessage(message)
             .ToResult();
     } 
-    public static Result<System.DateTime> OnWeekend(
+ 
+   public static Result<System.DateTime> OnWeekend(
         this System.DateTime value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
