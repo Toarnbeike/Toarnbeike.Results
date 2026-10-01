@@ -9,7 +9,7 @@ namespace Toarnbeike.Results.Guards.Extensions;
 public static class CollectionRulesPrimitiveExtensions
 {
  
-   public static Result<TCollection> NotEmpty<TCollection>(
+    public static Result<TCollection> NotEmpty<TCollection>(
         this TCollection value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -21,7 +21,7 @@ public static class CollectionRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TCollection> Empty<TCollection>(
+    public static Result<TCollection> Empty<TCollection>(
         this TCollection value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -33,7 +33,7 @@ public static class CollectionRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TCollection> AtLeast<TCollection>(
+    public static Result<TCollection> AtLeast<TCollection>(
         this TCollection value, int min,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -45,7 +45,7 @@ public static class CollectionRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TCollection> AtMost<TCollection>(
+    public static Result<TCollection> AtMost<TCollection>(
         this TCollection value, int max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -57,7 +57,7 @@ public static class CollectionRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TCollection> Between<TCollection>(
+    public static Result<TCollection> Between<TCollection>(
         this TCollection value, int min, int max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -69,7 +69,7 @@ public static class CollectionRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TCollection> Exactly<TCollection>(
+    public static Result<TCollection> Exactly<TCollection>(
         this TCollection value, int expected,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -81,7 +81,7 @@ public static class CollectionRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TCollection> Single<TCollection>(
+    public static Result<TCollection> Single<TCollection>(
         this TCollection value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)

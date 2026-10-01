@@ -24,7 +24,7 @@ internal sealed class ValidationFailuresResultMapper : FailureResultMapper<Valid
     /// </returns>
     public override ProblemDetails Map(ValidationFailureSummary failureSummary)
     {
-        return new ValidationProblemDetails(failureSummary.Failures)
+        return new ValidationProblemDetails(failureSummary.FailureMessages)
         {
             Title = "Validation Errors",
             Detail = failureSummary.Message,

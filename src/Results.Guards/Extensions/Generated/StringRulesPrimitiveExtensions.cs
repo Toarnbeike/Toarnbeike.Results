@@ -9,7 +9,7 @@ namespace Toarnbeike.Results.Guards.Extensions;
 public static class StringRulesPrimitiveExtensions
 {
  
-   public static Result<string> MinLength(
+    public static Result<string> MinLength(
         this string value, int minLength,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -20,7 +20,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> MaxLength(
+    public static Result<string> MaxLength(
         this string value, int maxLength,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -31,7 +31,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> LengthBetween(
+    public static Result<string> LengthBetween(
         this string value, int minLength, int maxLength,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -42,7 +42,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> Matches(
+    public static Result<string> Matches(
         this string value, string pattern,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -53,7 +53,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> Alphabetic(
+    public static Result<string> Alphabetic(
         this string value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -64,7 +64,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> AlphaNumeric(
+    public static Result<string> AlphaNumeric(
         this string value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -75,7 +75,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> Numeric(
+    public static Result<string> Numeric(
         this string value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -86,7 +86,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> Ascii(
+    public static Result<string> Ascii(
         this string value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -97,7 +97,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> EmailAddress(
+    public static Result<string> EmailAddress(
         this string value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -108,7 +108,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> Uri(
+    public static Result<string> Uri(
         this string value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -119,7 +119,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> AbsoluteUri(
+    public static Result<string> AbsoluteUri(
         this string value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -130,7 +130,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> RelativeUri(
+    public static Result<string> RelativeUri(
         this string value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -141,7 +141,7 @@ public static class StringRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<string> IpAddress(
+    public static Result<string> IpAddress(
         this string value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)

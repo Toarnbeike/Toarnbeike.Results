@@ -6,14 +6,16 @@
 /// </summary>
 /// <remarks>
 /// Stores validation messages grouped by property name. 
-/// Use <see cref="Failures"/> to retrieve all grouped failures, or <see cref="GetFailuresFor(string)"/> to retrieve messages for a specific property.
+/// Use <see cref="FailureMessages"/> to retrieve all grouped failures, or <see cref="GetFailuresFor(string)"/> to retrieve messages for a specific property.
 /// </remarks>
 public sealed record ValidationFailureSummary : Failure
 {
+    public IEnumerable<ValidationFailure> InnerFailures { get; }
+
     /// <summary>
     /// Gets all validation failures grouped by property name.
     /// </summary>
-    public IDictionary<string, string[]> Failures { get; }
+    public IDictionary<string, string[]> FailureMessages { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ValidationFailureSummary"/> class with a collection of failures.
@@ -31,7 +33,7 @@ public sealed record ValidationFailureSummary : Failure
             throw new ArgumentException("At least one validation failure must be provided.", nameof(failures));
         }
 
-        Failures = list
+        FailureMessages = list
             .GroupBy(f => f.Property)
             .ToDictionary(
                 g => g.Key,
@@ -40,6 +42,7 @@ public sealed record ValidationFailureSummary : Failure
 
         Message = message ?? "One or more validation failures occured.";
         Category = FailureCategory.Validation;
+        InnerFailures = list;
     }
 
     /// <summary>
@@ -48,7 +51,7 @@ public sealed record ValidationFailureSummary : Failure
     /// <param name="property">The name of the property.</param>
     /// <returns>A collection of messages, or an empty collection if none exist.</returns>
     public IEnumerable<string> GetFailuresFor(string property) =>
-        Failures.TryGetValue(property, out var messages)
+        FailureMessages.TryGetValue(property, out var messages)
             ? messages
             : Enumerable.Empty<string>();
 }

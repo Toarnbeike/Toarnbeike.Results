@@ -19,6 +19,7 @@
     <Project Path="src/Results.FluentValidation/Results.FluentValidation.csproj" />
     <Project Path="src/Results.Guards/Results.Guards.csproj" Id="68c214ad-cfa1-4675-aa31-25ebaa310555" />
     <Project Path="src/Results.MinimalApi/Results.MinimalApi.csproj" />
+    <Project Path="src/Results.Rules/Results.Rules.csproj" Id="d070f781-c443-4546-ba93-79db0d7baa8b" />
     <Project Path="src/Results/Results.csproj" />
   </Folder>
   <Folder Name="/tests/">
@@ -27,6 +28,7 @@
     <Project Path="tests/Results.FluentValidation.Tests/Results.FluentValidation.Tests.csproj" />
     <Project Path="tests/Results.Guards.Tests/Results.Guards.Tests.csproj" Id="afb3742d-198d-42fa-b688-740ced11b302" />
     <Project Path="tests/Results.MinimalApi.Tests/Results.MinimalApi.Tests.csproj" />
+    <Project Path="tests/Results.Rules.Tests/Results.Rules.Tests.csproj" Id="b5f9bf10-c57e-483a-90d0-0f6920a9fb88" />
     <Project Path="tests/Results.Tests/Results.Tests.csproj" />
   </Folder>
   <Folder Name="/tools/">

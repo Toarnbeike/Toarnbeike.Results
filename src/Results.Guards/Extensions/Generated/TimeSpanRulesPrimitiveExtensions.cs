@@ -9,8 +9,8 @@ namespace Toarnbeike.Results.Guards.Extensions;
 public static class TimeSpanRulesPrimitiveExtensions
 {
  
-   public static Result<System.TimeSpan> AtLeast(
-        this System.TimeSpan value, global::System.TimeSpan min,
+    public static Result<System.TimeSpan> AtLeast(
+        this System.TimeSpan value, System.TimeSpan min,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
     {
@@ -20,8 +20,8 @@ public static class TimeSpanRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<System.TimeSpan> AtMost(
-        this System.TimeSpan value, global::System.TimeSpan max,
+    public static Result<System.TimeSpan> AtMost(
+        this System.TimeSpan value, System.TimeSpan max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
     {
@@ -31,8 +31,8 @@ public static class TimeSpanRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<System.TimeSpan> Between(
-        this System.TimeSpan value, global::System.TimeSpan min, global::System.TimeSpan max,
+    public static Result<System.TimeSpan> Between(
+        this System.TimeSpan value, System.TimeSpan min, System.TimeSpan max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
     {
@@ -42,8 +42,8 @@ public static class TimeSpanRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<System.TimeSpan> Around(
-        this System.TimeSpan value, global::System.TimeSpan expected, global::System.TimeSpan tolerance,
+    public static Result<System.TimeSpan> Around(
+        this System.TimeSpan value, System.TimeSpan expected, System.TimeSpan tolerance,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
     {
@@ -53,7 +53,7 @@ public static class TimeSpanRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<System.TimeSpan> AtLeastZero(
+    public static Result<System.TimeSpan> AtLeastZero(
         this System.TimeSpan value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -64,7 +64,7 @@ public static class TimeSpanRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<System.TimeSpan> AtMostZero(
+    public static Result<System.TimeSpan> AtMostZero(
         this System.TimeSpan value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)

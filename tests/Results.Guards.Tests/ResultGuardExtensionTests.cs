@@ -139,7 +139,7 @@ public class ResultGuardExtensionTests
 
         var summaryFailure = result.ShouldBeFailureOfType<ValidationFailureSummary>();
         summaryFailure.Category.ShouldBe(FailureCategory.Validation);
-        var validationFailure = summaryFailure.Failures["guid"];
+        var validationFailure = summaryFailure.FailureMessages["guid"];
         validationFailure.Length.ShouldBe(1);
         validationFailure.Single().ShouldContain("version 4");
     }
@@ -154,7 +154,7 @@ public class ResultGuardExtensionTests
             .ToResult();
 
         var summaryFailure = result.ShouldBeFailureOfType<ValidationFailureSummary>();
-        var valueFailures = summaryFailure.Failures["value"];
+        var valueFailures = summaryFailure.FailureMessages["value"];
         valueFailures.Length.ShouldBe(2);
         valueFailures[0].ShouldContain("at least 6 characters");
         valueFailures[1].ShouldContain("satisfy a given condition");
@@ -169,7 +169,7 @@ public class ResultGuardExtensionTests
             .ToResult();
 
         var summaryFailure = result.ShouldBeFailureOfType<ValidationFailureSummary>();
-        summaryFailure.Failures["value"].Single().ShouldContain("1,15"); // with a comma as the decimal separator, as per Dutch culture
+        summaryFailure.FailureMessages["value"].Single().ShouldContain("1,15"); // with a comma as the decimal separator, as per Dutch culture
     }
 
     [Test]
@@ -202,7 +202,7 @@ public class ResultGuardExtensionTests
             .ToResult();
 
         var summaryFailure = result.ShouldBeFailureOfType<ValidationFailureSummary>();
-        summaryFailure.Failures["value"].Single().ShouldContain("01/01/2000");
+        summaryFailure.FailureMessages["value"].Single().ShouldContain("01/01/2000");
     }
 
     private class FakeTimeProvider : TimeProvider

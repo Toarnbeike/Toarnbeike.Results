@@ -13,13 +13,14 @@ public interface IGuardRuleResult
     
     internal bool IsValid { get; }
 
-    internal string? CustomMessage { get; }
-    internal string? CustomExpression { get; }
+    internal string? CustomMessage { get; set; }
+    internal string? CustomExpression { get; set; }
 }
 
 public interface IGuardRuleResult<out T> : IGuardRuleResult, IGuardTarget<T>, IGuardContext
 {
     internal IGuardRuleResult<T> WithCustomMessage(string? message);
     internal IGuardRuleResult<T> WithCustomExpression(string? expression);
+
     string IGuardRuleResult.CapturedExpression => Expression;
 }

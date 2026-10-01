@@ -1,27 +1,32 @@
 ﻿using Toarnbeike.Results.Guards.Core;
 using Toarnbeike.Results.Guards.Core.Results;
+using Toarnbeike.Results.Guards.Core.Targets;
 
 namespace Toarnbeike.Results.Guards;
 
-/// <param name="isValid"> Indicates whether the guard condition succeeded. </param>
-/// <param name="guardName"> The name of the guard that performed the evaluation. </param>
-/// <param name="context"> Optional rule context associated with the guard. </param>
-public class RuleEvaluation(bool isValid, string guardName, params (string key, object? value)[] context)
+public static class CollectionGuardTargetExtensions
 {
-    public bool IsValid => isValid;
-    public string GuardName => guardName;
-    public (string key, object? value)[] Context => context;
-
-    public static async Task<RuleEvaluation> FromTask(Task<bool> isValidTask, string guardName, params (string key, object? value)[] context)
+    extension<T>(ICollectionGuardTarget<T> target)
     {
-        var isValid = await isValidTask;
-        return new RuleEvaluation(isValid, guardName, context);
-    }
+        /// <summary>
+        /// Evaluates a guard condition for the current collection value.
+        /// </summary>
+        /// <returns>
+        /// A configurable rule result representing the outcome of the evaluation.
+        /// </returns>
+        public ICollectionGuardRuleResult<T> EvaluateCollection(Func<IGuardTarget<T>, IGuardRuleResult<T>> evaluation)
+        {
+            var collectionResult = new CollectionGuardRuleResult<T>(target.GuardContext, target.Expression, target.Values);
+            for (var i = 0; i < target.Values.Count; i++)
+            {
+                var value = target.Values[i];
+                var ruleResult = evaluation(new GuardTarget<T>(
+                    target.GuardContext, value, target.Expression + $"[{i}]"));
 
-    public static async Task<RuleEvaluation> FromTaskInverted(Task<bool> isInvalidTask, string guardName, params (string key, object? value)[] context)
-    {
-        var isValid = !await isInvalidTask;
-        return new RuleEvaluation(isValid, guardName, context);
+                collectionResult.RuleSpecificResults.Add(ruleResult);
+            }
+            return collectionResult;
+        }
     }
 }
 

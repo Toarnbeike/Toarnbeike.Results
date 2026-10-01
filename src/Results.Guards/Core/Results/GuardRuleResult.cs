@@ -10,8 +10,8 @@ internal sealed record GuardRuleResult<T> : IGuardRuleResult<T>
     public T Value { get; }
     public bool IsValid { get; }
     public string Expression { get; }
-    public string? CustomMessage { get; private set; }
-    public string? CustomExpression { get; private set; }
+    public string? CustomMessage { get; set; }
+    public string? CustomExpression { get; set; }
 
     internal GuardRuleResult(IGuardContext guardContext, string expression, bool isValid, T value, RuleContext ruleContext)
     {

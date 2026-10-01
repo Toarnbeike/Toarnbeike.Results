@@ -29,11 +29,11 @@ public class FluentValidationConvertersTests
 
         var result = fluentResult.ToValidationFailures();
 
-        result.Failures.ShouldContainKey("Username");
-        result.Failures["Username"].ShouldContain("Required");
+        result.FailureMessages.ShouldContainKey("Username");
+        result.FailureMessages["Username"].ShouldContain("Required");
 
-        result.Failures.ShouldContainKey("Password");
-        result.Failures["Password"].ShouldContain("Too short");
+        result.FailureMessages.ShouldContainKey("Password");
+        result.FailureMessages["Password"].ShouldContain("Too short");
     }
 
     [Test]
@@ -48,11 +48,11 @@ public class FluentValidationConvertersTests
 
         var result = fluentFailures.ToValidationFailures();
 
-        result.Failures.ShouldContainKey("Email");
-        result.Failures["Email"].ShouldContain("Invalid format");
-        result.Failures["Email"].ShouldContain("Must be unique");
+        result.FailureMessages.ShouldContainKey("Email");
+        result.FailureMessages["Email"].ShouldContain("Invalid format");
+        result.FailureMessages["Email"].ShouldContain("Must be unique");
 
-        result.Failures.ShouldContainKey("Password");
-        result.Failures["Password"].ShouldContain("Required");
+        result.FailureMessages.ShouldContainKey("Password");
+        result.FailureMessages["Password"].ShouldContain("Required");
     }
 }

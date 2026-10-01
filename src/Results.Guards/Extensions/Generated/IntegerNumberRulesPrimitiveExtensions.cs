@@ -9,7 +9,7 @@ namespace Toarnbeike.Results.Guards.Extensions;
 public static class IntegerNumberRulesPrimitiveExtensions
 {
  
-   public static Result<TInteger> GreaterThan<TInteger>(
+    public static Result<TInteger> GreaterThan<TInteger>(
         this TInteger value, TInteger min,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -21,7 +21,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> LessThan<TInteger>(
+    public static Result<TInteger> LessThan<TInteger>(
         this TInteger value, TInteger max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -33,7 +33,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> AtLeast<TInteger>(
+    public static Result<TInteger> AtLeast<TInteger>(
         this TInteger value, TInteger min,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -45,7 +45,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> AtMost<TInteger>(
+    public static Result<TInteger> AtMost<TInteger>(
         this TInteger value, TInteger max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -57,7 +57,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> Between<TInteger>(
+    public static Result<TInteger> Between<TInteger>(
         this TInteger value, TInteger min, TInteger max,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -69,7 +69,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> Positive<TInteger>(
+    public static Result<TInteger> Positive<TInteger>(
         this TInteger value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -81,7 +81,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> Negative<TInteger>(
+    public static Result<TInteger> Negative<TInteger>(
         this TInteger value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -93,7 +93,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> AtLeastZero<TInteger>(
+    public static Result<TInteger> AtLeastZero<TInteger>(
         this TInteger value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -105,7 +105,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> AtMostZero<TInteger>(
+    public static Result<TInteger> AtMostZero<TInteger>(
         this TInteger value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -117,7 +117,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> NotZero<TInteger>(
+    public static Result<TInteger> NotZero<TInteger>(
         this TInteger value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -129,7 +129,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> MultipleOf<TInteger>(
+    public static Result<TInteger> MultipleOf<TInteger>(
         this TInteger value, TInteger factor,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -141,7 +141,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> Even<TInteger>(
+    public static Result<TInteger> Even<TInteger>(
         this TInteger value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -153,7 +153,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> Odd<TInteger>(
+    public static Result<TInteger> Odd<TInteger>(
         this TInteger value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)
@@ -165,7 +165,7 @@ public static class IntegerNumberRulesPrimitiveExtensions
             .ToResult();
     } 
  
-   public static Result<TInteger> PowerOf2<TInteger>(
+    public static Result<TInteger> PowerOf2<TInteger>(
         this TInteger value,
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)

@@ -21,9 +21,9 @@ public class ValidationFailureSummaryTests
         var result = new ValidationFailureSummary([_validationFailure]);
         result.Message.ShouldBe("One or more validation failures occured.");
         result.Category.ShouldBe(FailureCategory.Validation);
-        result.Failures.Count.ShouldBe(1);
-        result.Failures["Property"].Length.ShouldBe(1);
-        result.Failures["Property"].Single().ShouldBe("Something is wrong");
+        result.FailureMessages.Count.ShouldBe(1);
+        result.FailureMessages["Property"].Length.ShouldBe(1);
+        result.FailureMessages["Property"].Single().ShouldBe("Something is wrong");
     }
 
     [Test]

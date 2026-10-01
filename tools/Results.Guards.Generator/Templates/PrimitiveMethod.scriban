@@ -1,4 +1,4 @@
-   public static Result<{{ target_type }}> {{ method_name }}{{ type_parameters }}(
+    public static Result<{{ target_type }}> {{ method_name }}{{ type_parameters }}(
         this {{ target_type }} value{{ if parameter_list != "" }}, {{ parameter_list }}{{ end }},
         string? message = null,
         [CallerArgumentExpression(nameof(value))] string? expr = null)

@@ -1,3 +1,3 @@
-﻿namespace Toarnbeike.Results.Guards;
+﻿namespace Toarnbeike.Results.Guards.Attributes;
 
 public class GeneratePrimitiveOverloadAttribute : Attribute;

@@ -94,7 +94,7 @@ internal static class Semantic
             Parameters: symbol.Parameters
                 .Select(p =>
                     new RuleParameterModel(
-                        p.Type.ToDisplayString(format: SymbolDisplayFormat.FullyQualifiedFormat),
+                        p.Type.ToDisplayString(),
                         p.Name))
                 .ToList());
     }
