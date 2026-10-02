@@ -26,12 +26,12 @@ public abstract class Validator<T> : IValidator<T>
 
         return new ValidationRuleBuilder<T, TProperty>(
             registerRule: _rules.Add,
-            executor: (value, rule, message) =>
+            executor: (value, rule) =>
             {
                 var propertyValue = propertySelector(value);
-                return rule(propertyValue)
+                return rule.Predicate(propertyValue)
                     ? []
-                    : [new ValidationFailure(propertyName, message)];
+                    : [new ValidationFailure(propertyName, rule.Message)];
             });
     }
 
@@ -45,15 +45,15 @@ public abstract class Validator<T> : IValidator<T>
 
         return new ValidationRuleBuilder<T, TProperty>(
             registerRule: _rules.Add,
-            executor: (value, rule, message) =>
+            executor: (value, rule) =>
             {
                 var failures = new List<ValidationFailure>();
                 var index = 0;
                 foreach (var item in propertySelector(value))
                 {
-                    if (!rule(item))
+                    if (!rule.Predicate(item))
                     {
-                        failures.Add(new ValidationFailure($"{propertyName}[{index}]", message));
+                        failures.Add(new ValidationFailure($"{propertyName}[{index}]", rule.Message));
                     }
 
                     index++;

@@ -9,31 +9,25 @@ public static class EnumExtensions
     where TEnum : struct, Enum
     {
         public ValidationRuleBuilder<T, TEnum> IsDefined(string? message = null) =>
-            builder.Add(value => EnumRules.IsDefined(value),
-                message ?? $"must be a defined {typeof(TEnum).Name}.");
+            builder.Add(EnumRules.IsDefined<TEnum>(message));
 
         public ValidationRuleBuilder<T, TEnum> OneOf(TEnum[] acceptedValues, string? message = null) =>
-            builder.Add(value => EnumRules.OneOf(value, acceptedValues),
-                message ?? $"must be one of [{string.Join(", ", acceptedValues.Select(v => v.ToString()))}].");
+            builder.Add(EnumRules.OneOf(acceptedValues, message));
 
         public ValidationRuleBuilder<T, TEnum> NotOneOf(TEnum[] rejectedValues, string? message = null) =>
-            builder.Add(value => EnumRules.NotOneOf(value, rejectedValues),
-                message ?? $"must not be one of [{string.Join(", ", rejectedValues.Select(v => v.ToString()))}].");
+            builder.Add(EnumRules.NotOneOf(rejectedValues, message));
     }
 
     extension<T, TEnum>(ValidationTarget<T, TEnum> target)
         where TEnum : struct, Enum
     {
         public Result<T> IsDefined(string? message = null) =>
-            target.Apply(value => EnumRules.IsDefined(value),
-                message ?? $"must be a defined {typeof(TEnum).Name}.");
+            target.Apply(EnumRules.IsDefined<TEnum>(message));
 
         public Result<T> OneOf(TEnum[] acceptedValues, string? message = null) =>
-            target.Apply(value => EnumRules.OneOf(value, acceptedValues),
-                message ?? $"must be one of [{string.Join(", ", acceptedValues.Select(v => v.ToString()))}].");
+            target.Apply(EnumRules.OneOf(acceptedValues, message));
 
         public Result<T> NotOneOf(TEnum[] rejectedValues, string? message = null) =>
-            target.Apply(value => EnumRules.NotOneOf(value, rejectedValues),
-                message ?? $"must not be one of [{string.Join(", ", rejectedValues.Select(v => v.ToString()))}].");
+            target.Apply(EnumRules.NotOneOf(rejectedValues, message));
     }
 }

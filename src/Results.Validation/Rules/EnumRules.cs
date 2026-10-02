@@ -1,13 +1,24 @@
-﻿namespace Toarnbeike.Results.Validation.Rules;
+﻿using Toarnbeike.Results.Validation.Implementation;
+
+namespace Toarnbeike.Results.Validation.Rules;
 
 internal static class EnumRules
 {
-    public static bool IsDefined<TEnum>(TEnum value) where TEnum : struct, Enum =>
-        Enum.IsDefined(value);
+    public static ValidationRule<TEnum> IsDefined<TEnum>(string? message)
+        where TEnum : struct, Enum =>
+        new(value => Enum.IsDefined(value),
+        message ?? $"Value must be a defined member of the {typeof(TEnum).Name} enum."
+    );
 
-    public static bool OneOf<TEnum>(TEnum value, TEnum[] validValues) where TEnum : struct, Enum =>
-        validValues.Contains(value);
+    public static ValidationRule<TEnum> OneOf<TEnum>(TEnum[] acceptedValues, string? message)
+        where TEnum : struct, Enum =>
+        new(value => acceptedValues.Contains(value),
+        message ?? $"Value must be one of [{string.Join(", ", acceptedValues.Select(v => v.ToString()))}]."
+    );
 
-    public static bool NotOneOf<TEnum>(TEnum value, TEnum[] invalidValues) where TEnum : struct, Enum =>
-        !invalidValues.Contains(value);
+    public static ValidationRule<TEnum> NotOneOf<TEnum>(TEnum[] rejectedValues, string? message)
+        where TEnum : struct, Enum =>
+        new(value => !rejectedValues.Contains(value),
+        message ?? $"Value must not be one of [{string.Join(", ", rejectedValues.Select(v => v.ToString()))}]."
+    );
 }

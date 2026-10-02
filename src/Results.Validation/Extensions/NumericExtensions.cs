@@ -6,35 +6,29 @@ namespace Toarnbeike.Results.Validation.Extensions;
 
 public static class NumericExtensions
 {
-    extension<T, TNumeric>(ValidationRuleBuilder<T, TNumeric> target)
+    extension<T, TNumeric>(ValidationRuleBuilder<T, TNumeric> builder)
     where TNumeric : struct, INumber<TNumeric>
     {
         public ValidationRuleBuilder<T, TNumeric> GreaterThan(TNumeric min, string? message = null) =>
-            target.Add(value => ComparisonRules.GreaterThan(value, min),
-                message ?? $"must be greater than {min}");
+            builder.Add(NumericRules.GreaterThan(min, message));
 
         public ValidationRuleBuilder<T, TNumeric> LessThan(TNumeric max, string? message = null) =>
-            target.Add(value => ComparisonRules.LessThan(value, max),
-                message ?? $"must be less than {max}");
+            builder.Add(NumericRules.LessThan(max, message));
 
         public ValidationRuleBuilder<T, TNumeric> Positive(string? message = null) =>
-            target.Add(value => ComparisonRules.GreaterThan(value, TNumeric.Zero),
-                message ?? "must be positive");
+            builder.Add(NumericRules.Positive<TNumeric>(message));
     }
 
     extension<T, TNumeric>(ValidationTarget<T, TNumeric> target)
         where TNumeric : struct, INumber<TNumeric>
     {
         public Result<T> GreaterThan(TNumeric min, string? message = null) =>
-            target.Apply(value => ComparisonRules.GreaterThan(value, min),
-                message ?? $"must be greater than {min}");
+            target.Apply(NumericRules.GreaterThan(min, message));
 
         public Result<T> LessThan(TNumeric max, string? message = null) =>
-            target.Apply(value => ComparisonRules.LessThan(value, max),
-                message ?? $"must be less than {max}");
+            target.Apply(NumericRules.LessThan(max, message));
 
         public Result<T> Positive(string? message = null) =>
-            target.Apply(value => ComparisonRules.GreaterThan(value, TNumeric.Zero),
-                message ?? "must be positive");
+            target.Apply(NumericRules.Positive<TNumeric>(message));
     }
 }

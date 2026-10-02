@@ -1,4 +1,4 @@
-﻿namespace Toarnbeike.Results.Validation;
+﻿namespace Toarnbeike.Results.Validation.Implementation;
 
 internal static class ExpressionHelpers
 {

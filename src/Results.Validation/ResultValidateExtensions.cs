@@ -16,10 +16,10 @@ public static class ResultValidateExtensions
             ArgumentNullException.ThrowIfNull(propertySelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new ValidationExecutor<T, TProperty>((value, rule, message) =>
-                rule(propertySelector(value))
+            var executor = new ValidationExecutor<T, TProperty>((value, rule) =>
+                rule.Predicate(propertySelector(value))
                     ? Result.Success()
-                    : new ValidationFailure(propertyName, message));
+                    : new ValidationFailure(propertyName, rule.Message));
 
             return new ValidationTarget<T, TProperty>(result, executor);
         }
@@ -32,15 +32,15 @@ public static class ResultValidateExtensions
             ArgumentNullException.ThrowIfNull(collectionSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new ValidationExecutor<T, TItem>((value, rule, message) =>
+            var executor = new ValidationExecutor<T, TItem>((value, rule) =>
             {
                 var collection = collectionSelector(value);
                 var index = 0;
                 foreach (var item in collection)
                 {
-                    if (!rule(item))
+                    if (!rule.Predicate(item))
                     {
-                        return new ValidationFailure($"{propertyName}[{index}]", message);
+                        return new ValidationFailure($"{propertyName}[{index}]", rule.Message);
                     }
                     index++;
                 }
@@ -57,12 +57,12 @@ public static class ResultValidateExtensions
         {
             ArgumentNullException.ThrowIfNull(collectionSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
-            var executor = new ValidationExecutor<T, TItem>((value, rule, message) =>
+            var executor = new ValidationExecutor<T, TItem>((value, rule) =>
             {
                 var collection = collectionSelector(value);
-                return collection.Any(item => rule(item))
+                return collection.Any(item => rule.Predicate(item))
                     ? Result.Success()
-                    : new ValidationFailure(propertyName, $"No items in the collection satisfied the rule: {message}");
+                    : new ValidationFailure(propertyName, $"No items in the collection satisfied the rule: {rule.Message}");
             });
             return new ValidationTarget<T, TItem>(result, executor);
         }

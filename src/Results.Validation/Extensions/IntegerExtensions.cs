@@ -10,48 +10,29 @@ public static class IntegerExtensions
     where TInteger : struct, IBinaryInteger<TInteger>
     {
         public ValidationRuleBuilder<T, TInteger> AtLeast(TInteger min, string? message = null) =>
-            builder.Add(value => ComparisonRules.AtLeast(value, min),
-                message ?? $"must be at least {min}.)");
+            builder.Add(IntegerRules.AtLeast(min, message));
         public ValidationRuleBuilder<T, TInteger> AtMost(TInteger max, string? message = null) =>
-            builder.Add(value => ComparisonRules.AtMost(value, max),
-                message ?? $"must be at most {max}.)");
-        
+            builder.Add(IntegerRules.AtMost(max, message));
+
         public ValidationRuleBuilder<T, TInteger> Between(TInteger min, TInteger max, string? message = null) =>
-            builder.Add(value =>
-                ComparisonRules.AtLeast(value, min) && ComparisonRules.AtMost(value, max),
-                message ?? $"must be between {min} and {max}.");
+            builder.Add(IntegerRules.Between(min, max, message));
 
         public ValidationRuleBuilder<T, TInteger> MultipleOf(TInteger factor, string? message = null) =>
-            builder.Add(value => IntegerRules.MultipleOf(value, factor),
-                message ?? $"must be a multiple of {factor}.");
+            builder.Add(IntegerRules.MultipleOf(factor, message));
     }
 
     extension<T, TInteger>(ValidationTarget<T, TInteger> target)
         where TInteger : struct, IBinaryInteger<TInteger>
     {
-        public Result<T> AtLeast(TInteger min, string? message = null)
-        {
-            return target.Apply(value => ComparisonRules.AtLeast(value, min),
-                message ?? $"must be at least {min}.)");
-        }
+        public Result<T> AtLeast(TInteger min, string? message = null) =>
+            target.Apply(IntegerRules.AtLeast(min, message));
 
-        public Result<T> AtMost(TInteger max, string? message = null)
-        {
-            return target.Apply(value => ComparisonRules.AtMost(value, max),
-                message ?? $"must be at most {max}.)");
-        }
+        public Result<T> AtMost(TInteger max, string? message = null) =>
+            target.Apply(IntegerRules.AtMost(max, message));
+        public Result<T> Between(TInteger min, TInteger max, string? message = null) =>
+            target.Apply(IntegerRules.Between(min, max, message));
 
-        public Result<T> Between(TInteger min, TInteger max, string? message = null)
-        {
-            return target.Apply(value =>
-                ComparisonRules.AtLeast(value, min) && ComparisonRules.AtMost(value, max),
-                message ?? $"must be between {min} and {max}.");
-        }
-
-        public Result<T> MultipleOf(TInteger factor, string? message = null)
-        {
-            return target.Apply(value => IntegerRules.MultipleOf(value, factor),
-                message ?? $"must be a multiple of {factor}.");
-        }
+        public Result<T> MultipleOf(TInteger factor, string? message = null) =>
+            target.Apply(IntegerRules.MultipleOf(factor, message));
     }
 }

@@ -8,32 +8,24 @@ public static class DateOnlyExtensions
     extension<T>(ValidationRuleBuilder<T, DateOnly> builder)
     {
         public ValidationRuleBuilder<T, DateOnly> OnOrAfter(DateOnly min, string? message = null) =>
-            builder.Add(date => ComparisonRules.AtLeast(date, min),
-                message ?? $"must be on or after {min}.");
+            builder.Add(DateRules.OnOrAfter(min, message));
 
         public ValidationRuleBuilder<T, DateOnly> OnOrBefore(DateOnly max, string? message = null) =>
-            builder.Add(date => ComparisonRules.AtMost(date, max),
-                message ?? $"must be on or before {max}.");
+            builder.Add(DateRules.OnOrBefore(max, message));
 
         public ValidationRuleBuilder<T, DateOnly> MustBeBetween(DateOnly min, DateOnly max, string? message = null) =>
-            builder.Add(date => ComparisonRules.AtLeast(date, min) &&
-                ComparisonRules.AtMost(date, max),
-                message ?? $"must be between {min} and {max}.");
+            builder.Add(DateRules.MustBeBetween(min, max, message));
     }
 
     extension<T>(ValidationTarget<T, DateOnly> target)
     {
         public Result<T> OnOrAfter(DateOnly min, string? message = null) =>
-            target.Apply(date => ComparisonRules.AtLeast(date, min),
-                message ?? $"must be on or after {min}.");
+            target.Apply(DateRules.OnOrAfter(min, message));
 
         public Result<T> OnOrBefore(DateOnly max, string? message = null) =>
-            target.Apply(date => ComparisonRules.AtMost(date, max),
-                message ?? $"must be on or before {max}.");
+            target.Apply(DateRules.OnOrBefore(max, message));
 
         public Result<T> MustBeBetween(DateOnly min, DateOnly max, string? message = null) =>
-            target.Apply(date => ComparisonRules.AtLeast(date, min) &&
-                ComparisonRules.AtMost(date, max),
-                message ?? $"must be between {min} and {max}.");
+            target.Apply(DateRules.MustBeBetween(min, max, message));
     }
 }
