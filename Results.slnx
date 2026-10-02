@@ -17,6 +17,7 @@
     <Project Path="src/Results.Ensure/Results.Ensure.csproj" />
     <Project Path="src/Results.FluentValidation/Results.FluentValidation.csproj" />
     <Project Path="src/Results.MinimalApi/Results.MinimalApi.csproj" />
+    <Project Path="src/Results.Validation/Results.Validation.csproj" Id="7d7c570f-1f0f-4f0a-b67b-09675defafd5" />
     <Project Path="src/Results/Results.csproj" />
   </Folder>
   <Folder Name="/tests/">
