@@ -26,6 +26,7 @@
     <Project Path="tests/Results.FluentValidation.Tests/Results.FluentValidation.Tests.csproj" />
     <Project Path="tests/Results.MinimalApi.Tests/Results.MinimalApi.Tests.csproj" />
     <Project Path="tests/Results.Tests/Results.Tests.csproj" />
+    <Project Path="tests/Results.Validation.Tests/Results.Validation.Tests.csproj" Id="93fbc016-99d9-4cb8-9749-e51a0844e6a5" />
   </Folder>
   <Folder Name="/workflows/">
     <File Path=".github/workflows/build.yaml" />

@@ -21,7 +21,7 @@ public static class StringExtensions
         /// </summary>
         /// <param name="message">Optionally a custom message to use if the validation fails.</param>
         /// <returns>The validation rule builder to add to the <see cref="ValidationRuleCollection{T}"/>.</returns>
-        public ValidationRuleBuilder<T, string> NotNullOrWhiteSpace(string? message = null) =>
+        public ValidationRuleBuilder<T, string> NotWhiteSpace(string? message = null) =>
             builder.Add(StringRules.NotWhiteSpace(message));
 
         /// <summary>
@@ -86,7 +86,7 @@ public static class StringExtensions
         /// </summary>
         /// <param name="message">Optionally a custom message to use if the validation fails.</param>
         /// <returns>The result of the validation, either a success or a failure <see cref="ValidationFailure"/>.</returns>
-        public Result<T> NotNullOrWhiteSpace(string? message = null) =>
+        public Result<T> NotWhiteSpace(string? message = null) =>
             target.Apply(StringRules.NotWhiteSpace(message));
 
         /// <summary>

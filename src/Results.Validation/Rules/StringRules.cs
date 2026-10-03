@@ -9,7 +9,7 @@ internal static class StringRules
         new(value => !string.IsNullOrEmpty(value), message ?? "Value must not be empty.");
 
     public static ValidationRule<string> NotWhiteSpace(string? message) =>
-        new(value => !string.IsNullOrWhiteSpace(value), message ?? "Value must not whitespace.");
+        new(value => !string.IsNullOrWhiteSpace(value), message ?? "Value must not be whitespace.");
 
     public static ValidationRule<string> MinLength(int minLength, string? message) =>
         new(value => value is not null && value.Length >= minLength,
