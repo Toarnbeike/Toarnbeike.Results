@@ -12,14 +12,14 @@ internal static class TestFile
 
     public sealed class CustomerValidator : Validator<Customer>
     {
-        public CustomerValidator()
+        protected override void RegisterRules(ValidationRuleCollection<Customer> rules)
         {
-            That(c => c.Age).AtLeast(18);
-            That(c => c.Age).AtMost(80);
-            That(c => c.Age).Between(18, 80);
-            That(c => c.Name).MinLength(3);
-            That(c => c.Notes).HasAtLeast(2);
-            ThatAll(c => c.Notes).MinLength(5);
+            rules.That(c => c.Age).AtLeast(18);
+            rules.That(c => c.Age).AtMost(80);
+            rules.That(c => c.Age).Between(18, 80);
+            rules.That(c => c.Name).MinLength(3);
+            rules.That(c => c.Notes).HasAtLeast(2);
+            rules.ThatAll(c => c.Notes).MinLength(5);
         }
     }
 
