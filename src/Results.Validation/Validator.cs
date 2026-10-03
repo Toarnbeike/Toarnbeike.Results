@@ -2,15 +2,24 @@
 
 namespace Toarnbeike.Results.Validation;
 
+/// <inheritdoc/>
 public abstract class Validator<T> : IValidator<T>
 {
+    /// <inheritdoc/>
     public Result<T> Validate(T value)
     {
-        var failures = IterateRules(value).ToList();
-        return failures.Count == 0 
-            ? value 
-            : new ValidationFailureSummary(failures);
+        var failures = IterateRules(value);
+        return failures.Any() 
+            ? new ValidationFailureSummary(failures)
+            : value;
     }
+
+    /// <summary>
+    /// Registers the validation rules for the validator.
+    /// </summary>
+    /// <param name="rules">The collection of validation rules to register.</param>
+    protected abstract void RegisterRules(ValidationRuleCollection<T> rules);
+
     private readonly Lazy<IReadOnlyList<Func<T, IEnumerable<ValidationFailure>>>> _rules;
 
     protected Validator()
@@ -24,8 +33,6 @@ public abstract class Validator<T> : IValidator<T>
         RegisterRules(rules);
         return rules.Build();
     }
-
-    protected abstract void RegisterRules(ValidationRuleCollection<T> rules);
 
     private IEnumerable<ValidationFailure> IterateRules(T value)
     {

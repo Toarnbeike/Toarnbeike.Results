@@ -4,10 +4,23 @@ using Toarnbeike.Results.Validation.Implementation;
 
 namespace Toarnbeike.Results.Validation;
 
+/// <summary>
+/// Extensions for validating properties of a <see cref="Result{T}"/> using a fluent API.
+/// </summary>
 public static class ResultValidateExtensions
 {
     extension<T>(Result<T> result)
     {
+        /// <summary>
+        /// Creates a validation target for  a property of the value contained in the <see cref="Result{T}"/> using the specified property selector.
+        /// This validation target can then be used to specify the validation rule for the property.
+        /// All validation rules are short-circuiting, meaning that if a rule fails, subsequent rules will not be evaluated.
+        /// </summary>
+        /// <typeparam name="TProperty">The type of the property to validate.</typeparam>
+        /// <param name="propertySelector">A function to select the property from the value.</param>
+        /// <param name="propertyName">An optional name of the property.</param>
+        /// <param name="expression">Auto filled: The expression used to select the property.</param>
+        /// <returns>A <see cref="ValidationTarget{T, TProperty}"/> to specify the validation rule for the property.</returns>
         public ValidationTarget<T, TProperty> Validate<TProperty>(
         Func<T, TProperty> propertySelector,
         string? propertyName = null,
@@ -24,6 +37,17 @@ public static class ResultValidateExtensions
             return new ValidationTarget<T, TProperty>(result, executor);
         }
 
+        /// <summary>
+        /// Creates a validation target for all items in a collection property of the value contained in the <see cref="Result{T}"/> using the specified collection selector.
+        /// This validation target can then be used to specify the validation rule for the items in the collection.
+        /// All validation rules are short-circuiting, meaning that if a rule fails, subsequent rules will not be evaluated.
+        /// Also when a single item in the collection fails the validation, the validation will return with the first encountered failure.
+        /// </summary>
+        /// <typeparam name="TItem">The type of the items in the collection to validate.</typeparam>
+        /// <param name="collectionSelector">A function to select the collection from the value.</param>
+        /// <param name="propertyName">An optional name of the property.</param>
+        /// <param name="expression">Auto filled: The expression used to select the collection.</param>
+        /// <returns>A <see cref="ValidationTarget{T, TItem}"/> to specify the validation rule for the items in the collection.</returns>
         public ValidationTarget<T, TItem> ValidateAll<TItem>(
             Func<T, IEnumerable<TItem>> collectionSelector,
             string? propertyName = null,
@@ -50,6 +74,16 @@ public static class ResultValidateExtensions
             return new ValidationTarget<T, TItem>(result, executor);
         }
 
+        /// <summary>
+        /// Creates a validation target for all items in a collection property of the value contained in the <see cref="Result{T}"/> using the specified collection selector.
+        /// The validation target will determine if at least one item in the collection satisfies the specified validation rule.
+        /// If no items in the collection satisfy the rule, the validation will return a failure with the specified message.
+        /// </summary>
+        /// <typeparam name="TItem">The type of the items in the collection to validate.</typeparam>
+        /// <param name="collectionSelector">A function to select the collection from the value.</param>
+        /// <param name="propertyName">An optional name of the property.</param>
+        /// <param name="expression">Auto filled: The expression used to select the collection.</param>
+        /// <returns>A <see cref="ValidationTarget{T, TItem}"/> representing the validation target for any item in the collection.</returns>
         public ValidationTarget<T, TItem> ValidateAny<TItem>(
             Func<T, IEnumerable<TItem>> collectionSelector,
             string? propertyName = null,
