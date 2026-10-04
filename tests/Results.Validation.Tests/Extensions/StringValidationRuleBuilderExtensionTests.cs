@@ -98,7 +98,7 @@ public class StringValidationRuleBuilderExtensionTests
     }
 
     [Test]
-    public void MexLength_CustomMessage()
+    public void MaxLength_CustomMessage()
     {
         _builder.MaxLength(3, _customMessage);
         ShouldFail("abcd", _customMessage);

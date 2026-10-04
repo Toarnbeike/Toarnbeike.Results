@@ -6,11 +6,11 @@ namespace Toarnbeike.Results.Validation.Rules;
 internal static class FloatingPointRules
 {
     private static TFloating GetTolerance<TFloating>(TFloating? provided)
-        where TFloating : struct, IFloatingPointIeee754<TFloating> =>
+        where TFloating : struct, IFloatingPoint<TFloating> =>
         provided ?? ToleranceHelper.Default<TFloating>();
 
     public static ValidationRule<TFloat> AtLeast<TFloat>(TFloat min, TFloat? tolerance, string? message)
-        where TFloat : struct, IFloatingPointIeee754<TFloat>
+        where TFloat : struct, IFloatingPoint<TFloat>
     {
         tolerance ??= GetTolerance(tolerance);
         ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
@@ -19,7 +19,7 @@ internal static class FloatingPointRules
     }
 
     public static ValidationRule<TFloat> AtMost<TFloat>(TFloat max, TFloat? tolerance, string? message)
-        where TFloat : struct, IFloatingPointIeee754<TFloat>
+        where TFloat : struct, IFloatingPoint<TFloat>
     {
         tolerance ??= GetTolerance(tolerance);
         ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
@@ -28,7 +28,7 @@ internal static class FloatingPointRules
     }
 
     public static ValidationRule<TFloat> Between<TFloat>(TFloat min, TFloat max, TFloat? tolerance, string? message)
-        where TFloat : struct, IFloatingPointIeee754<TFloat>
+        where TFloat : struct, IFloatingPoint<TFloat>
     {
         tolerance ??= GetTolerance(tolerance);
         ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
@@ -37,7 +37,7 @@ internal static class FloatingPointRules
     }
 
     public static ValidationRule<TFloat> MultipleOf<TFloat>(TFloat factor, TFloat? tolerance, string? message)
-        where TFloat : struct, IFloatingPointIeee754<TFloat>
+        where TFloat : struct, IFloatingPoint<TFloat>
     {
         tolerance ??= GetTolerance(tolerance);
         ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
@@ -47,17 +47,17 @@ internal static class FloatingPointRules
     }
 
     public static ValidationRule<TFloat> Finite<TFloat>(string? message)
-        where TFloat : struct, IFloatingPointIeee754<TFloat> =>
+        where TFloat : struct, IFloatingPoint<TFloat> =>
         new(TFloat.IsFinite,
             message ?? $"Value must be a finite {typeof(TFloat).Name}.");
 
     public static ValidationRule<TFloat> NotNaN<TFloat>(string? message)
-        where TFloat : struct, IFloatingPointIeee754<TFloat> =>
+        where TFloat : struct, IFloatingPoint<TFloat> =>
         new(value => !TFloat.IsNaN(value),
             message ?? "Value must not be NaN.");
 
     private static bool IsMultipleOf<TFloat>(TFloat value, TFloat factor, TFloat tolerance)
-        where TFloat : struct, IFloatingPointIeee754<TFloat>
+        where TFloat : struct, IFloatingPoint<TFloat>
     {
         var quotient = value / factor;
         var nearest = TFloat.Round(quotient);

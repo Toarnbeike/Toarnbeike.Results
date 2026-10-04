@@ -21,6 +21,25 @@ public class AroundTests
     }
 
     [Test]
+    public void Around_Predicate_Succeeds_EvenWhenValueAndToleranceIsAroundTimeSpanMinValue()
+    {
+        var around = TimeSpan.MinValue + TimeSpan.FromSeconds(1);
+
+        var rule = TimeSpanRules.Around(around, TimeSpan.FromSeconds(2), null);
+        var value = TimeSpan.MinValue;
+        rule.Predicate(value).ShouldBeTrue();
+    }
+
+    [Test]
+    public void Around_Predicate_Succeeds_EvenWhenValueAndToleranceIsAroundTimeSpanMaxValue()
+    {
+        var around = TimeSpan.MaxValue - TimeSpan.FromSeconds(1);
+        var rule = TimeSpanRules.Around(around, TimeSpan.FromSeconds(2), null);
+        var value = TimeSpan.MaxValue;
+        rule.Predicate(value).ShouldBeTrue();
+    }
+
+    [Test]
     public void Around_Predicate_Fails_WhenValueOutsideTolerance()
     {
         var rule = TimeSpanRules.Around(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1), null);

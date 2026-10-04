@@ -77,7 +77,7 @@ public class BetweenTests
     }
 
     [Test]
-    public void Between_Predicate_Failure_WhenValue_IsWithinCustomToleranceOfLowerBound()
+    public void Between_Predicate_Succeeds_WhenValue_IsWithinCustomToleranceOfLowerBound()
     {
         var rule = FloatingPointRules.Between(5.0, 10.0, 0.1, null);
         var value = 4.95;
@@ -85,7 +85,7 @@ public class BetweenTests
     }
 
     [Test]
-    public void Between_Predicate_Failure_WhenValue_IsWithinCustomToleranceOfUpperBound()
+    public void Between_Predicate_Succeeds_WhenValue_IsWithinCustomToleranceOfUpperBound()
     {
         var rule = FloatingPointRules.Between(5.0, 10.0, 0.1, null);
         var value = 10.05;

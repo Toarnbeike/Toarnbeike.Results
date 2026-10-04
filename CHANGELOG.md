@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [2.2.1] - 2026-10-04
+
+### Fixes
+- Fixed that `FloatingPointRules` did not accept `decimal` values, since these don't implement `IFloatingPointIeee754<TSelf>`. Now `decimal` is explicitly supported.
+- Fixed a bug in Around Timespan validation rule where the tolerance was not being applied correctly when close to TimeSpan.MinValue or TimeSpan.MaxValue.
+- Fixed a bug in property name extraction where lambdas without spaces where not properly detected.
+- Fixed a bug when provided tolerances for floating point validations where not finite.
+- Fixed a few bugs in Readme examples where the code snippets did not compile correctly.
+- Fixed a bug in Validation lazy initialization where the rules could be materialized twice.
+
+### Performance
+- Improved performance of Collection rules not implementing ICollection by using partial enumeration where possible.
+
+### Tooling
+- Textual improvements in multiple test descriptions.
+
 ## [2.2.0] - 2026-10-04
 
 ### Added

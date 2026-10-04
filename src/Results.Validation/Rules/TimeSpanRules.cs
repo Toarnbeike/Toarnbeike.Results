@@ -20,7 +20,11 @@ internal static class TimeSpanRules
         {
             throw new ArgumentOutOfRangeException(nameof(tolerance), "Tolerance must be non-negative.");
         }
-        return new(value => value >= expected - tolerance && value <= expected + tolerance,
+
+        var min = expected < TimeSpan.MinValue + tolerance ? TimeSpan.MinValue : expected - tolerance;
+        var max = expected > TimeSpan.MaxValue - tolerance ? TimeSpan.MaxValue : expected + tolerance;
+
+        return new(value => value >= min && value <= max,
             message ?? $"TimeSpan must be around {expected} with a tolerance of {tolerance}.");
     }
 }

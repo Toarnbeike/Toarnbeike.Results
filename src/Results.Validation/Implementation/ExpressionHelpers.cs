@@ -14,11 +14,11 @@ internal static class ExpressionHelpers
             expression = expression[(dotIndex + 1)..];
         }
 
-        var lamdbaIndex = expression.IndexOf("=> ", StringComparison.Ordinal);
+        var lamdbaIndex = expression.IndexOf("=>", StringComparison.Ordinal);
 
         // get the complete expression after the lambda operator, e.g., "value => value" -> "value"
         return lamdbaIndex >= 0 && lamdbaIndex != expression.Length - 1
-            ? expression[(lamdbaIndex + 3)..]
+            ? expression[(lamdbaIndex + 2)..].Trim()
             : expression;
     }
 }

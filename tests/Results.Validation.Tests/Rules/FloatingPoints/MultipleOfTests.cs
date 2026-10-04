@@ -85,7 +85,7 @@ public class MultipleOfTests
     }
 
     [Test]
-    public void MultipleOf_Predicate_Fails_ForZeroFactor()
+    public void MultipleOf_Predicate_Throws_ForZeroFactor()
     {
         Should.Throw<ArgumentOutOfRangeException>(() =>
         {
@@ -94,7 +94,7 @@ public class MultipleOfTests
     }
 
     [Test]
-    public void MultipleOf_Predicate_Fails_ForNegativeTolerance()
+    public void MultipleOf_Predicate_Throws_ForNegativeTolerance()
     {
         Should.Throw<ArgumentOutOfRangeException>(() =>
         {
