@@ -79,6 +79,23 @@ internal class ValidatorTests
     }
 
     [Test]
+    public void Validate_ShouldReturnMultipleFailures_WhenMultipleCollectionItemRulesFail()
+    {
+        var customer = Customer.ValidInstance with { Notes = ["Note", "Short", "Tiny"] };
+        var validator = new CustomerValidator();
+        var result = validator.Validate(customer);
+        var failureSummary = result.ShouldBeFailureOfType<ValidationFailureSummary>();
+        var failures = failureSummary.Failures.ToList();
+        failures.Count.ShouldBe(2);
+        var notesFailure1 = failures.FirstOrDefault(f => f.Key == "Notes[0]");
+        notesFailure1.Value.Length.ShouldBe(1);
+        notesFailure1.Value.Single().ShouldContain("at least 5");
+        var notesFailure2 = failures.FirstOrDefault(f => f.Key == "Notes[2]");
+        notesFailure2.Value.Length.ShouldBe(1);
+        notesFailure2.Value.Single().ShouldContain("at least 5");
+    }
+
+    [Test]
     public void Validate_ShouldReturnMultipleFailures_WhenMultipleRulesFail()
     {
         var customer = Customer.ValidInstance with { Name = " ", Age = 17, Notes = [] };
