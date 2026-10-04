@@ -4,6 +4,7 @@
     <File Path="docs/Extensions.md" />
     <File Path="docs/Failures.md" />
     <File Path="docs/Linq.md" />
+    <File Path="docs/Rules.md" />
     <File Path="docs/TestExtensions.md" />
   </Folder>
   <Folder Name="/Solution Items/">
@@ -17,6 +18,7 @@
     <Project Path="src/Results.Ensure/Results.Ensure.csproj" />
     <Project Path="src/Results.FluentValidation/Results.FluentValidation.csproj" />
     <Project Path="src/Results.MinimalApi/Results.MinimalApi.csproj" />
+    <Project Path="src/Results.Validation/Results.Validation.csproj" Id="7d7c570f-1f0f-4f0a-b67b-09675defafd5" />
     <Project Path="src/Results/Results.csproj" />
   </Folder>
   <Folder Name="/tests/">
@@ -25,6 +27,7 @@
     <Project Path="tests/Results.FluentValidation.Tests/Results.FluentValidation.Tests.csproj" />
     <Project Path="tests/Results.MinimalApi.Tests/Results.MinimalApi.Tests.csproj" />
     <Project Path="tests/Results.Tests/Results.Tests.csproj" />
+    <Project Path="tests/Results.Validation.Tests/Results.Validation.Tests.csproj" Id="93fbc016-99d9-4cb8-9749-e51a0844e6a5" />
   </Folder>
   <Folder Name="/workflows/">
     <File Path=".github/workflows/build.yaml" />

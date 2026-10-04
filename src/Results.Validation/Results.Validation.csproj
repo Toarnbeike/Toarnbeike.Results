@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>Toarnbeike.Results.Validation</PackageId>
+		<TargetFramework>net10.0</TargetFramework>
+		<!-- Version is managed centrally in Directory.build.props to keep versions in sync.-->
+		<Description>Validation library for Toarnbeike.Results that enables short-circuit validation and object validation.</Description>
+		<PackageTags>result object validation pipeline functional application IValidator short-circuit</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Results\Results.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+</Project>
