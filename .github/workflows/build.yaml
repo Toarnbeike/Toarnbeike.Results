@@ -46,6 +46,7 @@ jobs:
             "tests/Results.FluentValidation.Tests/Results.FluentValidation.Tests.csproj"
             "tests/Results.MinimalApi.Tests/Results.MinimalApi.Tests.csproj"
             "tests/Results.Ensure.Tests/Results.Ensure.Tests.csproj"
+            "tests/Results.Validation.Tests/Results.Validation.Tests.csproj"
           )
 
           for project in "${projects[@]}"; do
