@@ -23,7 +23,7 @@ internal static class FloatingPointRules
     {
         tolerance ??= GetTolerance(tolerance);
         ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
-        return new(value => value.CompareTo(max + tolerance.Value) <= 0,
+        return new(value => !TFloat.IsNaN(value) && value.CompareTo(max + tolerance.Value) <= 0,
             message ?? $"Value must be at most {max}.");
     }
 
@@ -32,7 +32,7 @@ internal static class FloatingPointRules
     {
         tolerance ??= GetTolerance(tolerance);
         ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
-        return new(value => value.CompareTo(min - tolerance.Value) >= 0 && value.CompareTo(max + tolerance.Value) <= 0,
+        return new(value => !TFloat.IsNaN(value) && value.CompareTo(min - tolerance.Value) >= 0 && value.CompareTo(max + tolerance.Value) <= 0,
             message ?? $"Value must be between {min} and {max}.");
     }
 
@@ -41,14 +41,15 @@ internal static class FloatingPointRules
     {
         tolerance ??= GetTolerance(tolerance);
         ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
-        return new(value => IsMultipleOf(value, factor, tolerance.Value),
+        ArgumentOutOfRangeException.ThrowIfZero(factor);
+        return new(value => !TFloat.IsNaN(value) && IsMultipleOf(value, factor, tolerance.Value),
             message ?? $"Value must be a multiple of {factor}.");
     }
 
     public static ValidationRule<TFloat> Finite<TFloat>(string? message)
         where TFloat : struct, IFloatingPointIeee754<TFloat> =>
         new(TFloat.IsFinite,
-            message ?? "Value must be a finite number.");
+            message ?? $"Value must be a finite {typeof(TFloat).Name}.");
 
     public static ValidationRule<TFloat> NotNaN<TFloat>(string? message)
         where TFloat : struct, IFloatingPointIeee754<TFloat> =>

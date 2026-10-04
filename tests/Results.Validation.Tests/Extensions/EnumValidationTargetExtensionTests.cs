@@ -24,7 +24,7 @@ public class EnumValidationTargetExtensionTests
             .Validate(x => x).IsDefined();
 
         var failure = result.ShouldBeFailureOfType<ValidationFailure>();
-        failure.ValidationMessage.ShouldBe($"Value must be a defined member of the {nameof(TestEnum)} enum.");
+        failure.ValidationMessage.ShouldBe($"Value must be a defined value of the {nameof(TestEnum)} enum.");
     }
 
     [Test]

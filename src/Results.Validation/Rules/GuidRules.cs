@@ -11,5 +11,5 @@ internal static class GuidRules
         new(value => value != Guid.Empty && value.Version == 4, message ?? "Guid must be version 4.");
 
     public static ValidationRule<Guid> Version7(string? message) =>
-    new(value => value != Guid.Empty && value.Version == 7, message ?? "Guid must be version 7.");
+        new(value => value != Guid.Empty && value.Version == 7, message ?? "Guid must be version 7.");
 }

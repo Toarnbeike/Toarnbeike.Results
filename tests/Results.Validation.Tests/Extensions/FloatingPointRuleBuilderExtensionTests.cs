@@ -114,7 +114,7 @@ public class FloatingPointRuleBuilderExtensionTests
     public void Finite_ShouldFail()
     {
         _builder.Finite();
-        ShouldFail(double.PositiveInfinity, "Value must be a finite number.");
+        ShouldFail(double.PositiveInfinity, "Value must be a finite Double.");
     }
 
     [Test]

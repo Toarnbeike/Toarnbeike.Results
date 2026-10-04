@@ -29,7 +29,7 @@ public class EnumRuleBuilderExtensionTests
     public void IsDefined_ShouldFail()
     {
         _builder.IsDefined();
-        ShouldFail((DayOfWeek)100, "Value must be a defined member of the DayOfWeek enum.");
+        ShouldFail((DayOfWeek)100, "Value must be a defined value of the DayOfWeek enum.");
     }
 
     [Test]

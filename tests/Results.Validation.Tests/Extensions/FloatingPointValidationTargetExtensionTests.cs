@@ -150,7 +150,7 @@ public class FloatingPointValidationTargetExtensionTests
             .Validate(x => x).Finite();
 
         var failure = result.ShouldBeFailureOfType<ValidationFailure>();
-        failure.ValidationMessage.ShouldBe("Value must be a finite number.");
+        failure.ValidationMessage.ShouldBe("Value must be a finite Double.");
     }
 
     [Test]
