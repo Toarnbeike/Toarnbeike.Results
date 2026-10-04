@@ -8,10 +8,10 @@ public abstract class Validator<T> : IValidator<T>
     /// <inheritdoc/>
     public Result<T> Validate(T value)
     {
-        var failures = IterateRules(value);
-        return failures.Any() 
-            ? new ValidationFailureSummary(failures)
-            : value;
+        var failures = IterateRules(value).ToList();
+        return failures.Count == 0 
+            ? value
+            : new ValidationFailureSummary(failures);
     }
 
     /// <summary>

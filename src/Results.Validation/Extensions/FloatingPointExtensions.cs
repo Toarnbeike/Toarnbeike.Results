@@ -8,7 +8,7 @@ namespace Toarnbeike.Results.Validation.Extensions;
 public static class FloatingPointExtensions
 {
     extension<T, TFloating>(ValidationRuleBuilder<T, TFloating> builder)
-    where TFloating : struct, IFloatingPointIeee754<TFloating>
+    where TFloating : struct, IFloatingPoint<TFloating>
     {
         /// <summary>
         /// Validates that the number is at least the specified minimum, using an optional tolerance.
@@ -69,7 +69,7 @@ public static class FloatingPointExtensions
     }
 
     extension<T, TFloating>(ValidationTarget<T, TFloating> target)
-        where TFloating : struct, IFloatingPointIeee754<TFloating>
+        where TFloating : struct, IFloatingPoint<TFloating>
     {
         /// <summary>
         /// Validates that the number is at least the specified minimum, using an optional tolerance.

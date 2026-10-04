@@ -29,7 +29,7 @@ public class HasAtMostTests
     }
 
     [Test]
-    public void HasAtMost_Predicate_Fails_ForEmptyCollection()
+    public void HasAtMost_Predicate_Succeeds_ForEmptyCollection()
     {
         var rule = CollectionRules.HasAtMost<List<string>>(2, null);
         var value = new List<string>();

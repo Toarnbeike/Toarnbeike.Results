@@ -48,11 +48,11 @@ personResult
 
 Or define a reusable validator for domain-specific logic:
 ```csharp
-public class PersonValidator : IValidator<Person>
+public class PersonValidator : Validator<Person>
 {
 	public override void RegisterRules(ValidationRuleCollection<Person> rules)
 	{
-		rules.That(p => p.Name).MinLength(3).Matches(@"^[a-zA-Z]+$");
+		rules.That(p => p.Name).MinLength(3).MatchesRegex(@"^[a-zA-Z]+$");
 		rules.That(p => p.Age).GreaterThan(18);
 		rules.ThatAll(p => p.Tags).MinLength(3);
 	}
@@ -108,7 +108,7 @@ Result<Person> result = GetPerson();
 
 var validated = result 
 	.Validate(x => x.Name).MinLength(3)
-	.Validate(x => x.Age) .AtLeast(18);
+	.Validate(x => x.Age).AtLeast(18)
 	.Validate(x => x.Address.PostalCode).Matches(@"^\d{5}$")
 	.ValidateAll(x => x.Tags).MinLength(3);
 ```
@@ -133,7 +133,7 @@ A validator defines it rules in the `RegisterRules` method, where you can declar
 ``` csharp
 public sealed class CustomerValidator(ICustomerRepository repository) : Validator<Customer> 
 { 
-	protected override void CreateRules(ValidationRuleCollection<Customer> rules)
+	protected override void RegisterRules(ValidationRuleCollection<Customer> rules)
 	{ 
 		rules.That(x => x.Name).MinLength(3).Matches(@"^[a-zA-Z]+$");
 		rules.That(x => x.Age).AtLeast(18); 

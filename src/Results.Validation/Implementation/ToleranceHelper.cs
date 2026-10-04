@@ -6,16 +6,15 @@ internal static class ToleranceHelper
 {
     public static void ThrowOnInvalidTolerance<T>(T tolerance) where T : struct, INumber<T>
     {
-        if (tolerance < T.Zero)
+        if (!T.IsFinite(tolerance) || tolerance < T.Zero)
         {
             throw new ArgumentOutOfRangeException(nameof(tolerance), tolerance,
-                "Provided tolerance is negative. This changes semantics and causes unexpected rule behaviour. " +
-                "Modify implementation if negative tolerance was deliberate, or verify before forwarding negative value.");
+                "Provided tolerance must be a finite, non-negative number.");
         }
     }
 
     public static TFloating Default<TFloating>()
-        where TFloating : struct, IFloatingPointIeee754<TFloating>
+        where TFloating : struct, IFloatingPoint<TFloating>
     {
         return typeof(TFloating) switch
         {
