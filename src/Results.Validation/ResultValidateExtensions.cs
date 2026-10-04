@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.Validation.Implementation;
 
@@ -11,6 +12,17 @@ public static class ResultValidateExtensions
 {
     extension<T>(Result<T> result)
     {
+        /// <summary>
+        /// Validates the value contained in the <see cref="Result{T}"/> using the specified <see cref="IValidator{T}"/>.
+        /// </summary>
+        /// <param name="validator">The validator to use.</param>
+        /// <returns>A <see cref="Result{T}"/> binding the original result to the outcome of the validation.</returns>
+        public Result<T> ValidateUsing(IValidator<T> validator)
+        {
+            ArgumentNullException.ThrowIfNull(validator);
+            return result.Bind(validator.Validate);
+        }
+
         /// <summary>
         /// Creates a validation target for  a property of the value contained in the <see cref="Result{T}"/> using the specified property selector.
         /// This validation target can then be used to specify the validation rule for the property.

@@ -23,6 +23,38 @@ public sealed class CustomerValidator : Validator<Customer>
 internal class ValidatorTests
 {
     [Test]
+    public void ValidateUsing_ShouldReturnSuccess_WhenAllRulesPass()
+    {
+        Result<Customer> customer = Customer.ValidInstance;
+        var result = customer.ValidateUsing(new CustomerValidator());
+        result.ShouldBeSuccess();
+    }
+
+    [Test]
+    public void ValidateUsing_ShouldReturnFailure_WhenAnyRuleFails()
+    {
+        Result<Customer> customer = Customer.ValidInstance with { Name = " " };
+        var result = customer.ValidateUsing(new CustomerValidator());
+
+        result.ShouldBeFailureOfType<ValidationFailureSummary>();
+    }
+
+    [Test]
+    public void ValidateUsing_ShouldReturnFailure_WhenOriginalResultIsFailure()
+    {
+        Result<Customer> customer = new SimpleFailure("test", "original failure");
+        var result = customer.ValidateUsing(new CustomerValidator());
+        result.ShouldBeFailureOfType<SimpleFailure>();
+    }
+
+    [Test]
+    public void ValidateUsing_Throws_ArgumentNullException_WhenValidatorIsNull()
+    {
+        Result<Customer> customer = Customer.ValidInstance;
+        Should.Throw<ArgumentNullException>(() => customer.ValidateUsing(null!));
+    }
+
+    [Test]
     public void Validate_ShouldReturnSuccess_WhenAllRulesPass()
     {
         var customer = Customer.ValidInstance;
