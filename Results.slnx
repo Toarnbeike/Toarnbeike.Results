@@ -4,6 +4,7 @@
     <File Path="docs/Extensions.md" />
     <File Path="docs/Failures.md" />
     <File Path="docs/Linq.md" />
+    <File Path="docs/Rules.md" />
     <File Path="docs/TestExtensions.md" />
   </Folder>
   <Folder Name="/Solution Items/">
