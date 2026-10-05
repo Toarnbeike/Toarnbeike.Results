@@ -43,9 +43,8 @@ jobs:
 
           projects=(
             "tests/Results.Tests/Results.Tests.csproj"
-            "tests/Results.FluentValidation.Tests/Results.FluentValidation.Tests.csproj"
-            "tests/Results.MinimalApi.Tests/Results.MinimalApi.Tests.csproj"
             "tests/Results.Ensure.Tests/Results.Ensure.Tests.csproj"
+            "tests/Results.Rules.Tests/Results.Rules.Tests.csproj"
             "tests/Results.Validation.Tests/Results.Validation.Tests.csproj"
           )
 

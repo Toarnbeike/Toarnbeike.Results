@@ -35,13 +35,7 @@ jobs:
 
       - name: Pack Results
         run: dotnet pack src/Results/Results.csproj --configuration Release --no-build --output ./nupkgs
-
-      - name: Pack Results.FluentValidation
-        run: dotnet pack src/Results.FluentValidation/Results.FluentValidation.csproj --configuration Release --no-build --output ./nupkgs
-           
-      - name: Pack Results.MinimalApi
-        run: dotnet pack src/Results.MinimalApi/Results.MinimalApi.csproj --configuration Release --no-build --output ./nupkgs
-        
+       
       - name: Pack Results.Ensure
         run: dotnet pack src/Results.Ensure/Results.Ensure.csproj --configuration Release --no-build --output ./nupkgs
 
