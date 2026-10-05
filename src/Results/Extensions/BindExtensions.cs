@@ -10,6 +10,22 @@ public static class BindExtensions
     extension(Result result)
     {
         /// <summary>
+        /// Projects a successful <see cref="Result"/> into a new <see cref="Result"/> using the specified function.
+        /// </summary>
+        /// <param name="bindFunc">A function to apply if the original result is successful. Should return a new <see cref="Result"/>.</param>
+        /// <returns>
+        /// If the original result is a failure, that failure is returned.
+        /// Otherwise, the result of <paramref name="bindFunc"/> is returned.
+        /// </returns>
+        public Result Bind(Func<Result> bindFunc) 
+        {
+            ArgumentNullException.ThrowIfNull(bindFunc);
+            return result.TryGetFailure(out var failure)
+                ? Result.Failure(failure)
+                : bindFunc();
+        }
+
+        /// <summary>
         /// Projects a successful <see cref="Result"/> into a new <see cref="Result{TOut}"/> using the specified function.
         /// </summary>
         /// <typeparam name="TOut">The result type of the projection.</typeparam>
@@ -28,6 +44,23 @@ public static class BindExtensions
             return result.TryGetFailure(out var failure) 
                 ? Result<TOut>.Failure(failure) 
                 : bindFunc();
+        }
+
+        /// <summary>
+        /// Asynchronously projects a successful <see cref="Result"/> into a new <see cref="Result"/> using the specified asynchronous function.
+        /// </summary>
+        /// <param name="bindTaskFunc">An asynchronous function to apply if the original result is successful. Should return a new <see cref="Result"/>.</param>
+        /// <returns>
+        /// A task that resolves to:
+        /// - The original failure if <paramref name="result"/> is a failure,
+        /// - Otherwise, the result of <paramref name="bindTaskFunc"/>.
+        /// </returns>
+        public async Task<Result> BindAsync(Func<Task<Result>> bindTaskFunc)
+        {
+            ArgumentNullException.ThrowIfNull(bindTaskFunc);
+            return result.TryGetFailure(out var failure)
+                ? Result.Failure(failure)
+                : await bindTaskFunc().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -58,6 +91,22 @@ public static class BindExtensions
     extension(Task<Result> resultTask)
     {
         /// <summary>
+        /// Projects a successful <see cref="Result"/> into a new <see cref="Result"/> using the specified function.
+        /// </summary>
+        /// <param name="bindFunc">A function to apply if the original result is successful. Should return a new <see cref="Result"/>.</param>
+        /// <returns>
+        /// If the original result is a failure, that failure is returned.
+        /// Otherwise, the result of <paramref name="bindFunc"/> is returned.
+        /// </returns>
+        public async Task<Result> Bind(Func<Result> bindFunc)
+        {
+            ArgumentNullException.ThrowIfNull(bindFunc);
+
+            var result = await resultTask.ConfigureAwait(false);
+            return result.Bind(bindFunc);
+        }
+
+        /// <summary>
         /// Projects a successful <see cref="Result"/> into a new <see cref="Result{TOut}"/> using the specified function.
         /// </summary>
         /// <typeparam name="TOut">The result type of the projection.</typeparam>
@@ -75,6 +124,22 @@ public static class BindExtensions
 
             var result = await resultTask.ConfigureAwait(false);
             return result.Bind(bindFunc);
+        }
+
+        /// <summary>
+        /// Asynchronously projects a successful <see cref="Result"/> into a new <see cref="Result"/> using the specified asynchronous function.
+        /// </summary>
+        /// <param name="bindTaskFunc">An asynchronous function to apply if the original result is successful. Should return a new <see cref="Result"/>.</param>
+        /// <returns>
+        /// A task that resolves to:
+        /// - The original failure if <paramref name="result"/> is a failure,
+        /// - Otherwise, the result of <paramref name="bindTaskFunc"/>.
+        /// </returns>
+        public async Task<Result> BindAsync(Func<Task<Result>> bindTaskFunc)
+        {
+            ArgumentNullException.ThrowIfNull(bindTaskFunc);
+            var result = await resultTask.ConfigureAwait(false);
+            return await result.BindAsync(bindTaskFunc).ConfigureAwait(false);
         }
 
         /// <summary>

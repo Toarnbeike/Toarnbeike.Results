@@ -1,6 +1,6 @@
-﻿namespace Toarnbeike.Results.Validation.Implementation;
+﻿namespace Toarnbeike.Results.Rules.Helpers;
 
-internal static class ExpressionHelpers
+public static class ExpressionHelpers
 {
     public static string ExtractPropertyName(string? expression)
     {

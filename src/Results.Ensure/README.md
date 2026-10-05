@@ -8,9 +8,14 @@ Composable guard library for C# that enables clean, fail-fast domain validation 
 
 ## Features
 
-- Static Ensure API: `Ensure.GreaterThan(value, 10);` 
-- Extension methods on primitives: `value.GreaterThan(10)`
-- Validation pipeline: `Result.Ensure(() => value.GreaterThan(10))`
+- Static Ensure API: `Ensure.That(x => x.Age).GreaterThan(18);` 
+- In a `Result` pipeline: 
+```csharp
+Result.Ensure(() => customer.Age).GreaterThan(10);
+Result<Customer> customer;
+customer.Ensure(c => c.Age).GreaterThan(10)
+		.Ensure(c => c.Name).NotEmpty();
+```
 
 ---
 

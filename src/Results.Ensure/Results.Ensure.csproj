@@ -9,6 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Results.Rules\Results.Rules.csproj" />
 		<ProjectReference Include="..\Results\Results.csproj" />
 	</ItemGroup>
 

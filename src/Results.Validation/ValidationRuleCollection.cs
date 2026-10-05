@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Toarnbeike.Results.Failures;
+using Toarnbeike.Results.Rules.Helpers;
 using Toarnbeike.Results.Validation.Implementation;
 
 namespace Toarnbeike.Results.Validation;
