@@ -8,8 +8,12 @@
 		<PackageTags>result ensure pipeline fuctional domain validation async</PackageTags>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<IncludeRules>true</IncludeRules>
+	</PropertyGroup>
+
 	<ItemGroup>
-		<ProjectReference Include="..\Results.Rules\Results.Rules.csproj" />
+		<ProjectReference Include="..\Results.Rules\Results.Rules.csproj" PrivateAssets="all" />
 		<ProjectReference Include="..\Results\Results.csproj" />
 	</ItemGroup>
 

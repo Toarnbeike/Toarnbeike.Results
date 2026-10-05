@@ -1,0 +1,20 @@
+<Project>
+
+	<PropertyGroup>
+		<TargetsForTfmSpecificContentInPackage>
+			$(TargetsForTfmSpecificContentInPackage);IncludeResultsRulesInPackage
+		</TargetsForTfmSpecificContentInPackage>
+	</PropertyGroup>
+
+	<Target Name="IncludeResultsRulesInPackage"
+            Condition="'$(IncludeRules)' == 'true'">
+
+		<ItemGroup>
+			<TfmSpecificPackageFile Include="$(MSBuildProjectDirectory)\..\Results.Rules\bin\$(Configuration)\$(TargetFramework)\Results.Rules.dll">
+				<PackagePath>lib\$(TargetFramework)</PackagePath>
+			</TfmSpecificPackageFile>
+		</ItemGroup>
+
+	</Target>
+
+</Project>
