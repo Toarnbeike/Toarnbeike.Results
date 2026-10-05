@@ -89,7 +89,7 @@ public readonly record struct Result<TValue> : IResult
     /// <param name="result">The <see cref="Result{TValue}"/> to convert.</param>
     /// <returns>A <see cref="Result"/> representing success or failure without a value.</returns>
     public static implicit operator Result(Result<TValue> result) =>
-        result.TryGetFailure(out var failure) ? Result.Failure(failure!) : Result.Success();
+        result.TryGetFailure(out var failure) ? Result.Failure(failure) : Result.Success();
 
     private Result(bool isSuccess, TValue? value, Failure? failure) => (IsSuccess, _value, _failure) = (isSuccess, value, failure);
 

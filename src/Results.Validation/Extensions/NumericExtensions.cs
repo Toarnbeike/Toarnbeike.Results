@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using Toarnbeike.Results.Validation.Implementation;
-using Toarnbeike.Results.Validation.Rules;
+using Toarnbeike.Results.Rules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 

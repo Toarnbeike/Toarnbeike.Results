@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.0.0-alpha.1] - 2026-10-05
+
+### Deprecated
+- `Toarnbeike.Results.MinimalApi` - will not be maintained anymore, not part of the 3.0.0 release.
+- `Toarnbeike.Results.FluentValidation` - will not be maintained anymore, not part of the 3.0.0 release. Use `Toarnbeike.Results.Validation` instead.
+
+### Removed
+- `Ensure`: primitive guard extensions are removed, Result.Ensure() has a new syntax.
+
+### Added
+- `Ensure`: new syntax for domain validation:
+	- `Result.Ensure(Func<TValue>).[Rule]()` - for inline guard checks on `Result`
+	- `Result<T>.Ensure(Func<T, TProperty>).[Rule]()` - for inline guard checks on `Result<T>`
+	- Support for EnsureAll, EnsureAny, both on `Result `and `Result<T>`
+- Common base between `Ensure` and `Validation` libraries, allowing for shared rules and extensibility.
+- `Core`: Bind extensions between `Result` and `Result` for consistency.
+
+### Upcoming
+- Overhaul (again) of the failure system, to allow for more flexibility and better integration with other libraries.
+- Review of available extensions, to ensure consistency and discoverability across the library.
+
 ## [2.2.1] - 2026-10-04
 
 ### Fixes
