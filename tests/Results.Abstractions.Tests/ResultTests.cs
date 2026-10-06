@@ -2,7 +2,7 @@
 
 public class ResultTests
 {
-    private readonly TestFailure _testFailure = new("test", "Test failure");
+    private readonly Failure _testFailure = new("test");
 
     [Fact]
     public void Success_ShouldReturn_SuccessResult()

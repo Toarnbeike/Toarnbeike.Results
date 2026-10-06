@@ -28,10 +28,10 @@ public class Result_T_EnsureExtensionTests
     [Test]
     public void Ensure_OnResultT_ShouldReturnFailure_WhenIncomingResultIsFailure()
     {
-        Result<int> result = new SimpleFailure("test", "Original failure.");
+        Result<int> result = new TestFailure("test");
         var failure = result.Ensure(v => v).GreaterThan(5)
-              .ShouldBeFailureOfType<SimpleFailure>();
-        failure.Message.ShouldBe("Original failure.");
+              .ShouldBeFailureOfType<TestFailure>();
+        failure.Identifier.ShouldBe("test");
     }
 
     [Test]
@@ -57,10 +57,10 @@ public class Result_T_EnsureExtensionTests
     [Test]
     public void EnsureAll_OnResultT_ShouldReturnFailure_WhenIncomingResultIsFailure()
     {
-        Result<int[]> result = new SimpleFailure("test", "Original failure.");
+        Result<int[]> result = new TestFailure("test");
         var failure = result.EnsureAll(v => v).GreaterThan(5)
-              .ShouldBeFailureOfType<SimpleFailure>();
-        failure.Message.ShouldBe("Original failure.");
+              .ShouldBeFailureOfType<TestFailure>();
+        failure.Identifier.ShouldBe("test");
     }
 
     [Test]
@@ -105,10 +105,10 @@ public class Result_T_EnsureExtensionTests
     [Test]
     public void EnsureAny_OnResultT_ShouldReturnFailure_WhenIncomingResultIsFailure()
     {
-        Result<int[]> result = new SimpleFailure("test", "Original failure.");
+        Result<int[]> result = new TestFailure("test");
         var failure = result.EnsureAny(v => v).GreaterThan(5)
-              .ShouldBeFailureOfType<SimpleFailure>();
-        failure.Message.ShouldBe("Original failure.");
+              .ShouldBeFailureOfType<TestFailure>();
+        failure.Identifier.ShouldBe("test");
     }
 
     [Test]

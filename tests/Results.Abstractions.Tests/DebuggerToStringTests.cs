@@ -5,7 +5,7 @@ public class DebuggerToStringTests
     [Fact]
     public void Failure_DebuggerToString_Should_ReturnMessage()
     {
-        var failure = new TestFailure("Code", "Message");
+        var failure = new Failure("Message");
         failure.DebuggerToString().ShouldBe("Failure: Message");
     }
 
@@ -19,7 +19,7 @@ public class DebuggerToStringTests
     [Fact]
     public void Result_DebuggerToString_Should_ReturnFailureAndMessage_WhenFailure()
     {
-        Result result = new TestFailure("Code", "Message");
+        Result result = new Failure("Message");
         result.DebuggerToString().ShouldBe("Failure: Message");
     }
 
@@ -33,7 +33,7 @@ public class DebuggerToStringTests
     [Fact]
     public void ResultT_DebuggerToString_Should_ReturnFailureAndMessage_WhenFailure()
     {
-        Result<int> result = new TestFailure("Code", "Message");
+        Result<int> result = new Failure("Message");
         result.DebuggerToString().ShouldBe("Failure: Message");
     }
 }

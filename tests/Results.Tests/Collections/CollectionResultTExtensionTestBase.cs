@@ -1,4 +1,6 @@
-﻿namespace Toarnbeike.Results.Tests.Collections;
+﻿using Toarnbeike.Results.Failures;
+
+namespace Toarnbeike.Results.Tests.Collections;
 
 public abstract class CollectionResultTExtensionTestBase
 {

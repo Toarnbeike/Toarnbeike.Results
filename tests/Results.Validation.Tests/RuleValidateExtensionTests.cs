@@ -40,11 +40,11 @@ public class RuleValidateExtensionTests
     [Test]
     public void Validate_ShouldReturnFailure_WhenIncomingResultIsFailure()
     {
-        var result = Result<string>.Failure(new SimpleFailure("value", "Original failure."));
+        var result = Result<string>.Failure(new TestFailure("value"));
         var failure = result
             .Validate(value => value).NotWhiteSpace()
-            .ShouldBeFailureOfType<SimpleFailure>();
-        failure.Message.ShouldBe("Original failure.");
+            .ShouldBeFailureOfType<TestFailure>();
+        failure.Identifier.ShouldBe("value");
     }
 
     [Test]
@@ -111,11 +111,11 @@ public class RuleValidateExtensionTests
     [Test]
     public void ValidateAll_ShouldReturnFailure_WhenIncomingResultIsFailure()
     {
-        var result = Result<TestClass>.Failure(new SimpleFailure("Numbers", "Original failure."));
+        var result = Result<TestClass>.Failure(new TestFailure("Numbers"));
         var failure = result
             .ValidateAll(testClass => testClass.Numbers).AtLeast(2)
-            .ShouldBeFailureOfType<SimpleFailure>();
-        failure.Message.ShouldBe("Original failure.");
+            .ShouldBeFailureOfType<TestFailure>();
+        failure.Identifier.ShouldBe("Numbers");
     }
 
     [Test]
@@ -166,11 +166,11 @@ public class RuleValidateExtensionTests
     [Test]
     public void ValidateAny_ShouldReturnFailure_WhenIncomingResultIsFailure()
     {
-        var result = Result<TestClass>.Failure(new SimpleFailure("Numbers", "Original failure."));
+        var result = Result<TestClass>.Failure(new TestFailure("Numbers"));
         var failure = result
             .ValidateAny(testClass => testClass.Numbers).AtLeast(2)
-            .ShouldBeFailureOfType<SimpleFailure>();
-        failure.Message.ShouldBe("Original failure.");
+            .ShouldBeFailureOfType<TestFailure>();
+        failure.Identifier.ShouldBe("Numbers");
     }
 }
 

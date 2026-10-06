@@ -1,4 +1,5 @@
 ﻿using Toarnbeike.Results.Extensions.Unsafe;
+using Toarnbeike.Results.Failures;
 
 namespace Toarnbeike.Results.Tests.Extensions.Unsafe;
 

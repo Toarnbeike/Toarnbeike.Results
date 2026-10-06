@@ -22,6 +22,7 @@ public sealed record ValidationFailureSummary : Failure
     /// <param name="message">Optional message specific to this validation summary. </param>
     /// <exception cref="ArgumentException">Thrown if the collection is empty or contains null entries.</exception>
     public ValidationFailureSummary(IEnumerable<ValidationFailure> failures, string? message = null)
+        : base(message ?? "One or more validation failures occured.", FailureCategory.Validation)
     {
         ArgumentNullException.ThrowIfNull(failures);
 
@@ -37,9 +38,6 @@ public sealed record ValidationFailureSummary : Failure
                 g => g.Key,
                 g => g.Select(f => f.ValidationMessage).ToArray()
             );
-
-        Message = message ?? "One or more validation failures occured.";
-        Category = FailureCategory.Validation;
     }
 
     /// <summary>

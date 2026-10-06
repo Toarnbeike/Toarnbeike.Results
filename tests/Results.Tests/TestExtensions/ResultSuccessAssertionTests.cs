@@ -1,4 +1,5 @@
 ﻿using Toarnbeike.Results.TestExtensions;
+using Toarnbeike.Results.Failures;
 
 namespace Toarnbeike.Results.Tests.TestExtensions;
 

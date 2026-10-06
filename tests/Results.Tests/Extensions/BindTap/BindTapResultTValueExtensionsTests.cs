@@ -1,5 +1,6 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.TestExtensions;
+using Toarnbeike.Results.Failures;
 
 namespace Toarnbeike.Results.Tests.Extensions.BindTap;
 

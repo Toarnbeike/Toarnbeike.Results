@@ -26,6 +26,7 @@ public sealed record AggregateFailureSummary : Failure
     /// <param name="failures">The collection of failures that caused the aggregate failure.</param>
     /// <param name="message">Optionally the message specific for this summary. </param>
     public AggregateFailureSummary(IEnumerable<Failure> failures, string? message = null)
+        : base(message ?? "Multiple failures occurred", FailureCategory.Unknown)
     {
         ArgumentNullException.ThrowIfNull(failures);
 
@@ -37,8 +38,6 @@ public sealed record AggregateFailureSummary : Failure
         }
 
         Failures = flattened.AsReadOnly();
-        Message = message ?? "Multiple failures occurred";
-        Category = FailureCategory.Unknown;
     }
 
     /// <summary>

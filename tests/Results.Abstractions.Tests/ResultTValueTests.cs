@@ -2,7 +2,7 @@
 
 public class ResultTValueTests
 {
-    private readonly TestFailure _testFailure = new("test", "Test failure");
+    private readonly Failure _testFailure = new("test");
     private readonly int _expectedValue = 42;
 
     [Fact]

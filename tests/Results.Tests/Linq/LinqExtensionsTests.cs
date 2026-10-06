@@ -1,5 +1,6 @@
 ﻿using Toarnbeike.Results.Linq;
 using Toarnbeike.Results.TestExtensions;
+using Toarnbeike.Results.Failures;
 
 namespace Toarnbeike.Results.Tests.Linq;
 

@@ -42,9 +42,9 @@ internal class ValidatorTests
     [Test]
     public void ValidateUsing_ShouldReturnFailure_WhenOriginalResultIsFailure()
     {
-        Result<Customer> customer = new SimpleFailure("test", "original failure");
+        Result<Customer> customer = new TestFailure("test");
         var result = customer.ValidateUsing(new CustomerValidator());
-        result.ShouldBeFailureOfType<SimpleFailure>();
+        result.ShouldBeFailureOfType<TestFailure>().Identifier.ShouldBe("test");
     }
 
     [Test]

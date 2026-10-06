@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.0.0-alpha.3] - 2026-10-06
+
+### Depricated
+- `SimpleFailure` - will be removed in 3.0.0, use `Failure` instead.
+
+### Added
+- `DomainFalure` - a new failure type for domain validation, allowing for more specific failure types and better integration with the `Ensure` library.
+- `TestFailure` - a new failure type for testing, allowing for more specific failure types.
+
+### Changed
+- `Failure` - is no longer abstract, and can be used directly for simple failures. Replaces `SimpleFailure` which was just a concrete implementation of `Failure`.
+
 ## [3.0.0-alpha.1] - 2026-10-05
 
 ### Deprecated
