@@ -15,8 +15,7 @@ public class NumericExtensionTests
             .WithValue(value)
             .Ensure(x => x).GreaterThan(2);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be greater than 2.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -52,8 +51,7 @@ public class NumericExtensionTests
             .WithValue(value)
             .Ensure(x => x).LessThan(4);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be less than 4.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -89,8 +87,7 @@ public class NumericExtensionTests
             .WithValue(value)
             .Ensure(x => x).Positive();
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be positive.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]

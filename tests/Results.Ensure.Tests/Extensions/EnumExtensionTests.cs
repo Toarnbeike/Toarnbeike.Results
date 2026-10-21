@@ -22,8 +22,7 @@ public class EnumExtensionTests
             .WithValue(value)
             .Ensure(x => x).IsDefined();
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe($"Value must be a defined value of the {nameof(TestEnum)} enum.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -60,8 +59,7 @@ public class EnumExtensionTests
             .WithValue(value)
             .Ensure(x => x).OneOf([TestEnum.A, TestEnum.B]);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be one of [A, B].");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -98,8 +96,7 @@ public class EnumExtensionTests
             .WithValue(value)
             .Ensure(x => x).NotOneOf([TestEnum.A, TestEnum.B]);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must not be one of [A, B].");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]

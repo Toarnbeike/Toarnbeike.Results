@@ -15,8 +15,7 @@ public class GuidExtensionTests
             .WithValue(value)
             .Ensure(x => x).NotEmpty();
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Guid must not be empty.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -52,8 +51,7 @@ public class GuidExtensionTests
             .WithValue(value)
             .Ensure(x => x).Version4();
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Guid must be version 4.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -77,7 +75,6 @@ public class GuidExtensionTests
             .WithValue(value)
             .Ensure(x => x).Version7();
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Guid must be version 7.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 }

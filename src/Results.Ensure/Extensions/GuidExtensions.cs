@@ -12,7 +12,7 @@ public static class GuidExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> NotEmpty(string? message = null) =>
-            target.Apply(GuidRules.NotEmpty(message));
+            target.Apply(GuidRules.NotEmpty(), message);
 
         /// <summary>
         /// Ensures that the Guid is a version 4 GUID.
@@ -20,7 +20,7 @@ public static class GuidExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> Version4(string? message = null) =>
-            target.Apply(GuidRules.Version4(message));
+            target.Apply(GuidRules.IsVersion4(), message);
 
         /// <summary>
         /// Ensures that the Guid is a version 7 GUID.
@@ -28,6 +28,6 @@ public static class GuidExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> Version7(string? message = null) =>
-            target.Apply(GuidRules.Version7(message));
+            target.Apply(GuidRules.IsVersion7(), message);
     }
 }

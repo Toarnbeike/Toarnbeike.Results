@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using Toarnbeike.Results.Failures;
-using Toarnbeike.Results.Rules.Helpers;
 using Toarnbeike.Results.Validation.Implementation;
 
 namespace Toarnbeike.Results.Validation;
@@ -23,36 +22,7 @@ public sealed class ValidationRuleCollection<T>
     /// <param name="expression">Auto filled: The expression used to select the property.</param>
     /// <returns>A <see cref="ValidationRuleBuilder{T, TProperty}"/> to specify the validation rules for the property.</returns>
     public ValidationRuleBuilder<T, TProperty> That<TProperty>(
-    Func<T, TProperty> propertySelector,
-    string? propertyName = null,
-    [CallerArgumentExpression(nameof(propertySelector))] string? expression = null)
-    {
-        ArgumentNullException.ThrowIfNull(propertySelector);
-        propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
-
-        return new ValidationRuleBuilder<T, TProperty>(
-            registerRule: _rules.Add,
-            executor: (value, rule) =>
-            {
-                var propertyValue = propertySelector(value);
-                return rule.Predicate(propertyValue)
-                    ? []
-                    : [new ValidationFailure(propertyName, rule.Message)];
-            });
-    }
-
-    /// <summary>
-    /// Creates a validation rule builder for all items in a collection property of type <typeparamref name="TProperty"/> of the type <typeparamref name="T"/>.
-    /// The validation rule builder will determine if all items in the collection satisfy the specified validation rule.
-    /// A failure for each item that does not satisfy the rule will be returned.
-    /// </summary>
-    /// <typeparam name="TProperty">The type of the items in the collection to validate.</typeparam>
-    /// <param name="propertySelector">A function to select the collection from the value.</param>
-    /// <param name="propertyName">An optional name of the property.</param>
-    /// <param name="expression">Auto filled: The expression used to select the collection.</param>
-    /// <returns>A <see cref="ValidationRuleBuilder{T, TProperty}"/> to specify the validation rules for the items in the collection.</returns>
-    public ValidationRuleBuilder<T, TProperty> ThatAll<TProperty>(
-        Func<T, IEnumerable<TProperty>> propertySelector,
+        Func<T, TProperty> propertySelector,
         string? propertyName = null,
         [CallerArgumentExpression(nameof(propertySelector))] string? expression = null)
     {
@@ -61,15 +31,63 @@ public sealed class ValidationRuleCollection<T>
 
         return new ValidationRuleBuilder<T, TProperty>(
             registerRule: _rules.Add,
-            executor: (value, rule) =>
+            executor: (value, rule, message) =>
+            {
+                var ruleResult = rule(propertySelector(value));
+                return ruleResult.IsValid
+                    ? []
+                    : [new ValidationFailure(propertyName, message ?? ruleResult.Message)];
+            });
+    }
+
+    public ValidationRuleBuilder<T, IEnumerable<TItem>> ThatCollection<TItem>(
+        Func<T, IEnumerable<TItem>> propertySelector,
+        string? propertyName = null,
+        [CallerArgumentExpression(nameof(propertySelector))] string? expression = null)
+    {
+        ArgumentNullException.ThrowIfNull(propertySelector);
+        propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
+        return new ValidationRuleBuilder<T, IEnumerable<TItem>>(
+            registerRule: _rules.Add,
+            executor: (value, rule, message) =>
+            {
+                var ruleResult = rule(propertySelector(value));
+                return ruleResult.IsValid
+                    ? []
+                    : [new ValidationFailure(propertyName, message ?? ruleResult.Message)];
+            });
+    }
+
+    /// <summary>
+    /// Creates a validation rule builder for all items in a collection property of type <typeparamref name="TProperty"/> of the type <typeparamref name="T"/>.
+    /// The validation rule builder will determine if all items in the collection satisfy the specified validation rule.
+    /// A failure for each item that does not satisfy the rule will be returned.
+    /// </summary>
+    /// <typeparam name="TItem">The type of the items in the collection to validate.</typeparam>
+    /// <param name="propertySelector">A function to select the collection from the value.</param>
+    /// <param name="propertyName">An optional name of the property.</param>
+    /// <param name="expression">Auto filled: The expression used to select the collection.</param>
+    /// <returns>A <see cref="ValidationRuleBuilder{T, TItem}"/> to specify the validation rules for the items in the collection.</returns>
+    public ValidationRuleBuilder<T, TItem> ThatAll<TItem>(
+        Func<T, IEnumerable<TItem>> propertySelector,
+        string? propertyName = null,
+        [CallerArgumentExpression(nameof(propertySelector))] string? expression = null)
+    {
+        ArgumentNullException.ThrowIfNull(propertySelector);
+        propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
+
+        return new ValidationRuleBuilder<T, TItem>(
+            registerRule: _rules.Add,
+            executor: (value, rule, message) =>
             {
                 var failures = new List<ValidationFailure>();
                 var index = 0;
                 foreach (var item in propertySelector(value))
                 {
-                    if (!rule.Predicate(item))
+                    var ruleResult = rule(item);
+                    if (!ruleResult.IsValid)
                     {
-                        failures.Add(new ValidationFailure($"{propertyName}[{index}]", rule.Message));
+                        failures.Add(new ValidationFailure($"{propertyName}[{index}]", message ?? ruleResult.Message));
                     }
 
                     index++;

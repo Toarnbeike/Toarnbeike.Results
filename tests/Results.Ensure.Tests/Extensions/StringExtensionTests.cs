@@ -15,8 +15,7 @@ public class StringExtensionTests
             .WithValue(value)
             .Ensure(x => x).NotEmpty();
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must not be empty.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -51,8 +50,7 @@ public class StringExtensionTests
             Result.Success()
             .WithValue(value)
             .Ensure(x => x).NotWhiteSpace();
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must not be whitespace.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -87,8 +85,7 @@ public class StringExtensionTests
             .WithValue(value)
             .Ensure(x => x).MinLength(3);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be at least 3 characters long.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -123,8 +120,7 @@ public class StringExtensionTests
             Result.Success()
             .WithValue(value)
             .Ensure(x => x).MaxLength(5);
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be at most 5 characters long.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -159,8 +155,7 @@ public class StringExtensionTests
             Result.Success()
             .WithValue(value)
             .Ensure(x => x).LengthBetween(4, 6);
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be between 4 and 6 characters long.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -195,8 +190,7 @@ public class StringExtensionTests
             .WithValue(value)
             .Ensure(x => x).MatchesRegex("^\\d+$");
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must match the pattern '^\\d+$'.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]

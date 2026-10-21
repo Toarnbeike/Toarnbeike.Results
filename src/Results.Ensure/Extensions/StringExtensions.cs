@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Toarnbeike.Results.Rules;
+﻿using Toarnbeike.Results.Rules;
 
 namespace Toarnbeike.Results.Ensure.Extensions;
 
@@ -13,7 +12,7 @@ public static class StringExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> NotEmpty(string? message = null) =>
-            target.Apply(StringRules.NotEmpty(message));
+            target.Apply(StringRules.NotEmpty(), message);
 
         /// <summary>
         /// Ensures that the string is not null or whitespace.
@@ -21,7 +20,7 @@ public static class StringExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> NotWhiteSpace(string? message = null) =>
-            target.Apply(StringRules.NotWhiteSpace(message));
+            target.Apply(StringRules.NotWhitespace(), message);
 
         /// <summary>
         /// Ensures that the string has at least the specified minimum length.
@@ -30,7 +29,7 @@ public static class StringExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> MinLength(int minLength, string? message = null) =>
-            target.Apply(StringRules.MinLength(minLength, message));
+            target.Apply(StringRules.MinLength(minLength), message);
 
         /// <summary>
         /// Ensures that the string has at most the specified maximum length.
@@ -39,7 +38,7 @@ public static class StringExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> MaxLength(int maxLength, string? message = null) =>
-            target.Apply(StringRules.MaxLength(maxLength, message));
+            target.Apply(StringRules.MaxLength(maxLength), message);
 
         /// <summary>
         /// Ensures that the string length is between the specified minimum and maximum (inclusive).
@@ -49,17 +48,8 @@ public static class StringExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> LengthBetween(int minLength, int maxLength, string? message = null) =>
-            target.Apply(StringRules.LengthBetween(minLength, maxLength, message));
-
-        /// <summary>
-        /// Ensures that the string matches the provided regular expression.
-        /// </summary>
-        /// <param name="regex">The regular expression to match against.</param>
-        /// <param name="message">Optionally a custom message to use if the guard fails.</param>
-        /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
-        public Result<T> MatchesRegex(Regex regex, string? message = null) =>
-            target.Apply(StringRules.Matches(regex, message));
-        
+            target.Apply(StringRules.LengthBetween(minLength, maxLength), message);
+       
         /// <summary>
         /// Ensures that the string matches the provided regular expression pattern.
         /// </summary>
@@ -67,6 +57,6 @@ public static class StringExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> MatchesRegex(string pattern, string? message = null) =>
-            target.Apply(StringRules.Matches(pattern, message));
+            target.Apply(StringRules.Matches(pattern), message);
     }
 }

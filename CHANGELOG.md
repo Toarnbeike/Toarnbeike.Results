@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.0.0-alpha.4] - 2026-10-21
+
+## Changed
+- `Rules`, the common base for `Ensure` and `Validation` libraries, has been updated for better consistency and extensibility.
+- `Ensure` library has been updated to use the new `Rules` base, allowing for more consistent and extensible domain validation.
+- `Validation` library has been updated to use the new `Rules` base, allowing for more consistent and extensible application validation.
+
 ## [3.0.0-alpha.3] - 2026-10-06
 
 ### Depricated

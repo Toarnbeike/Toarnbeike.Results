@@ -1,28 +1,50 @@
-﻿namespace Toarnbeike.Results.Rules;
+﻿using Toarnbeike.Results.Rules.Evaluations.Comparisons;
 
+namespace Toarnbeike.Results.Rules;
+
+/// <summary>
+/// Set of Rules for TimeSpan types.
+/// </summary>
 public static class TimeSpanRules
 {
-    public static Rule<TimeSpan> AtLeast(TimeSpan min, string? message) =>
-        new(value => value >= min, message ?? $"TimeSpan must be at least {min}.");
-    
-    public static Rule<TimeSpan> AtMost(TimeSpan max, string? message) =>
-        new(value => value <= max, message ?? $"TimeSpan must be at most {max}.");
-    
-    public static Rule<TimeSpan> MustBeBetween(TimeSpan min, TimeSpan max, string? message) =>
-        new(value => value >= min && value <= max,
-            message ?? $"TimeSpan must be between {min} and {max}.");
+    /// <summary>
+    /// Verifies that the TimeSpan value is at least the specified minimum value.
+    /// </summary>
+    /// <param name="min">The minimum TimeSpan value.</param>
+    /// <returns>A RuleDelegate that evaluates the TimeSpan value.</returns>
+    public static RuleDelegate<TimeSpan> AtLeast(TimeSpan min) => value =>
+        RuleResult.Create("Comparison.AtLeast", value, new AtLeastEvaluator<TimeSpan>(min));
 
-    public static Rule<TimeSpan> Around(TimeSpan expected, TimeSpan tolerance, string? message)
-    {
-        if (tolerance < TimeSpan.Zero)
-        {
-            throw new ArgumentOutOfRangeException(nameof(tolerance), "Tolerance must be non-negative.");
-        }
+    /// <summary>
+    /// Verifies that the TimeSpan value is at most the specified maximum value.
+    /// </summary>
+    /// <param name="max">The maximum TimeSpan value.</param>
+    /// <returns>A RuleDelegate that evaluates the TimeSpan value.</returns>
+    public static RuleDelegate<TimeSpan> AtMost(TimeSpan max) => value =>
+        RuleResult.Create("Comparison.AtMost", value, new AtMostEvaluator<TimeSpan>(max));
 
-        var min = expected < TimeSpan.MinValue + tolerance ? TimeSpan.MinValue : expected - tolerance;
-        var max = expected > TimeSpan.MaxValue - tolerance ? TimeSpan.MaxValue : expected + tolerance;
+    /// <summary>
+    /// Verifies that the TimeSpan value is between the specified minimum and maximum values.
+    /// </summary>
+    /// <param name="min">The minimum TimeSpan value.</param>
+    /// <param name="max">The maximum TimeSpan value.</param>
+    /// <returns>A RuleDelegate that evaluates the TimeSpan value.</returns>
+    public static RuleDelegate<TimeSpan> Between(TimeSpan min, TimeSpan max) => value =>
+        RuleResult.Create("Comparison.Between", value, new BetweenEvaluator<TimeSpan>(min, max));
 
-        return new(value => value >= min && value <= max,
-            message ?? $"TimeSpan must be around {expected} with a tolerance of {tolerance}.");
-    }
+    /// <summary>
+    /// Verifies that the TimeSpan value is at least zero.
+    /// </summary>
+    /// <returns>A RuleDelegate that evaluates the TimeSpan value.</returns>
+    public static RuleDelegate<TimeSpan> AtLeastZero() => AtLeast(TimeSpan.Zero);
+
+    /// <summary>
+    /// Verifies that the TimeSpan value is around the specified target value within the given tolerance.
+    /// </summary>
+    /// <param name="target">The target TimeSpan value.</param>
+    /// <param name="tolerance">The tolerance TimeSpan value.</param>
+    /// <returns>A RuleDelegate that evaluates the TimeSpan value.</returns>
+    public static RuleDelegate<TimeSpan> Around(TimeSpan target, TimeSpan tolerance) => value =>
+        RuleResult.Create("TimeSpan.Around", value, new BetweenEvaluator<TimeSpan>(target - tolerance, target + tolerance), ("tolerance", tolerance));
+
 }

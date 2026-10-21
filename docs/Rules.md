@@ -5,12 +5,19 @@ Custom messages can be supplied for each rule unless stated otherwise.
 
 ## CollectionRules
 
-Rules for non-null `IEnumerable` values:
+Rules for non-null `IEnumerable<T>` values:
 
 | Rule | Description |
 |---|---|
 | `NotEmpty` | Requires the collection to contain at least one element. |
 | `Empty` | Requires the collection to contain no elements. |
+| `DoesContain(item)` | Requires the collection to contain at least one element that equals `item`. |
+| `DoesNotContain(item)` | Requires the collection to contain no elements that equal `item`. |
+| `MustAll(predicate)` | Requires all elements to satisfy the predicate. |
+| `MustAny(predicate)` | Requires at least one element to satisfy the predicate. |
+| `MustNone(predicate)` | Requires no elements to satisfy the predicate. |
+| `IsUnique` | Requires all elements to be unique. |
+| `IsUniqueBy(keySelector)` | Requires all elements to be unique based on the specified key selector. |
 | `HasAtLeast(min)` | Requires at least `min` elements. |
 | `HasAtMost(max)` | Requires no more than `max` elements. |
 | `HasBetween(min, max)` | Requires the count to be within the inclusive range `min`–`max`. |
