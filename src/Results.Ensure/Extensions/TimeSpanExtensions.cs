@@ -13,7 +13,7 @@ public static class TimeSpanExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> AtLeast(TimeSpan min, string? message = null) =>
-            target.Apply(TimeSpanRules.AtLeast(min, message));
+            target.Apply(TimeSpanRules.AtLeast(min), message);
 
         /// <summary>
         /// Ensures that the TimeSpan is at most the specified maximum.
@@ -22,7 +22,7 @@ public static class TimeSpanExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> AtMost(TimeSpan max, string? message = null) =>
-            target.Apply(TimeSpanRules.AtMost(max, message));
+            target.Apply(TimeSpanRules.AtMost(max), message);
 
         /// <summary>
         /// Ensures that the TimeSpan is between the specified minimum and maximum.
@@ -32,7 +32,7 @@ public static class TimeSpanExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> Between(TimeSpan min, TimeSpan max, string? message = null) =>
-            target.Apply(TimeSpanRules.MustBeBetween(min, max, message));
+            target.Apply(TimeSpanRules.Between(min, max), message);
 
         /// <summary>
         /// Ensures that the TimeSpan is within the specified tolerance of the expected value.
@@ -42,6 +42,6 @@ public static class TimeSpanExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> Around(TimeSpan expected, TimeSpan tolerance, string? message = null) =>
-            target.Apply(TimeSpanRules.Around(expected, tolerance, message));
+            target.Apply(TimeSpanRules.Around(expected, tolerance), message);
     }
 }

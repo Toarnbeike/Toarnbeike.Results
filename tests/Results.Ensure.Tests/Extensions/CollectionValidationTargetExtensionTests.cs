@@ -9,24 +9,23 @@ public class CollectionExtensionTests
     [Test]
     public void NotEmpty_Should_ReturnFailure_WhenEmpty()
     {
-        IEnumerable<string> list = [];
-        var result = 
+        List<string> list = [];
+        var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).NotEmpty();
+            .EnsureCollection(x => x).NotEmpty();
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Collection must not be empty.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
     public void NotEmpty_Should_ReturnSuccess_WhenNotEmpty()
     {
-        IEnumerable<string> list = ["item"];
-        var result = 
+        List<string> list = ["item"];
+        var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).NotEmpty();
+            .EnsureCollection(x => x).NotEmpty();
 
         result.ShouldBeSuccess();
     }
@@ -34,11 +33,11 @@ public class CollectionExtensionTests
     [Test]
     public void NotEmpty_Should_UseCustomMessage_WhenProvided()
     {
-        IEnumerable<string> list = [];
+        List<string> list = [];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).NotEmpty("Custom message");
+            .EnsureCollection(x => x).NotEmpty("Custom message");
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
     }
@@ -46,24 +45,23 @@ public class CollectionExtensionTests
     [Test]
     public void Empty_Should_ReturnFailure_WhenNotEmpty()
     {
-        IEnumerable<string> list = ["item"];
+        List<string> list = ["item"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).Empty();
+            .EnsureCollection(x => x).Empty();
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Collection must be empty.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
     public void Empty_Should_ReturnSuccess_WhenEmpty()
     {
-        IEnumerable<string> list = [];
+        List<string> list = [];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).Empty();
+            .EnsureCollection(x => x).Empty();
 
         result.ShouldBeSuccess();
     }
@@ -71,11 +69,11 @@ public class CollectionExtensionTests
     [Test]
     public void Empty_Should_UseCustomMessage_WhenProvided()
     {
-        IEnumerable<string> list = ["item"];
+        List<string> list = ["item"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).Empty("Custom message");
+            .EnsureCollection(x => x).Empty("Custom message");
 
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
@@ -84,24 +82,23 @@ public class CollectionExtensionTests
     [Test]
     public void HasAtLeast_Should_ReturnFailure_WhenBelowMin()
     {
-        IEnumerable<string> list = ["a"];
+        List<string> list = ["a"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasAtLeast(2);
+            .EnsureCollection(x => x).HasAtLeast(2);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Collection must contain at least 2 element(s).");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
     public void HasAtLeast_Should_ReturnSuccess_WhenMeetsMin()
     {
-        IEnumerable<string> list = ["a","b"];
+        List<string> list = ["a", "b"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasAtLeast(2);
+            .EnsureCollection(x => x).HasAtLeast(2);
 
         result.ShouldBeSuccess();
     }
@@ -109,11 +106,11 @@ public class CollectionExtensionTests
     [Test]
     public void HasAtLeast_Should_UseCustomMessage_WhenProvided()
     {
-        IEnumerable<string> list = ["a"];
+        List<string> list = ["a"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasAtLeast(2, "Custom message");
+            .EnsureCollection(x => x).HasAtLeast(2, "Custom message");
 
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
@@ -122,24 +119,23 @@ public class CollectionExtensionTests
     [Test]
     public void HasAtMost_Should_ReturnFailure_WhenAboveMax()
     {
-        IEnumerable<string> list = ["a","b","c"];
+        List<string> list = ["a", "b", "c"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasAtMost(2);
+            .EnsureCollection(x => x).HasAtMost(2);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Collection must contain at most 2 element(s).");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
     public void HasAtMost_Should_ReturnSuccess_WhenWithinMax()
     {
-        IEnumerable<string> list = ["a","b"];
+        List<string> list = ["a", "b"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasAtMost(2);
+            .EnsureCollection(x => x).HasAtMost(2);
 
         result.ShouldBeSuccess();
     }
@@ -147,11 +143,11 @@ public class CollectionExtensionTests
     [Test]
     public void HasAtMost_Should_UseCustomMessage_WhenProvided()
     {
-        IEnumerable<string> list = ["a","b","c"];
+        List<string> list = ["a", "b", "c"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasAtMost(2, "Custom message");
+            .EnsureCollection(x => x).HasAtMost(2, "Custom message");
 
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
@@ -160,24 +156,23 @@ public class CollectionExtensionTests
     [Test]
     public void HasBetween_Should_ReturnFailure_WhenOutsideRange()
     {
-        IEnumerable<string> list = ["a"];
+        List<string> list = ["a"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasBetween(2, 3);
+            .EnsureCollection(x => x).HasBetween(2, 3);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Collection must contain between 2 and 3 element(s).");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
     public void HasBetween_Should_ReturnSuccess_WhenWithinRange()
     {
-        IEnumerable<string> list = ["a","b"];
+        List<string> list = ["a", "b"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasBetween(2, 3);
+            .EnsureCollection(x => x).HasBetween(2, 3);
 
         result.ShouldBeSuccess();
     }
@@ -185,11 +180,11 @@ public class CollectionExtensionTests
     [Test]
     public void HasBetween_Should_UseCustomMessage_WhenProvided()
     {
-        IEnumerable<string> list = ["a", "b", "c", "d"];
+        List<string> list = ["a", "b", "c", "d"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasBetween(2, 3, "Custom message");
+            .EnsureCollection(x => x).HasBetween(2, 3, "Custom message");
 
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
@@ -198,24 +193,23 @@ public class CollectionExtensionTests
     [Test]
     public void HasExactly_Should_ReturnFailure_WhenNotExact()
     {
-        IEnumerable<string> list = ["a","b"];
+        List<string> list = ["a", "b"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasExactly(1);
+            .EnsureCollection(x => x).HasExactly(1);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Collection must contain exactly 1 element(s).");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
     public void HasExactly_Should_ReturnSuccess_WhenExact()
     {
-        IEnumerable<string> list = ["a","b","c"];
+        List<string> list = ["a", "b", "c"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasExactly(3);
+            .EnsureCollection(x => x).HasExactly(3);
 
         result.ShouldBeSuccess();
     }
@@ -223,12 +217,84 @@ public class CollectionExtensionTests
     [Test]
     public void HasExactly_Should_UseCustomMessage_WhenProvided()
     {
-        IEnumerable<string> list = ["a","b"];
+        List<string> list = ["a", "b"];
         var result =
             Result.Success()
             .WithValue(list)
-            .Ensure(x => x).HasExactly(1, "Custom message");
+            .EnsureCollection(x => x).HasExactly(1, "Custom message");
 
+        var failure = result.ShouldBeFailureOfType<GuardFailure>();
+        failure.Message.ShouldBe("Custom message");
+    }
+
+    [Test]
+    public void DoesContain_Should_ReturnSuccess_WhenCollectionContainsExpectedItem()
+    {
+        List<string> list = ["a", "b"];
+        var result =
+            Result.Success()
+            .WithValue(list)
+            .EnsureCollection(x => x).DoesContain("b");
+
+        result.ShouldBeSuccess();
+    }
+
+    [Test]
+    public void DoesContain_Should_ReturnFailure_WhenCollectionDoesNotContainExpectedItem()
+    {
+        List<string> list = ["a", "b"];
+        var result =
+            Result.Success()
+            .WithValue(list)
+            .EnsureCollection(x => x).DoesContain("c");
+
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
+    }
+
+    [Test]
+    public void DoesContain_Should_UseCustomMessage_WhenProvided()
+    {
+        List<string> list = ["a", "b"];
+        var result =
+            Result.Success()
+            .WithValue(list)
+            .EnsureCollection(x => x).DoesContain("c", "Custom message");
+
+        var failure = result.ShouldBeFailureOfType<GuardFailure>();
+        failure.Message.ShouldBe("Custom message");
+    }
+
+    [Test]
+    public void DoesNotContain_Should_ReturnSuccess_WhenCollectionDoesNotContainsExpectedItem()
+    {
+        List<string> list = ["a", "b"];
+        var result =
+            Result.Success()
+            .WithValue(list)
+            .EnsureCollection(x => x).DoesNotContain("c");
+
+        result.ShouldBeSuccess();
+    }
+
+    [Test]
+    public void DoesNotContain_Should_ReturnFailure_WhenCollectionContainsExpectedItem()
+    {
+        List<string> list = ["a", "b"];
+        var result =
+            Result.Success()
+            .WithValue(list)
+            .EnsureCollection(x => x).DoesNotContain("b");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
+    }
+
+    [Test]
+    public void DoesNotContain_Should_UseCustomMessage_WhenProvided()
+    {
+        List<string> list = ["a", "b"];
+        var result =
+            Result.Success()
+            .WithValue(list)
+            .EnsureCollection(x => x).DoesNotContain("b", "Custom message");
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
     }

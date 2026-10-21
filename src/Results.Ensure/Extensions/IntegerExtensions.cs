@@ -15,7 +15,7 @@ public static class IntegerExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> AtLeast(TInteger min, string? message = null) =>
-            target.Apply(IntegerRules.AtLeast(min, message));
+            target.Apply(NumberRules.AtLeast(min), message);
 
         /// <summary>
         /// Ensures that the integer is at most the specified maximum.
@@ -24,7 +24,7 @@ public static class IntegerExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> AtMost(TInteger max, string? message = null) =>
-            target.Apply(IntegerRules.AtMost(max, message));
+            target.Apply(NumberRules.AtMost(max), message);
         /// <summary>
         /// Ensures that the integer is between the specified minimum and maximum.
         /// </summary>
@@ -33,7 +33,7 @@ public static class IntegerExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> Between(TInteger min, TInteger max, string? message = null) =>
-            target.Apply(IntegerRules.Between(min, max, message));
+            target.Apply(NumberRules.Between(min, max), message);
 
         /// <summary>
         /// Ensures that the integer is a multiple of the specified factor.
@@ -42,6 +42,6 @@ public static class IntegerExtensions
         /// <param name="message">Optionally a custom message to use if the guard fails.</param>
         /// <returns>The result of the guard, either a success or a failure <see cref="GuardFailure"/>.</returns>
         public Result<T> MultipleOf(TInteger factor, string? message = null) =>
-            target.Apply(IntegerRules.MultipleOf(factor, message));
+            target.Apply(NumberRules.MultipleOf(factor), message);
     }
 }

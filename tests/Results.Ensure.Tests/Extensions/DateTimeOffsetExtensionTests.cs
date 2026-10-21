@@ -15,8 +15,7 @@ public class DateTimeOffsetExtensionTests
             Result.Success()
             .WithValue(date)
             .Ensure(x => x).OnOrAfter(comparison);
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe($"Date must be on or after {comparison}.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -51,8 +50,7 @@ public class DateTimeOffsetExtensionTests
             Result.Success()
             .WithValue(date)
             .Ensure(x => x).OnOrBefore(comparison);
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe($"Date must be on or before {comparison}.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -88,8 +86,7 @@ public class DateTimeOffsetExtensionTests
             Result.Success()
             .WithValue(date)
             .Ensure(x => x).MustBeBetween(min, max);
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe($"Date must be between {min} and {max}.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]

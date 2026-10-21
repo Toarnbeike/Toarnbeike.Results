@@ -1,109 +1,62 @@
-﻿using System.Collections;
+﻿using Toarnbeike.Results.Rules.Evaluations.Collections;
+using Toarnbeike.Results.Rules.Evaluations.Comparisons;
 
 namespace Toarnbeike.Results.Rules;
 
 public static class CollectionRules
 {
-    public static Rule<TEnumerable> NotEmpty<TEnumerable>(string? message)
-        where TEnumerable : IEnumerable =>
-        new(value => value is not null && !IsCollectionEmpty(value),
-            message ?? "Collection must not be empty."
-    );
+    /// <summary>
+    /// Verifies that the collection contains the expected item.
+    /// </summary>
+    /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
+    /// <param name="expected">The item that is expected to be in the collection.</param>
+    /// <returns>A RuleDelegate that evaluates the Collection value.</returns>
+    public static RuleDelegate<IEnumerable<TItem>> Contains<TItem>(TItem expected) => value =>
+        RuleResult.Create("Collection.Contains", value, new ContainsEvaluator<TItem>(expected));
 
-    public static Rule<TEnumerable> Empty<TEnumerable>(string? message)
-        where TEnumerable : IEnumerable =>
-        new(value => value is not null && IsCollectionEmpty(value),
-            message ?? "Collection must be empty."
-    );
+    /// <summary>
+    /// Verifies that the collection does not contain the unexpected item.
+    /// </summary>
+    /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
+    /// <param name="unexpected">The item that is unexpected to be in the collection.</param>
+    /// <returns>A RuleDelegate that evaluates the Collection value.</returns>
+    public static RuleDelegate<IEnumerable<TItem>> NotContains<TItem>(TItem unexpected) => value =>
+        RuleResult.Create("Collection.NotContains", value, new DoesNotContainEvaluator<TItem>(unexpected));
 
-    public static Rule<TEnumerable> HasAtLeast<TEnumerable>(int min, string? message)
-        where TEnumerable : IEnumerable =>
-        new(value => value is not null && !HasCollectionLessThan(value, min),
-            message ?? $"Collection must contain at least {min} element(s)."
-    );
+    /// <summary>
+    /// Verifies that the collection has the expected number of items.
+    /// </summary>
+    /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
+    /// <param name="expectedCount">The expected number of items in the collection.</param>
+    /// <returns>A RuleDelegate that evaluates the Collection value.</returns>
+    public static RuleDelegate<IEnumerable<TItem>> HasExactly<TItem>(int expectedCount) => value =>
+        RuleResult.Create("Collection.HasExactly", value, value => value.Count(), new EqualToEvaluator<int>(expectedCount));
 
-    public static Rule<TEnumerable> HasAtMost<TEnumerable>(int max, string? message)
-        where TEnumerable : IEnumerable =>
-        new(value => value is not null && HasCollectionLessThan(value, max + 1),
-            message ?? $"Collection must contain at most {max} element(s)."
-    );
+    /// <summary>
+    /// Verifies that the collection has at least the specified number of items.
+    /// </summary>
+    /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
+    /// <param name="minimumCount">The minimum number of items that the collection should have.</param>
+    /// <returns>A RuleDelegate that evaluates the Collection value.</returns>
+    public static RuleDelegate<IEnumerable<TItem>> HasAtLeast<TItem>(int minimumCount) => value =>
+        RuleResult.Create("Collection.HasAtLeast", value, value => value.Count(), new AtLeastEvaluator<int>(minimumCount));
 
-    public static Rule<TEnumerable> HasBetween<TEnumerable>(int min, int max, string? message)
-        where TEnumerable : IEnumerable
-    {
-        return new(value => value is not null && HasCollectionBetween(value, min, max),
-        message ?? $"Collection must contain between {min} and {max} element(s).");
-    }
+    /// <summary>
+    /// Verifies that the collection has at most the specified number of items.
+    /// </summary>
+    /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
+    /// <param name="maximumCount">The maximum number of items that the collection should have.</param>
+    /// <returns>A RuleDelegate that evaluates the Collection value.</returns>
+    public static RuleDelegate<IEnumerable<TItem>> HasAtMost<TItem>(int maximumCount) => value =>
+        RuleResult.Create("Collection.HasAtMost", value, value => value.Count(), new AtMostEvaluator<int>(maximumCount));
 
-    public static Rule<TEnumerable> HasExactly<TEnumerable>(int expected, string? message)
-        where TEnumerable : IEnumerable =>
-        new(value => value is not null && HasCollectionExactly(value, expected),
-        message ?? $"Collection must contain exactly {expected} element(s)."
-    );
-
-
-    private static bool IsCollectionEmpty(IEnumerable target)
-    {
-        if (target is ICollection collection)
-        {
-            return collection.Count == 0;
-        }
-        return !target.GetEnumerator().MoveNext();
-    }
-
-    private static bool HasCollectionLessThan(IEnumerable target, int count)
-    {
-        if (target is ICollection collection)
-        {
-            return collection.Count < count;
-        }
-
-        int currentCount = 0;
-        foreach (var _ in target)
-        {
-            currentCount++;
-            if (currentCount >= count)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static bool HasCollectionExactly(IEnumerable target, int expectedCount)
-    {
-        if (target is ICollection collection)
-        {
-            return collection.Count == expectedCount;
-        }
-
-        int currentCount = 0;
-        foreach (var _ in target)
-        {
-            currentCount++;
-            if (currentCount > expectedCount)
-            {
-                return false;
-            }
-        }
-        return currentCount == expectedCount;
-    }
-
-    private static bool HasCollectionBetween(IEnumerable target, int min, int max)
-    {
-        if (target is ICollection collection)
-        {
-            return collection.Count >= min && collection.Count <= max;
-        }
-        int currentCount = 0;
-        foreach (var _ in target)
-        {
-            currentCount++;
-            if (currentCount > max)
-            {
-                return false;
-            }
-        }
-        return currentCount >= min;
-    }
+    /// <summary>
+    /// Verifies that the collection has a number of items between the specified minimum and maximum counts.
+    /// </summary>
+    /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
+    /// <param name="minimumCount">The minimum number of items that the collection should have.</param>
+    /// <param name="maximumCount">The maximum number of items that the collection should have.</param>
+    /// <returns>A RuleDelegate that evaluates the Collection value.</returns>
+    public static RuleDelegate<IEnumerable<TItem>> HasBetween<TItem>(int minimumCount, int maximumCount) => value =>
+        RuleResult.Create("Collection.HasBetween", value, value => value.Count(), new BetweenEvaluator<int>(minimumCount, maximumCount));
 }

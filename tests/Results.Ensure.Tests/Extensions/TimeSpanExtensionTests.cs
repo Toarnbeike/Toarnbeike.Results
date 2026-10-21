@@ -16,8 +16,7 @@ public class TimeSpanExtensionTests
             .WithValue(value)
             .Ensure(x => x).AtLeast(min);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe($"TimeSpan must be at least {min}.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -55,8 +54,7 @@ public class TimeSpanExtensionTests
             Result.Success()
             .WithValue(value)
             .Ensure(x => x).AtMost(max);
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe($"TimeSpan must be at most {max}.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -94,8 +92,7 @@ public class TimeSpanExtensionTests
             Result.Success()
             .WithValue(value)
             .Ensure(x => x).Between(min, max);
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe($"TimeSpan must be between {min} and {max}.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -136,8 +133,7 @@ public class TimeSpanExtensionTests
             .WithValue(value)
             .Ensure(x => x).Around(expected, tolerance);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe($"TimeSpan must be around {expected} with a tolerance of {tolerance}.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]

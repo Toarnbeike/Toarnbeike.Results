@@ -1,66 +1,85 @@
 ﻿using System.Numerics;
-using Toarnbeike.Results.Rules.Helpers;
+using Toarnbeike.Results.Rules.Evaluations.Comparisons;
+using Toarnbeike.Results.Rules.Evaluations.Numbers;
 
 namespace Toarnbeike.Results.Rules;
 
 public static class FloatingPointRules
 {
-    private static TFloating GetTolerance<TFloating>(TFloating? provided)
-        where TFloating : struct, IFloatingPoint<TFloating> =>
-        provided ?? ToleranceHelper.Default<TFloating>();
+    /// <summary>
+    /// Verifies that the floating point value is at least the specified minimum value, with an optional tolerance.
+    /// </summary>
+    /// <typeparam name="TFloat">The type of the floating point value.</typeparam>
+    /// <param name="min">The minimum floating point value.</param>
+    /// <param name="tolerance">The optional tolerance value.</param>
+    /// <returns>A rule delegate that evaluates the floating point value.</returns>
+    public static RuleDelegate<TFloat> AtLeast<TFloat>(TFloat min, TFloat? tolerance)
+        where TFloat : struct, IFloatingPoint<TFloat>, IMinMaxValue<TFloat> => value =>
+        RuleResult.Create("Comparison.AtLeastWithTolerance", value, new AtLeastWithToleranceEvaluator<TFloat>(min, tolerance));
 
-    public static Rule<TFloat> AtLeast<TFloat>(TFloat min, TFloat? tolerance, string? message)
-        where TFloat : struct, IFloatingPoint<TFloat>
-    {
-        tolerance ??= GetTolerance(tolerance);
-        ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
-        return new(value =>  value.CompareTo(min - tolerance.Value) >= 0, 
-            message ?? $"Value must be at least {min}.");
-    }
+    /// <summary>
+    /// Verifies that the floating point value is at most the specified maximum value, with an optional tolerance.
+    /// </summary>
+    /// <typeparam name="TFloat">The type of the floating point value.</typeparam>
+    /// <param name="max">The maximum floating point value.</param>
+    /// <param name="tolerance">The optional tolerance value.</param>
+    /// <returns>A rule delegate that evaluates the floating point value.</returns>
+    public static RuleDelegate<TFloat> AtMost<TFloat>(TFloat max, TFloat? tolerance)
+        where TFloat : struct, IFloatingPoint<TFloat>, IMinMaxValue<TFloat> => value =>
+        RuleResult.Create("Comparison.AtMostWithTolerance", value, new AtMostWithToleranceEvaluator<TFloat>(max, tolerance));
 
-    public static Rule<TFloat> AtMost<TFloat>(TFloat max, TFloat? tolerance, string? message)
-        where TFloat : struct, IFloatingPoint<TFloat>
-    {
-        tolerance ??= GetTolerance(tolerance);
-        ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
-        return new(value => !TFloat.IsNaN(value) && value.CompareTo(max + tolerance.Value) <= 0,
-            message ?? $"Value must be at most {max}.");
-    }
+    /// <summary>
+    /// Verifies that the floating point value is between the specified minimum and maximum values, with an optional tolerance.
+    /// </summary>
+    /// <typeparam name="TFloat">The type of the floating point value.</typeparam>
+    /// <param name="min">The minimum floating point value.</param>
+    /// <param name="max">The maximum floating point value.</param>
+    /// <param name="tolerance">The optional tolerance value.</param>
+    /// <returns>A rule delegate that evaluates the floating point value.</returns>
+    public static RuleDelegate<TFloat> Between<TFloat>(TFloat min, TFloat max, TFloat? tolerance)
+        where TFloat : struct, IFloatingPoint<TFloat>, IMinMaxValue<TFloat> => value =>
+        RuleResult.Create("Comparison.BetweenWithTolerance", value, new BetweenWithToleranceEvaluator<TFloat>(min, max, tolerance));
 
-    public static Rule<TFloat> Between<TFloat>(TFloat min, TFloat max, TFloat? tolerance, string? message)
-        where TFloat : struct, IFloatingPoint<TFloat>
-    {
-        tolerance ??= GetTolerance(tolerance);
-        ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
-        return new(value => !TFloat.IsNaN(value) && value.CompareTo(min - tolerance.Value) >= 0 && value.CompareTo(max + tolerance.Value) <= 0,
-            message ?? $"Value must be between {min} and {max}.");
-    }
+    /// <summary>
+    /// Verifies that the floating point value is equal to the specified target value, with an optional tolerance.
+    /// </summary>
+    /// <typeparam name="TFloat">The type of the floating point value.</typeparam>
+    /// <param name="target">The target floating point value.</param>
+    /// <param name="tolerance">The optional tolerance value.</param>
+    /// <returns>A rule delegate that evaluates the floating point value.</returns>
+    public static RuleDelegate<TFloat> EqualTo<TFloat>(TFloat target, TFloat? tolerance)
+        where TFloat : struct, IFloatingPoint<TFloat>, IMinMaxValue<TFloat> => value =>
+        RuleResult.Create("Comparison.EqualToWithTolerance", value, new EqualToWithToleranceEvaluator<TFloat>(target, tolerance));
 
-    public static Rule<TFloat> MultipleOf<TFloat>(TFloat factor, TFloat? tolerance, string? message)
-        where TFloat : struct, IFloatingPoint<TFloat>
-    {
-        tolerance ??= GetTolerance(tolerance);
-        ToleranceHelper.ThrowOnInvalidTolerance(tolerance.Value);
-        ArgumentOutOfRangeException.ThrowIfZero(factor);
-        return new(value => !TFloat.IsNaN(value) && IsMultipleOf(value, factor, tolerance.Value),
-            message ?? $"Value must be a multiple of {factor}.");
-    }
+    /// <summary>
+    /// Verifies that the floating point value is not equal to the specified target value.
+    /// </summary>
+    /// <typeparam name="TFloat">The type of the floating point value.</typeparam>
+    /// <param name="target">The target floating point value.</param>
+    /// <param name="tolerance">The optional tolerance value.</param>
+    /// <returns>A rule delegate that evaluates the floating point value.</returns>
+    public static RuleDelegate<TFloat> NotEqualTo<TFloat>(TFloat target, TFloat? tolerance)
+        where TFloat : struct, IFloatingPoint<TFloat>, IMinMaxValue<TFloat> => value =>
+        RuleResult.Create("Comparison.NotEqualToWithTolerance", value, new NotEqualToWithToleranceEvaluator<TFloat>(target, tolerance));
 
-    public static Rule<TFloat> Finite<TFloat>(string? message)
-        where TFloat : struct, IFloatingPoint<TFloat> =>
-        new(TFloat.IsFinite,
-            message ?? $"Value must be a finite {typeof(TFloat).Name}.");
+    /// <summary>
+    /// Verifies that the floating point value is a multiple of the specified factor, with an optional tolerance.
+    /// </summary>
+    /// <typeparam name="TFloat">The type of the floating point value.</typeparam>
+    /// <param name="factor">The factor to check for multiples of.</param>
+    /// <param name="tolerance">The optional tolerance value.</param>
+    /// <returns>A rule delegate that evaluates the floating point value.</returns>
+    public static RuleDelegate<TFloat> MultipleOf<TFloat>(TFloat factor, TFloat? tolerance)
+        where TFloat : struct, IFloatingPoint<TFloat>, IMinMaxValue<TFloat> => value =>
+        RuleResult.Create("Float.MultipleOfWithTolerance", value, new MultipleOfWithToleranceEvaluator<TFloat>(factor, tolerance));
 
-    public static Rule<TFloat> NotNaN<TFloat>(string? message)
-        where TFloat : struct, IFloatingPoint<TFloat> =>
-        new(value => !TFloat.IsNaN(value),
-            message ?? "Value must not be NaN.");
-
-    private static bool IsMultipleOf<TFloat>(TFloat value, TFloat factor, TFloat tolerance)
-        where TFloat : struct, IFloatingPoint<TFloat>
-    {
-        var quotient = value / factor;
-        var nearest = TFloat.Round(quotient);
-        return TFloat.Abs(value - nearest * factor) <= tolerance;
-    }
+    /// <summary>
+    /// Verifies that the floating point value is finite.
+    /// </summary>
+    /// <typeparam name="TFloat">The type of the floating point value.</typeparam>
+    /// <returns>A rule delegate that evaluates the floating point value.</returns>
+    public static RuleDelegate<TFloat> Finite<TFloat>()
+        where TFloat : struct, IFloatingPoint<TFloat>, IMinMaxValue<TFloat> => value =>
+        RuleResult.Create("Float.Finite", value, new FiniteEvaluator<TFloat>());
 }
+

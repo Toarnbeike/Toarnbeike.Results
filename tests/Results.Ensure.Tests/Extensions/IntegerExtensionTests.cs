@@ -15,8 +15,7 @@ public class IntegerExtensionTests
             .WithValue(value)
             .Ensure(x => x).AtLeast(2);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be at least 2.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -52,8 +51,7 @@ public class IntegerExtensionTests
             .WithValue(value)
             .Ensure(x => x).AtMost(4);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be at most 4.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -89,8 +87,7 @@ public class IntegerExtensionTests
             .WithValue(value)
             .Ensure(x => x).Between(2, 3);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be between 2 and 3.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
@@ -126,8 +123,7 @@ public class IntegerExtensionTests
             .WithValue(value)
             .Ensure(x => x).MultipleOf(2);
 
-        var failure = result.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("Value must be a multiple of 2.");
+        _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
     [Test]
