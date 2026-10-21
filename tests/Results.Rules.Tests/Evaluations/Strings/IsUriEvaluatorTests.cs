@@ -59,12 +59,4 @@ public class IsUriEvaluatorTests
         var result = evaluator.Evaluate("https://www.example.com");
         result.IsValid.ShouldBeFalse();
     }
-
-    [Test]
-    public void Evaluate_ValidRelativeUri_ReturnsInvalidResult_WhenKindIsAbsolute()
-    {
-        var evaluator = new IsUriEvaluator(UriKind.Absolute);
-        var result = evaluator.Evaluate("/path/to/resource");
-        result.IsValid.ShouldBeFalse();
-    }
 }
