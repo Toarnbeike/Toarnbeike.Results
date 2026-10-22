@@ -1,4 +1,4 @@
-﻿using Toarnbeike.Results.Ensure.Extensions;
+﻿using Toarnbeike.Results.Rules.Extensions;
 using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.TestExtensions;
 

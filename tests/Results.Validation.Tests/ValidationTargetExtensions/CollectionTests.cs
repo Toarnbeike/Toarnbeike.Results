@@ -1,10 +1,10 @@
 ﻿using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.TestExtensions;
-using Toarnbeike.Results.Validation.Extensions;
+using Toarnbeike.Results.Rules.Extensions;
 
 namespace Toarnbeike.Results.Validation.Tests.ValidationTargetExtensions;
 
-  public class CollectionTests
+public class CollectionTests
 {
     [Test]
     public void Contains_ShouldReturnSuccess_WhenItemIsInCollection()

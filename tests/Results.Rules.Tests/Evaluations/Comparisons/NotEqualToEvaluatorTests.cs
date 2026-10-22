@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Rules.Evaluations.Comparisons;
 
-namespace Toarnbeike.Rules.Tests.Evaluations.Comparisons;
+namespace Toarnbeike.Results.Rules.Tests.Evaluations.Comparisons;
 
 public class NotEqualToEvaluatorTests
 {

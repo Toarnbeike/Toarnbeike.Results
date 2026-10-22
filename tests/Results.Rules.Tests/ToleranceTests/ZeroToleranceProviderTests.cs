@@ -1,7 +1,7 @@
-﻿using Toarnbeike.Results.Rules;
-using Toarnbeike.Results.Rules.Tolerance;
+﻿using Toarnbeike.Results.Rules.Tolerance;
+using Toarnbeike.Results.Rules.TypeRules;
 
-namespace Toarnbeike.Rules.Tests.ToleranceTests;
+namespace Toarnbeike.Results.Rules.Tests.ToleranceTests;
 
 public class ZeroToleranceProviderTests
 {

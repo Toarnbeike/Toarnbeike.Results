@@ -1,5 +1,5 @@
 ﻿using Toarnbeike.Results.Failures;
-using Toarnbeike.Results.Rules;
+using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Implementation;
 

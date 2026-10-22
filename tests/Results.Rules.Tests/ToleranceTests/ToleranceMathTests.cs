@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Rules.Tolerance;
 
-namespace Toarnbeike.Rules.Tests.ToleranceTests;
+namespace Toarnbeike.Results.Rules.Tests.ToleranceTests;
 
 public class ToleranceMathTests
 {

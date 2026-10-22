@@ -1,6 +1,7 @@
 ﻿using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.TestExtensions;
-using Toarnbeike.Results.Validation.Extensions;
+using Toarnbeike.Results.Rules;
+using Toarnbeike.Results.Rules.Extensions;
 
 namespace Toarnbeike.Results.Validation.Tests;
 
@@ -78,7 +79,7 @@ public class CollectionValidationTargetExtensionTests
     {
         var validationResult = _result.ValidateCollection(items => items).Any().MinLength(10);
         var failure = validationResult.ShouldBeFailureOfType<ValidationFailure>();
-        failure.ValidationMessage.ShouldBe("No items in the collection satisfied the specified rule.");
+        failure.ValidationMessage.ShouldBe("No items satisfied the rule.");
     }
 
     [Test]
@@ -93,7 +94,7 @@ public class CollectionValidationTargetExtensionTests
     {
         var validationResult = _emptyResult.ValidateCollection(items => items).Any().MinLength(5);
         var failure = validationResult.ShouldBeFailureOfType<ValidationFailure>();
-        failure.ValidationMessage.ShouldBe("No items in the collection satisfied the specified rule.");
+        failure.ValidationMessage.ShouldBe("No items satisfied the rule.");
     }
 
     [Test]
@@ -108,7 +109,7 @@ public class CollectionValidationTargetExtensionTests
     {
         var validationResult = _result.ValidateCollection(items => items).Any(x => x).MinLength(10);
         var failure = validationResult.ShouldBeFailureOfType<ValidationFailure>();
-        failure.ValidationMessage.ShouldBe("No items in the collection satisfied the specified rule.");
+        failure.ValidationMessage.ShouldBe("No items satisfied the rule.");
     }
 
     [Test]
@@ -123,7 +124,7 @@ public class CollectionValidationTargetExtensionTests
     {
         var validationResult = _emptyResult.ValidateCollection(items => items).Any(x => x).MinLength(5);
         var failure = validationResult.ShouldBeFailureOfType<ValidationFailure>();
-        failure.ValidationMessage.ShouldBe("No items in the collection satisfied the specified rule.");
+        failure.ValidationMessage.ShouldBe("No items satisfied the rule.");
     }
 
 }

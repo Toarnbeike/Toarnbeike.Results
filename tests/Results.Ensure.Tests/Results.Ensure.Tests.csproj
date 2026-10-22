@@ -13,6 +13,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\Results.Ensure\Results.Ensure.csproj" />
+		<ProjectReference Include="..\..\src\Results.Rules\Results.Rules.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

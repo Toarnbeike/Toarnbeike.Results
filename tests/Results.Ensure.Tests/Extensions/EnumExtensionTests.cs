@@ -1,6 +1,6 @@
 using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.TestExtensions;
-using Toarnbeike.Results.Ensure.Extensions;
+using Toarnbeike.Results.Rules.Extensions;
 
 namespace Toarnbeike.Results.Ensure.Tests.Extensions;
 

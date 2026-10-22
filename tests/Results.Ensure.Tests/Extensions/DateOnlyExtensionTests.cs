@@ -1,5 +1,5 @@
 ﻿using Toarnbeike.Results.Extensions;
-using Toarnbeike.Results.Ensure.Extensions;
+using Toarnbeike.Results.Rules.Extensions;
 using Toarnbeike.Results.TestExtensions;
 
 namespace Toarnbeike.Results.Ensure.Tests.Extensions;
@@ -85,7 +85,7 @@ public class DateOnlyExtensionTests
         var result =
             Result.Success()
             .WithValue(date)
-            .Ensure(x => x).MustBeBetween(min, max);
+            .Ensure(x => x).Between(min, max);
         _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
@@ -96,7 +96,7 @@ public class DateOnlyExtensionTests
         var result =
             Result.Success()
             .WithValue(date)
-            .Ensure(x => x).MustBeBetween(new DateOnly(2023, 1, 2), new DateOnly(2023, 1, 3));
+            .Ensure(x => x).Between(new DateOnly(2023, 1, 2), new DateOnly(2023, 1, 3));
         result.ShouldBeSuccess();
     }
 
@@ -107,7 +107,7 @@ public class DateOnlyExtensionTests
         var result =
             Result.Success()
             .WithValue(date)
-            .Ensure(x => x).MustBeBetween(new DateOnly(2023, 1, 2), new DateOnly(2023, 1, 3), "Custom message");
+            .Ensure(x => x).Between(new DateOnly(2023, 1, 2), new DateOnly(2023, 1, 3), "Custom message");
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
     }

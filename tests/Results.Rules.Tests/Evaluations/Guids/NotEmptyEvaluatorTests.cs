@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Rules.Evaluations.Guids;
 
-namespace Toarnbeike.Rules.Tests.Guids;
+namespace Toarnbeike.Results.Rules.Tests.Evaluations.Guids;
 
 public class NotEmptyEvaluatorTests
 {

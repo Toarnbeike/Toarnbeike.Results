@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.TestExtensions;
-using Toarnbeike.Results.Validation.Extensions;
+using Toarnbeike.Results.Rules.Extensions;
 using Toarnbeike.Results.Validation.Tests.Testdata;
 
 namespace Toarnbeike.Results.Validation.Tests;

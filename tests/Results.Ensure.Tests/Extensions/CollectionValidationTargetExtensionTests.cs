@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.TestExtensions;
-using Toarnbeike.Results.Ensure.Extensions;
+using Toarnbeike.Results.Rules.Extensions;
 
 namespace Toarnbeike.Results.Ensure.Tests.Extensions;
 
@@ -234,7 +234,7 @@ public class CollectionExtensionTests
         var result =
             Result.Success()
             .WithValue(list)
-            .EnsureCollection(x => x).DoesContain("b");
+            .EnsureCollection(x => x).Contains("b");
 
         result.ShouldBeSuccess();
     }
@@ -246,7 +246,7 @@ public class CollectionExtensionTests
         var result =
             Result.Success()
             .WithValue(list)
-            .EnsureCollection(x => x).DoesContain("c");
+            .EnsureCollection(x => x).Contains("c");
 
         _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
@@ -258,7 +258,7 @@ public class CollectionExtensionTests
         var result =
             Result.Success()
             .WithValue(list)
-            .EnsureCollection(x => x).DoesContain("c", "Custom message");
+            .EnsureCollection(x => x).Contains("c", "Custom message");
 
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
@@ -271,7 +271,7 @@ public class CollectionExtensionTests
         var result =
             Result.Success()
             .WithValue(list)
-            .EnsureCollection(x => x).DoesNotContain("c");
+            .EnsureCollection(x => x).NotContains("c");
 
         result.ShouldBeSuccess();
     }
@@ -283,7 +283,7 @@ public class CollectionExtensionTests
         var result =
             Result.Success()
             .WithValue(list)
-            .EnsureCollection(x => x).DoesNotContain("b");
+            .EnsureCollection(x => x).NotContains("b");
         _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
@@ -294,7 +294,7 @@ public class CollectionExtensionTests
         var result =
             Result.Success()
             .WithValue(list)
-            .EnsureCollection(x => x).DoesNotContain("b", "Custom message");
+            .EnsureCollection(x => x).NotContains("b", "Custom message");
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
     }

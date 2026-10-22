@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.TestExtensions;
-using Toarnbeike.Results.Ensure.Extensions;
+using Toarnbeike.Results.Rules.Extensions;
 
 namespace Toarnbeike.Results.Ensure.Tests.Extensions;
 
@@ -85,7 +85,7 @@ public class DateTimeExtensionTests
         var result =
             Result.Success()
             .WithValue(date)
-            .Ensure(x => x).MustBeBetween(min, max);
+            .Ensure(x => x).Between(min, max);
         _ = result.ShouldBeFailureOfType<GuardFailure>();
     }
 
@@ -96,7 +96,7 @@ public class DateTimeExtensionTests
         var result =
             Result.Success()
             .WithValue(date)
-            .Ensure(x => x).MustBeBetween(new DateTime(2023, 1, 2, 12, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 1, 3, 12, 0, 0, DateTimeKind.Unspecified));
+            .Ensure(x => x).Between(new DateTime(2023, 1, 2, 12, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 1, 3, 12, 0, 0, DateTimeKind.Unspecified));
         result.ShouldBeSuccess();
     }
 
@@ -107,7 +107,7 @@ public class DateTimeExtensionTests
         var result =
             Result.Success()
             .WithValue(date)
-            .Ensure(x => x).MustBeBetween(new DateTime(2023, 1, 2, 12, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 1, 3, 12, 0, 0, DateTimeKind.Unspecified), "Custom message");
+            .Ensure(x => x).Between(new DateTime(2023, 1, 2, 12, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 1, 3, 12, 0, 0, DateTimeKind.Unspecified), "Custom message");
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
     }

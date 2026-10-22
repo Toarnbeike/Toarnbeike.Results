@@ -1,6 +1,6 @@
 using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.TestExtensions;
-using Toarnbeike.Results.Ensure.Extensions;
+using Toarnbeike.Results.Rules.Extensions;
 
 namespace Toarnbeike.Results.Ensure.Tests.Extensions;
 
@@ -212,7 +212,7 @@ public class StringExtensionTests
         var result =
             Result.Success()
             .WithValue(value)
-            .Ensure(x => x).MatchesRegex("^\\d+$", "Custom message");
+            .Ensure(x => x).MatchesRegex("^\\d+$", null, "Custom message");
         var failure = result.ShouldBeFailureOfType<GuardFailure>();
         failure.Message.ShouldBe("Custom message");
     }

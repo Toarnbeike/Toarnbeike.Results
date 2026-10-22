@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.TestExtensions;
-using Toarnbeike.Results.Validation.Extensions;
+using Toarnbeike.Results.Rules.Extensions;
 
 namespace Toarnbeike.Results.Validation.Tests.ValidationTargetExtensions;
 
@@ -122,21 +122,21 @@ public class StringTests
     [Test]
     public void Matches_ShouldReturnSuccess_WhenStringMatchesPattern()
     {
-        var validationResult = _result.Validate("String").Matches(@"^H.*o$");
+        var validationResult = _result.Validate("String").MatchesRegex(@"^H.*o$");
         validationResult.ShouldBeSuccess();
     }
 
     [Test]
     public void Matches_ShouldReturnFailure_WhenStringDoesNotMatchPattern()
     {
-        var validationResult = _result.Validate("String").Matches(@"^A.*z$");
+        var validationResult = _result.Validate("String").MatchesRegex(@"^A.*z$");
         _ = validationResult.ShouldBeFailureOfType<ValidationFailure>();
     }
 
     [Test]
     public void Matches_ShouldReturnFailureWithCustomMessage_WhenStringDoesNotMatchPattern()
     {
-        var validationResult = _result.Validate("String").Matches(@"^A.*z$", null, "Custom failure message");
+        var validationResult = _result.Validate("String").MatchesRegex(@"^A.*z$", null, "Custom failure message");
         var failure = validationResult.ShouldBeFailureOfType<ValidationFailure>();
         failure.ValidationMessage.ShouldBe("Custom failure message");
     }
@@ -144,7 +144,7 @@ public class StringTests
     [Test]
     public void Matches_ShouldReturnFailureWithDescription_WhenPatternDescriptionIsProvided()
     {
-        var validationResult = _result.Validate("String").Matches(@"^A.*z$", "pattern description");
+        var validationResult = _result.Validate("String").MatchesRegex(@"^A.*z$", "pattern description");
         var failure = validationResult.ShouldBeFailureOfType<ValidationFailure>();
         failure.ValidationMessage.ShouldContain("pattern description");
     }

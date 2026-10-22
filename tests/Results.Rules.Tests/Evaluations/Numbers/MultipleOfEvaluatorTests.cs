@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Rules.Evaluations.Numbers;
 
-namespace Toarnbeike.Rules.Tests.Evaluations.Numbers;
+namespace Toarnbeike.Results.Rules.Tests.Evaluations.Numbers;
 
 public class MultipleOfEvaluatorTests
 {

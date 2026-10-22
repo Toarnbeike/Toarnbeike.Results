@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Rules.Evaluations.Enums;
 
-namespace Toarnbeike.Rules.Tests.Evaluations.Enums;
+namespace Toarnbeike.Results.Rules.Tests.Evaluations.Enums;
 
 public class NotOneOfEvaluatorTests
 {

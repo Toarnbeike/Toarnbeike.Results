@@ -1,7 +1,7 @@
-﻿using Toarnbeike.Results.Rules;
+﻿using Toarnbeike.Results.Rules.TypeRules;
 using Toarnbeike.Results.Rules.UtcNow;
 
-namespace Toarnbeike.Rules.Tests.UtcNowTests;
+namespace Toarnbeike.Results.Rules.Tests.UtcNowTests;
 
 public class StaticUtcNowProviderTests
 {

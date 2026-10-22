@@ -1,4 +1,5 @@
-﻿using Toarnbeike.Results.Ensure.Extensions;
+﻿using Toarnbeike.Results.Rules;
+using Toarnbeike.Results.Rules.Extensions;
 using Toarnbeike.Results.TestExtensions;
 
 namespace Toarnbeike.Results.Ensure.Tests;
@@ -75,7 +76,7 @@ public class EnsureCollectionExtensionTests
         Result result = Result.Success();
         var ensureResult = result.EnsureCollection(() => list).Any().MinLength(6);
         var failure = ensureResult.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("No items in the collection satisfied the specified rule.");
+        failure.Message.ShouldBe("No items satisfied the rule.");
     }
 
     [Test]
@@ -94,7 +95,7 @@ public class EnsureCollectionExtensionTests
         Result result = Result.Success();
         var ensureResult = result.EnsureCollection(() => list).Any(x => x).MinLength(6);
         var failure = ensureResult.ShouldBeFailureOfType<GuardFailure>();
-        failure.Message.ShouldBe("No items in the collection satisfied the specified rule.");
+        failure.Message.ShouldBe("No items satisfied the rule.");
     }
 
     [Test]
