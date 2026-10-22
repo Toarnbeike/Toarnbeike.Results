@@ -1,12 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
-using Toarnbeike.Results.Rules;
+using Toarnbeike.Results.Failures;
 
-namespace Toarnbeike.Results.Ensure;
+namespace Toarnbeike.Results.Rules;
 
 /// <summary>
 /// Provides extension methods for creating guard targets from <see cref="Result{T}"/> instances.
 /// </summary>
-public static class ResultTExtensions
+public static class ResultTEnsureExtensions
 {
     /// <typeparam name="T">The type of the value contained in the result.</typeparam>
     extension<T>(Result<T> result)

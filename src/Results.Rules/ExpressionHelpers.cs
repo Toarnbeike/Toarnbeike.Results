@@ -1,4 +1,4 @@
-﻿namespace Toarnbeike.Results.Ensure;
+﻿namespace Toarnbeike.Results.Rules;
 
 public static class ExpressionHelpers
 {
