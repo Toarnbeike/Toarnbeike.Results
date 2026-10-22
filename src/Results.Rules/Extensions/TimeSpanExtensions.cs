@@ -3,14 +3,14 @@
 namespace Toarnbeike.Results.Rules.Extensions;
 
 /// <summary>
-/// Provides fluent validation operations for <see cref="TimeSpan"/> values on an <see cref="IRuleTarget{T, TimeSpan}"/>.
+/// Provides fluent validation operations for <see cref="TimeSpan"/> values on an <see cref="RuleTarget{T, TimeSpan}"/>.
 /// </summary>
 /// <remarks>Supports minimum, maximum, range, and tolerance-based comparisons.</remarks>
 public static class TimeSpanExtensions
 {
     /// <typeparam name="T">The type associated with the rule target and validation result.</typeparam>
     /// <param name="target">The rule target for <see cref="TimeSpan"/> values.</param>
-    extension<T>(IRuleTarget<T, TimeSpan> target)
+    extension<T>(RuleTarget<T, TimeSpan> target)
     {
         /// <summary>
         /// Verifies that the TimeSpan is at least the specified minimum.

@@ -3,7 +3,7 @@
 namespace Toarnbeike.Results.Rules.Extensions;
 
 /// <summary>
-/// Provides fluent validation operations for enum values on an <see cref="IRuleTarget{T, TEnum}"/>.
+/// Provides fluent validation operations for enum values on an <see cref="RuleTarget{T, TEnum}"/>.
 /// </summary>
 /// <remarks>Supports checking if the enum value is defined, one of a set of accepted values, or not one of a set of rejected values.</remarks>
 public static class EnumExtensions
@@ -11,7 +11,7 @@ public static class EnumExtensions
     /// <typeparam name="T">The type associated with the rule target and validation result.</typeparam>
     /// <typeparam name="TEnum">The type of the enum value being evaluated by the rule.</typeparam>
     /// <param name="target">The rule target for <typeparamref name="TEnum"/> values.</param>
-    extension<T, TEnum>(IRuleTarget<T, TEnum> target)
+    extension<T, TEnum>(RuleTarget<T, TEnum> target)
         where TEnum : struct, Enum
     {
         /// <summary>

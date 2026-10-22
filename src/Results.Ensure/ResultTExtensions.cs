@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Toarnbeike.Results.Rules;
 
 namespace Toarnbeike.Results.Ensure;
 
@@ -15,11 +16,11 @@ public static class ResultTExtensions
         /// </summary>
         /// <param name="propertyName">Property name to include in guard failures. If null, a fallback name is extracted.</param>
         /// <returns>An ensure target that evaluates rules against the current value and returns either success or a guard failure.</returns>
-        public EnsureTarget<T, T> Ensure(string propertyName)
+        public RuleTarget<T, T> Ensure(string propertyName)
         {
             propertyName ??= ExpressionHelpers.ExtractPropertyName("");
 
-            var executor = new EnsureExecutor<T, T>((value, rule, message) =>
+            var executor = new RuleExecutor<T, T>((value, rule, message) =>
             {
                 var guardResult = rule(value);
                 return guardResult.IsValid
@@ -27,7 +28,7 @@ public static class ResultTExtensions
                     : new GuardFailure(propertyName, message ?? guardResult.Message);
             });
 
-            return new EnsureTarget<T, T>(result, executor);
+            return new RuleTarget<T, T>(result, executor);
         }
 
         /// <summary>
@@ -36,8 +37,8 @@ public static class ResultTExtensions
         /// <param name="valueSelector">A function to select the value from the result.</param>
         /// <param name="propertyName">An optional name of the property.</param>
         /// <param name="expression">Auto filled: The expression used to select the property.</param>
-        /// <returns>A <see cref="EnsureTarget{T, TProperty}"/> to specify the guard rule for the value.</returns>
-        public EnsureTarget<T, TProperty> Ensure<TProperty>(
+        /// <returns>A <see cref="RuleTarget{T, TProperty}"/> to specify the guard rule for the value.</returns>
+        public RuleTarget<T, TProperty> Ensure<TProperty>(
             Func<T, TProperty> valueSelector,
             string? propertyName = null,
             [CallerArgumentExpression(nameof(valueSelector))] string? expression = null)
@@ -45,7 +46,7 @@ public static class ResultTExtensions
             ArgumentNullException.ThrowIfNull(valueSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new EnsureExecutor<T, TProperty>((value, rule, message) =>
+            var executor = new RuleExecutor<T, TProperty>((value, rule, message) =>
             {
                 var guardResult = rule(valueSelector(value));
                 return guardResult.IsValid
@@ -53,7 +54,7 @@ public static class ResultTExtensions
                     : new GuardFailure(propertyName, message ?? guardResult.Message);
             });
 
-            return new EnsureTarget<T, TProperty>(result, executor);
+            return new RuleTarget<T, TProperty>(result, executor);
         }
 
         /// <summary>
@@ -62,22 +63,22 @@ public static class ResultTExtensions
         /// <param name="valueSelector">A function to select the collection from the result.</param>
         /// <param name="propertyName">An optional name of the property.</param>
         /// <param name="expression">Auto filled: The expression used to select the property.</param>
-        /// <returns>A <see cref="EnsureTarget{T, IEnumerable{T}}"/> to specify the guard rule for the collection.</returns>
-        public EnsureTarget<T, IEnumerable<TItem>> EnsureCollection<TItem>(
+        /// <returns>A <see cref="RuleTarget{T, IEnumerable{T}}"/> to specify the guard rule for the collection.</returns>
+        public RuleTarget<T, IEnumerable<TItem>> EnsureCollection<TItem>(
             Func<T, IEnumerable<TItem>> valueSelector,
             string? propertyName = null,
             [CallerArgumentExpression(nameof(valueSelector))] string? expression = null)
         {
             ArgumentNullException.ThrowIfNull(valueSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
-            var executor = new EnsureExecutor<T, IEnumerable<TItem>>((value, rule, message) =>
+            var executor = new RuleExecutor<T, IEnumerable<TItem>>((value, rule, message) =>
             {
                 var guardResult = rule(valueSelector(value));
                 return guardResult.IsValid
                     ? Result.Success(value)
                     : new GuardFailure(propertyName, message ?? guardResult.Message);
             });
-            return new EnsureTarget<T, IEnumerable<TItem>>(result, executor);
+            return new RuleTarget<T, IEnumerable<TItem>>(result, executor);
         }
     }
 }

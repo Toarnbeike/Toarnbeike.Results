@@ -3,14 +3,14 @@
 namespace Toarnbeike.Results.Rules.Extensions;
 
 /// <summary>
-/// Provides fluent validation operations for <see cref="DateTime"/> values on an <see cref="IRuleTarget{T, DateTime}"/>.
+/// Provides fluent validation operations for <see cref="DateTime"/> values on an <see cref="RuleTarget{T, DateTime}"/>.
 /// </summary>
 /// <remarks>Supports minimum, maximum, and range comparisons.</remarks>
 public static class DateTimeExtensions
 {
     /// <typeparam name="T">The type associated with the rule target and validation result.</typeparam>
     /// <param name="target">The rule target for <see cref="DateTime"/> values.</param>
-    extension<T>(IRuleTarget<T, DateTime> target)
+    extension<T>(RuleTarget<T, DateTime> target)
     {
         /// <summary>
         /// Verifies that the date/time is on or after the specified minimum.

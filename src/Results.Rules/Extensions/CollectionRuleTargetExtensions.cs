@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Rules.TypeRules;
 
-namespace Toarnbeike.Results.Rules;
+namespace Toarnbeike.Results.Rules.Extensions;
 
 /// <summary>
 /// Provides extension methods for composing validation rules over collection targets.
@@ -14,14 +14,14 @@ public static class CollectionRuleTargetExtensions
     /// <typeparam name="T">The type of the target.</typeparam>
     /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
     /// <param name="target">A collection target to apply the rules to (created using .EnsureCollection().</param>
-    extension<T, TItem>(IRuleTarget<T, IEnumerable<TItem>> target)
+    extension<T, TItem>(RuleTarget<T, IEnumerable<TItem>> target)
     {
         /// <summary>
         /// Creates a rule target that applies a rule to each element in the target sequence.
         /// </summary>
         /// <remarks>Elements are evaluated in enumeration order, and evaluation stops at the first failed result.</remarks>
-        /// <returns>An <see cref="IRuleTarget{T, TItem}"/> that evaluates the rule for each element, returning the first failure result or success when all elements pass.</returns>
-        public IRuleTarget<T, TItem> All()
+        /// <returns>An <see cref="RuleTarget{T, TItem}"/> that evaluates the rule for each element, returning the first failure result or success when all elements pass.</returns>
+        public RuleTarget<T, TItem> All()
         {
             return target.Compose<TItem>((items, rule) =>
             {
@@ -43,8 +43,8 @@ public static class CollectionRuleTargetExtensions
         /// <remarks>Evaluation stops when a rule returns an invalid result.</remarks>
         /// <typeparam name="TProperty">The type of the projected property value to validate for each item.</typeparam>
         /// <param name="propertySelector">A function that selects the property value from each item.</param>
-        /// <returns>An <see cref="IRuleTarget{T, TProperty}"/> that applies composed validation to all projected values and returns the first failing result, or success when all values are valid.</returns>
-        public IRuleTarget<T, TProperty> All<TProperty>(Func<TItem, TProperty> propertySelector)
+        /// <returns>An <see cref="RuleTarget{T, TProperty}"/> that applies composed validation to all projected values and returns the first failing result, or success when all values are valid.</returns>
+        public RuleTarget<T, TProperty> All<TProperty>(Func<TItem, TProperty> propertySelector)
         {
             ArgumentNullException.ThrowIfNull(propertySelector);
             return target.Compose<TProperty>((items, rule) =>
@@ -65,8 +65,8 @@ public static class CollectionRuleTargetExtensions
         /// Creates a rule target that evaluates a collection and succeeds when at least one item satisfies the composed item rule.
         /// </summary>
         /// <remarks>Evaluation stops at the first valid item.</remarks>
-        /// <returns>An <see cref="IRuleTarget{T, TItem}"/> that returns a successful result when any item is valid; otherwise returns a failed result.</returns>
-        public IRuleTarget<T, TItem> Any()
+        /// <returns>An <see cref="RuleTarget{T, TItem}"/> that returns a successful result when any item is valid; otherwise returns a failed result.</returns>
+        public RuleTarget<T, TItem> Any()
         {
             return target.Compose<TItem>((items, rule) =>
             {
@@ -88,8 +88,8 @@ public static class CollectionRuleTargetExtensions
         /// <remarks>Evaluation stops at the first valid item.</remarks>
         /// <typeparam name="TProperty">The type of the property selected from each item.</typeparam>
         /// <param name="propertySelector">Selects the property value from each item to evaluate.</param>
-        /// <returns>An <see cref="IRuleTarget{T, TProperty}"/> that evaluates the composed rule for each selected property value and returns success when any evaluation is valid.</returns>
-        public IRuleTarget<T, TProperty> Any<TProperty>(Func<TItem, TProperty> propertySelector)
+        /// <returns>An <see cref="RuleTarget{T, TProperty}"/> that evaluates the composed rule for each selected property value and returns success when any evaluation is valid.</returns>
+        public RuleTarget<T, TProperty> Any<TProperty>(Func<TItem, TProperty> propertySelector)
         {
             ArgumentNullException.ThrowIfNull(propertySelector);
             return target.Compose<TProperty>((items, rule) =>

@@ -4,7 +4,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 namespace Toarnbeike.Results.Rules.Extensions;
 
 /// <summary>
-/// Provides fluent validation operations for numeric values on an <see cref="IRuleTarget{T, TNumber}"/>.
+/// Provides fluent validation operations for numeric values on an <see cref="RuleTarget{T, TNumber}"/>.
 /// </summary>
 /// <remarks>Supports absolute comparisons without tolerance.</remarks>
 public static class NumericExtensions
@@ -12,7 +12,7 @@ public static class NumericExtensions
     /// <typeparam name="T">The type associated with the rule target and validation result.</typeparam>
     /// <typeparam name="TNumber">The type of the numeric value being evaluated by the rule.</typeparam>
     /// <param name="target">The rule target for <typeparamref name="TNumber"/> values.</param>
-    extension<T, TNumber>(IRuleTarget<T, TNumber> target)
+    extension<T, TNumber>(RuleTarget<T, TNumber> target)
         where TNumber : struct, INumber<TNumber>
     {
         /// <summary>

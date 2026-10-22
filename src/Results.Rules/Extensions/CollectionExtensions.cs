@@ -3,7 +3,7 @@
 namespace Toarnbeike.Results.Rules.Extensions;
 
 /// <summary>
-/// Provides fluent validation operations for collections of items on an <see cref="IRuleTarget{T, IEnumerable{TItem}}"/>.
+/// Provides fluent validation operations for collections of items on an <see cref="RuleTarget{T, IEnumerable{TItem}}"/>.
 /// </summary>
 /// <remarks>Supports minimum, maximum, and range comparisons.</remarks>
 public static class CollectionExtensions
@@ -11,7 +11,7 @@ public static class CollectionExtensions
     /// <typeparam name="T">The type associated with the rule target and validation result.</typeparam>
     /// <typeparam name="TItem">The type of the items in the collection being evaluated by the rule.</typeparam>
     /// <param name="target">The rule target for <see cref="IEnumerable{TItem}"/> values.</param>
-    extension<T, TItem>(IRuleTarget<T, IEnumerable<TItem>> target)
+    extension<T, TItem>(RuleTarget<T, IEnumerable<TItem>> target)
     {
         /// <summary>
         /// Verifies that the target collection contains the specified item.

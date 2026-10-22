@@ -3,14 +3,14 @@
 namespace Toarnbeike.Results.Rules.Extensions;
 
 /// <summary>
-/// Provides fluent validation operations for <see cref="string"/> values on an <see cref="IRuleTarget{T, string}"/>.
+/// Provides fluent validation operations for <see cref="string"/> values on an <see cref="RuleTarget{T, string}"/>.
 /// </summary>
 /// <remarks>Supports content-based validations such as length, emptiness, and pattern matching.</remarks>
 public static class StringExtensions
 {
     /// <typeparam name="T">The type associated with the rule target and validation result.</typeparam>
     /// <param name="target">The rule target for <see cref="string"/> values.</param>
-    extension<T>(IRuleTarget<T, string> target)
+    extension<T>(RuleTarget<T, string> target)
     {
         /// <summary>
         /// Verifies that the string is not empty.

@@ -4,7 +4,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 namespace Toarnbeike.Results.Rules.Extensions;
 
 /// <summary>
-/// Provides fluent validation operations for integer values on an <see cref="IRuleTarget{T, TInteger}"/>.
+/// Provides fluent validation operations for integer values on an <see cref="RuleTarget{T, TInteger}"/>.
 /// </summary>
 /// <remarks>Supports range and multiple of validations.</remarks>
 public static class IntegerExtensions
@@ -12,7 +12,7 @@ public static class IntegerExtensions
     /// <typeparam name="T">The type associated with the rule target and validation result.</typeparam>
     /// <typeparam name="TInteger">The type of the integer value being evaluated by the rule.</typeparam>
     /// <param name="target">The rule target for <typeparamref name="TInteger"/> values.</param>
-    extension<T, TInteger>(IRuleTarget<T, TInteger> target)
+    extension<T, TInteger>(RuleTarget<T, TInteger> target)
         where TInteger : struct, IBinaryInteger<TInteger>
     {
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Toarnbeike.Results.Extensions;
+using Toarnbeike.Results.Rules;
 
 namespace Toarnbeike.Results.Ensure;
 
@@ -17,8 +18,8 @@ public static class ResultExtensions
         /// <param name="valueSelector">A function to select the value from the result.</param>
         /// <param name="propertyName">An optional name of the property.</param>
         /// <param name="expression">Auto filled: The expression used to select the property.</param>
-        /// <returns>A <see cref="EnsureTarget{T, TProperty}"/> to specify the guard rule for the value.</returns>
-        public EnsureTarget<T, T> Ensure<T>(
+        /// <returns>A <see cref="RuleTarget{T, TProperty}"/> to specify the guard rule for the value.</returns>
+        public RuleTarget<T, T> Ensure<T>(
             Func<T> valueSelector,
             string? propertyName = null,
             [CallerArgumentExpression(nameof(valueSelector))] string? expression = null)
@@ -26,7 +27,7 @@ public static class ResultExtensions
             ArgumentNullException.ThrowIfNull(valueSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new EnsureExecutor<T, T>((value, rule, message) =>
+            var executor = new RuleExecutor<T, T>((value, rule, message) =>
             {
                 var guardResult = rule(valueSelector());
                 return guardResult.IsValid
@@ -34,7 +35,7 @@ public static class ResultExtensions
                     : new GuardFailure(propertyName, message ?? guardResult.Message);
             });
 
-            return new EnsureTarget<T, T>(result.WithValue(valueSelector()), executor);
+            return new RuleTarget<T, T>(result.WithValue(valueSelector()), executor);
         }
 
         /// <summary>
@@ -44,8 +45,8 @@ public static class ResultExtensions
         /// <param name="collectionSelector">A function to select the collection from the result.</param>
         /// <param name="propertyName">An optional name of the property.</param>
         /// <param name="expression">Auto filled: The expression used to select the property.</param>
-        /// <returns>A <see cref="EnsureTarget{T, TProperty}"/> to specify the guard rule for the collection.</returns>
-        public EnsureTarget<IEnumerable<TItem>, IEnumerable<TItem>> EnsureCollection<TItem>(
+        /// <returns>A <see cref="RuleTarget{T, TProperty}"/> to specify the guard rule for the collection.</returns>
+        public RuleTarget<IEnumerable<TItem>, IEnumerable<TItem>> EnsureCollection<TItem>(
             Func<IEnumerable<TItem>> collectionSelector,
             string? propertyName = null,
             [CallerArgumentExpression(nameof(collectionSelector))] string? expression = null)
@@ -53,7 +54,7 @@ public static class ResultExtensions
             ArgumentNullException.ThrowIfNull(collectionSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new EnsureExecutor<IEnumerable<TItem>, IEnumerable<TItem>>((value, rule, message) =>
+            var executor = new RuleExecutor<IEnumerable<TItem>, IEnumerable<TItem>>((value, rule, message) =>
             {
                 var guardResult = rule(collectionSelector());
                 return guardResult.IsValid
@@ -61,7 +62,7 @@ public static class ResultExtensions
                     : new GuardFailure(propertyName, message ?? guardResult.Message);
             });
 
-            return new EnsureTarget<IEnumerable<TItem>, IEnumerable<TItem>>(result.WithValue(collectionSelector()), executor);
+            return new RuleTarget<IEnumerable<TItem>, IEnumerable<TItem>>(result.WithValue(collectionSelector()), executor);
         }
     }
 }

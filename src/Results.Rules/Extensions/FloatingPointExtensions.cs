@@ -5,7 +5,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 namespace Toarnbeike.Results.Rules.Extensions;
 
 /// <summary>
-/// Provides fluent validation operations for floating-point values on an <see cref="IRuleTarget{T, TFloating}"/>.
+/// Provides fluent validation operations for floating-point values on an <see cref="RuleTarget{T, TFloating}"/>.
 /// </summary>
 /// <remarks>Supports comparisons such as minimum, maximum, range, multiple, and finiteness checks, with optional tolerance.</remarks>
 /// <remarks>If a tolerance is not specified, comparisons are performed using the configured <see cref="IToleranceProvider"/></remarks>
@@ -14,7 +14,7 @@ public static class FloatingPointExtensions
     /// <typeparam name="T">The type associated with the rule target and validation result.</typeparam>
     /// <typeparam name="TFloating">The type of the floating-point value being evaluated by the rule.</typeparam>
     /// <param name="target">The rule target for <typeparamref name="TFloating"/> values.</param>
-    extension<T, TFloating>(IRuleTarget<T, TFloating> target)
+    extension<T, TFloating>(RuleTarget<T, TFloating> target)
         where TFloating : struct, IFloatingPoint<TFloating>, IMinMaxValue<TFloating>
     {
         /// <summary>

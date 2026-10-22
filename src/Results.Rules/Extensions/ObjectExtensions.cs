@@ -3,7 +3,7 @@
 namespace Toarnbeike.Results.Rules.Extensions;
 
 /// <summary>
-/// Provides fluent validation operations on generic objects on an <see cref="IRuleTarget{T, TProperty}"/>.
+/// Provides fluent validation operations on generic objects on an <see cref="RuleTarget{T, TProperty}"/>.
 /// </summary>
 /// <remarks>Supports evaluating whether a property satisfies or does not satisfy a given predicate.</remarks>
 public static class ObjectExtensions
@@ -11,7 +11,7 @@ public static class ObjectExtensions
     /// <typeparam name="T">The type associated with the rule target and validation result.</typeparam>
     /// <typeparam name="TProperty">The type of the property being evaluated by the rule.</typeparam>
     /// <param name="target">The rule target for <typeparamref name="TProperty"/> values.</param>
-    extension<T, TProperty>(IRuleTarget<T, TProperty> target)
+    extension<T, TProperty>(RuleTarget<T, TProperty> target)
     {
         /// <summary>
         /// Verifies that the property is equal to the specified expected value.

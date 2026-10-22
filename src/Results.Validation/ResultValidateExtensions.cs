@@ -1,7 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
+using Toarnbeike.Results.Ensure;
 using Toarnbeike.Results.Extensions;
 using Toarnbeike.Results.Failures;
-using Toarnbeike.Results.Validation.Implementation;
+using Toarnbeike.Results.Rules;
 
 namespace Toarnbeike.Results.Validation;
 
@@ -31,9 +32,9 @@ public static class ResultValidateExtensions
         /// <param name="propertyName">The name of the property to associate with validation failures.</param>
         /// <returns>A validation target that executes rules against the current value and returns success or a validation
         /// failure.</returns>
-        public ValidationTarget<T, T> Validate(string propertyName)
+        public RuleTarget<T, T> Validate(string propertyName)
         {
-            var executor = new ValidationExecutor<T, T>((value, rule, message) =>
+            var executor = new RuleExecutor<T, T>((value, rule, message) =>
             {
                 var validationResult = rule(value);
                 return validationResult.IsValid
@@ -41,7 +42,7 @@ public static class ResultValidateExtensions
                     : new ValidationFailure(propertyName, message ?? validationResult.Message);
             });
 
-            return new ValidationTarget<T, T>(result, executor);
+            return new RuleTarget<T, T>(result, executor);
         }
 
         /// <summary>
@@ -53,14 +54,14 @@ public static class ResultValidateExtensions
         /// <param name="propertySelector">A function to select the property from the value.</param>
         /// <param name="propertyName">An optional name of the property.</param>
         /// <param name="expression">Auto filled: The expression used to select the property.</param>
-        /// <returns>A <see cref="ValidationTarget{T, TProperty}"/> to specify the validation rule for the property.</returns>
-        public ValidationTarget<T, TProperty> Validate<TProperty>(Func<T, TProperty> propertySelector,
+        /// <returns>A <see cref="RuleTarget{T, TProperty}"/> to specify the validation rule for the property.</returns>
+        public RuleTarget<T, TProperty> Validate<TProperty>(Func<T, TProperty> propertySelector,
             string? propertyName = null, [CallerArgumentExpression(nameof(propertySelector))] string? expression = null)
         {
             ArgumentNullException.ThrowIfNull(propertySelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new ValidationExecutor<T, TProperty>((value, rule, message) =>
+            var executor = new RuleExecutor<T, TProperty>((value, rule, message) =>
             {
                 var validationResult = rule(propertySelector(value));
                 return validationResult.IsValid
@@ -68,7 +69,7 @@ public static class ResultValidateExtensions
                     : new ValidationFailure(propertyName, message ?? validationResult.Message);
             });
 
-            return new ValidationTarget<T, TProperty>(result, executor);
+            return new RuleTarget<T, TProperty>(result, executor);
         }
 
         /// <summary>
@@ -78,8 +79,8 @@ public static class ResultValidateExtensions
         /// <param name="collectionSelector">Selects the collection to validate.</param>
         /// <param name="propertyName">The property name used for validation failures. If null, the name is inferred from the selector expression.</param>
         /// <param name="expression">The captured argument expression for inferring the property name when no property name is provided.</param>
-        /// <returns>A validation target used to define validation rules for the selected collection.</returns>
-        public ValidationTarget<T, IEnumerable<TItem>> ValidateCollection<TItem>(
+        /// <returns>A <see cref="RuleTarget{T, IEnumerable{TItem}}"/> used to define validation rules for the selected collection.</returns>
+        public RuleTarget<T, IEnumerable<TItem>> ValidateCollection<TItem>(
             Func<T, IEnumerable<TItem>> collectionSelector,
             string? propertyName = null,
             [CallerArgumentExpression(nameof(collectionSelector))] string? expression = null)
@@ -87,7 +88,7 @@ public static class ResultValidateExtensions
             ArgumentNullException.ThrowIfNull(collectionSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new ValidationExecutor<T, IEnumerable<TItem>>((value, rule, message) =>
+            var executor = new RuleExecutor<T, IEnumerable<TItem>>((value, rule, message) =>
             {
                 var validationResult = rule(collectionSelector(value));
                 return validationResult.IsValid
@@ -95,7 +96,7 @@ public static class ResultValidateExtensions
                     : new ValidationFailure(propertyName, message ?? validationResult.Message);
             });
 
-            return new ValidationTarget<T, IEnumerable<TItem>>(result, executor);
+            return new RuleTarget<T, IEnumerable<TItem>>(result, executor);
         }
     }
 }
