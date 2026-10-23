@@ -153,6 +153,7 @@ The following fluent methods are available from `Toarnbeike.Results.Rules.Extens
 | TimeSpan | `TimeSpan` | `AtLeast`, `AtMost`, `Between`, `Around` |
 | Enum | `enum` | `IsDefined`, `OneOf`, `NotOneOf` |
 | Guid | `Guid` | `NotEmpty`, `Version4`, `Version7` |
+| Boolean | `bool` | `IsTrue`, `IsFalse` |
 | Integer | `IBinaryInteger<T>` | `AtLeast`, `AtMost`, `Between`, `MultipleOf` |
 | Numeric | `INumber<T>` | `GreaterThan`, `LessThan`, `Positive` |
 | Floating point | `IFloatingPoint<T>` | `AtLeast`, `AtMost`, `Between`, `MultipleOf`, `Finite` |

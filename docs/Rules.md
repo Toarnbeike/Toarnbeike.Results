@@ -25,6 +25,7 @@ All rules accept an optional custom failure message unless the rule table states
 1. [TimeSpan rules](#timespan-rules)
 1. [Enum rules](#enum-rules)
 1. [Guid rules](#guid-rules)
+1. [Boolean rules](#boolean-rules)
 1. [Integer rules](#integer-rules)
 1. [Numeric rules](#numeric-rules)
 1. [Floating-point rules](#floating-point-rules)
@@ -165,6 +166,17 @@ Applicable to `Guid` targets.
 | `NotEmpty()` | Rejects both `Guid.Empty` and `Guid.AllBitsSet`. |
 | `Version4()` | Requires a version 4 GUID. |
 | `Version7()` | Requires a version 7 GUID. |
+
+---
+
+## Boolean rules
+
+Applicable to `bool` targets.
+
+| Method | Behavior |
+|---|---|
+| `IsTrue()` | Requires the value to be `true`. |
+| `IsFalse()` | Requires the value to be `false`. |
 
 ---
 
