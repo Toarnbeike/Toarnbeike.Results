@@ -1,6 +1,7 @@
 ﻿using Toarnbeike.Results.Validation.Tests.Testdata;
 using Toarnbeike.Results.TestExtensions;
 using Toarnbeike.Results.Failures;
+using Toarnbeike.Results.Validation.Extensions;
 
 namespace Toarnbeike.Results.Validation.Tests;
 
@@ -86,5 +87,63 @@ public class ValidatorTests
         var result = validator.Validate(customer);
         var failureSummary = result.ShouldBeFailureOfType<ValidationFailureSummary>();
         failureSummary.GetFailuresFor("Notes[1]").ShouldNotBeNull();
+    }
+
+    [Test]
+    public void Validate_ShouldSucceed_WhenAnyCollectionItemPasses()
+    {
+        var result = new NumberCollectionValidator().Validate(new NumberCollection([-1, 2]));
+
+        result.ShouldBeSuccess();
+    }
+
+    [Test]
+    public void Validate_ShouldFailAtCollectionPath_WhenNoCollectionItemPassesAnyRule()
+    {
+        var result = new NumberCollectionValidator().Validate(new NumberCollection([-1, 0]));
+        var failureSummary = result.ShouldBeFailureOfType<ValidationFailureSummary>();
+
+        failureSummary.GetFailuresFor("Values").ShouldNotBeEmpty();
+    }
+
+    [Test]
+    public void Validate_ShouldPrefixNestedFailuresWithPropertyAndCollectionPaths()
+    {
+        var value = new NestedModel(
+            new Address(" "),
+            [new Address(" "), new Address("")]);
+        var result = new NestedModelValidator().Validate(value);
+        var failureSummary = result.ShouldBeFailureOfType<ValidationFailureSummary>();
+
+        failureSummary.GetFailuresFor("PrimaryAddress.City").ShouldNotBeEmpty();
+        failureSummary.GetFailuresFor("Addresses[0].City").ShouldNotBeEmpty();
+        failureSummary.GetFailuresFor("Addresses[1].City").ShouldNotBeEmpty();
+    }
+
+    private sealed record NumberCollection(IEnumerable<int> Values);
+
+    private sealed class NumberCollectionValidator : Validator<NumberCollection>
+    {
+        protected override void RegisterRules(ValidationRuleCollection<NumberCollection> rules) =>
+            rules.ThatCollection(value => value.Values).Any().GreaterThan(0);
+    }
+
+    private sealed record Address(string City);
+
+    private sealed record NestedModel(Address PrimaryAddress, IEnumerable<Address> Addresses);
+
+    private sealed class AddressValidator : Validator<Address>
+    {
+        protected override void RegisterRules(ValidationRuleCollection<Address> rules) =>
+            rules.That(value => value.City).NotWhiteSpace();
+    }
+
+    private sealed class NestedModelValidator : Validator<NestedModel>
+    {
+        protected override void RegisterRules(ValidationRuleCollection<NestedModel> rules)
+        {
+            rules.That(value => value.PrimaryAddress, "PrimaryAddress").ValidateUsing(new AddressValidator());
+            rules.ThatCollection(value => value.Addresses).All().ValidateUsing(new AddressValidator());
+        }
     }
 }

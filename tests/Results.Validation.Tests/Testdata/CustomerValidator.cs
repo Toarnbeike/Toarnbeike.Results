@@ -10,6 +10,6 @@ internal sealed class CustomerValidator : Validator<Customer>
         rules.That(c => c.Age).Between(18, 150);
         rules.That(c => c.CreationDate).OnOrBefore(DateTimeOffset.Now);
         rules.ThatCollection(c => c.Notes).HasAtLeast(2);
-        rules.ThatAll(c => c.Notes).NotWhiteSpace();
+        rules.ThatCollection(c => c.Notes).All().NotWhiteSpace();
     }
 }
