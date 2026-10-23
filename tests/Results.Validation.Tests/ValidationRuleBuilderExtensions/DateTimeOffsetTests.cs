@@ -1,4 +1,5 @@
 ﻿using Toarnbeike.Results.Failures;
+using Toarnbeike.Results.Rules;
 using Toarnbeike.Results.Validation.Extensions;
 using Toarnbeike.Results.Validation.Implementation;
 
@@ -97,6 +98,114 @@ public class DateTimeOffsetTests
     {
         _builder.Between(_earlier, _later, _customMessage);
         var failure = _registered(_earlier.AddDays(-1)).Single();
+        failure.ValidationMessage.ShouldBe(_customMessage);
+    }
+
+    [Test]
+    public void Future_ShouldReturnNoFailures_WhenDateIsInFuture()
+    {
+        var futureDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(1);
+        _builder.Future();
+        var failures = _registered(futureDate);
+        failures.Count().ShouldBe(0);
+    }
+
+    [Test]
+    public void Future_ShouldReturnFailure_WhenDateIsInPast()
+    {
+        var pastDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(-1);
+        _builder.Future();
+        var failures = _registered(pastDate).ToArray();
+        failures.Length.ShouldBe(1);
+    }
+
+    [Test]
+    public void Future_ShouldUseCustomMessage_WhenProvided()
+    {
+        var pastDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(-1);
+        _builder.Future(_customMessage);
+        var failure = _registered(pastDate).Single();
+        failure.ValidationMessage.ShouldBe(_customMessage);
+    }
+
+    [Test]
+    public void FutureWithin_ShouldReturnNoFailures_WhenDateIsWithinFutureRange()
+    {
+        var futureDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(1);
+        _builder.WithinFuture(TimeSpan.FromDays(2));
+        var failures = _registered(futureDate);
+        failures.Count().ShouldBe(0);
+    }
+
+    [Test]
+    public void FutureWithin_ShouldReturnFailure_WhenDateIsOutsideFutureRange()
+    {
+        var futureDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(3);
+        _builder.WithinFuture(TimeSpan.FromDays(2));
+        var failures = _registered(futureDate).ToArray();
+        failures.Length.ShouldBe(1);
+    }
+
+    [Test]
+    public void FutureWithin_ShouldUseCustomMessage_WhenProvided()
+    {
+        var futureDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(3);
+        _builder.WithinFuture(TimeSpan.FromDays(2), _customMessage);
+        var failure = _registered(futureDate).Single();
+        failure.ValidationMessage.ShouldBe(_customMessage);
+    }
+
+    [Test]
+    public void Past_ShouldReturnNoFailures_WhenDateIsInPast()
+    {
+        var pastDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(-1);
+        _builder.Past();
+        var failures = _registered(pastDate);
+        failures.Count().ShouldBe(0);
+    }
+
+    [Test]
+    public void Past_ShouldReturnFailure_WhenDateIsInFuture()
+    {
+        var futureDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(1);
+        _builder.Past();
+        var failures = _registered(futureDate).ToArray();
+        failures.Length.ShouldBe(1);
+    }
+
+    [Test]
+    public void Past_ShouldUseCustomMessage_WhenProvided()
+    {
+        var futureDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(1);
+        _builder.Past(_customMessage);
+        var failure = _registered(futureDate).Single();
+        failure.ValidationMessage.ShouldBe(_customMessage);
+    }
+
+    [Test]
+    public void PastWithin_ShouldReturnNoFailures_WhenDateIsWithinPastRange()
+    {
+        var pastDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(-1);
+        _builder.WithinPast(TimeSpan.FromDays(2));
+        var failures = _registered(pastDate);
+        failures.Count().ShouldBe(0);
+    }
+
+    [Test]
+    public void PastWithin_ShouldReturnFailure_WhenDateIsOutsidePastRange()
+    {
+        var pastDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(-3);
+        _builder.WithinPast(TimeSpan.FromDays(2));
+        var failures = _registered(pastDate).ToArray();
+        failures.Length.ShouldBe(1);
+    }
+
+    [Test]
+    public void PastWithin_ShouldUseCustomMessage_WhenProvided()
+    {
+        var pastDate = RuleContext.UtcNow<DateTimeOffset>().AddDays(-3);
+        _builder.WithinPast(TimeSpan.FromDays(2), _customMessage);
+        var failure = _registered(pastDate).Single();
         failure.ValidationMessage.ShouldBe(_customMessage);
     }
 }

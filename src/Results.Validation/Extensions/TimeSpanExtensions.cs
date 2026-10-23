@@ -44,5 +44,13 @@ public static class TimeSpanExtensions
         /// <returns>The validation rule builder to add to the <see cref="ValidationRuleCollection{T}"/>.</returns>
         public ValidationRuleBuilder<T, TimeSpan> Around(TimeSpan expected, TimeSpan tolerance, string? message = null) =>
             builder.Add(TimeSpanRules.Around(expected, tolerance), message);
+
+        /// <summary>
+        /// Validates that the TimeSpan is at least zero.
+        /// </summary>
+        /// <param name="message">Optionally a custom message to use if the validation fails.</param>
+        /// <returns>The validation rule builder to add to the <see cref="ValidationRuleCollection{T}"/>.</returns>
+        public ValidationRuleBuilder<T, TimeSpan> AtLeastZero(string? message = null) =>
+            builder.Add(TimeSpanRules.AtLeastZero(), message);
     }
 }

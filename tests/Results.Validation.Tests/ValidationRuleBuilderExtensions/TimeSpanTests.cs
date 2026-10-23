@@ -131,4 +131,28 @@ public class TimeSpanTests
         var failure = _registered(_time.Subtract(tolerance).Subtract(TimeSpan.FromMinutes(1))).Single();
         failure.ValidationMessage.ShouldBe(_customMessage);
     }
+
+    [Test]
+    public void AtLeastZero_ShouldReturnNoFailures_WhenTimeIsZeroOrGreater()
+    {
+        _builder.AtLeastZero();
+        var failures = _registered(_time);
+        failures.Count().ShouldBe(0);
+    }
+
+    [Test]
+    public void AtLeastZero_ShouldReturnFailure_WhenTimeIsNegative()
+    {
+        _builder.AtLeastZero();
+        var failures = _registered(TimeSpan.FromMinutes(-1)).ToArray();
+        failures.Length.ShouldBe(1);
+    }
+
+    [Test]
+    public void AtLeastZero_ShouldUseCustomMessage_WhenProvided()
+    {
+        _builder.AtLeastZero(_customMessage);
+        var failure = _registered(TimeSpan.FromMinutes(-1)).Single();
+        failure.ValidationMessage.ShouldBe(_customMessage);
+    }
 }

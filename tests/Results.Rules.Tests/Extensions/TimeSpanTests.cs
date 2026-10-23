@@ -100,4 +100,28 @@ public class TimeSpanTests
         var failure = validationResult.ShouldBeFailureOfType<TestFailure>();
         failure.Identifier.ShouldBe("Custom failure message");
     }
+
+    [Test]
+    public void AtLeastZero_ShouldReturnSuccess_WhenTimeSpanIsGreaterThanOrEqualToZero()
+    {
+        var validationResult = _result.TestRuleFor("TimeSpan").AtLeastZero();
+        validationResult.ShouldBeSuccess();
+    }
+
+    [Test]
+    public void AtLeastZero_ShouldReturnFailure_WhenTimeSpanIsLessThanZero()
+    {
+        Result<TimeSpan> negativeResult = TimeSpan.FromHours(-1);
+        var validationResult = negativeResult.TestRuleFor("TimeSpan").AtLeastZero();
+        _ = validationResult.ShouldBeFailureOfType<TestFailure>();
+    }
+
+    [Test]
+    public void AtLeastZero_ShouldReturnFailureWithCustomMessage_WhenTimeSpanIsLessThanZero()
+    {
+        Result<TimeSpan> negativeResult = TimeSpan.FromHours(-1);
+        var validationResult = negativeResult.TestRuleFor("TimeSpan").AtLeastZero("Custom failure message");
+        var failure = validationResult.ShouldBeFailureOfType<TestFailure>();
+        failure.Identifier.ShouldBe("Custom failure message");
+    }
 }
