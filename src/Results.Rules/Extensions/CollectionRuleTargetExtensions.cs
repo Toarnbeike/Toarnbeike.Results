@@ -25,13 +25,15 @@ public static class CollectionRuleTargetExtensions
         {
             return target.Compose<TItem>((items, rule) =>
             {
+                var index = 0;
                 foreach (var item in items)
                 {
                     var result = rule(item);
                     if (!result.IsValid)
                     {
-                        return result;
+                        return result.WithCollectionIndex(index);
                     }
+                    index++;
                 }
                 return RuleResult.Success();
             });
@@ -49,13 +51,15 @@ public static class CollectionRuleTargetExtensions
             ArgumentNullException.ThrowIfNull(propertySelector);
             return target.Compose<TProperty>((items, rule) =>
             {
+                var index = 0;
                 foreach (var item in items)
                 {
                     var result = rule(propertySelector(item));
                     if (!result.IsValid)
                     {
-                        return result;
+                        return result.WithCollectionIndex(index);
                     }
+                    index++;
                 }
                 return RuleResult.Success();
             });

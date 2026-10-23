@@ -52,6 +52,19 @@ public readonly record struct RuleResult
     public IReadOnlyDictionary<string, object?> Context { get; }
 
     /// <summary>
+    /// Gets the zero-based index of the collection item that failed, if the rule was evaluated through a collection rule.
+    /// </summary>
+    public int? CollectionIndex { get; init; }
+
+    internal RuleResult WithCollectionIndex(int index) => this with { CollectionIndex = index };
+
+    internal string GetPropertyName(string? propertyName)
+    {
+        ArgumentNullException.ThrowIfNull(propertyName);
+        return CollectionIndex is int index ? $"{propertyName}[{index}]" : propertyName;
+    }
+
+    /// <summary>
     /// Create a <see cref="RuleResult"/> from a rule name, a value and an <see cref="IEvaluation{TProperty}"/>.
     /// </summary>
     /// <typeparam name="TProperty">The type of the value to evaluate.</typeparam>

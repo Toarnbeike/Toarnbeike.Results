@@ -47,6 +47,16 @@ public class ResultEnsureExtensionTests
     }
 
     [Test]
+    public void Ensure_ShouldUseCustomRuleMessage_WhenRuleFails()
+    {
+        var value = "Hi";
+        Result result = Result.Success();
+        var ensureResult = result.Ensure(() => value).MinLength(5, "Custom failure message");
+        var failure = ensureResult.ShouldBeFailureOfType<GuardFailure>();
+        failure.Message.ShouldBe("Custom failure message");
+    }
+
+    [Test]
     public void Ensure_Should_ThrowNullException_WhenSelectorIsNull()
     {
         Result result = Result.Success();

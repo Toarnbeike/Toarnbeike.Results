@@ -19,19 +19,8 @@ public static class ResultTValidateExtensions
         /// <param name="propertyName">The name of the property to associate with validation failures.</param>
         /// <returns>A validation target that executes rules against the current value and returns success or a validation
         /// failure.</returns>
-        public RuleTarget<T, T> Validate(string propertyName)
-
-        {
-            var executor = new RuleExecutor<T, T>((value, rule, message) =>
-            {
-                var validationResult = rule(value);
-                return validationResult.IsValid
-                    ? Result.Success()
-                    : new ValidationFailure(propertyName, message ?? validationResult.Message);
-            });
-
-            return new RuleTarget<T, T>(result, executor);
-        }
+        public RuleTarget<T, T> Validate(string propertyName) =>
+            RuleTargetFactory.Create(result, static value => value, propertyName, static (name, message) => new ValidationFailure(name, message));
 
         /// <summary>
         /// Creates a validation target for  a property of the value contained in the <see cref="Result{T}"/> using the specified property selector.
@@ -49,15 +38,7 @@ public static class ResultTValidateExtensions
             ArgumentNullException.ThrowIfNull(propertySelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new RuleExecutor<T, TProperty>((value, rule, message) =>
-            {
-                var validationResult = rule(propertySelector(value));
-                return validationResult.IsValid
-                    ? Result.Success()
-                    : new ValidationFailure(propertyName, message ?? validationResult.Message);
-            });
-
-            return new RuleTarget<T, TProperty>(result, executor);
+            return RuleTargetFactory.Create(result, propertySelector, propertyName, static (name, message) => new ValidationFailure(name, message));
         }
 
         /// <summary>
@@ -76,15 +57,7 @@ public static class ResultTValidateExtensions
             ArgumentNullException.ThrowIfNull(collectionSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new RuleExecutor<T, IEnumerable<TItem>>((value, rule, message) =>
-            {
-                var validationResult = rule(collectionSelector(value));
-                return validationResult.IsValid
-                    ? Result.Success()
-                    : new ValidationFailure(propertyName, message ?? validationResult.Message);
-            });
-
-            return new RuleTarget<T, IEnumerable<TItem>>(result, executor);
+            return RuleTargetFactory.Create(result, collectionSelector, propertyName, static (name, message) => new ValidationFailure(name, message));
         }
     }
 }

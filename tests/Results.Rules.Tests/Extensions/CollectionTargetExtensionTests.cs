@@ -1,6 +1,8 @@
 ﻿using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.TestExtensions;
+using Toarnbeike.Results.Rules;
 using Toarnbeike.Results.Rules.Extensions;
+using Toarnbeike.Results.Validation;
 
 namespace Toarnbeike.Results.Rules.Tests.Extensions;
 
@@ -24,6 +26,14 @@ public class CollectionTargetExtensionTests
         var validationResult = _result.TestRuleForCollection(items => items).All().MinLength(6);
         var failure = validationResult.ShouldBeFailureOfType<TestFailure>();
         failure.Identifier.ShouldContain("6");
+    }
+
+    [Test]
+    public void All_ShouldIncludeFirstFailingIndexInEnsurePropertyName()
+    {
+        var validationResult = _result.EnsureCollection(items => items, "Items").All().MinLength(7);
+        var failure = validationResult.ShouldBeFailureOfType<GuardFailure>();
+        failure.ParameterName.ShouldBe("Items[1]");
     }
 
     [Test]
@@ -54,6 +64,14 @@ public class CollectionTargetExtensionTests
         var validationResult = _result.TestRuleForCollection(items => items).All(x => x).MinLength(6);
         var failure = validationResult.ShouldBeFailureOfType<TestFailure>();
         failure.Identifier.ShouldContain("6");
+    }
+
+    [Test]
+    public void All_WithSelector_ShouldIncludeFirstFailingIndexInValidationPropertyName()
+    {
+        var validationResult = _result.ValidateCollection(items => items, "Items").All(x => x).MinLength(7);
+        var failure = validationResult.ShouldBeFailureOfType<ValidationFailure>();
+        failure.Property.ShouldBe("Items[1]");
     }
 
     [Test]

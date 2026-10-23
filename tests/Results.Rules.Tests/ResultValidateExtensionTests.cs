@@ -60,6 +60,15 @@ public class ResultValidateExtensionTests
         failure.Property.ShouldBe("CustomProperty");
     }
 
+    [Test]
+    public void Validate_ShouldUseCustomRuleMessage_WhenValidationFails()
+    {
+        Result<string> result = "Hi";
+        var validatedResult = result.Validate("Property").MinLength(5, "Custom failure message");
+        var failure = validatedResult.ShouldBeFailureOfType<ValidationFailure>();
+        failure.ValidationMessage.ShouldBe("Custom failure message");
+    }
+
 
     [Test]
     public void Validate_ShouldReturnSuccess_WithSelector_WhenValidationPasses()

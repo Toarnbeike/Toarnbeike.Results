@@ -27,15 +27,11 @@ public static class ResultEnsureExtensions
             ArgumentNullException.ThrowIfNull(valueSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new RuleExecutor<T, T>((value, rule, message) =>
-            {
-                var guardResult = rule(valueSelector());
-                return guardResult.IsValid
-                    ? Result.Success(value)
-                    : new GuardFailure(propertyName, message ?? guardResult.Message);
-            });
-
-            return new RuleTarget<T, T>(result.WithValue(valueSelector()), executor);
+            return RuleTargetFactory.Create(
+                result.WithValue(valueSelector()),
+                _ => valueSelector(),
+                propertyName,
+                static (name, message) => new GuardFailure(name, message));
         }
 
         /// <summary>
@@ -54,15 +50,11 @@ public static class ResultEnsureExtensions
             ArgumentNullException.ThrowIfNull(collectionSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            var executor = new RuleExecutor<IEnumerable<TItem>, IEnumerable<TItem>>((value, rule, message) =>
-            {
-                var guardResult = rule(collectionSelector());
-                return guardResult.IsValid
-                    ? Result.Success(value)
-                    : new GuardFailure(propertyName, message ?? guardResult.Message);
-            });
-
-            return new RuleTarget<IEnumerable<TItem>, IEnumerable<TItem>>(result.WithValue(collectionSelector()), executor);
+            return RuleTargetFactory.Create(
+                result.WithValue(collectionSelector()),
+                _ => collectionSelector(),
+                propertyName,
+                static (name, message) => new GuardFailure(name, message));
         }
     }
 }
