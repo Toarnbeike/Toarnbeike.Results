@@ -156,11 +156,11 @@ The following fluent methods are available from `Toarnbeike.Results.Rules.Extens
 | Integer | `IBinaryInteger<T>` | `AtLeast`, `AtMost`, `Between`, `MultipleOf` |
 | Numeric | `INumber<T>` | `GreaterThan`, `LessThan`, `Positive` |
 | Floating point | `IFloatingPoint<T>` | `AtLeast`, `AtMost`, `Between`, `MultipleOf`, `Finite` |
-| Object | Any property type | `EqualTo`, `NotEqualTo`, `Must`, `MustNot` |
+| Object | Any property type | `EqualTo`, `NotEqualTo`, `Must`, `MustNot`, `MustAsync`, `MustNotAsync` |
 
 Notes:
 - Floating-point comparison methods accept an optional tolerance argument.
-- Object rules apply to every property type. `Must` and `MustNot` require an explicit failure message; `EqualTo` and `NotEqualTo` use equality semantics for the target type.
+- Object rules apply to every property type. `Must` and `MustNot` require an explicit failure message; `MustAsync` and `MustNotAsync` accept asynchronous `Func<TProperty, Task<bool>>` predicates and return `Task<Result<T>>`. `EqualTo` and `NotEqualTo` use equality semantics for the target type.
 
 ---
 

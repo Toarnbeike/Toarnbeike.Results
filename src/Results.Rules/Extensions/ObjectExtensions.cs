@@ -49,5 +49,23 @@ public static class ObjectExtensions
         /// <returns>A result representing whether the property does not satisfy the provided predicate.</returns>
         public Result<T> MustNot(Func<TProperty, bool> predicate, string message) =>
             target.Apply(ObjectRules.NotSatisfies(predicate), message);
+
+        /// <summary>
+        /// Asynchronously verifies that the property satisfies the provided predicate.
+        /// </summary>
+        /// <param name="predicate">The asynchronous predicate to evaluate against the property.</param>
+        /// <param name="message">A failure message describing why the predicate must be satisfied.</param>
+        /// <returns>A task representing whether the property satisfies the provided predicate.</returns>
+        public Task<Result<T>> MustAsync(Func<TProperty, Task<bool>> predicate, string message) =>
+            target.ApplyAsync(ObjectRules.SatisfiesAsync(predicate), message);
+
+        /// <summary>
+        /// Asynchronously verifies that the property does not satisfy the provided predicate.
+        /// </summary>
+        /// <param name="predicate">The asynchronous predicate that must not be satisfied by the property.</param>
+        /// <param name="message">A failure message describing why the predicate must not be satisfied.</param>
+        /// <returns>A task representing whether the property does not satisfy the provided predicate.</returns>
+        public Task<Result<T>> MustNotAsync(Func<TProperty, Task<bool>> predicate, string message) =>
+            target.ApplyAsync(ObjectRules.NotSatisfiesAsync(predicate), message);
     }
 }

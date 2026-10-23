@@ -211,6 +211,8 @@ Applicable to any selected property type.
 | `NotEqualTo(expected)` | Requires inequality according to `EqualityComparer<T>.Default`. |
 | `Must(predicate, message)` | Requires `predicate` to return `true`. `message` is required. |
 | `MustNot(predicate, message)` | Requires `predicate` to return `false`. `message` is required. |
+| `MustAsync(predicate, message)` | Asynchronously requires a `Func<TProperty, Task<bool>>` predicate to return `true`. `message` is required; returns `Task<Result<T>>`. |
+| `MustNotAsync(predicate, message)` | Asynchronously requires a `Func<TProperty, Task<bool>>` predicate to return `false`. `message` is required; returns `Task<Result<T>>`. |
 
 The predicate receives the selected value unchanged. The application is responsible for handling nullable values in its predicate when the selected property can be `null`.
 

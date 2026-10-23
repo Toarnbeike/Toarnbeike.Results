@@ -23,20 +23,9 @@ public static class CollectionRuleTargetExtensions
         /// <returns>An <see cref="RuleTarget{T, TItem}"/> that evaluates the rule for each element, returning the first failure result or success when all elements pass.</returns>
         public RuleTarget<T, TItem> All()
         {
-            return target.Compose<TItem>((items, rule) =>
-            {
-                var index = 0;
-                foreach (var item in items)
-                {
-                    var result = rule(item);
-                    if (!result.IsValid)
-                    {
-                        return result.WithCollectionIndex(index);
-                    }
-                    index++;
-                }
-                return RuleResult.Success();
-            });
+            return target.Compose<TItem>(
+                (items, rule) => EvaluateAll(items, static item => item, rule),
+                (items, rule) => EvaluateAllAsync(items, static item => item, rule));
         }
 
         /// <summary>
@@ -49,20 +38,9 @@ public static class CollectionRuleTargetExtensions
         public RuleTarget<T, TProperty> All<TProperty>(Func<TItem, TProperty> propertySelector)
         {
             ArgumentNullException.ThrowIfNull(propertySelector);
-            return target.Compose<TProperty>((items, rule) =>
-            {
-                var index = 0;
-                foreach (var item in items)
-                {
-                    var result = rule(propertySelector(item));
-                    if (!result.IsValid)
-                    {
-                        return result.WithCollectionIndex(index);
-                    }
-                    index++;
-                }
-                return RuleResult.Success();
-            });
+            return target.Compose<TProperty>(
+                (items, rule) => EvaluateAll(items, propertySelector, rule),
+                (items, rule) => EvaluateAllAsync(items, propertySelector, rule));
         }
 
         /// <summary>
@@ -72,18 +50,9 @@ public static class CollectionRuleTargetExtensions
         /// <returns>An <see cref="RuleTarget{T, TItem}"/> that returns a successful result when any item is valid; otherwise returns a failed result.</returns>
         public RuleTarget<T, TItem> Any()
         {
-            return target.Compose<TItem>((items, rule) =>
-            {
-                foreach (var item in items)
-                {
-                    var result = rule(item);
-                    if (result.IsValid)
-                    {
-                        return RuleResult.Success();
-                    }
-                }
-                return RuleResult.Failure("Evalutor.Any", "No items satisfied the rule.");
-            });
+            return target.Compose<TItem>(
+                (items, rule) => EvaluateAny(items, static item => item, rule),
+                (items, rule) => EvaluateAnyAsync(items, static item => item, rule));
         }
 
         /// <summary>
@@ -96,18 +65,75 @@ public static class CollectionRuleTargetExtensions
         public RuleTarget<T, TProperty> Any<TProperty>(Func<TItem, TProperty> propertySelector)
         {
             ArgumentNullException.ThrowIfNull(propertySelector);
-            return target.Compose<TProperty>((items, rule) =>
-            {
-                foreach (var item in items)
-                {
-                    var result = rule(propertySelector(item));
-                    if (result.IsValid)
-                    {
-                        return RuleResult.Success();
-                    }
-                }
-                return RuleResult.Failure("Evalutor.Any", "No items satisfied the rule.");
-            });
+            return target.Compose<TProperty>(
+                (items, rule) => EvaluateAny(items, propertySelector, rule),
+                (items, rule) => EvaluateAnyAsync(items, propertySelector, rule));
         }
+    }
+
+    private static RuleResult EvaluateAll<TItem, TProperty>(
+        IEnumerable<TItem> items,
+        Func<TItem, TProperty> propertySelector,
+        RuleDelegate<TProperty> rule)
+    {
+        var index = 0;
+        foreach (var item in items)
+        {
+            var result = rule(propertySelector(item));
+            if (!result.IsValid)
+            {
+                return result.WithCollectionIndex(index);
+            }
+            index++;
+        }
+        return RuleResult.Success();
+    }
+
+    private static async Task<RuleResult> EvaluateAllAsync<TItem, TProperty>(
+        IEnumerable<TItem> items,
+        Func<TItem, TProperty> propertySelector,
+        AsyncRuleDelegate<TProperty> rule)
+    {
+        var index = 0;
+        foreach (var item in items)
+        {
+            var result = await rule(propertySelector(item)).ConfigureAwait(false);
+            if (!result.IsValid)
+            {
+                return result.WithCollectionIndex(index);
+            }
+            index++;
+        }
+        return RuleResult.Success();
+    }
+
+    private static RuleResult EvaluateAny<TItem, TProperty>(
+        IEnumerable<TItem> items,
+        Func<TItem, TProperty> propertySelector,
+        RuleDelegate<TProperty> rule)
+    {
+        foreach (var item in items)
+        {
+            if (rule(propertySelector(item)).IsValid)
+            {
+                return RuleResult.Success();
+            }
+        }
+        return RuleResult.Failure("Evalutor.Any", "No items satisfied the rule.");
+    }
+
+    private static async Task<RuleResult> EvaluateAnyAsync<TItem, TProperty>(
+        IEnumerable<TItem> items,
+        Func<TItem, TProperty> propertySelector,
+        AsyncRuleDelegate<TProperty> rule)
+    {
+        foreach (var item in items)
+        {
+            if ((await rule(propertySelector(item)).ConfigureAwait(false)).IsValid)
+            {
+                return RuleResult.Success();
+            }
+        }
+        return RuleResult.Failure("Evalutor.Any", "No items satisfied the rule.");
     }
 }

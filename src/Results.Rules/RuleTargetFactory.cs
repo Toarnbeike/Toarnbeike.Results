@@ -19,7 +19,13 @@ internal static class RuleTargetFactory
             return MapResult(ruleResult, propertyName, message, failureFactory);
         });
 
-        return new RuleTarget<T, TProperty>(result, executor);
+        var asyncExecutor = new AsyncRuleExecutor<T, TProperty>(async (value, rule, message) =>
+        {
+            var ruleResult = await rule(propertySelector(value)).ConfigureAwait(false);
+            return MapResult(ruleResult, propertyName, message, failureFactory);
+        });
+
+        return new RuleTarget<T, TProperty>(result, executor, asyncExecutor);
     }
 
     internal static Result MapResult(

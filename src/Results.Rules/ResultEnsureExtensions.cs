@@ -27,11 +27,7 @@ public static class ResultEnsureExtensions
             ArgumentNullException.ThrowIfNull(valueSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            return RuleTargetFactory.Create(
-                result.WithValue(valueSelector()),
-                _ => valueSelector(),
-                propertyName,
-                static (name, message) => new GuardFailure(name, message));
+            return RuleTargetFactory.Create(result.WithValue(valueSelector()), _ => valueSelector(), propertyName, static (name, message) => new GuardFailure(name, message));
         }
 
         /// <summary>
@@ -50,11 +46,7 @@ public static class ResultEnsureExtensions
             ArgumentNullException.ThrowIfNull(collectionSelector);
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
-            return RuleTargetFactory.Create(
-                result.WithValue(collectionSelector()),
-                _ => collectionSelector(),
-                propertyName,
-                static (name, message) => new GuardFailure(name, message));
+            return RuleTargetFactory.Create(result.WithValue(collectionSelector()), _ => collectionSelector(), propertyName, static (name, message) => new GuardFailure(name, message));
         }
     }
 }
