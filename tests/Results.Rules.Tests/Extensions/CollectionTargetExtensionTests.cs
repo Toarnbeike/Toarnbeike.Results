@@ -1,6 +1,5 @@
 ﻿using Toarnbeike.Results.Failures;
 using Toarnbeike.Results.TestExtensions;
-using Toarnbeike.Results.Rules;
 using Toarnbeike.Results.Rules.Extensions;
 using Toarnbeike.Results.Validation;
 

@@ -4,7 +4,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
-public static class FloatingPointValidationRuleBuilderExtensions
+public static class FloatingPointExtensions
 {
     extension<T, TFloating>(ValidationRuleBuilder<T, TFloating> builder)
         where TFloating : struct, IFloatingPoint<TFloating>, IMinMaxValue<TFloating>

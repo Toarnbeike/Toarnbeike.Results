@@ -3,7 +3,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
-public static class EnumValidationRuleBuilderExtensions
+public static class EnumExtensions
 {
     extension<T, TEnum>(ValidationRuleBuilder<T, TEnum> builder)
     where TEnum : struct, Enum

@@ -25,6 +25,7 @@ All rules accept an optional custom failure message unless the rule table states
 1. [TimeSpan rules](#timespan-rules)
 1. [Enum rules](#enum-rules)
 1. [Guid rules](#guid-rules)
+1. [Boolean rules](#boolean-rules)
 1. [Integer rules](#integer-rules)
 1. [Numeric rules](#numeric-rules)
 1. [Floating-point rules](#floating-point-rules)
@@ -118,8 +119,15 @@ Applicable to `DateOnly`, `DateTime`, and `DateTimeOffset` targets.
 | `OnOrAfter(min)` | Requires a value greater than or equal to `min`. |
 | `OnOrBefore(max)` | Requires a value less than or equal to `max`. |
 | `Between(min, max)` | Requires a value in the inclusive range from `min` through `max`. |
+| `Future()` | Requires a value strictly greater than the time provided by the registered date time provider. |
+| `FutureWithin(duration)` | Requires a value strictly greater than the time provided by the registered date time provider and within the specified duration. |
+| `Past()` | Requires a value strictly less than the time provided by the registered date time provider. |
+| `PastWithin(duration)` | Requires a value strictly less than the time provided by the registered date time provider and within the specified duration. |
 
-These rules compare the values supplied to them; they do not convert or normalize time zones or `DateTime.Kind` values.
+Remarks:
+- These rules compare the values supplied to them; they do not convert or normalize time zones or `DateTime.Kind` values.
+- Use `RuleContext.UseSystemUtcNow()` or `RuleContext.UseFixedUtcNow()` to configure the UTC clock used by the relevant rules.
+- The `FutureWithin` and `PastWithin` rules use a `TimeSpan` duration to define the time window relative to the current time, or a int days duration for `DateOnly` targets.
 
 ---
 
@@ -133,6 +141,7 @@ Applicable to `TimeSpan` targets.
 | `AtMost(max)` | Requires a duration less than or equal to `max`. |
 | `Between(min, max)` | Requires a duration in the inclusive range from `min` through `max`. |
 | `Around(expected, tolerance)` | Requires a duration from `expected - tolerance` through `expected + tolerance`, inclusive. |
+| `AtLeastZero()` | Requires a duration greater than or equal to `TimeSpan.Zero`. |
 
 ---
 
@@ -157,6 +166,17 @@ Applicable to `Guid` targets.
 | `NotEmpty()` | Rejects both `Guid.Empty` and `Guid.AllBitsSet`. |
 | `Version4()` | Requires a version 4 GUID. |
 | `Version7()` | Requires a version 7 GUID. |
+
+---
+
+## Boolean rules
+
+Applicable to `bool` targets.
+
+| Method | Behavior |
+|---|---|
+| `IsTrue()` | Requires the value to be `true`. |
+| `IsFalse()` | Requires the value to be `false`. |
 
 ---
 

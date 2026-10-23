@@ -76,4 +76,54 @@ public class DateTimeTests
         var failure = validationResult.ShouldBeFailureOfType<TestFailure>();
         failure.Identifier.ShouldBe("Custom failure message");
     }
+
+    [Test]
+    public void Future_ShouldReturnSuccess_WhenDateIsInTheFuture()
+    {
+        Result<DateTime> futureResult = DateTime.UtcNow.AddDays(1);
+        var validationResult = futureResult.TestRuleFor("DateTime").Future();
+        validationResult.ShouldBeSuccess();
+    }
+
+    [Test]
+    public void Future_ShouldReturnFailure_WhenDateIsInThePast()
+    {
+        Result<DateTime> pastResult = DateTime.UtcNow.AddDays(-1);
+        var validationResult = pastResult.TestRuleFor("DateTime").Future();
+        _ = validationResult.ShouldBeFailureOfType<TestFailure>();
+    }
+
+    [Test]
+    public void Future_ShouldReturnFailureWithCustomMessage_WhenDateIsInThePast()
+    {
+        Result<DateTime> pastResult = DateTime.UtcNow.AddDays(-1);
+        var validationResult = pastResult.TestRuleFor("DateTime").Future("Custom failure message");
+        var failure = validationResult.ShouldBeFailureOfType<TestFailure>();
+        failure.Identifier.ShouldBe("Custom failure message");
+    }
+
+    [Test]
+    public void Past_ShouldReturnSuccess_WhenDateIsInThePast()
+    {
+        Result<DateTime> pastResult = DateTime.UtcNow.AddDays(-1);
+        var validationResult = pastResult.TestRuleFor("DateTime").Past();
+        validationResult.ShouldBeSuccess();
+    }
+
+    [Test]
+    public void Past_ShouldReturnFailure_WhenDateIsInTheFuture()
+    {
+        Result<DateTime> futureResult = DateTime.UtcNow.AddDays(1);
+        var validationResult = futureResult.TestRuleFor("DateTime").Past();
+        _ = validationResult.ShouldBeFailureOfType<TestFailure>();
+    }
+
+    [Test]
+    public void Past_ShouldReturnFailureWithCustomMessage_WhenDateIsInTheFuture()
+    {
+        Result<DateTime> futureResult = DateTime.UtcNow.AddDays(1);
+        var validationResult = futureResult.TestRuleFor("DateTime").Past("Custom failure message");
+        var failure = validationResult.ShouldBeFailureOfType<TestFailure>();
+        failure.Identifier.ShouldBe("Custom failure message");
+    }
 }

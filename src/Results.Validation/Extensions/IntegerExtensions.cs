@@ -4,7 +4,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
-public static class IntegerValidationRuleBuilderExtensions
+public static class IntegerExtensions
 {
     extension<T, TInteger>(ValidationRuleBuilder<T, TInteger> builder)
     where TInteger : struct, IBinaryInteger<TInteger>
@@ -17,6 +17,7 @@ public static class IntegerValidationRuleBuilderExtensions
         /// <returns>The validation rule builder to add to the <see cref="ValidationRuleCollection{T}"/>.</returns>
         public ValidationRuleBuilder<T, TInteger> AtLeast(TInteger min, string? message = null) =>
             builder.Add(NumberRules.AtLeast(min), message);
+
         /// <summary>
         /// Validates that the integer is at most the specified maximum.
         /// </summary>

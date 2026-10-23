@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.0.0-beta.2] - 2026-10-23
+
+### Added
+- `Rules`: Added `Future`, `Past`, `WithinFuture`, and `WithinPast` checks for `DateOnly`, `DateTime`, and `DateTimeOffset`, using the configured UTC clock.
+- `Rules` and `Validation`: Added boolean `IsTrue` and `IsFalse` rules.
+
 ## [3.0.0-alpha.4] - 2026-10-21
 
 ## Changed
