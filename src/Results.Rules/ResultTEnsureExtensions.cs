@@ -4,7 +4,7 @@ using Toarnbeike.Results.Failures;
 namespace Toarnbeike.Results.Rules;
 
 /// <summary>
-/// Provides extension methods for creating guard targets from <see cref="Result{T}"/> instances.
+/// Provides extension methods for creating guard targets from <see cref="Result{T}"/> and <see cref="Task{Result{T}}"/> instances.
 /// </summary>
 public static class ResultTEnsureExtensions
 {
@@ -53,6 +53,53 @@ public static class ResultTEnsureExtensions
             propertyName ??= ExpressionHelpers.ExtractPropertyName(expression);
 
             return RuleTargetFactory.Create(result, valueSelector, propertyName, static (name, message) => new GuardFailure(name, message));
+        }
+    }
+
+    extension<T>(Task<Result<T>> result)
+    {
+        /// <summary>
+        /// Creates an ensure target for the current value and associates validation failures with the specified property name.
+        /// </summary>
+        /// <param name="propertyName">Property name to include in guard failures. If null, a fallback name is extracted.</param>
+        /// <returns>An ensure target that evaluates rules against the current value and returns either success or a guard failure.</returns>
+        public async Task<RuleTarget<T, T>> EnsureAsync(string propertyName)
+        {
+            var resultValue = await result.ConfigureAwait(false);
+            return resultValue.Ensure(propertyName);
+        }
+
+        /// <summary>
+        /// Creates a guard target for the value contained in the <see cref="Result{T}"/> using the specified value selector.
+        /// </summary>
+        /// <param name="valueSelector">A function to select the value from the result.</param>
+        /// <param name="propertyName">An optional name of the property.</param>
+        /// <param name="expression">Auto filled: The expression used to select the property.</param>
+        /// <returns>A <see cref="RuleTarget{T, TProperty}"/> to specify the guard rule for the value.</returns>
+        public async Task<RuleTarget<T, TProperty>> EnsureAsync<TProperty>(
+            Func<T, TProperty> valueSelector,
+            string? propertyName = null,
+            [CallerArgumentExpression(nameof(valueSelector))] string? expression = null)
+        {
+            var resultValue = await result.ConfigureAwait(false);
+            return resultValue.Ensure(valueSelector, propertyName, expression);
+        }
+
+        /// <summary>
+        /// Creates a guard target for the collection contained in the <see cref="Result{T}"/> using the specified value selector.
+        /// </summary>
+        /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
+        /// <param name="valueSelector">A function to select the collection from the result.</param>
+        /// <param name="propertyName">An optional name of the property.</param>
+        /// <param name="expression">Auto filled: The expression used to select the property.</param>
+        /// <returns>A <see cref="RuleTarget{T, IEnumerable{TItem}}"/> to specify the guard rule for the collection.</returns>
+        public async Task<RuleTarget<T, IEnumerable<TItem>>> EnsureCollectionAsync<TItem>(
+            Func<T, IEnumerable<TItem>> valueSelector,
+            string? propertyName = null,
+            [CallerArgumentExpression(nameof(valueSelector))] string? expression = null)
+        {
+            var resultValue = await result.ConfigureAwait(false);
+            return resultValue.EnsureCollection(valueSelector, propertyName, expression);
         }
     }
 }

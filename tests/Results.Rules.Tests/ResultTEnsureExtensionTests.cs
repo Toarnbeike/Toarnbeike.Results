@@ -104,4 +104,37 @@ public class ResultTEnsureExtensionTests
         var failure = ensureResult.ShouldBeFailureOfType<GuardFailure>();
         failure.ParameterName.ShouldBe("CustomPropertyName");
     }
+
+    [Test]
+    public async Task EnsureAsync_ShouldReturnSuccess_WithoutSelector_WhenRuleSucceeds()
+    {
+        Task<Result<string>> result = Task.FromResult<Result<string>>(Result.Success("Hello"));
+        var target = await result.EnsureAsync("value");
+
+        var ensureResult = target.MinLength(5);
+        ensureResult.ShouldBeSuccess();
+        ensureResult.ShouldBeOfType<Result<string>>();
+    }
+
+    [Test]
+    public async Task EnsureAsync_ShouldUseCustomPropertyName_WithSelector_WhenRuleFails()
+    {
+        Task<Result<string>> result = Task.FromResult<Result<string>>(Result.Success("Hi"));
+        var target = await result.EnsureAsync(value => value, "CustomPropertyName");
+
+        var ensureResult = target.MinLength(5);
+        var failure = ensureResult.ShouldBeFailureOfType<GuardFailure>();
+        failure.ParameterName.ShouldBe("CustomPropertyName");
+    }
+
+    [Test]
+    public async Task EnsureCollectionAsync_ShouldUseCustomPropertyName_WhenRuleFails()
+    {
+        Task<Result<List<string>>> result = Task.FromResult<Result<List<string>>>(Result.Success(new List<string>()));
+        var target = await result.EnsureCollectionAsync(items => items, "CustomCollection");
+
+        var ensureResult = target.NotEmpty();
+        var failure = ensureResult.ShouldBeFailureOfType<GuardFailure>();
+        failure.ParameterName.ShouldBe("CustomCollection");
+    }
 }

@@ -127,4 +127,40 @@ public class ResultEnsureExtensionTests
         Result result = Result.Success();
         Should.Throw<ArgumentNullException>(() => result.EnsureCollection<string>(null!));
     }
+
+    [Test]
+    public async Task EnsureAsync_ShouldReturnSuccess_WhenRuleSucceeds()
+    {
+        var value = "Hello";
+        Task<Result> result = Task.FromResult(Result.Success());
+        var target = await result.EnsureAsync(() => value);
+
+        var ensureResult = target.MinLength(5);
+        ensureResult.ShouldBeSuccess();
+        ensureResult.ShouldBeOfType<Result<string>>();
+    }
+
+    [Test]
+    public async Task EnsureAsync_ShouldPreserveFailure_WhenResultFails()
+    {
+        var value = "Hello";
+        Task<Result> result = Task.FromResult<Result>(new TestFailure("Initial failure"));
+        var target = await result.EnsureAsync(() => value);
+
+        var ensureResult = target.MinLength(5);
+        var failure = ensureResult.ShouldBeFailureOfType<TestFailure>();
+        failure.Identifier.ShouldBe("Initial failure");
+    }
+
+    [Test]
+    public async Task EnsureCollectionAsync_ShouldIncludeCustomPropertyName_WhenRuleFails()
+    {
+        var items = new List<string>();
+        Task<Result> result = Task.FromResult(Result.Success());
+        var target = await result.EnsureCollectionAsync(() => items, "CustomCollection");
+
+        var ensureResult = target.NotEmpty();
+        var failure = ensureResult.ShouldBeFailureOfType<GuardFailure>();
+        failure.ParameterName.ShouldBe("CustomCollection");
+    }
 }

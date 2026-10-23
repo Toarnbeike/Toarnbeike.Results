@@ -119,4 +119,37 @@ public class ResultValidateExtensionTests
         Result<IEnumerable<string>> result = new List<string>();
         Assert.Throws<ArgumentNullException>(() => result.ValidateCollection<IEnumerable<string>, string>(null!).HasAtLeast(1));
     }
+
+    [Test]
+    public async Task ValidateAsync_ShouldReturnFailure_WithoutSelector_WhenValidationFails()
+    {
+        Task<Result<string>> result = Task.FromResult<Result<string>>(Result.Success("Hi"));
+        var target = await result.ValidateAsync("Property");
+
+        var validationResult = target.MinLength(5);
+        var failure = validationResult.ShouldBeFailureOfType<ValidationFailure>();
+        failure.Property.ShouldBe("Property");
+    }
+
+    [Test]
+    public async Task ValidateAsync_ShouldUseCustomPropertyName_WithSelector_WhenValidationFails()
+    {
+        Task<Result<string>> result = Task.FromResult<Result<string>>(Result.Success("Hi"));
+        var target = await result.ValidateAsync(value => value, "CustomProperty");
+
+        var validationResult = target.MinLength(5);
+        var failure = validationResult.ShouldBeFailureOfType<ValidationFailure>();
+        failure.Property.ShouldBe("CustomProperty");
+    }
+
+    [Test]
+    public async Task ValidateCollectionAsync_ShouldUseCustomPropertyName_WhenValidationFails()
+    {
+        Task<Result<IEnumerable<string>>> result = Task.FromResult<Result<IEnumerable<string>>>(Result.Success<IEnumerable<string>>(new List<string>()));
+        var target = await result.ValidateCollectionAsync(items => items, "CustomCollection");
+
+        var validationResult = target.NotEmpty();
+        var failure = validationResult.ShouldBeFailureOfType<ValidationFailure>();
+        failure.Property.ShouldBe("CustomCollection");
+    }
 }
