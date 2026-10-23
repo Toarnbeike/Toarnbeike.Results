@@ -1,4 +1,4 @@
-﻿namespace Toarnbeike.Rules.Tests.MessageTests;
+﻿namespace Toarnbeike.Results.Rules.Tests.MessageTests;
 
 #pragma warning disable S2094 //- Empty class to show intent: No message tests are needed for the PredicateRules.
 public class PredicateRuleMessageTests

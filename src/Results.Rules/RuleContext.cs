@@ -3,9 +3,6 @@ using System.Numerics;
 using Toarnbeike.Results.Rules.Messages;
 using Toarnbeike.Results.Rules.Tolerance;
 using Toarnbeike.Results.Rules.UtcNow;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("Results.Rules.Tests")]
 
 namespace Toarnbeike.Results.Rules;
 

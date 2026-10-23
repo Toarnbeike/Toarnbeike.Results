@@ -1,6 +1,4 @@
-﻿using Toarnbeike.Results.Rules;
-
-namespace Toarnbeike.Rules.Tests.MessageTemplateConfiguration;
+﻿namespace Toarnbeike.Results.Rules.Tests.MessageTemplateConfiguration;
 
 public abstract class DefaultMessageTemplateGroup
 {

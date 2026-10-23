@@ -1,5 +1,5 @@
 using Toarnbeike.Results.Validation.Implementation;
-using Toarnbeike.Results.Rules;
+using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
@@ -14,7 +14,7 @@ public static class PredicateValidationRuleBuilderExtensions
         /// <param name="message">The failure message to use if the predicate is not satisfied.</param>
         /// <returns>The validation rule builder to add to the <see cref="ValidationRuleCollection{T}"/>.</returns>
         public ValidationRuleBuilder<T, TProperty> Must(Func<TProperty, bool> predicate, string message) =>
-            builder.Add(PredicateRules.Satisfies(predicate), message);
+            builder.Add(ObjectRules.Satisfies(predicate), message);
 
         /// <summary>
         /// Validates that the property does not satisfy the provided predicate.
@@ -23,6 +23,6 @@ public static class PredicateValidationRuleBuilderExtensions
         /// <param name="message">The failure message to use if the predicate is satisfied.</param>
         /// <returns>The validation rule builder to add to the <see cref="ValidationRuleCollection{T}"/>.</returns>
         public ValidationRuleBuilder<T, TProperty> MustNot(Func<TProperty, bool> predicate, string message) =>
-            builder.Add(PredicateRules.NotSatisfies(predicate), message);
+            builder.Add(ObjectRules.NotSatisfies(predicate), message);
     }
 }

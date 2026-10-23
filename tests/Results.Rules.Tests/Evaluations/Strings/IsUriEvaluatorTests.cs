@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Rules.Evaluations.Strings;
 
-namespace Toarnbeike.Rules.Tests.Evaluations.Strings;
+namespace Toarnbeike.Results.Rules.Tests.Evaluations.Strings;
 
 public class IsUriEvaluatorTests
 {

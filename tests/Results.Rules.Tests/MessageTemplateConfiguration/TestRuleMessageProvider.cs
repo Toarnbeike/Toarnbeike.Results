@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Rules.Messages;
 
-namespace Toarnbeike.Rules.Tests.MessageTemplateConfiguration;
+namespace Toarnbeike.Results.Rules.Tests.MessageTemplateConfiguration;
 
 internal sealed class TestRuleMessageProvider : IRuleMessageProvider
 {

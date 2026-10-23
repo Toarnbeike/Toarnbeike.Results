@@ -4,206 +4,93 @@
 
 # Toarnbeike.Results.Validation
 
-This package extends **Toarnbeike.Results** with two complementary ways to validate values wrapped in a `Result<T>`:
-- **Fluent Validation**: for short-circuiting, property-level validation using a fluent API.
-- **`IValidator`**: for collecting all validation failures into a single validation result.
+`Toarnbeike.Results.Validation` adds reusable object validators to **Toarnbeike.Results**. Define rules for a type with `Validator<T>` and collect all validation failures into a `ValidationFailureSummary`.
 
-Both approaches are designed to integrate seamlessly with the `Result` type, enabling clear, declarative validation pipelines that compose naturally with other `Result` operations.
+Validators use the type rules from `Toarnbeike.Results.Rules` and integrate with `Result<T>` through `ValidateUsing`.
 
 ---
 
 ## Contents
 
 1. [Quick start](#quick-start)
-1. [Core concepts](#core-concepts)
-1. [Fluent validation](#fluent-validation)
-1. [IValidator](#ivalidator)
-1. [Validation rules](#validation-rules)
-1. [Customization](#customization)
+1. [Validator<T>](#validatort)
+1. [Collection and nested validation](#collection-and-nested-validation)
+1. [Failures and customization](#failures-and-customization)
+1. [Related packages](#related-packages)
 
 ---
 
 ## Quick start
 
-Use inline validation rules on a `Result<T>` pipeline for short-circuiting validation:
+Create a validator by deriving from `Validator<T>` and registering rules in `RegisterRules`:
 
 ```csharp
-public class Person
-{
-	public string Name { get; set; }
-	public int Age { get; set; }
-	public List<string> Tags { get; set; }
-}
+using Toarnbeike.Results;
+using Toarnbeike.Results.Validation;
+using Toarnbeike.Results.Validation.Extensions;
 
-Result<Person> personResult = GetPerson();
-personResult
-	.Validate(p => p.Name).MinLength(3)
-	.Validate(p => p.Age).GreaterThan(18)
-	.ValidateAll(p => p.Tags).MinLength(3)
-	.Match(
-		onSuccess: person => $"Valid: {person.Name}",
-		onFailure: failure => $"Invalid: {failure.ValidationMessage}"
-	);
-```
+public sealed record Customer(string Name, int Age, IEnumerable<string> Tags);
 
-Or define a reusable validator for domain-specific logic:
-```csharp
-public class PersonValidator : Validator<Person>
+public sealed class CustomerValidator : Validator<Customer>
 {
-	public override void RegisterRules(ValidationRuleCollection<Person> rules)
+	protected override void RegisterRules(ValidationRuleCollection<Customer> rules)
 	{
-		rules.That(p => p.Name).MinLength(3).MatchesRegex(@"^[a-zA-Z]+$");
-		rules.That(p => p.Age).GreaterThan(18);
-		rules.ThatAll(p => p.Tags).MinLength(3);
+		rules.That(customer => customer.Name).NotWhiteSpace();
+		rules.That(customer => customer.Age).AtLeast(18);
+		rules.ThatCollection(customer => customer.Tags).All().NotWhiteSpace();
 	}
 }
 
-// Usage:
-personResult
-	.ValidateUsing(new PersonValidator()); // (or use dependency injection to resolve the validator)
+Result<Customer> customerResult = GetCustomer();
+var validated = customerResult.ValidateUsing(new CustomerValidator());
 ```
 
 ---
 
+## Validator<T>
 
-## Core concepts
+`Validator<T>` defines reusable validation rules for a type. Override `RegisterRules` to select properties, collections, and nested values, then add the shared type rules from `Toarnbeike.Results.Validation.Extensions`.
 
-### What is Fluent validation
+Calling `validator.Validate(value)` returns the original value on success or a `ValidationFailureSummary` when any rules fail. Calling `result.ValidateUsing(validator)` validates a successful `Result<T>` and leaves an incoming failure unchanged.
 
-With the Validate extension methods, you can declare validation rules inline on a `Result<T>` pipeline. 
-Each rule is applied to a specific property of the object, and validation short-circuits on the first failure for that property.
-
-### What is a `Validator<T>`
-
-Define a reusable validator by implementing the `Validator<T>` base class.
-The class requires you to implement the `RegisterRules` method, where you can declare validation rules for the target type.
-This allows you to encapsulate validation logic for a specific type and reuse it across your application. The validator collects all validation failures into a single result, which can be consumed by the caller.
-
-### What are the results?
-
-The fluent validation methods returns a `ValidationFailure` result when a validation rule fails.
-This result contains the property name, and the auto generated or custom validation message.
-
-The IValidator approach returns a `ValidationFailureSummary` when any validation rule fails.
-This summary contains a dictionary of all `ValidationFailure` results per property for the object, allowing you to retrieve all validation issues at once.
-
-### What is validation in Results.Validation?
-
-Validation is the process of checking that an object's properties satisfy specified constraints. **Results.Validation** provides a type-safe, fluent API for declaring and enforcing these constraints.
-
-A validation pipeline is built by combining:
-1. A **property selector** (e.g., `p => p.Name`) - identifies which property to validate
-2. **Validation rules** (e.g., `.NotEmpty()`, `.MinLength(3)`) - define the constraints
-3. **Result consumption** - extract success or failure information
+Unlike the short-circuiting `Validate` extensions in `Toarnbeike.Results.Rules`, a validator evaluates all registered rules and aggregates their failures.
 
 ---
 
-## Fluent validation
+## Collection and nested validation
 
-The `Validate` extension starts a validation pipeline for a selected property.
+Use `ThatCollection(selector)` to apply rules to the collection itself. Call `All()` to apply the following rule to every item; each failing item contributes a failure under an indexed path such as `Tags[1]`. `All()` evaluates every item, and an empty collection passes.
 
-Validation rules can be applied to properties, nested properties, or collection.
-``` csharp
-Result<Person> result = GetPerson();
+Call `Any()` when at least one item must pass the following rule. Evaluation stops when an item passes. If no item passes, including when the collection is empty, the failure is reported against the collection property.
 
-var validated = result 
-	.Validate(x => x.Name).MinLength(3)
-	.Validate(x => x.Age).AtLeast(18)
-	.Validate(x => x.Address.PostalCode).Matches(@"^\d{5}$")
-	.ValidateAll(x => x.Tags).MinLength(3);
-```
+Nested validators can be applied to a property or to every item in a collection:
 
-The property expression is used to determine the validation property name. For example, `x => x.Address.PostalCode` produces the property name `Address.PostalCode`.
-
-### Short-circuiting validation
-
-The fluent-api is designed to short-circuit validation on the first failure for a property. If a rule fails, subsequent rules for that property are skipped, and the failure is returned immediately.
-Consequently, only the first validation failure is reported for each property, and a single `ValidationFailure` is returned as result of a failing validation pipeline.
-
-This makes the fluent API particularly useful when validation is part of a larger `Result<T>` pipeline where subsequent operations should only execute when the previous operation succeeded.
-
-## IValidator
-
-When all validation rules for a type should be evaluated, implement the `IValidator<T>` interface.
 ```csharp
-var validated = result.ValidateUsing(personValidator);
+rules.That(customer => customer.Address).ValidateUsing(new AddressValidator());
+rules.ThatCollection(customer => customer.Lines).All().ValidateUsing(new LineValidator());
 ```
 
-A validator defines it rules in the `RegisterRules` method, where you can declare multiple rules for each property of the target type.
-``` csharp
-public sealed class CustomerValidator(ICustomerRepository repository) : Validator<Customer> 
-{ 
-	protected override void RegisterRules(ValidationRuleCollection<Customer> rules)
-	{ 
-		rules.That(x => x.Name).MinLength(3).Matches(@"^[a-zA-Z]+$");
-		rules.That(x => x.Age).AtLeast(18); 
-		rules.ThatAll(x => x.Tags).MinLength(5); 
-	} 
-}
-```
-
-The validator is intended to contain the complete validation definition for a type. Dependencies can be injected normally through the constructor.
-
-### Aggregating validation
-
-Unlike the fluent API, an `IValidator<T>` evaluates all rules for a type and aggregates the results into a single `ValidationFailureSummary`. 
-This allows you to report multiple validation issues at once, rather than short-circuiting on the first failure.
-
-`ValidationFailureSummary` groups validation failures by property name, allowing you to easily identify which properties failed and why.
-
-## Validation rules
-
-`Results.Validation` provides pre-built rules organized by data type. Each category includes multiple validators covering common constraints.
-
-| Category | Types | Methods |
-|----------|-------|---------|
-| **String** | `string` | NotEmpty, NotWhiteSpace, MinLength, MaxLength, LengthBetween, Matches |
-| **Collection** | `IEnumerable<T>` | NotEmpty, Empty, HasAtLeast, HasAtMost, HasBetween, HasExactly |
-| **Integer** | `int`, `long`, `short`, etc. | GreaterThan, AtLeast, LessThan, AtMost, Between, Positive, MultipleOf|
-| **Floating-point** | `float`, `double`, `decimal`, `Half` | GreaterThan, AtLeast, LessThan, AtMost, Between, Positive, MultipleOf, IsFinite, IsNotNaN |
-| **Dates** | `DateTime`, `DateOnly`, `DateTimeOffset` | OnOrBefore, OnOrAfter, Between |
-| **TimeSpan** | `TimeSpan` | OnOrBefore, OnOrAfter, Around |
-| **GUID** | `Guid` | NotEmpty, Version4, Version7 |
-| **Enum** | `Enum` | IsDefined, OneOf, NotOneOf |
-| **Predicate** | Any type | Must, MustNot (custom predicate-based validation) |
-
-For detailed documentation of all available rules, see [Rules](../../docs/Rules.md).
+Nested failure paths include their parent path, for example `Address.City` or `Lines[0].Quantity`.
 
 ---
 
-## Customization
+## Failures and customization
 
-### Failure messages
+Property names are inferred from selector expressions. Supply an explicit property name when needed, and pass a custom message to an individual rule:
 
-In addition to the default (English) validation messages, you can provide custom messages for each rule. This allows you to tailor the feedback to your application's context.
 ```csharp
-personResult
-	.Validate(p => p.Age).GreaterThan(18, "Person must be an adult");
+rules.That(customer => customer.Age, "CustomerAge")
+	.AtLeast(18, "Customer must be an adult.");
 ```
 
-### Property names
+`ValidationFailureSummary` groups all failures by property name. Built-in type rules and generated messages are shared with `Toarnbeike.Results.Rules`; see the [Rules README](../Results.Rules/README.md) and [detailed rule reference](../../docs/Rules.md) for available rules and `RuleContext` settings.
 
-The property name is automatically detected from the property expression, but you can also provide a custom property name if needed:
-```csharp
-personResult
-	.Validate(p => p.Age, "PersonAge").GreaterThan(18, "Person must be an adult");
-```
+---
 
-### Tolerances
-For floating point validations a default tolerance is used:
+## Related packages
 
-| Type | Default Tolerance |
-| --------- | ----------------- |
-| `float` | 1e-6 |
-| `double` | 1e-9 |
-| `decimal` | 1e-9 |
-| `Half` | 1e-2 |
-
-This is useful for rounding errors when comparing floating point numbers. You can override the default tolerance by providing a custom value:
-```csharp
-personResult
-	.Validate(p => p.Height).AtLeast(1.75d, tolerance: 0.01d);
-```
+- `Toarnbeike.Results.Rules` provides result-level `Ensure` and `Validate` extensions that short-circuit on failure.
+- `Toarnbeike.Results` provides the `Result<T>` type and core result operations.
 
 ---
 

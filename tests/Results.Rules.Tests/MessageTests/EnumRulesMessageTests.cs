@@ -1,7 +1,7 @@
-﻿using Toarnbeike.Results.Rules;
-using Toarnbeike.Rules.Tests.MessageTemplateConfiguration;
+﻿using Toarnbeike.Results.Rules.Tests.MessageTemplateConfiguration;
+using Toarnbeike.Results.Rules.TypeRules;
 
-namespace Toarnbeike.Rules.Tests.MessageTests;
+namespace Toarnbeike.Results.Rules.Tests.MessageTests;
 
 [ParallelGroup(nameof(DefaultMessageTemplateGroup))]
 public class EnumRulesMessageTests : DefaultMessageTemplateGroup

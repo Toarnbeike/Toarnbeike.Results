@@ -1,6 +1,6 @@
 ﻿using Toarnbeike.Results.Rules.Evaluations.Collections;
 
-namespace Toarnbeike.Rules.Tests.Evaluations.Collections;
+namespace Toarnbeike.Results.Rules.Tests.Evaluations.Collections;
 
 public class DoesNotContainEvaluatorTests
 {
