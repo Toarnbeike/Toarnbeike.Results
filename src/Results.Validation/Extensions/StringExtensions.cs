@@ -3,7 +3,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
-public static class StringValidationRuleBuilderExtensions
+public static class StringExtensions
 {
     extension<T>(ValidationRuleBuilder<T, string> builder)
     {

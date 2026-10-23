@@ -4,7 +4,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
-public static class NumericValidationRuleBuilderExtensions
+public static class NumericExtensions
 {
     extension<T, TNumeric>(ValidationRuleBuilder<T, TNumeric> builder)
     where TNumeric : struct, INumber<TNumeric>

@@ -2,7 +2,7 @@ using Toarnbeike.Results.Validation.Implementation;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
-public static class NestedValidatorRuleBuilderExtensions
+public static class ValidateUsingExtensions
 {
     extension<T, TProperty>(ValidationRuleBuilder<T, TProperty> builder)
     {

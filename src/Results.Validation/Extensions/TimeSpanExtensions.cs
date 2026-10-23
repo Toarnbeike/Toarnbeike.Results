@@ -3,7 +3,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
-public static class TimeSpanValidationRuleBuilderExtensions
+public static class TimeSpanExtensions
 {
     extension<T>(ValidationRuleBuilder<T, TimeSpan> builder)
     {

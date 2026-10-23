@@ -41,6 +41,14 @@ public static class TimeSpanExtensions
             target.Apply(TimeSpanRules.Between(min, max), message);
 
         /// <summary>
+        /// Verifies that the TimeSpan is at least zero.
+        /// </summary>
+        /// <param name="message">An optional custom failure message.</param>
+        /// <returns>A result representing whether the TimeSpan is at least zero.</returns>
+        public Result<T> AtLeastZero(string? message = null) =>
+            target.Apply(TimeSpanRules.AtLeastZero(), message);
+
+        /// <summary>
         /// Verifies that the TimeSpan is within the specified tolerance of the expected value.
         /// </summary>
         /// <param name="expected">The expected TimeSpan value.</param>

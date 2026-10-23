@@ -3,10 +3,28 @@ using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
-public static class PredicateValidationRuleBuilderExtensions
+public static class ObjectExtensions
 {
     extension<T, TProperty>(ValidationRuleBuilder<T, TProperty> builder)
     {
+        /// <summary>
+        /// Validates that the property is equal to the specified expected value.
+        /// </summary>
+        /// <param name="expected">The value to compare against the target.</param>
+        /// <param name="message">An optional message to include in the result.</param>
+        /// <returns>The validation rule builder to add to the <see cref="ValidationRuleCollection{T}"/>.</returns>
+        public ValidationRuleBuilder<T, TProperty> EqualTo(TProperty expected, string? message = null) =>
+            builder.Add(ObjectRules.EqualTo(expected), message);
+
+        /// <summary>
+        /// Validates that the property is not equal to the specified expected value.
+        /// </summary>
+        /// <param name="expected">The value to compare against the target.</param>
+        /// <param name="message">An optional message to include in the result.</param>
+        /// <returns>The validation rule builder to add to the <see cref="ValidationRuleCollection{T}"/>.</returns>
+        public ValidationRuleBuilder<T, TProperty> NotEqualTo(TProperty expected, string? message = null) =>
+            builder.Add(ObjectRules.NotEqualTo(expected), message);
+
         /// <summary>
         /// Validates that the property satisfies the provided predicate.
         /// </summary>

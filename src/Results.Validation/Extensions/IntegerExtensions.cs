@@ -4,7 +4,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
-public static class IntegerValidationRuleBuilderExtensions
+public static class IntegerExtensions
 {
     extension<T, TInteger>(ValidationRuleBuilder<T, TInteger> builder)
     where TInteger : struct, IBinaryInteger<TInteger>

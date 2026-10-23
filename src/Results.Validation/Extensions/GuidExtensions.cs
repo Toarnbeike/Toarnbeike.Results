@@ -3,7 +3,7 @@ using Toarnbeike.Results.Rules.TypeRules;
 
 namespace Toarnbeike.Results.Validation.Extensions;
 
-public static class GuidValidationRuleBuilderExtensions
+public static class GuidExtensions
 {
     extension<T>(ValidationRuleBuilder<T, Guid> builder)
     {
